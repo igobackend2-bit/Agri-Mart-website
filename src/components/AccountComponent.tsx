@@ -1,0 +1,618 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  ShoppingBag, 
+  Heart, 
+  MapPin, 
+  User, 
+  X, 
+  ChevronRight, 
+  HelpCircle, 
+  Trash2, 
+  FileCheck,
+  Award,
+  Calendar,
+  CheckCircle
+} from 'lucide-react';
+import { db, auth } from '../firebase';
+import { Product, Order, UserProfile, Address } from '../types';
+import { fetchUserOrders, cancelUserOrder } from '../dbHelper';
+
+interface AccountComponentProps {
+  lang: 'en' | 'ta';
+  allProducts: Product[];
+  userProfile: UserProfile | null;
+  setUserProfile: (u: UserProfile | null) => void;
+  setCurrentPage: (p: 'home' | 'category' | 'product' | 'cart' | 'checkout' | 'account' | 'admin') => void;
+  setSelectedProduct: (p: Product) => void;
+  addToCart: (p: Product) => void;
+}
+
+const accountTranslations = {
+  en: {
+    orders: 'My Agri Orders',
+    wishlist: 'Farming Wishlist',
+    addresses: 'Saved Addresses',
+    profile: 'Personal Profile',
+    dashboard: 'Farmer Guest',
+    customer: 'Customer',
+    ordersHeader: 'Your Agri Orders',
+    ordersSub: 'Track warehouse logistics status on your ordered items',
+    loadingOrders: 'Loading order databases... Please hold.',
+    noOrders: 'No orders checked out yet. Place your initial agritech checkout!',
+    orderRef: 'Order Reference #',
+    checkoutDate: 'Checkout Date',
+    method: 'Method',
+    netValue: 'Net Value',
+    cancelOrder: 'Cancel Agri Order',
+    favoritePlants: 'Your Favorite Plants',
+    favoriteSub: 'Directly monitor and add items from your likes drawer',
+    addToBasket: '+ Add to Basket',
+    emptyWishlist: 'Wishlist contains 0 items. Tap those green hearts on product grids!',
+    shippingHeader: 'Saved Shipping Addresses',
+    shippingSub: 'Set up defaults for snappy e-commerce checkout checkouts',
+    addAddressBtn: '+ Add Address',
+    cancelAddBtn: 'Cancel Add',
+    billingFormHeader: 'Billing & Shipping Form',
+    consigneeName: 'Consignee Name *',
+    phone: 'Phone * (e.g. 7397785803)',
+    address1: 'Address Line 1 *',
+    address2: 'Address Line 2 (Optional)',
+    city: 'City *',
+    pincode: '6-Digit Pincode *',
+    saveBtn: 'Save Address',
+    noAddresses: 'No addresses saved. Setup shipping default coordinates above.',
+    profileHeader: 'Personal Profile Contacts',
+    profileSub: 'Monitor digital login identifiers details',
+    farmerName: 'Farmer Name',
+    registeredEmail: 'Registered Email Address',
+    roleStatus: 'Admin Role Access Status',
+    gateway: 'Account Gateway',
+    confirmCancel: 'Are you sure you want to cancel this agricultural order?',
+    addressSuccess: 'Address successfully saved to your profile!',
+    addressVarRequired: 'Please enter all required address variables.',
+  },
+  ta: {
+    orders: 'எனது விவசாய ஆர்டர்கள்',
+    wishlist: 'விவசாய விருப்பப்பட்டியல்',
+    addresses: 'சேமிக்கப்பட்ட முகவரிகள்',
+    profile: 'தனிப்பட்ட சுயவிவரம்',
+    dashboard: 'விவசாயி விருந்தினர்',
+    customer: 'வாடிக்கையாளர்',
+    ordersHeader: 'உங்கள் விவசாய ஆர்டர்கள்',
+    ordersSub: 'ஆர்டர் செய்யப்பட்ட பொருட்களின் கிடங்கு தளவாட நிலையை கண்காணிக்கவும்',
+    loadingOrders: 'ஆர்டர் தரவுத்தளங்கள் ஏற்றப்படுகின்றன... தயவுசெய்து காத்திருக்கவும்.',
+    noOrders: 'இன்னும் ஆர்டர்கள் எதுவும் செய்யப்படவில்லை. உங்கள் முதல் விவசாய ஆர்டரைச் செய்யுங்கள்!',
+    orderRef: 'ஆர்டர் குறிப்பு எண் #',
+    checkoutDate: 'ஆர்டர் செய்த தேதி',
+    method: 'கட்டண முறை',
+    netValue: 'நிகர மதிப்பு',
+    cancelOrder: 'ஆர்டரை ரத்து செய்',
+    favoritePlants: 'உங்களுக்கு பிடித்த பயிர்கள்',
+    favoriteSub: 'உங்களுக்கு பிடித்த பொருட்களின் பட்டியலை நேரடியாக கண்காணித்து சேர்க்கவும்',
+    addToBasket: '+ கூடையில் சேர்',
+    emptyWishlist: 'விருப்பப்பட்டியலில் 0 பொருட்கள் உள்ளன. தயாரிப்பு பட்டியலில் உள்ள பச்சை இதயங்களை அழுத்தவும்!',
+    shippingHeader: 'சேமிக்கப்பட்ட விநியோக முகவரிகள்',
+    shippingSub: 'விரைவான ஆர்டர்களுக்கான முகவரி விவரங்களை அமைக்கவும்',
+    addAddressBtn: '+ முகவரியைச் சேர்',
+    cancelAddBtn: 'சேர்ப்பதை ரத்துசெய்',
+    billingFormHeader: 'விநியோக முகவரி படிவம்',
+    consigneeName: 'பெறுநர் பெயர் *',
+    phone: 'தொலைபேசி எண் * (எ.கா. 7397785803)',
+    address1: 'முகவரி வரி 1 *',
+    address2: 'முகவரி வரி 2 (விருப்பத்திற்குரியது)',
+    city: 'நகரம் *',
+    pincode: '6-இலக்க பின்கோடு *',
+    saveBtn: 'முகவரியைச் சேமி',
+    noAddresses: 'முகவரிகள் எதுவும் சேமிக்கப்படவில்லை. மேலே உங்கள் தற்போதைய முகவரியைச் சேர்க்கவும்.',
+    profileHeader: 'தனிப்பட்ட சுயவிவர விவரங்கள்',
+    profileSub: 'டிஜிட்டல் உள்நுழைவு அங்கீகார விவரங்களை கண்காணிக்கவும்',
+    farmerName: 'விவசாயி பெயர்',
+    registeredEmail: 'பதிவு செய்யப்பட்ட மின்னஞ்சல்',
+    roleStatus: 'அட்மின் அணுகல் நிலை',
+    gateway: 'கணக்கு நுழைவாயில்',
+    confirmCancel: 'இந்த விவசாய ஆர்டரை ரத்து செய்ய விரும்புகிறீர்களா என்பதில் உறுதியாக இருக்கிறீர்களா?',
+    addressSuccess: 'முகவரி உங்கள் சுயவிவரத்தில் வெற்றிகரமாக சேமிக்கப்பட்டது!',
+    addressVarRequired: 'தேவையான அனைத்து முகவரி விவரங்களையும் உள்ளிடவும்.',
+  }
+};
+
+export default function AccountComponent({
+  lang,
+  allProducts,
+  userProfile,
+  setUserProfile,
+  setCurrentPage,
+  setSelectedProduct,
+  addToCart
+}: AccountComponentProps) {
+  const t = accountTranslations[lang];
+  const [activeTab, setActiveTab] = useState<'Orders' | 'Wishlist' | 'Addresses' | 'Profile'>('Orders');
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoadingOrders, setIsLoadingOrders] = useState(false);
+
+  // Address add form
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [newAddress, setNewAddress] = useState({
+    name: '',
+    phone: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: 'Tamil Nadu',
+    pincode: ''
+  });
+
+  // Pull orders when account opens
+  useEffect(() => {
+    if (userProfile?.uid) {
+      setIsLoadingOrders(true);
+      fetchUserOrders(userProfile.uid)
+        .then((items) => {
+          setOrders(items);
+          setIsLoadingOrders(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setIsLoadingOrders(false);
+        });
+    }
+  }, [userProfile]);
+
+  const handleCancelOrder = async (orderId: string) => {
+    if (!window.confirm(t.confirmCancel)) return;
+    try {
+      await cancelUserOrder(orderId);
+      // Refresh order list
+      setOrders(orders.map(o => o.id === orderId ? { ...o, status: 'Cancelled' } : o));
+    } catch {
+      setOrders(orders.map(o => o.id === orderId ? { ...o, status: 'Cancelled' } : o));
+    }
+  };
+
+  const handleAddAddress = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newAddress.name.trim() || !newAddress.phone.trim() || !newAddress.address1.trim() || !newAddress.city.trim() || !newAddress.pincode.trim()) {
+      alert(t.addressVarRequired);
+      return;
+    }
+    const created: Address = {
+      id: 'addr-' + Math.random().toString(36).substring(2, 9),
+      name: newAddress.name,
+      phone: newAddress.phone,
+      addressLine1: newAddress.address1,
+      addressLine2: newAddress.address2,
+      city: newAddress.city,
+      state: newAddress.state,
+      pincode: newAddress.pincode
+    };
+
+    if (userProfile) {
+      const updatedProfile = { 
+        ...userProfile, 
+        addresses: [...(userProfile.addresses || []), created] 
+      };
+      setUserProfile(updatedProfile);
+      setShowAddressForm(false);
+      setNewAddress({
+        name: '',
+        phone: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: 'Tamil Nadu',
+        pincode: ''
+      });
+      alert(t.addressSuccess);
+    }
+  };
+
+  const removeAddress = (addrId: string) => {
+    if (userProfile) {
+      const filtered = userProfile.addresses.filter(x => x.id !== addrId);
+      setUserProfile({ ...userProfile, addresses: filtered });
+    }
+  };
+
+  // Resolve products in wishlist
+  const wishlistProducts = allProducts.filter(p => userProfile?.wishlist?.includes(p.id));
+
+  // Determine status stepper step
+  const getStatusStep = (status: string) => {
+    const norm = (status || '').toLowerCase();
+    if (norm === 'placed' || norm === 'pending') return 1;
+    if (norm === 'confirmed') return 2;
+    if (norm === 'dispatched' || norm === 'shipped') return 3;
+    if (norm === 'delivered') return 4;
+    return 0; // Cancelled
+  };
+
+  const stepperSteps = [
+    { label: lang === 'ta' ? 'அனுப்பப்பட்டது' : 'Pending', step: 1 },
+    { label: lang === 'ta' ? 'உறுதி செய்யப்பட்டது' : 'Confirmed', step: 2 },
+    { label: lang === 'ta' ? 'வழியில் உள்ளது' : 'Shipped', step: 3 },
+    { label: lang === 'ta' ? 'சேர்க்கப்பட்டது' : 'Delivered', step: 4 }
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
+        
+        {/* Left column Dashboard navigation selectors */}
+        <div className="w-full lg:col-span-1 lg:max-w-[280px] bg-white border border-slate-200 p-5 rounded-xl space-y-4 shadow-sm select-none">
+          <div className="flex items-center gap-3 bg-[#F7F9F4] p-3.5 rounded-xl border border-slate-100 mb-2">
+            <div className="h-10 w-10 bg-[#1B6B3A] text-white rounded-full flex items-center justify-center font-bold text-lg border-2 border-emerald-100 shadow-sm shrink-0">
+              {userProfile?.name?.charAt(0) || 'F'}
+            </div>
+            <div className="truncate">
+              <div className="text-xs font-bold text-slate-800 truncate leading-none mb-1">
+                {userProfile?.name || t.dashboard}
+              </div>
+              <span className="text-[10px] bg-yellow-105 bg-amber-50 text-[#E8A020] px-2 py-0.5 rounded-md font-bold uppercase tracking-widest border border-amber-200/50">
+                {userProfile?.role || t.customer}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            {([
+              { key: 'Orders', icon: ShoppingBag, label: t.orders },
+              { key: 'Wishlist', icon: Heart, label: t.wishlist },
+              { key: 'Addresses', icon: MapPin, label: t.addresses },
+              { key: 'Profile', icon: User, label: t.profile }
+            ] as const).map((tab) => {
+              const IconComp = tab.icon;
+              const isActive = activeTab === tab.key;
+              return (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`w-full text-left p-3 rounded-lg text-xs font-bold transition flex items-center gap-3 text-slate-700 cursor-pointer ${
+                    isActive 
+                      ? 'bg-[#1B6B3A] text-white border-l-4 border-[#E8A020] shadow-sm' 
+                      : 'hover:bg-slate-50 border-l-4 border-transparent'
+                  }`}
+                >
+                  <IconComp className="h-4.5 w-4.5" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Right column view panels */}
+        <div className="flex-1 w-full bg-white border border-slate-200 p-6 sm:p-10 rounded-xl min-h-[480px] shadow-sm">
+          
+          {/* ORDERS VIEW TAB */}
+          {activeTab === 'Orders' && (
+            <div className="space-y-6">
+              <div className="border-b border-slate-100 pb-3 flex justify-between items-baseline flex-wrap gap-2">
+                <div>
+                  <h3 className="font-display font-extrabold text-[#1B6B3A] text-base sm:text-lg">{t.ordersHeader}</h3>
+                  <p className="text-xs text-slate-400 mt-1">{t.ordersSub}</p>
+                </div>
+                <span className="text-xs text-[#1B6B3A] bg-emerald-50 px-2 py-1 rounded font-black border border-emerald-100">
+                  {orders.length} {lang === 'ta' ? 'ஆர்டர்கள்' : 'Orders'}
+                </span>
+              </div>
+
+              {isLoadingOrders ? (
+                <div className="py-20 text-center text-slate-400 text-xs font-bold leading-normal animate-pulse">
+                  {t.loadingOrders}
+                </div>
+              ) : orders.length > 0 ? (
+                <div className="space-y-6">
+                  {orders.map((o) => {
+                    const currentStep = getStatusStep(o.status);
+                    return (
+                      <div key={o.id} className="border border-slate-200 rounded-xl overflow-hidden p-5 hover:shadow-md transition duration-300">
+                        
+                        {/* Top bar metrics */}
+                        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-4 text-xs font-bold select-none bg-slate-55 bg-[#F7F9F4]/40 -mx-5 -mt-5 p-5">
+                          <div className="space-y-1">
+                            <span className="text-slate-400 block font-normal tracking-wide text-[10px] uppercase">{t.orderRef}</span>
+                            <span className="text-slate-800 font-mono tracking-tight">{o.id}</span>
+                          </div>
+                          <div className="space-y-1">
+                            <span className="text-slate-400 block font-normal tracking-wide text-[10px] uppercase">{t.checkoutDate}</span>
+                            <span className="text-slate-800 flex items-center gap-1">
+                              <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                              <span>{o.createdAt?.toString().slice(0, 10)}</span>
+                            </span>
+                          </div>
+                          <div className="space-y-1">
+                            <span className="text-slate-400 block font-normal tracking-wide text-[10px] uppercase">{t.method}</span>
+                            <span className="text-slate-800">{o.paymentMethod}</span>
+                          </div>
+                          <div className="space-y-1">
+                            <span className="text-slate-400 block font-normal tracking-wide text-[10px] uppercase">{t.netValue}</span>
+                            <span className="text-[#1B6B3A] text-sm">₹{o.totalAmount}</span>
+                          </div>
+
+                          {/* Status badge element */}
+                          <div className="flex items-center gap-2">
+                            <span className={`px-2.5 py-1 text-[10px] font-black uppercase rounded ${
+                              o.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
+                              o.status === 'Delivered' ? 'bg-green-100 text-green-700' :
+                              o.status === 'Dispatched' || o.status === 'Shipped' ? 'bg-indigo-100 text-indigo-700' :
+                              o.status === 'Confirmed' ? 'bg-teal-100 text-teal-700' :
+                              'bg-amber-100 text-amber-700'
+                            }`}>
+                              {o.status}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Interactive Logistics Stepper Progress */}
+                        {o.status !== 'Cancelled' && (
+                          <div className="mb-6 mt-4 px-2 max-w-xl mx-auto">
+                            <div className="relative flex items-center justify-between">
+                              {/* Background Line */}
+                              <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-slate-100 rounded-full z-0"></div>
+                              {/* Active Progress Line */}
+                              <div 
+                                className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-[#1B6B3A] transition-all duration-500 rounded-full z-0"
+                                style={{ 
+                                  width: currentStep > 1 ? `${((currentStep - 1) / 3) * 100}%` : '0%' 
+                                }}
+                              ></div>
+
+                              {/* Stepper Steps */}
+                              {stepperSteps.map((st) => {
+                                const isCompleted = currentStep >= st.step;
+                                const isCurrent = currentStep === st.step;
+                                return (
+                                  <div key={st.step} className="flex flex-col items-center relative z-10 w-1/4">
+                                    <div className={`h-7 w-7 rounded-full flex items-center justify-center font-bold text-xs border-2 transition-all duration-300 ${
+                                      isCurrent ? 'bg-white border-[#E8A020] text-[#E8A020] ring-4 ring-amber-50 scale-110 shadow-sm font-black' :
+                                      isCompleted ? 'bg-[#1B6B3A] border-[#1B6B3A] text-white' :
+                                      'bg-white border-slate-200 text-slate-400'
+                                    }`}>
+                                      {isCompleted && !isCurrent ? '✓' : st.step}
+                                    </div>
+                                    <span className={`text-[9px] font-black tracking-tight mt-1.5 whitespace-nowrap px-1 rounded transition-colors text-center ${
+                                      isCurrent ? 'text-[#E8A020]' :
+                                      isCompleted ? 'text-slate-800' :
+                                      'text-slate-400'
+                                    }`}>
+                                      {st.label}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+
+                        {o.status === 'Cancelled' && (
+                          <div className="my-4 p-3 bg-red-50 rounded-xl border border-red-100 text-red-600 flex items-center gap-2 text-[11px] font-semibold">
+                            <span className="text-sm">⚠️</span>
+                            <span>
+                              {lang === 'ta' 
+                                ? 'இந்த ஆர்டர் ரத்து செய்யப்பட்டுள்ளது. நீங்கள் பணம் செலுத்தியிருந்தால் 3-5 வேலைநாட்களில் திருப்பித் தரப்படும்.' 
+                                : 'This order was cancelled. Any active pre-payments will be refunded within 3-5 business days.'}
+                            </span>
+                          </div>
+                        )}
+
+                        <div className="h-[1px] bg-slate-100 my-4"></div>
+
+                        {/* Items checkout lists */}
+                        <div className="space-y-4">
+                          {o.items?.map((item, i) => (
+                            <div key={i} className="flex gap-4 items-center">
+                              <img src={item.image} alt="" className="h-12 w-12 object-cover rounded-lg border border-slate-100 shadow-sm shrink-0" />
+                              <div className="flex-1">
+                                <div className="text-xs font-bold text-slate-800 line-clamp-1">{item.name}</div>
+                                <p className="text-[10px] text-slate-400 mt-0.5">{item.brand} • {lang === 'ta' ? 'அளவு' : 'Qty'}: {item.quantity}</p>
+                              </div>
+                              <span className="text-xs font-black text-slate-900">₹{item.price * item.quantity}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Cancel order CTA */}
+                        {o.status !== 'Cancelled' && o.status !== 'Delivered' && o.status !== 'Dispatched' && o.status !== 'Shipped' && (
+                          <div className="border-t border-slate-100 pt-3 mt-4 flex justify-end">
+                            <button
+                              onClick={() => handleCancelOrder(o.id)}
+                              className="bg-red-50 hover:bg-red-100 text-[#D94F3D] text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg border border-red-200 cursor-pointer transition shadow-sm"
+                            >
+                              {t.cancelOrder}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="py-20 text-center text-slate-400 text-xs italic bg-[#F7F9F4]/50 rounded-2xl border border-dashed border-slate-200">
+                  {t.noOrders}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* WISHLIST VIEW TAB */}
+          {activeTab === 'Wishlist' && (
+            <div className="space-y-6">
+              <div className="border-b border-slate-100 pb-3">
+                <h3 className="font-display font-extrabold text-[#1B6B3A] text-base sm:text-lg">{t.favoritePlants}</h3>
+                <p className="text-xs text-slate-400 mt-1">{t.favoriteSub}</p>
+              </div>
+
+              {wishlistProducts.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {wishlistProducts.map((p) => (
+                    <div key={p.id} className="border border-slate-200 p-4 rounded-xl flex gap-4 items-center justify-between hover:shadow-sm transition">
+                      <div className="flex gap-3 items-center cursor-pointer overflow-hidden" onClick={() => { setSelectedProduct(p); setCurrentPage('product'); }}>
+                        <img src={p.images[0]} alt="" className="h-12 w-12 object-cover rounded-lg border" />
+                        <div className="truncate">
+                          <h4 className="font-display font-bold text-xs text-slate-800 line-clamp-1">{p.name}</h4>
+                          <span className="text-[10px] text-slate-400 font-semibold block mt-0.5">{p.brand}</span>
+                          <span className="text-xs font-black text-[#1B6B3A] mt-1 block">₹{p.price}</span>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          addToCart(p);
+                        }}
+                        className="bg-[#1B6B3A] text-white hover:bg-emerald-950 text-[10px] font-black uppercase tracking-wider px-3 py-2 rounded-lg transition shrink-0 cursor-pointer shadow-sm ml-2"
+                      >
+                        {t.addToBasket}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-20 text-center text-slate-400 text-xs italic bg-[#F7F9F4]/50 rounded-2xl border border-dashed border-slate-200">
+                  {t.emptyWishlist}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ADDRESSES VIEW TAB */}
+          {activeTab === 'Addresses' && (
+            <div className="space-y-6">
+              <div className="border-b border-slate-100 pb-3 flex justify-between items-end flex-wrap gap-2">
+                <div>
+                  <h3 className="font-display font-extrabold text-[#1B6B3A] text-base sm:text-lg">{t.shippingHeader}</h3>
+                  <p className="text-xs text-slate-400 mt-1">{t.shippingSub}</p>
+                </div>
+                <button
+                  onClick={() => setShowAddressForm(!showAddressForm)}
+                  className="bg-[#1B6B3A] hover:bg-emerald-950 text-white text-[10px] font-black uppercase tracking-wide px-3 py-2 rounded-lg cursor-pointer transition select-none shadow-sm"
+                >
+                  {showAddressForm ? t.cancelAddBtn : t.addAddressBtn}
+                </button>
+              </div>
+
+              {showAddressForm && (
+                <form onSubmit={handleAddAddress} className="bg-[#F7F9F4] p-5 rounded-xl border border-slate-100 max-w-xl space-y-4">
+                  <h4 className="font-display font-bold text-xs text-slate-750 text-[#1B6B3A] uppercase tracking-wider mb-2">
+                    {t.billingFormHeader}
+                  </h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      placeholder={t.consigneeName}
+                      required
+                      value={newAddress.name}
+                      onChange={(e) => setNewAddress({ ...newAddress, name: e.target.value })}
+                      className="bg-white border border-slate-200 rounded p-2 text-xs font-bold w-full"
+                    />
+                    <input
+                      type="tel"
+                      placeholder={t.phone}
+                      required
+                      value={newAddress.phone}
+                      onChange={(e) => setNewAddress({ ...newAddress, phone: e.target.value })}
+                      className="bg-white border border-slate-200 rounded p-2 text-xs font-bold w-full"
+                    />
+                    <input
+                      type="text"
+                      placeholder={t.address1}
+                      required
+                      value={newAddress.address1}
+                      onChange={(e) => setNewAddress({ ...newAddress, address1: e.target.value })}
+                      className="bg-white border border-slate-200 rounded p-2 text-xs font-bold w-full col-span-2"
+                    />
+                    <input
+                      type="text"
+                      placeholder={t.address2}
+                      value={newAddress.address2}
+                      onChange={(e) => setNewAddress({ ...newAddress, address2: e.target.value })}
+                      className="bg-white border border-slate-200 rounded p-2 text-xs font-bold w-full col-span-2"
+                    />
+                    <input
+                      type="text"
+                      placeholder={t.city}
+                      required
+                      value={newAddress.city}
+                      onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
+                      className="bg-white border border-slate-200 rounded p-2 text-xs font-bold w-full"
+                    />
+                    <input
+                      type="text"
+                      placeholder={t.pincode}
+                      required
+                      maxLength={6}
+                      value={newAddress.pincode}
+                      onChange={(e) => setNewAddress({ ...newAddress, pincode: e.target.value.replace(/\D/g, '') })}
+                      className="bg-white border border-slate-200 rounded p-2 text-xs font-bold w-full"
+                    />
+                  </div>
+                  <button type="submit" className="bg-[#1B6B3A] text-white hover:bg-emerald-950 text-xs font-black uppercase tracking-wider px-4 py-2 rounded-lg cursor-pointer transition shadow-sm">
+                    {t.saveBtn}
+                  </button>
+                </form>
+              )}
+
+              {/* Saved Address Lists */}
+              <div className="space-y-4">
+                {userProfile?.addresses && userProfile.addresses.length > 0 ? (
+                  userProfile.addresses.map((a) => (
+                    <div key={a.id} className="border border-slate-200 p-4 rounded-xl flex justify-between items-start gap-3 hover:bg-slate-50/20 transition">
+                      <div className="space-y-1">
+                        <div className="text-xs font-bold text-slate-800">{a.name}</div>
+                        <div className="text-xs text-slate-400">Phone: {a.phone}</div>
+                        <div className="text-xs text-slate-500 max-w-sm">
+                          {a.addressLine1}, {a.addressLine2 && `${a.addressLine2}, `}{a.city}, {a.state} - {a.pincode}
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => removeAddress(a.id)}
+                        className="p-1.5 text-slate-400 hover:text-[#D94F3D] hover:bg-red-50 rounded-lg transition shrink-0 cursor-pointer"
+                        title="Delete Address"
+                      >
+                        <Trash2 className="h-4.5 w-4.5" />
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-xs text-slate-400 italic py-10 text-center border border-dashed rounded-xl bg-slate-50/40">{t.noAddresses}</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* PROFILE TAB */}
+          {activeTab === 'Profile' && (
+            <div className="space-y-6">
+              <div className="border-b border-slate-100 pb-3">
+                <h3 className="font-display font-extrabold text-[#1B6B3A] text-base sm:text-lg">{t.profileHeader}</h3>
+                <p className="text-xs text-slate-400 mt-1">{t.profileSub}</p>
+              </div>
+
+              <div className="space-y-4 max-w-md">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-slate-400 block uppercase tracking-wide">{t.farmerName}</span>
+                  <div className="p-3 bg-slate-50 rounded-lg text-xs font-bold text-slate-700 border border-slate-100">{userProfile?.name}</div>
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-slate-400 block uppercase tracking-wide">{t.registeredEmail}</span>
+                  <div className="p-3 bg-slate-50 rounded-lg text-xs font-bold text-slate-600 border border-slate-100">{userProfile?.email || 'None'}</div>
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-slate-400 block uppercase tracking-wide">{t.roleStatus}</span>
+                  <div className="p-3 bg-slate-50 rounded-lg text-xs font-black text-slate-650 text-slate-700 border border-slate-100 uppercase uppercase-tracking-widest capitalize">
+                    {userProfile?.role} {t.gateway}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+
+      </div>
+    </div>
+  );
+}

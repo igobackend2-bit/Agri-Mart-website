@@ -1,0 +1,129 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "An agricultural product available in the marketplace",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "brand": { "type": "string" },
+        "category": { "type": "string" },
+        "subcategory": { "type": "string" },
+        "price": { "type": "number" },
+        "mrp": { "type": "number" },
+        "discount": { "type": "number" },
+        "stock": { "type": "number" },
+        "images": { "type": "array" },
+        "description": { "type": "string" },
+        "composition": { "type": "string" },
+        "usage": { "type": "string" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "isIgoOwn": { "type": "boolean" },
+        "problemFilter": { "type": "string" },
+        "tags": { "type": "array" }
+      },
+      "required": ["id", "name", "slug", "brand", "category", "price", "mrp", "stock", "description"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "A top-level classification for agricultural products",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "icon": { "type": "string" },
+        "productCount": { "type": "number" }
+      },
+      "required": ["id", "name", "slug", "icon", "productCount"]
+    },
+    "Brand": {
+      "title": "Brand",
+      "description": "An agricultural brand partners or IGO own brand",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["igo_own", "third_party"] },
+        "logo": { "type": "string" }
+      },
+      "required": ["id", "name", "type"]
+    },
+    "User": {
+      "title": "User",
+      "description": "A user registration record, separating core identity and profiles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["customer", "admin"] },
+        "addresses": { "type": "array" },
+        "wishlist": { "type": "array" }
+      },
+      "required": ["uid", "role"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "An e-commerce order checkout transaction",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "items": { "type": "array" },
+        "totalAmount": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "status": { "type": "string" },
+        "deliveryAddress": { "type": "object" },
+        "createdAt": { "type": "string" },
+        "phone": { "type": "string" }
+      },
+      "required": ["id", "userId", "items", "totalAmount", "paymentMethod", "status", "deliveryAddress", "createdAt"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "A rating and text review for a product",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "productId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "productId", "userId", "rating", "comment", "createdAt"]
+    }
+  },
+  "firestore": {
+    "products": {
+      "schema": "Product",
+      "description": "Collection of all products in the market"
+    },
+    "categories": {
+      "schema": "Category",
+      "description": "Product categories"
+    },
+    "brands": {
+      "schema": "Brand",
+      "description": "All IGO or 3rd party brands"
+    },
+    "users": {
+      "schema": "User",
+      "description": "User profile data records"
+    },
+    "orders": {
+      "schema": "Order",
+      "description": "Completed user orders"
+    },
+    "reviews": {
+      "schema": "Review",
+      "description": "Product reviews"
+    }
+  }
+}

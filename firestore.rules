@@ -1,0 +1,142 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Default Deny Catch-All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Hardened Global Helpers ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      return isSignedIn() && (request.auth.token.email_verified == true);
+    }
+
+    // Bootstrapped Admin check based on user email or explicit admin path
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'igobackend2@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Entity Validations ---
+
+    function isValidProduct(p) {
+      return p.id is string && p.id.size() <= 128 &&
+             p.name is string && p.name.size() <= 200 &&
+             p.slug is string && p.slug.size() <= 200 &&
+             p.brand is string && p.brand.size() <= 100 &&
+             p.category is string && p.category.size() <= 100 &&
+             p.price is number && p.price >= 0 &&
+             p.mrp is number && p.mrp >= 0 &&
+             p.stock is number && p.stock >= 0 &&
+             p.description is string && p.description.size() <= 2000;
+    }
+
+    function isValidOrder(o) {
+      return o.id is string && o.id.size() <= 128 &&
+             o.userId is string && o.userId.size() <= 128 &&
+             o.items is list && o.items.size() > 0 && o.items.size() <= 50 &&
+             o.totalAmount is number && o.totalAmount >= 0 &&
+             o.paymentMethod is string && o.paymentMethod.size() <= 50 &&
+             o.status is string && o.status.size() <= 50 &&
+             o.deliveryAddress is map &&
+             o.createdAt == request.time;
+    }
+
+    function isValidUser(u) {
+      return u.uid is string && u.uid.size() <= 128 &&
+             u.role in ['customer', 'admin'] &&
+             (u.email == null || (u.email is string && u.email.size() <= 200)) &&
+             (u.phone == null || (u.phone is string && u.phone.size() <= 50));
+    }
+
+    function isValidReview(r) {
+      return r.id is string && r.id.size() <= 128 &&
+             r.productId is string && r.productId.size() <= 128 &&
+             r.userId is string && r.userId.size() <= 128 &&
+             r.rating is number && r.rating >= 1 && r.rating <= 5 &&
+             r.comment is string && r.comment.size() <= 1000 &&
+             r.createdAt == request.time;
+    }
+
+    // --- Matches for Each Collection ---
+
+    // 1. PRODUCTS (Public read, admin write)
+    match /products/{productId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidProduct(incoming()) && incoming().id == productId;
+      allow update: if isAdmin() && isValidProduct(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // 2. CATEGORIES (Public read, admin write)
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && incoming().id == categoryId;
+      allow delete: if isAdmin();
+    }
+
+    // 3. BRANDS (Public read, admin write)
+    match /brands/{brandId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && incoming().id == brandId;
+      allow delete: if isAdmin();
+    }
+
+    // 4. USERS (Own profile update, admin full access)
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow create: if isSignedIn() && (request.auth.uid == userId || isAdmin()) && isValidUser(incoming());
+      allow update: if isSignedIn() && (request.auth.uid == userId || isAdmin()) && isValidUser(incoming()) && (
+        incoming().role == existing().role || isAdmin() // Users cannot self-escalate roles
+      );
+      allow delete: if isAdmin();
+    }
+
+    // 5. ORDERS (Personal view/creation, admin update access)
+    match /orders/{orderId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isSignedIn() && isValidOrder(incoming()) && incoming().userId == request.auth.uid;
+      // Action-based updates: Customers can cancel, admins can update any status
+      allow update: if isSignedIn() && (
+        isAdmin() || (
+          // Client cancel action: can only modify status to 'Cancelled'
+          incoming().userId == request.auth.uid &&
+          incoming().status == 'Cancelled' &&
+          incoming().diff(existing()).affectedKeys().hasOnly(['status'])
+        )
+      );
+      allow delete: if isAdmin();
+    }
+
+    // 6. REVIEWS (Public read, authenticated writer)
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidReview(incoming()) && incoming().userId == request.auth.uid && incoming().id == reviewId;
+      allow update, delete: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+    }
+
+    // 7. ADMINS Collection (Bootstrap helper path, Admin only)
+    match /admins/{adminId} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
