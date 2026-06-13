@@ -1,6 +1,7 @@
 export interface Product {
   id: string;
   name: string;
+  displayName?: string; // clean, brand-free product name for compact UI labels
   slug: string;
   brand: string;
   category: string;
@@ -18,6 +19,25 @@ export interface Product {
   isIgoOwn: boolean;
   problemFilter?: string; // e.g. "Pest Control", "Disease Control", "Growth Boosters", "Manures & Fertilizers"
   tags?: string[];
+
+  // --- Extended agri-commerce fields (trust, discovery & compliance) ---
+  unit?: string;          // e.g. "1kg", "500ml", "Pack of 10", "Per acre kit"
+  dosage?: string;        // e.g. "2ml per litre of water — spray at 15-day intervals"
+  crops?: string[];       // e.g. ["Tomato", "Paddy", "Mango", "Cotton"] — structured crop-fit filter
+  isOrganic?: boolean;    // organic-certified input flag
+  expiryDate?: string;    // shelf-life / compliance date for chemicals & seeds (ISO date string)
+  origin?: string;        // manufacturing location / batch origin, for traceability
+  batchNumber?: string;   // batch/lot number, for traceability + recall tracking
+  moq?: number;           // minimum order quantity, for dealer/bulk-buyer enquiries
+  certifications?: ProductCertification[];
+}
+
+export interface ProductCertification {
+  name: string;            // e.g. "ISO 9001", "Organic India", "CIB&RC Registered"
+  issuer?: string;
+  validUntil?: string;     // ISO date string
+  documentUrl?: string;
+  isVerified?: boolean;
 }
 
 export interface Category {
@@ -49,6 +69,7 @@ export interface Address {
   id: string;
   name: string;
   phone: string;
+  email?: string;
   addressLine1: string;
   addressLine2?: string;
   city: string;
@@ -156,4 +177,3 @@ export interface BlogPost {
   createdAt: string;
   tags?: string[];
 }
-

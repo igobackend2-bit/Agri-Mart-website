@@ -356,6 +356,42 @@ export async function adminDeleteProduct(productId: string): Promise<void> {
   }
 }
 
+/**
+ * Force clear ALL products from Firestore and re-seed with fresh SEED_PRODUCTS
+ */
+export async function clearAndReseedProducts(): Promise<{ deleted: number; seeded: number }> {
+  try {
+    const snap = await getDocs(collection(db, PRODUCTS_COL));
+    const deleteCount = snap.docs.length;
+    const chunks: typeof snap.docs[] = [];
+    for (let i = 0; i < snap.docs.length; i += 400) {
+      chunks.push(snap.docs.slice(i, i + 400));
+    }
+    for (const chunk of chunks) {
+      const batch = writeBatch(db);
+      chunk.forEach(d => batch.delete(d.ref));
+      await batch.commit();
+    }
+    const seedBatches: (typeof SEED_PRODUCTS[0])[][] = [];
+    for (let i = 0; i < SEED_PRODUCTS.length; i += 400) {
+      seedBatches.push(SEED_PRODUCTS.slice(i, i + 400));
+    }
+    let seeded = 0;
+    for (const chunk of seedBatches) {
+      const batch = writeBatch(db);
+      for (const p of chunk) {
+        batch.set(doc(db, PRODUCTS_COL, p.id), p);
+        seeded++;
+      }
+      await batch.commit();
+    }
+    return { deleted: deleteCount, seeded };
+  } catch (err) {
+    console.error('clearAndReseedProducts error:', err);
+    throw err;
+  }
+}
+
 // Alias exports for administrative components integration
 export {
   adminFetchAllOrders as fetchAllOrders,

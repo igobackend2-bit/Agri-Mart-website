@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { CartItem } from '../types';
 import { translations, LanguageDict } from '../translation';
+import { getSettings, validateCoupon } from '../siteConfig';
 
 interface CartComponentProps {
   lang: 'en' | 'ta';
@@ -34,14 +35,13 @@ export default function CartComponent({
   const [couponError, setCouponError] = useState<string>('');
   const [couponSuccess, setCouponSuccess] = useState<string>('');
 
-  // Calculations
+  // Calculations (delivery/GST controlled from Admin → Settings)
+  const siteSettings = getSettings();
   const subtotal = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-  
-  // Delivery Charge: free above ₹1,300, else ₹120 standard
-  const deliveryCharge = (subtotal >= 1300 || subtotal === 0) ? 0 : 120;
-  
-  // IGST / CGST / SGST composite: 18% approximate on agricultural imports
-  const gstAmount = Math.round(subtotal * 0.18);
+
+  const deliveryCharge = (subtotal >= siteSettings.freeDeliveryAbove || subtotal === 0) ? 0 : siteSettings.deliveryCharge;
+
+  const gstAmount = Math.round(subtotal * (siteSettings.gstPercent / 100));
   
   const couponValue = couponDiscount > 0 ? (couponDiscount < 100 ? Math.round(subtotal * (couponDiscount/100)) : couponDiscount) : 0;
   const finalTotal = Math.max(0, subtotal + deliveryCharge + gstAmount - couponValue);
@@ -69,22 +69,13 @@ export default function CartComponent({
 
     if (!code) return;
 
-    if (code === 'HARVEST20' || code === 'IGO20') {
-      if (subtotal < 1000) {
-        setCouponError("This coupon is only valid for orders above ₹1,000.");
-        return;
-      }
-      setCouponDiscount(20); // 20% discount
-      setCouponSuccess("✓ Coupon HARVEST20 successfully applied! 20% savings unlocked.");
-    } else if (code === 'IGO500') {
-      if (subtotal < 2500) {
-        setCouponError("This coupon is only valid for orders above ₹2,500.");
-        return;
-      }
-      setCouponDiscount(500); // ₹500 fixed
-      setCouponSuccess("✓ Coupon IGO500 successfully applied! ₹500 flat discount applied.");
+    // Validates against admin-created coupons (Admin → Coupons) + legacy built-ins
+    const result = validateCoupon(code, subtotal);
+    if (result.ok) {
+      setCouponDiscount(result.discount);
+      setCouponSuccess(result.message);
     } else {
-      setCouponError("✗ Invalid code. Try HARVEST20 or IGO500.");
+      setCouponError(result.message);
     }
   };
 
@@ -119,7 +110,7 @@ export default function CartComponent({
                   className="bg-white border border-slate-200 p-4 sm:p-5 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-5 transition hover:shadow-sm"
                 >
                   <div className="flex items-center gap-4 w-full sm:w-auto">
-                    <img src={p.images[0]} alt={p.name} className="h-16 w-16 object-cover rounded-lg border border-slate-100" />
+                    <img src={p.images?.[0] || '/catalog/nursery-essentials/Pots.png'} onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} alt={p.name} className="h-16 w-16 object-cover rounded-lg border border-slate-100" />
                     <div>
                       <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none block">{p.brand}</span>
                       <h4 className="font-display font-bold text-slate-800 text-sm line-clamp-1 mt-1">{p.name}</h4>
@@ -169,11 +160,11 @@ export default function CartComponent({
             })}
 
             {/* Free shipping alert banner trigger */}
-            {subtotal < 1300 && (
+            {subtotal < siteSettings.freeDeliveryAbove && (
               <div className="bg-[#fff9eb] border border-[#ffe09e] text-amber-800 px-4 py-3 rounded-lg flex items-center gap-3">
                 <Truck className="h-5 w-5 text-[#E8A020] shrink-0" />
                 <div className="text-xs font-semibold leading-relaxed">
-                  {t.freeShippingAlert.replace('{amount}', (1300 - subtotal).toString())} (Standard courier is available for small packages!)
+                  {t.freeShippingAlert.replace('{amount}', (siteSettings.freeDeliveryAbove - subtotal).toString())} (Standard courier is available for small packages!)
                 </div>
               </div>
             )}
@@ -193,7 +184,7 @@ export default function CartComponent({
                   type="text"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
-                  placeholder="e.g. HARVEST20, IGO500"
+                  placeholder="Enter coupon code"
                   className="bg-slate-50 border border-slate-200 uppercase px-3 py-2 text-xs font-bold rounded-lg flex-1 outline-none text-[#1a1a1a]"
                 />
                 <button type="submit" className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-emerald-900 cursor-pointer">
@@ -221,7 +212,7 @@ export default function CartComponent({
                   <span className="font-bold text-slate-800">₹{subtotal}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>18% AG-GST:</span>
+                  <span>{siteSettings.gstPercent}% AG-GST:</span>
                   <span className="font-bold text-slate-800">+ ₹{gstAmount}</span>
                 </div>
                 <div className="flex justify-between">

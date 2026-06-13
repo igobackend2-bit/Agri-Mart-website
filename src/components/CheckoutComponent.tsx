@@ -11,6 +11,11 @@ import {
 import { CartItem, Address, Order, OrderItem } from '../types';
 import { db, auth } from '../firebase';
 import { placeOrder } from '../dbHelper';
+import { getSettings } from '../siteConfig';
+import {
+  saveLocalOrder, decrementStocks, saveLastAddress, getLastAddress,
+  playOrderSuccessSound, sendInboxMessage, detectLocation
+} from '../storeData';
 
 interface CheckoutComponentProps {
   lang: 'en' | 'ta';
@@ -30,24 +35,40 @@ export default function CheckoutComponent({
   setCouponDiscount
 }: CheckoutComponentProps) {
   // Checkout States
+  const saved = getLastAddress();
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    address1: '',
+    name: saved?.name || '',
+    phone: saved?.phone || '',
+    email: saved?.email || '',
+    address1: saved?.addressLine || '',
     address2: '',
-    city: '',
+    city: saved?.city || '',
     state: 'Tamil Nadu',
-    pincode: ''
+    pincode: saved?.pincode || ''
   });
+  const [detectingLoc, setDetectingLoc] = useState(false);
+
+  const handleDetectLocation = async () => {
+    setDetectingLoc(true);
+    try {
+      const loc = await detectLocation();
+      setFormData(f => ({ ...f, city: loc.city || f.city, pincode: loc.pincode || f.pincode }));
+    } catch (e: any) {
+      alert(e?.message || 'Could not detect location. Please allow location access.');
+    } finally {
+      setDetectingLoc(false);
+    }
+  };
 
   const [paymentMethod, setPaymentMethod] = useState<'COD' | 'UPI' | 'Card' | 'NetBanking'>('COD');
   const [isPlacing, setIsPlacing] = useState(false);
   const [orderIdCreated, setOrderIdCreated] = useState<string | null>(null);
 
-  // Calculations
+  // Calculations (delivery/GST controlled from Admin -> Settings)
+  const siteSettings = getSettings();
   const subtotal = cart.reduce((sum, item) => sum + (pPrice(item) * item.quantity), 0);
-  const deliveryCharge = (subtotal >= 1300) ? 0 : 120;
-  const gstAmount = Math.round(subtotal * 0.18);
+  const deliveryCharge = (subtotal >= siteSettings.freeDeliveryAbove) ? 0 : siteSettings.deliveryCharge;
+  const gstAmount = Math.round(subtotal * (siteSettings.gstPercent / 100));
   const couponValue = couponDiscount > 0 ? (couponDiscount < 100 ? Math.round(subtotal * (couponDiscount/100)) : couponDiscount) : 0;
   const finalTotal = subtotal + deliveryCharge + gstAmount - couponValue;
 
@@ -78,6 +99,7 @@ export default function CheckoutComponent({
       id: 'addr-' + Math.random().toString(36).substring(2, 9),
       name: formData.name,
       phone: formData.phone,
+      email: formData.email || undefined,
       addressLine1: formData.address1,
       addressLine2: formData.address2,
       city: formData.city,
@@ -91,7 +113,7 @@ export default function CheckoutComponent({
       brand: item.product.brand,
       price: item.product.price,
       quantity: item.quantity,
-      image: item.product.images[0]
+      image: item.product.images?.[0] || '/catalog/nursery-essentials/Pots.png'
     }));
 
     const nextId = 'IGO-' + Math.floor(100000 + Math.random() * 900000).toString();
@@ -109,16 +131,35 @@ export default function CheckoutComponent({
       phone: formData.phone
     };
 
+    const finalizeOrder = () => {
+      // Persist locally so profile + admin always see it
+      saveLocalOrder(placedOrder);
+      // Auto-fill details on the next order
+      saveLastAddress({
+        name: formData.name, phone: formData.phone, email: formData.email,
+        addressLine: formData.address1, city: formData.city, pincode: formData.pincode,
+      });
+      // Reduce stock for every ordered product (low-stock badges update live)
+      decrementStocks(orderItems.map(i => ({ productId: i.productId, quantity: i.quantity })), cart.map(c => c.product));
+      // Confirmation message into the customer's profile inbox
+      sendInboxMessage({
+        toEmail: formData.email || 'all',
+        title: 'Order ' + nextId + ' placed successfully 🎉',
+        body: 'Hi ' + formData.name + ', we received your order of ' + orderItems.length + ' item(s) worth ₹' + finalTotal.toLocaleString('en-IN') + '. We will confirm and dispatch it shortly. Track it anytime from My Orders.',
+        orderId: nextId,
+      });
+      playOrderSuccessSound();
+      setOrderIdCreated(nextId);
+      setCart([]);
+      setCouponDiscount(0);
+    };
+
     try {
       await placeOrder(placedOrder);
-      setOrderIdCreated(nextId);
-      setCart([]);
-      setCouponDiscount(0);
+      finalizeOrder();
     } catch (err) {
       // Offline fallback success for flawless UX
-      setOrderIdCreated(nextId);
-      setCart([]);
-      setCouponDiscount(0);
+      finalizeOrder();
     } finally {
       setIsPlacing(false);
     }
@@ -235,6 +276,27 @@ export default function CheckoutComponent({
                   placeholder="e.g. 7397785803"
                   className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
                 />
+              </div>
+
+              <div className="sm:col-span-2">
+                <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
+                  Email Address (for order updates)
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="e.g. farmer@gmail.com"
+                  className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
+                />
+              </div>
+
+              <div className="sm:col-span-2 -mb-2">
+                <button type="button" onClick={handleDetectLocation} disabled={detectingLoc}
+                  className="inline-flex items-center gap-1.5 text-xs font-black text-[#1B6B3A] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition disabled:opacity-60">
+                  📍 {detectingLoc ? 'Detecting your location...' : 'Use my current location (auto-fill city & pincode)'}
+                </button>
               </div>
 
               <div className="sm:col-span-2">
@@ -419,7 +481,7 @@ export default function CheckoutComponent({
             <div className="space-y-3 max-h-56 overflow-y-auto custom-scroll border-b border-slate-100 pb-4">
               {cart.map((item) => (
                 <div key={item.id} className="flex items-center gap-3">
-                  <img src={item.product.images[0]} alt="" className="h-9 w-9 object-cover rounded border" />
+                  <img src={item.product.images?.[0] || '/catalog/nursery-essentials/Pots.png'} onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} alt="" className="h-9 w-9 object-cover rounded border" />
                   <div className="flex-1">
                     <div className="text-[11px] font-bold text-slate-800 line-clamp-1 truncate max-w-[140px]">{item.product.name}</div>
                     <div className="text-[10px] text-slate-400">Qty: {item.quantity} x ₹{item.product.price}</div>
@@ -435,7 +497,7 @@ export default function CheckoutComponent({
                 <span>₹{subtotal}</span>
               </div>
               <div className="flex justify-between">
-                <span>18% AG-GST:</span>
+                <span>{siteSettings.gstPercent}% AG-GST:</span>
                 <span>+ ₹{gstAmount}</span>
               </div>
               <div className="flex justify-between">

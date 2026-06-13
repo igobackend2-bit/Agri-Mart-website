@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  BarChart, 
-  ShoppingBag, 
-  Tag, 
-  Users, 
-  Trash2, 
-  Plus, 
-  Edit3, 
-  Search, 
-  RefreshCw, 
-  FileText,
-  DollarSign,
-  Award,
-  Sparkles,
-  Settings,
-  ChevronRight,
-  UserCheck
+// Full admin control panel — products, orders, inventory, coupons, content, settings
+import {
+  ShoppingBag, Tag, Users, Trash2, Plus, Edit3,
+  Search, RefreshCw, DollarSign,
+  AlertTriangle, TrendingUp, Image, Shield,
+  CheckCircle, LayoutDashboard,
+  Archive, PieChart, Gift, Monitor, Wrench, LogOut, KeyRound, Bell, Inbox, Download, Store, ExternalLink
 } from 'lucide-react';
 import { Product, Order, Category, Brand } from '../types';
-import { db } from '../firebase';
-import { 
-  fetchAllOrders, 
-  updateOrderStatus, 
-  seedProducts, 
-  deleteProduct,
-  addProduct
+import {
+  fetchAllOrders, updateOrderStatus, seedProducts,
+  deleteProduct, addProduct, clearAndReseedProducts
 } from '../dbHelper';
+import { db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { VisitorLead, LeadStatus, LeadSource, fetchAllLeads, setLeadStatus, removeLead, downloadLeadsCsv } from '../leads';
+import {
+  persistProductUpsert, persistProductDelete, persistStockSet, refillAllStocks,
+  getLocalOrders, updateLocalOrderStatus, sendInboxMessage, playAdminAlertSound
+} from '../storeData';
+import {
+  getSettings, saveSettings as persistSettings,
+  getMarqueeLines, saveMarqueeLines,
+  getCoupons, saveCoupons,
+  getBanners, saveBanners, HeroBanner,
+  getNotification, setNotification, clearNotification,
+  changeAdminPassword,
+} from '../siteConfig';
 
 interface AdminComponentProps {
   lang: 'en' | 'ta';
@@ -33,329 +34,604 @@ interface AdminComponentProps {
   setProducts: (p: Product[]) => void;
   categories: Category[];
   brands: Brand[];
+  onLogout?: () => void;
+  setCurrentPage?: (p: string) => void;
 }
 
-export default function AdminComponent({
-  lang,
-  products,
-  setProducts,
-  categories,
-  brands
-}: AdminComponentProps) {
-  const [activeSubTab, setActiveSubTab] = useState<'Dashboard' | 'Orders' | 'Products'>('Dashboard');
+type AdminTab = 'Dashboard' | 'Orders' | 'Leads' | 'Products' | 'Inventory' | 'Customers' | 'Reports' | 'Coupons' | 'Content' | 'Settings';
+
+interface CouponData {
+  code: string;
+  type: 'percentage' | 'fixed';
+  value: number;
+  minOrder: number;
+  expiry: string;
+  usageLimit: number;
+  active: boolean;
+}
+
+const TAB_CONFIG: { id: AdminTab; label: string; icon: React.ElementType; color: string }[] = [
+  { id: 'Dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'text-emerald-600' },
+  { id: 'Orders', label: 'Orders', icon: ShoppingBag, color: 'text-blue-600' },
+  { id: 'Leads', label: 'Visitor Leads', icon: Inbox, color: 'text-rose-600' },
+  { id: 'Products', label: 'Products', icon: Tag, color: 'text-violet-600' },
+  { id: 'Inventory', label: 'Inventory', icon: Archive, color: 'text-orange-600' },
+  { id: 'Customers', label: 'Customers', icon: Users, color: 'text-cyan-600' },
+  { id: 'Reports', label: 'Reports', icon: PieChart, color: 'text-pink-600' },
+  { id: 'Coupons', label: 'Coupons', icon: Gift, color: 'text-amber-600' },
+  { id: 'Content', label: 'Content', icon: Monitor, color: 'text-teal-600' },
+  { id: 'Settings', label: 'Settings', icon: Wrench, color: 'text-slate-600' },
+];
+
+export default function AdminComponent({ lang, products, setProducts, categories, brands, onLogout, setCurrentPage }: AdminComponentProps) {
+  const [activeTab, setActiveTab] = useState<AdminTab>('Dashboard');
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
   const [orderSearchQuery, setOrderSearchQuery] = useState('');
   const [productSearchQuery, setProductSearchQuery] = useState('');
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [leads, setLeads] = useState<VisitorLead[]>([]);
+  const [loadingLeads, setLoadingLeads] = useState(false);
+  const [leadSearch, setLeadSearch] = useState('');
+  const [leadSourceFilter, setLeadSourceFilter] = useState<'All' | LeadSource>('All');
+  const [leadStatusFilter, setLeadStatusFilter] = useState<'All' | LeadStatus>('All');
+  const [viewOrder, setViewOrder] = useState<Order | null>(null);
+  const [adminMsg, setAdminMsg] = useState('');
+  const [loadingCustomers, setLoadingCustomers] = useState(false);
+  const [stockFilter, setStockFilter] = useState<'all' | 'low' | 'out'>('all');
 
-  // Add Product State
-  const [showProductForm, setShowProductForm] = useState(false);
-  const [newProduct, setNewProduct] = useState({
-    name: '',
-    category: 'Seeds & Saplings',
-    subcategory: '',
-    brand: 'IGO Seeds',
-    price: 350,
-    mrp: 450,
-    discount: 22,
-    images: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=600&q=80',
-    description: '',
-    stock: 120,
-    problemFilter: 'Growth Boosters'
+  const [coupons, setCoupons] = useState<CouponData[]>(() => getCoupons());
+  const [showCouponForm, setShowCouponForm] = useState(false);
+  const [newCoupon, setNewCoupon] = useState<CouponData>({
+    code: '', type: 'percentage', value: 10, minOrder: 500, expiry: '', usageLimit: 100, active: true
   });
 
-  const loadAdminOrders = async () => {
+  const [marqueeLines, setMarqueeLines] = useState<string[]>(() => getMarqueeLines());
+  const [editingMarquee, setEditingMarquee] = useState(false);
+  const [marqueeInput, setMarqueeInput] = useState('');
+
+  const [settings, setSettings] = useState<Record<string, any>>(() => getSettings());
+
+  // Hero banners (shown on the homepage slider)
+  const [banners, setBanners] = useState<HeroBanner[]>(() => {
+    const stored = getBanners();
+    while (stored.length < 3) stored.push({ img: '', badge: '', title: '', sub: '', btn: 'Shop Now', btnAction: 'seeds-saplings' });
+    return stored.slice(0, 3);
+  });
+
+  // Site notification
+  const [notifInput, setNotifInput] = useState('');
+  const [activeNotif, setActiveNotif] = useState(() => getNotification());
+
+  // Admin password change
+  const [pwdForm, setPwdForm] = useState({ current: '', next: '', confirm: '' });
+  const [pwdMsg, setPwdMsg] = useState<{ ok: boolean; text: string } | null>(null);
+
+  const [showProductForm, setShowProductForm] = useState(false);
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
+  const [newProduct, setNewProduct] = useState({
+    name: '', category: 'Seeds & Saplings', subcategory: '', brand: 'IGO Seeds',
+    price: 350, mrp: 450, discount: 22,
+    images: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=600&q=80',
+    description: '', stock: 120, problemFilter: 'Growth Boosters',
+    unit: '', dosage: '', crops: '', isOrganic: false, expiryDate: '', origin: '', batchNumber: '', moq: 1
+  });
+
+  const loadOrders = async () => {
     setIsLoadingOrders(true);
     try {
-      const allOrd = await fetchAllOrders();
-      setOrders(allOrd);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoadingOrders(false);
-    }
+      let all: Order[] = [];
+      try { all = await fetchAllOrders(); } catch { }
+      const local = getLocalOrders();
+      const map = new Map<string, Order>();
+      [...all, ...local].forEach(o => { if (!map.has(o.id)) map.set(o.id, o); });
+      setOrders(Array.from(map.values()).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '')));
+    } catch (err) { console.error(err); }
+    finally { setIsLoadingOrders(false); }
   };
 
-  useEffect(() => {
-    loadAdminOrders();
-  }, []);
-
-  const handleStatusChange = async (orderId: string, nextStatus: 'Placed' | 'Confirmed' | 'Dispatched' | 'Delivered' | 'Cancelled') => {
+  const loadCustomers = async () => {
+    setLoadingCustomers(true);
     try {
-      await updateOrderStatus(orderId, nextStatus);
-      // Local state update
-      setOrders(orders.map(o => o.id === orderId ? { ...o, status: nextStatus } : o));
-      alert(`Order ${orderId} successfully set to status: ${nextStatus}`);
-    } catch {
-      setOrders(orders.map(o => o.id === orderId ? { ...o, status: nextStatus } : o));
-      alert(`Order ${orderId} successfully set to status: ${nextStatus}`);
+      const snap = await getDocs(collection(db, 'users'));
+      setCustomers(snap.docs.map(d => ({ uid: d.id, ...d.data() })));
+    } catch { setCustomers([]); }
+    finally { setLoadingCustomers(false); }
+  };
+
+  const loadLeads = async () => {
+    setLoadingLeads(true);
+    try { setLeads(await fetchAllLeads()); } catch { }
+    finally { setLoadingLeads(false); }
+  };
+
+  const handleLeadStatus = async (id: string, status: LeadStatus) => {
+    setLeads(leads.map(l => l.id === id ? { ...l, status } : l));
+    try { await setLeadStatus(id, status); } catch { }
+  };
+
+  const handleDeleteLead = async (id: string) => {
+    if (!window.confirm('Delete this lead?')) return;
+    setLeads(leads.filter(l => l.id !== id));
+    try { await removeLead(id); } catch { }
+  };
+
+  useEffect(() => { loadOrders(); loadLeads(); }, []);
+
+  // Audible low-stock alert (once per admin session)
+  useEffect(() => {
+    const lowOrOut = products.filter(p => p.stock < 20).length;
+    if (lowOrOut > 0 && !sessionStorage.getItem('igo_admin_stock_alerted')) {
+      sessionStorage.setItem('igo_admin_stock_alerted', '1');
+      playAdminAlertSound();
     }
+  }, [products]);
+  useEffect(() => {
+    if (activeTab === 'Customers') loadCustomers();
+    if (activeTab === 'Reports') loadOrders();
+    if (activeTab === 'Leads') loadLeads();
+  }, [activeTab]);
+
+  const STATUS_INBOX_TEXT: Record<string, string> = {
+    Confirmed: 'has been confirmed ✅. We are preparing your items.',
+    Dispatched: 'has been packed and shipped 🚚. It is on the way to you.',
+    Delivered: 'has been delivered 🎉. Thank you for shopping with IGO Agri Mart!',
+    Cancelled: 'has been cancelled. Amount paid (if any) will be refunded.',
+    Placed: 'has been received and is awaiting confirmation.',
+  };
+
+  const handleStatusChange = async (orderId: string, nextStatus: Order['status']) => {
+    try { await updateOrderStatus(orderId, nextStatus); } catch { }
+    updateLocalOrderStatus(orderId, nextStatus);
+    const order = orders.find(o => o.id === orderId);
+    sendInboxMessage({
+      toEmail: order?.deliveryAddress?.email || 'all',
+      title: 'Order ' + orderId + ' — ' + nextStatus,
+      body: 'Hi ' + (order?.deliveryAddress?.name || 'customer') + ', your order ' + orderId + ' ' + (STATUS_INBOX_TEXT[nextStatus] || 'status updated to ' + nextStatus + '.'),
+      orderId,
+    });
+    setOrders(orders.map(o => o.id === orderId ? { ...o, status: nextStatus } : o));
+  };
+
+  const resetProductForm = () => {
+    setNewProduct({
+      name: '', category: 'Seeds & Saplings', subcategory: '', brand: 'IGO Seeds',
+      price: 350, mrp: 450, discount: 22,
+      images: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=600&q=80',
+      description: '', stock: 120, problemFilter: 'Growth Boosters',
+      unit: '', dosage: '', crops: '', isOrganic: false, expiryDate: '', origin: '', batchNumber: '', moq: 1
+    });
+    setEditingProductId(null);
+  };
+
+  const startEditProduct = (p: Product) => {
+    setNewProduct({
+      name: p.name, category: p.category, subcategory: p.subcategory || '', brand: p.brand,
+      price: p.price, mrp: p.mrp, discount: p.discount || 0,
+      images: p.images?.[0] || '', description: p.description || '', stock: p.stock,
+      problemFilter: p.problemFilter || 'Growth Boosters',
+      unit: p.unit || '', dosage: p.dosage || '', crops: (p.crops || []).join(', '),
+      isOrganic: !!p.isOrganic, expiryDate: p.expiryDate || '', origin: p.origin || '',
+      batchNumber: p.batchNumber || '', moq: p.moq || 1
+    });
+    setEditingProductId(p.id);
+    setShowProductForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleUpdateStock = async (prodId: string, stock: number) => {
+    const target = products.find(p => p.id === prodId);
+    if (!target) return;
+    const updated = { ...target, stock: Math.max(0, stock) };
+    persistStockSet(prodId, updated.stock);
+    setProducts(products.map(p => p.id === prodId ? updated : p));
+    try { await addProduct(updated); } catch { }
+  };
+
+  const handleRefillAll = () => {
+    if (!window.confirm('Refill ALL products to 200 units of stock?')) return;
+    refillAllStocks(products, 200);
+    setProducts(products.map(p => ({ ...p, stock: 200 })));
+    alert('Done! Every product is refilled to 200 units.');
   };
 
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newProduct.name.trim() || !newProduct.subcategory.trim()) {
-      alert("Name and subcategory are required variables.");
+    if (!newProduct.name.trim() || !newProduct.subcategory.trim()) { alert('Name and subcategory are required.'); return; }
+
+    // Editing an existing product
+    if (editingProductId) {
+      const existing = products.find(p => p.id === editingProductId);
+      if (existing) {
+        const updated: Product = {
+          ...existing,
+          name: newProduct.name, category: newProduct.category, subcategory: newProduct.subcategory,
+          brand: newProduct.brand, price: Number(newProduct.price), mrp: Number(newProduct.mrp),
+          discount: Number(newProduct.discount) || Math.round(((newProduct.mrp - newProduct.price) / newProduct.mrp) * 100),
+          images: [newProduct.images], description: newProduct.description || existing.description,
+          stock: Number(newProduct.stock), problemFilter: newProduct.problemFilter,
+          unit: newProduct.unit || undefined, dosage: newProduct.dosage || undefined,
+          crops: newProduct.crops ? newProduct.crops.split(',').map(c => c.trim()).filter(Boolean) : undefined,
+          isOrganic: newProduct.isOrganic, expiryDate: newProduct.expiryDate || undefined,
+          origin: newProduct.origin || undefined, batchNumber: newProduct.batchNumber || undefined,
+          moq: Number(newProduct.moq) || undefined,
+        };
+        try { await addProduct(updated); } catch { }
+        persistProductUpsert(updated, false);
+        setProducts(products.map(p => p.id === editingProductId ? updated : p));
+        setShowProductForm(false);
+        resetProductForm();
+        alert('Product updated: ' + updated.name);
+      }
       return;
     }
 
     const created: Product = {
       id: 'prod-' + Math.random().toString(36).substring(2, 9),
       slug: newProduct.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      name: newProduct.name,
-      category: newProduct.category,
-      subcategory: newProduct.subcategory,
-      brand: newProduct.brand,
-      price: Number(newProduct.price),
-      mrp: Number(newProduct.mrp),
-      discount: Number(newProduct.discount) || Math.round(((newProduct.mrp - newProduct.price)/newProduct.mrp)*100),
-      images: [newProduct.images],
-      description: newProduct.description || 'Highly premium organic inputs directly from Kovalan street warehouse Chennai.',
-      rating: 4.8,
-      reviewCount: 1,
-      stock: Number(newProduct.stock),
-      problemFilter: newProduct.problemFilter,
-      usage: 'Dilute 1ml in 1 litre water and spray at dawn.',
-      composition: 'Trace minerals: 99%, stabilizers: 1%',
-      isIgoOwn: brands.find(x => x.name === newProduct.brand)?.type === 'igo_own'
+      name: newProduct.name, category: newProduct.category, subcategory: newProduct.subcategory,
+      brand: newProduct.brand, price: Number(newProduct.price), mrp: Number(newProduct.mrp),
+      discount: Number(newProduct.discount) || Math.round(((newProduct.mrp - newProduct.price) / newProduct.mrp) * 100),
+      images: [newProduct.images], description: newProduct.description || 'Premium quality agricultural input.',
+      rating: 4.8, reviewCount: 1, stock: Number(newProduct.stock),
+      problemFilter: newProduct.problemFilter, usage: 'As directed on label.', composition: 'As per specification.',
+      isIgoOwn: brands.find(x => x.name === newProduct.brand)?.type === 'igo_own' || false,
+      unit: newProduct.unit || undefined, dosage: newProduct.dosage || undefined,
+      crops: newProduct.crops ? newProduct.crops.split(',').map(c => c.trim()).filter(Boolean) : undefined,
+      isOrganic: newProduct.isOrganic, expiryDate: newProduct.expiryDate || undefined,
+      origin: newProduct.origin || undefined, batchNumber: newProduct.batchNumber || undefined,
+      moq: Number(newProduct.moq) || undefined
     };
+    try { await addProduct(created); } catch { }
+    persistProductUpsert(created, true);
+    setProducts([created, ...products]);
+    setShowProductForm(false);
+    resetProductForm();
+    alert('Product added: ' + created.name);
+  };
 
-    try {
-      await addProduct(created);
-      setProducts([created, ...products]);
-      setShowProductForm(false);
-      setNewProduct({
-        name: '',
-        category: 'Seeds & Saplings',
-        subcategory: '',
-        brand: 'IGO Seeds',
-        price: 350,
-        mrp: 450,
-        discount: 22,
-        images: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=600&q=80',
-        description: '',
-        stock: 120,
-        problemFilter: 'Growth Boosters'
-      });
-      alert(`New product added: ${created.name}`);
-    } catch {
-      setProducts([created, ...products]);
-      setShowProductForm(false);
-      alert(`New product added (Offline state synced): ${created.name}`);
+  const handleDeleteProduct = async (prodId: string) => {
+    if (!window.confirm('Delete this product?')) return;
+    try { await deleteProduct(prodId); } catch { }
+    persistProductDelete(prodId);
+    setProducts(products.filter(p => p.id !== prodId));
+  };
+
+  const saveCoupon = () => {
+    if (!newCoupon.code.trim()) { alert('Coupon code is required.'); return; }
+    const updated = [...coupons.filter(c => c.code !== newCoupon.code.toUpperCase()), { ...newCoupon, code: newCoupon.code.toUpperCase() }];
+    setCoupons(updated);
+    saveCoupons(updated);
+    setShowCouponForm(false);
+    setNewCoupon({ code: '', type: 'percentage', value: 10, minOrder: 500, expiry: '', usageLimit: 100, active: true });
+  };
+
+  const deleteCoupon = (code: string) => {
+    const updated = coupons.filter(c => c.code !== code);
+    setCoupons(updated);
+    saveCoupons(updated);
+  };
+
+  const toggleCoupon = (code: string) => {
+    const updated = coupons.map(c => c.code === code ? { ...c, active: !c.active } : c);
+    setCoupons(updated);
+    saveCoupons(updated);
+  };
+
+  const saveMarquee = () => {
+    const lines = marqueeInput.split('\n').map(l => l.trim()).filter(Boolean);
+    setMarqueeLines(lines);
+    saveMarqueeLines(lines);
+    setEditingMarquee(false);
+  };
+
+  const saveSettings = () => {
+    persistSettings(settings as any);
+    alert('Settings saved! Delivery, GST and store details now apply across the site.');
+  };
+
+  const handleSaveBanners = () => {
+    const valid = banners.filter(b => b.img.trim() && b.title.trim());
+    saveBanners(valid);
+    alert(valid.length > 0
+      ? valid.length + ' custom hero banner(s) saved. The homepage slider now shows your banners.'
+      : 'No complete banners (image + title required) — homepage will show the default slider.');
+  };
+
+  const updateBanner = (i: number, field: keyof HeroBanner, value: string) => {
+    setBanners(banners.map((b, idx) => idx === i ? { ...b, [field]: value } : b));
+  };
+
+  const handleSendNotification = () => {
+    if (!notifInput.trim()) { alert('Enter a notification message first.'); return; }
+    setNotification(notifInput.trim());
+    setActiveNotif(getNotification());
+    setNotifInput('');
+    alert('Notification is now live on the site (top bar).');
+  };
+
+  const handleClearNotification = () => {
+    clearNotification();
+    setActiveNotif(null);
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPwdMsg(null);
+    if (pwdForm.next !== pwdForm.confirm) {
+      setPwdMsg({ ok: false, text: 'New passwords do not match.' });
+      return;
+    }
+    const result = await changeAdminPassword(pwdForm.current, pwdForm.next);
+    if (result.ok) {
+      setPwdMsg({ ok: true, text: 'Password changed successfully. Use the new password on your next login.' });
+      setPwdForm({ current: '', next: '', confirm: '' });
+    } else {
+      setPwdMsg({ ok: false, text: result.error || 'Could not change password.' });
     }
   };
 
-  const handleDeleteProductObj = async (prodId: string) => {
-    if (!window.confirm("Verify: Are you sure you intend to remove this product?")) return;
-    try {
-      await deleteProduct(prodId);
-      setProducts(products.filter(p => p.id !== prodId));
-    } catch {
-      setProducts(products.filter(p => p.id !== prodId));
-    }
-  };
+  const revenue = orders.filter(x => x.status !== 'Cancelled').reduce((s, x) => s + x.totalAmount, 0);
+  const pendingOrders = orders.filter(x => x.status === 'Placed').length;
+  const deliveredOrders = orders.filter(x => x.status === 'Delivered').length;
+  const lowStockProducts = products.filter(p => p.stock > 0 && p.stock < 20);
+  const outOfStockProducts = products.filter(p => p.stock === 0);
 
-  // Calculations
-  const revenueSum = orders.filter(x => x.status !== 'Cancelled').reduce((s, x) => s + x.totalAmount, 0);
-  const totalCount = orders.length;
-  const pendingCount = orders.filter(x => x.status === 'Placed').length;
-  const deliverySettle = orders.filter(x => x.status === 'Delivered').length;
-
-  const filteredOrders = orders.filter(o => 
+  const filteredOrders = orders.filter(o =>
     o.id.toLowerCase().includes(orderSearchQuery.toLowerCase()) ||
-    o.phone.toLowerCase().includes(orderSearchQuery.toLowerCase()) ||
-    o.deliveryAddress.name.toLowerCase().includes(orderSearchQuery.toLowerCase())
+    (o.phone || '').toLowerCase().includes(orderSearchQuery.toLowerCase()) ||
+    (o.deliveryAddress?.name || '').toLowerCase().includes(orderSearchQuery.toLowerCase())
   );
-
-  const filteredProducts = products.filter(p => 
+  const filteredProducts = products.filter(p =>
     p.name.toLowerCase().includes(productSearchQuery.toLowerCase()) ||
     p.brand.toLowerCase().includes(productSearchQuery.toLowerCase()) ||
     p.category.toLowerCase().includes(productSearchQuery.toLowerCase())
   );
+  const inventoryProducts = products.filter(p => {
+    if (stockFilter === 'low') return p.stock > 0 && p.stock < 20;
+    if (stockFilter === 'out') return p.stock === 0;
+    return true;
+  });
+
+  const newLeadsCount = leads.filter(l => l.status === 'New').length;
+  const filteredLeads = leads.filter(l => {
+    if (leadSourceFilter !== 'All' && l.source !== leadSourceFilter) return false;
+    if (leadStatusFilter !== 'All' && l.status !== leadStatusFilter) return false;
+    const q = leadSearch.toLowerCase();
+    if (!q) return true;
+    return [l.name, l.phone, l.email, l.subject, l.message, l.source].some(v => (v || '').toLowerCase().includes(q));
+  });
+  const leadStatusColor = (st: string) => ({
+    New: 'bg-rose-50 text-rose-700 border-rose-200',
+    Contacted: 'bg-blue-50 text-blue-700 border-blue-200',
+    Converted: 'bg-green-50 text-green-700 border-green-200',
+    Closed: 'bg-slate-100 text-slate-500 border-slate-200',
+  }[st] || 'bg-slate-50 text-slate-700 border-slate-200');
+
+  const statusColor = (s: string) => ({
+    Placed: 'bg-blue-50 text-blue-700 border-blue-200',
+    Confirmed: 'bg-amber-50 text-amber-700 border-amber-200',
+    Dispatched: 'bg-purple-50 text-purple-700 border-purple-200',
+    Delivered: 'bg-green-50 text-green-700 border-green-200',
+    Cancelled: 'bg-red-50 text-red-700 border-red-200',
+  }[s] || 'bg-slate-50 text-slate-700 border-slate-200');
+
+  const categoryRevenue: Record<string, number> = {};
+  orders.filter(o => o.status !== 'Cancelled').forEach(o =>
+    o.items?.forEach(item => {
+      const prod = products.find(p => p.id === item.productId);
+      const cat = prod?.category || 'Other';
+      categoryRevenue[cat] = (categoryRevenue[cat] || 0) + item.price * item.quantity;
+    })
+  );
+  const topCategories = Object.entries(categoryRevenue).sort((a, b) => b[1] - a[1]).slice(0, 6);
+
+  const imgFallback = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?w=80&q=80';
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      
-      {/* Header bar and info indicator */}
-      <div className="bg-emerald-950 text-white rounded-xl mb-8 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <div className="space-y-1">
-          <div className="bg-amber-100 text-[#1B6B3A] text-[10px] sm:text-xs font-black px-2.5 py-0.5 rounded-md w-fit uppercase flex items-center gap-1 leading-none select-none">
-            <UserCheck className="h-4 w-4" />
-            <span>Authorized: Admin Portal</span>
-          </div>
-          <h2 id="admin-hub-title" className="font-display font-black text-xl sm:text-2xl tracking-tight mt-1.5 text-white">
-            IGO AgriMarket Management Desk
+    <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="font-extrabold text-xl text-[#1B6B3A] flex items-center gap-2">
+            <Shield className="h-5 w-5" /> IGO Agri Mart - Admin Control Panel
           </h2>
-          <p className="text-xs text-emerald-200">
-            Fulfill orders, track Chennai agricultural parameters, and manage catalog databases live.
-          </p>
+          <p className="text-xs text-slate-400 mt-0.5">{products.length} products - {orders.length} orders total</p>
         </div>
-
-        {/* Sync trigger */}
-        <button
-          onClick={loadAdminOrders}
-          className="bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 self-start sm:self-auto border border-emerald-600 transition shadow cursor-pointer"
-        >
-          <RefreshCw className="h-4 w-4" />
-          <span>Real-time Sync</span>
-        </button>
-      </div>
-
-      {/* Segment navigation categories bar */}
-      <div className="flex border-b border-slate-200 select-none mb-8 flex-wrap">
-        {([
-          { key: 'Dashboard', label: 'Operations Dashboard' },
-          { key: 'Orders', label: `Manage Orders (${orders.length})` },
-          { key: 'Products', label: `Stock Catalog (${products.length})` }
-        ] as const).map((sub) => {
-          const isActive = activeSubTab === sub.key;
-          return (
-            <button
-              key={sub.key}
-              onClick={() => setActiveSubTab(sub.key)}
-              className={`px-4 sm:px-6 py-3 font-display font-extrabold text-xs sm:text-sm border-b-2 transition cursor-pointer ${
-                isActive 
-                  ? 'border-[#1B6B3A] text-[#1B6B3A]' 
-                  : 'border-transparent text-slate-400 hover:text-slate-600'
-              }`}
-            >
-              {sub.label}
+        <div className="flex items-center gap-2 flex-wrap">
+          {setCurrentPage && (
+            <button onClick={() => setCurrentPage('home')} className="flex items-center gap-1.5 text-xs text-[#1B6B3A] hover:bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg font-bold">
+              <Store className="h-3.5 w-3.5" /> View Store
             </button>
-          );
-        })}
+          )}
+          <a href="https://www.igonursery.com/admin-visitor-leads" target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-[#1B6B3A] border border-slate-200 px-3 py-1.5 rounded-lg font-bold">
+            <ExternalLink className="h-3.5 w-3.5" /> Nursery Admin
+          </a>
+          <button onClick={() => { loadOrders(); loadLeads(); }} className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-[#1B6B3A] border border-slate-200 px-3 py-1.5 rounded-lg">
+            <RefreshCw className="h-3.5 w-3.5" /> Refresh
+          </button>
+          {onLogout && (
+            <button onClick={onLogout} className="flex items-center gap-1.5 text-xs text-red-600 hover:bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg font-bold">
+              <LogOut className="h-3.5 w-3.5" /> Logout
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* VIEW SUBPANE 1: STATISTICS DASHBOARD */}
-      {activeSubTab === 'Dashboard' && (
-        <div className="space-y-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 select-none">
-            
-            {/* Stat Card 1 */}
-            <div className="bg-white border border-slate-200 p-5 rounded-xl">
-              <div className="text-[10px] text-slate-400 uppercase font-bold">Aggregate Revenue</div>
-              <div className="font-display font-black text-[#1a1a1a] text-xl sm:text-2xl mt-1.5">
-                ₹{revenueSum}
-              </div>
-              <div className="text-[10px] text-emerald-600 font-semibold mt-1">Excludes cancelled</div>
-            </div>
+      <div className="flex gap-1 flex-wrap bg-slate-50 border border-slate-200 rounded-xl p-1.5 mb-6">
+        {TAB_CONFIG.map(tab => (
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition whitespace-nowrap ${
+              activeTab === tab.id ? 'bg-white shadow text-[#1B6B3A] border border-slate-200' : 'text-slate-500 hover:text-slate-800 hover:bg-white/60'
+            }`}>
+            <tab.icon className={`h-3.5 w-3.5 ${activeTab === tab.id ? tab.color : ''}`} />
+            {tab.label}
+            {tab.id === 'Orders' && pendingOrders > 0 && (
+              <span className="bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">{pendingOrders}</span>
+            )}
+            {tab.id === 'Inventory' && outOfStockProducts.length > 0 && (
+              <span className="bg-orange-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">{outOfStockProducts.length}</span>
+            )}
+            {tab.id === 'Leads' && newLeadsCount > 0 && (
+              <span className="bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">{newLeadsCount}</span>
+            )}
+          </button>
+        ))}
+      </div>
 
-            {/* Stat Card 2 */}
-            <div className="bg-white border border-slate-200 p-5 rounded-xl">
-              <div className="text-[10px] text-slate-400 uppercase font-bold">Fulfillment Orders</div>
-              <div className="font-display font-black text-[#1a1a1a] text-xl sm:text-2xl mt-1.5">
-                {totalCount}
+      {activeTab === 'Dashboard' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: 'Total Revenue', value: 'Rs.' + revenue.toLocaleString('en-IN'), icon: DollarSign, color: 'bg-emerald-50 text-emerald-700 border-emerald-200', sub: 'All-time non-cancelled' },
+              { label: 'Total Orders', value: orders.length, icon: ShoppingBag, color: 'bg-blue-50 text-blue-700 border-blue-200', sub: pendingOrders + ' pending' },
+              { label: 'Products', value: products.length, icon: Tag, color: 'bg-violet-50 text-violet-700 border-violet-200', sub: outOfStockProducts.length + ' out of stock' },
+              { label: 'Delivered', value: deliveredOrders, icon: CheckCircle, color: 'bg-green-50 text-green-700 border-green-200', sub: orders.filter(o=>o.status==='Dispatched').length + ' in transit' },
+            ].map((kpi, i) => (
+              <div key={i} className={'border rounded-xl p-4 ' + kpi.color}>
+                <div className="flex items-center justify-between mb-2">
+                  <kpi.icon className="h-5 w-5 opacity-70" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-50">{kpi.label}</span>
+                </div>
+                <div className="text-2xl font-black">{kpi.value}</div>
+                <div className="text-[11px] mt-1 opacity-60">{kpi.sub}</div>
               </div>
-              <div className="text-[10px] text-slate-400 font-semibold mt-1">Total checked out</div>
-            </div>
-
-            {/* Stat Card 3 */}
-            <div className="bg-white border border-slate-200 p-5 rounded-xl">
-              <div className="text-[10px] text-slate-400 uppercase font-bold">Awaiting Packaging</div>
-              <div className="font-display font-black text-amber-600 text-xl sm:text-2xl mt-1.5">
-                {pendingCount}
-              </div>
-              <div className="text-[10px] text-amber-700 font-semibold mt-1">Placed status</div>
-            </div>
-
-            {/* Stat Card 4 */}
-            <div className="bg-white border border-slate-200 p-5 rounded-xl">
-              <div className="text-[10px] text-slate-400 uppercase font-bold">Successfully Dispatched</div>
-              <div className="font-display font-black text-emerald-700 text-xl sm:text-2xl mt-1.5">
-                {deliverySettle}
-              </div>
-              <div className="text-[10px] text-slate-400 font-semibold mt-1">Settled on delivery</div>
-            </div>
-
+            ))}
           </div>
 
-          {/* Quick guide and manual trigger */}
-          <div className="bg-slate-50 border border-slate-200/60 rounded-xl p-6 sm:p-8">
-            <h4 className="font-display font-extrabold text-[#1B6B3A] text-sm mb-3">
-              One-Click Seed Database Seeding Setup (Developer Mode)
-            </h4>
-            <p className="text-xs text-slate-400 leading-relaxed mb-6">
-              When launching a brand new Firebase workspace database, you can seed forty premium standard agricultural items matching seeds, fertilizers, and devices in under five seconds with instant mock pictures!
-            </p>
-            <button
-              onClick={async () => {
-                if (!window.confirm("Verify: Do you intend to seed forty agricultural records? This appends to existing ones.")) return;
+          {(outOfStockProducts.length > 0 || lowStockProducts.length > 0) && (
+            <div className="space-y-2">
+              {outOfStockProducts.length > 0 && (
+                <div className="flex items-center gap-3 bg-red-50 border border-red-200 rounded-xl p-3">
+                  <AlertTriangle className="h-4 w-4 text-red-600 shrink-0" />
+                  <span className="text-sm font-bold text-red-700">{outOfStockProducts.length} products are out of stock</span>
+                  <button onClick={() => setActiveTab('Inventory')} className="ml-auto text-xs text-red-600 underline">View</button>
+                </div>
+              )}
+              {lowStockProducts.length > 0 && (
+                <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3">
+                  <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
+                  <span className="text-sm font-bold text-amber-700">{lowStockProducts.length} products have low stock</span>
+                  <button onClick={() => setActiveTab('Inventory')} className="ml-auto text-xs text-amber-600 underline">View</button>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+              <h3 className="font-extrabold text-sm text-slate-800">Recent Orders</h3>
+              <button onClick={() => setActiveTab('Orders')} className="text-xs text-[#1B6B3A] font-bold hover:underline">View all</button>
+            </div>
+            {isLoadingOrders ? (
+              <div className="py-8 text-center text-xs text-slate-400">Loading...</div>
+            ) : orders.length === 0 ? (
+              <div className="py-8 text-center text-xs text-slate-400">No orders yet.</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs text-slate-600">
+                  <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-100">
+                    <tr>{['Order ID','Customer','Amount','Status','Update'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-50">
+                    {orders.slice(0, 8).map(o => (
+                      <tr key={o.id} className="hover:bg-slate-50/50">
+                        <td className="p-3 font-mono font-bold text-slate-700 text-[10px]">{o.id.slice(0, 12)}</td>
+                        <td className="p-3">{o.deliveryAddress?.name || '-'}</td>
+                        <td className="p-3 font-bold text-[#1B6B3A]">Rs.{o.totalAmount}</td>
+                        <td className="p-3"><span className={'px-2 py-0.5 rounded-full text-[10px] font-bold border ' + statusColor(o.status)}>{o.status}</span></td>
+                        <td className="p-3">
+                          <select value={o.status} onChange={e => handleStatusChange(o.id, e.target.value as Order['status'])}
+                            className="bg-slate-100 border border-slate-200 rounded px-2 py-1 text-[10px] font-bold">
+                            {['Placed','Confirmed','Dispatched','Delivered','Cancelled'].map(s => <option key={s}>{s}</option>)}
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+            <h4 className="font-extrabold text-sm text-[#1B6B3A] mb-1">Developer: Seed Database</h4>
+            <p className="text-xs text-slate-400 mb-4">Populate Firestore with sample agri products if database is empty.</p>
+            <div className="flex gap-3 flex-wrap">
+              <button onClick={async () => {
+                if (!window.confirm('Seed products to Firestore? (Only runs if database is empty)')) return;
+                try { await seedProducts(); alert('Database seeded!'); } catch { alert('Seeding complete.'); }
+              }} className="bg-[#E8A020] text-emerald-950 font-black text-xs px-5 py-2.5 rounded-lg">
+                Seed Products (if empty)
+              </button>
+              <button onClick={async () => {
+                if (!window.confirm('WARNING: This will DELETE all existing Firestore products and replace with fresh catalog. Continue?')) return;
                 try {
-                  await seedProducts();
-                  alert("Successfully seeded Firestore with 40 agritech inventory products!");
-                } catch (err) {
-                  alert("Sync Error or Local Storage successfully provisioned instead.");
-                }
-              }}
-              className="bg-[#E8A020] hover:bg-[#d5921c] text-emerald-950 font-black text-xs px-5 py-2.5 rounded-lg shadow-sm cursor-pointer select-none transition"
-            >
-              Seed 40 Agri Products Now
-            </button>
+                  const result = await clearAndReseedProducts();
+                  alert('Done! Deleted ' + result.deleted + ' old products. Seeded ' + result.seeded + ' fresh products. Reload the page now.');
+                  window.location.reload();
+                } catch { alert('Error during re-seed. Check console.'); }
+              }} className="bg-red-600 text-white font-black text-xs px-5 py-2.5 rounded-lg">
+                Force Clear + Re-seed
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* VIEW SUBPANE 2: ORDERS MANAGEMENT SECTION */}
-      {activeSubTab === 'Orders' && (
-        <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <h3 className="font-display font-extrabold text-[#111] text-sm">Order Verification & Status Change</h3>
-            
+      {activeTab === 'Orders' && (
+        <div className="space-y-5">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <h3 className="font-extrabold text-sm text-slate-800">Order Management ({orders.length} total)</h3>
             <div className="relative w-full sm:max-w-xs">
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-              <input
-                type="text"
-                value={orderSearchQuery}
-                onChange={(e) => setOrderSearchQuery(e.target.value)}
-                placeholder="Search by ID, Phone, Consignee"
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs text-[#111] font-bold outline-none"
-              />
+              <input type="text" value={orderSearchQuery} onChange={e => setOrderSearchQuery(e.target.value)}
+                placeholder="Search ID, phone, name..." className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs font-bold outline-none" />
             </div>
           </div>
-
-          {/* Orders table */}
+          <div className="flex gap-2 flex-wrap">
+            {['Placed','Confirmed','Dispatched','Delivered','Cancelled'].map(s => (
+              <span key={s} className={'px-3 py-1 rounded-full text-xs font-bold border ' + statusColor(s)}>
+                {s}: {orders.filter(o => o.status === s).length}
+              </span>
+            ))}
+          </div>
           {isLoadingOrders ? (
-            <div className="text-slate-400 py-12 text-center text-xs">Loading orders tree...</div>
-          ) : filteredOrders.length > 0 ? (
+            <div className="py-12 text-center text-xs text-slate-400">Loading orders...</div>
+          ) : (
             <div className="border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-600 border-collapse">
-                <thead className="bg-[#F7F9F4] font-display font-extrabold text-slate-700 border-b border-slate-100">
-                  <tr>
-                    <th className="p-4">ID</th>
-                    <th className="p-4">Farmer Info</th>
-                    <th className="p-4">Products Bought</th>
-                    <th className="p-4">Total Amount</th>
-                    <th className="p-4">Select Status</th>
-                  </tr>
+              <table className="w-full text-xs text-slate-600 border-collapse">
+                <thead className="bg-slate-50 font-bold text-slate-600 border-b border-slate-200">
+                  <tr>{['Order ID','Customer','Items','Total','Payment','Status'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {filteredOrders.map((o) => (
+                  {filteredOrders.length === 0 ? (
+                    <tr><td colSpan={6} className="py-10 text-center text-slate-400 italic">No orders found.</td></tr>
+                  ) : filteredOrders.map(o => (
                     <tr key={o.id} className="hover:bg-slate-50/40">
-                      <td className="p-4 font-bold text-slate-800">{o.id}</td>
-                      <td className="p-4">
-                        <div className="font-bold text-slate-800 leading-none">{o.deliveryAddress?.name}</div>
-                        <div className="text-[10px] text-slate-400 mt-1">{o.deliveryAddress?.city} • Ph: {o.phone}</div>
+                      <td className="p-3 font-mono font-bold text-[10px]">
+                        <button onClick={() => { setViewOrder(o); setAdminMsg(''); }} className="text-[#1B6B3A] hover:underline font-black">{o.id}</button>
                       </td>
-                      <td className="p-4 max-w-xs">
-                        <div className="space-y-1">
-                          {o.items?.map((it, i) => (
-                            <div key={i} className="text-[11px] font-medium text-slate-600 truncate">
-                              • {it.name} (Qty: {it.quantity})
-                            </div>
-                          ))}
-                        </div>
+                      <td className="p-3">
+                        <button onClick={() => { setViewOrder(o); setAdminMsg(''); }} className="text-left hover:underline">
+                          <div className="font-bold text-slate-800">{o.deliveryAddress?.name}</div>
+                          <div className="text-[10px] text-slate-400">{o.deliveryAddress?.email || o.deliveryAddress?.city}</div>
+                        </button>
                       </td>
-                      <td className="p-4 font-bold text-[#1B6B3A]">₹{o.totalAmount}</td>
-                      <td className="p-4">
-                        <select
-                          value={o.status}
-                          onChange={(e) => handleStatusChange(o.id, e.target.value as any)}
-                          className="bg-slate-100 border border-slate-200 text-slate-800 text-xs font-bold rounded p-1.5 focus:outline-none focus:border-[#1B6B3A] cursor-pointer"
-                        >
-                          <option value="Placed">Placed</option>
-                          <option value="Confirmed">Confirmed</option>
-                          <option value="Dispatched">Dispatched</option>
-                          <option value="Delivered">Delivered</option>
-                          <option value="Cancelled">Cancelled</option>
+                      <td className="p-3 max-w-[160px]">
+                        {o.items?.slice(0, 2).map((it, i) => (
+                          <div key={i} className="text-[10px] text-slate-500 truncate">{it.name} x{it.quantity}</div>
+                        ))}
+                        {(o.items?.length || 0) > 2 && <div className="text-[10px] text-slate-400">+{o.items!.length - 2} more</div>}
+                      </td>
+                      <td className="p-3 font-bold text-[#1B6B3A]">Rs.{o.totalAmount}</td>
+                      <td className="p-3 text-[10px] text-slate-500">{o.paymentMethod || 'COD'}</td>
+                      <td className="p-3">
+                        <select value={o.status} onChange={e => handleStatusChange(o.id, e.target.value as Order['status'])}
+                          className={'border rounded px-2 py-1 text-[10px] font-bold focus:outline-none ' + statusColor(o.status)}>
+                          {['Placed','Confirmed','Dispatched','Delivered','Cancelled'].map(s => <option key={s}>{s}</option>)}
                         </select>
                       </td>
                     </tr>
@@ -363,206 +639,216 @@ export default function AdminComponent({
                 </tbody>
               </table>
             </div>
-          ) : (
-            <p className="text-xs text-slate-400 py-10 text-center italic">No orders found matching parameters.</p>
           )}
         </div>
       )}
 
-      {/* VIEW SUBPANE 3: PRODUCTS MANAGEMENT SECTION */}
-      {activeSubTab === 'Products' && (
-        <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 select-none">
-            <h3 className="font-display font-extrabold text-[#111] text-sm">Product Inventory Catalog</h3>
-            
+      {activeTab === 'Leads' && (
+        <div className="space-y-5">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <h3 className="font-extrabold text-sm text-slate-800">Visitor Leads ({leads.length} total, {newLeadsCount} new)</h3>
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <div className="relative flex-1 sm:max-w-xs">
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                <input
-                  type="text"
-                  value={productSearchQuery}
-                  onChange={(e) => setProductSearchQuery(e.target.value)}
-                  placeholder="Search item catalog..."
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs text-[#111] font-bold outline-none"
-                />
+                <input type="text" value={leadSearch} onChange={e => setLeadSearch(e.target.value)}
+                  placeholder="Search name, phone, message..." className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs font-bold outline-none" />
               </div>
-
-              <button
-                onClick={() => setShowProductForm(!showProductForm)}
-                className="bg-[#1B6B3A] hover:bg-emerald-950 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 shrink-0 cursor-pointer"
-              >
-                <Plus className="h-4 w-4" />
-                <span>Add Product</span>
+              <button onClick={() => downloadLeadsCsv(filteredLeads)}
+                className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 shrink-0">
+                <Download className="h-4 w-4" /> Export CSV
               </button>
             </div>
           </div>
 
-          {/* Add Product parameters Form details layout */}
-          {showProductForm && (
-            <form onSubmit={handleCreateProduct} className="bg-[#F7F9F4] p-6 sm:p-10 rounded-xl border border-slate-200/60 max-w-2xl space-y-5">
-              <h4 className="font-display font-black text-[#1B6B3A] text-xs uppercase tracking-widest pb-2 border-b">
-                Inject New Item Coordinates
-              </h4>
+          <div className="flex gap-2 flex-wrap items-center">
+            <select value={leadSourceFilter} onChange={e => setLeadSourceFilter(e.target.value as any)}
+              className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold outline-none">
+              {['All', 'Contact Form', 'Farm Loan', 'Expert Service', 'Partner Enquiry', 'Newsletter', 'Other'].map(o => <option key={o}>{o}</option>)}
+            </select>
+            {(['All', 'New', 'Contacted', 'Converted', 'Closed'] as const).map(st => (
+              <button key={st} onClick={() => setLeadStatusFilter(st)}
+                className={'px-3 py-1 rounded-full text-xs font-bold border transition ' + (leadStatusFilter === st ? 'bg-[#1B6B3A] text-white border-[#1B6B3A]' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300')}>
+                {st === 'All' ? 'All (' + leads.length + ')' : st + ' (' + leads.filter(l => l.status === st).length + ')'}
+              </button>
+            ))}
+          </div>
 
+          {loadingLeads ? (
+            <div className="py-12 text-center text-xs text-slate-400">Loading visitor leads...</div>
+          ) : filteredLeads.length === 0 ? (
+            <div className="py-16 text-center">
+              <Inbox className="h-12 w-12 text-slate-200 mx-auto mb-3" />
+              <p className="text-sm font-bold text-slate-400">No visitor leads yet</p>
+              <p className="text-[11px] text-slate-400 mt-1">Contact form, farm loan and expert service enquiries from the store will appear here automatically.</p>
+            </div>
+          ) : (
+            <div className="border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
+              <table className="w-full text-xs text-slate-600 border-collapse">
+                <thead className="bg-slate-50 font-bold text-slate-600 border-b border-slate-200">
+                  <tr>{['Date', 'Source', 'Visitor', 'Contact', 'Subject / Message', 'Status', 'Action'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filteredLeads.map(l => (
+                    <tr key={l.id} className={'hover:bg-slate-50/40 ' + (l.status === 'New' ? 'bg-rose-50/30' : '')}>
+                      <td className="p-3 whitespace-nowrap text-[10px] text-slate-500">
+                        {new Date(l.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+                        <div className="text-slate-400">{new Date(l.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</div>
+                      </td>
+                      <td className="p-3"><span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100 whitespace-nowrap">{l.source}</span></td>
+                      <td className="p-3 font-bold text-slate-800 whitespace-nowrap">{l.name}</td>
+                      <td className="p-3 whitespace-nowrap">
+                        <a href={'tel:' + l.phone} className="font-bold text-[#1B6B3A] hover:underline block">{l.phone}</a>
+                        {l.email && <span className="text-[10px] text-slate-400">{l.email}</span>}
+                      </td>
+                      <td className="p-3 max-w-[260px]">
+                        {l.subject && <div className="font-bold text-slate-700 truncate">{l.subject}</div>}
+                        {l.message && <div className="text-[10px] text-slate-500 line-clamp-2">{l.message}</div>}
+                      </td>
+                      <td className="p-3">
+                        <select value={l.status} onChange={e => handleLeadStatus(l.id, e.target.value as LeadStatus)}
+                          className={'border rounded px-2 py-1 text-[10px] font-bold focus:outline-none ' + leadStatusColor(l.status)}>
+                          {['New', 'Contacted', 'Converted', 'Closed'].map(st => <option key={st}>{st}</option>)}
+                        </select>
+                      </td>
+                      <td className="p-3">
+                        <button onClick={() => handleDeleteLead(l.id)} className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'Products' && (
+        <div className="space-y-5">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <h3 className="font-extrabold text-sm text-slate-800">Product Catalog ({products.length} items)</h3>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="relative flex-1 sm:max-w-xs">
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                <input type="text" value={productSearchQuery} onChange={e => setProductSearchQuery(e.target.value)}
+                  placeholder="Search products..." className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs font-bold outline-none" />
+              </div>
+              <button onClick={() => { if (showProductForm) { setShowProductForm(false); resetProductForm(); } else { resetProductForm(); setShowProductForm(true); } }}
+                className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 shrink-0">
+                <Plus className="h-4 w-4" /> Add Product
+              </button>
+            </div>
+          </div>
+
+          {showProductForm && (
+            <form onSubmit={handleCreateProduct} className="bg-slate-50 border border-slate-200 rounded-xl p-6 max-w-2xl space-y-4">
+              <h4 className="font-extrabold text-xs text-[#1B6B3A] uppercase tracking-widest pb-2 border-b border-slate-200">
+                {editingProductId ? 'Edit Product' : 'New Product Details'}
+              </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2">
-                  <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Item Title Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={newProduct.name}
-                    onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                    placeholder="e.g. Tomato Golden Queen Hybrid Hybrid Seeds"
-                    className="w-full bg-white border rounded p-2 text-xs font-bold text-[#111]"
-                  />
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Product Name</label>
+                  <input type="text" required value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})}
+                    placeholder="e.g. Tomato Hybrid Seeds 100g" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
                 </div>
-
                 <div>
-                  <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Standard Market Category *</label>
-                  <select
-                    value={newProduct.category}
-                    onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                    className="w-full bg-white border rounded p-2 text-xs font-bold text-[#111]"
-                  >
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.name}>{c.name}</option>
-                    ))}
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Category</label>
+                  <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold">
+                    {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
                   </select>
                 </div>
-
                 <div>
-                  <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Subcategory *</label>
-                  <input
-                    type="text"
-                    required
-                    value={newProduct.subcategory}
-                    onChange={(e) => setNewProduct({ ...newProduct, subcategory: e.target.value })}
-                    placeholder="e.g. Hybrid Tomato"
-                    className="w-full bg-white border rounded p-2 text-xs font-bold text-[#111]"
-                  />
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Subcategory</label>
+                  <input type="text" required value={newProduct.subcategory} onChange={e => setNewProduct({...newProduct, subcategory: e.target.value})}
+                    placeholder="e.g. Hybrid Tomato" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
                 </div>
-
                 <div>
-                  <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Brand Provider *</label>
-                  <select
-                    value={newProduct.brand}
-                    onChange={(e) => setNewProduct({ ...newProduct, brand: e.target.value })}
-                    className="w-full bg-white border rounded p-2 text-xs font-bold text-[#111]"
-                  >
-                    {brands.map((b) => (
-                      <option key={b.id} value={b.name}>{b.name}</option>
-                    ))}
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Brand</label>
+                  <select value={newProduct.brand} onChange={e => setNewProduct({...newProduct, brand: e.target.value})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold">
+                    {brands.map(b => <option key={b.id} value={b.name}>{b.name}</option>)}
                   </select>
                 </div>
-
                 <div>
-                  <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Target Problem Area</label>
-                  <select
-                    value={newProduct.problemFilter}
-                    onChange={(e) => setNewProduct({ ...newProduct, problemFilter: e.target.value })}
-                    className="w-full bg-white border rounded p-2 text-xs font-bold text-[#111]"
-                  >
-                    <option value="Pest Control">Pest Control</option>
-                    <option value="Disease Control">Disease Control</option>
-                    <option value="Growth Boosters">Growth Boosters</option>
-                    <option value="Manures & Fertilizers">Manures & Fertilizers</option>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Problem Filter</label>
+                  <select value={newProduct.problemFilter} onChange={e => setNewProduct({...newProduct, problemFilter: e.target.value})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold">
+                    {['Pest Control','Disease Control','Growth Boosters','Manures & Fertilizers'].map(o => <option key={o}>{o}</option>)}
                   </select>
                 </div>
-
                 <div>
-                  <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">MRP Price *</label>
-                  <input
-                    type="number"
-                    required
-                    value={newProduct.mrp}
-                    onChange={(e) => setNewProduct({ ...newProduct, mrp: Number(e.target.value) })}
-                    className="w-full bg-white border rounded p-2 text-xs font-bold text-[#111]"
-                  />
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">MRP (Rs.)</label>
+                  <input type="number" required value={newProduct.mrp} onChange={e => setNewProduct({...newProduct, mrp: Number(e.target.value)})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
                 </div>
-
                 <div>
-                  <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Selling Price *</label>
-                  <input
-                    type="number"
-                    required
-                    value={newProduct.price}
-                    onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
-                    className="w-full bg-white border rounded p-2 text-xs font-bold text-[#111]"
-                  />
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Selling Price (Rs.)</label>
+                  <input type="number" required value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: Number(e.target.value)})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
                 </div>
-
+                <div>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Stock Quantity</label>
+                  <input type="number" value={newProduct.stock} onChange={e => setNewProduct({...newProduct, stock: Number(e.target.value)})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
+                </div>
+                <div>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Unit Size</label>
+                  <input type="text" value={newProduct.unit} onChange={e => setNewProduct({...newProduct, unit: e.target.value})}
+                    placeholder="e.g. 1kg, 500ml" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
+                </div>
                 <div className="col-span-2">
-                  <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Thumbnail Unsplash Image URL *</label>
-                  <input
-                    type="text"
-                    required
-                    value={newProduct.images}
-                    onChange={(e) => setNewProduct({ ...newProduct, images: e.target.value })}
-                    className="w-full bg-white border rounded p-2 text-xs font-bold text-[#111]"
-                  />
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Image URL</label>
+                  <input type="text" value={newProduct.images} onChange={e => setNewProduct({...newProduct, images: e.target.value})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
                 </div>
-
                 <div className="col-span-2">
-                  <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Product Description</label>
-                  <textarea
-                    value={newProduct.description}
-                    onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-                    rows={2}
-                    className="w-full bg-white border rounded p-2 text-xs font-bold text-[#111]"
-                  />
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Description</label>
+                  <textarea value={newProduct.description} onChange={e => setNewProduct({...newProduct, description: e.target.value})}
+                    rows={2} className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold resize-none" />
+                </div>
+                <div className="col-span-2 flex items-center gap-2">
+                  <input type="checkbox" checked={newProduct.isOrganic} onChange={e => setNewProduct({...newProduct, isOrganic: e.target.checked})}
+                    className="h-4 w-4 accent-[#1B6B3A]" />
+                  <label className="text-xs font-bold text-slate-700 cursor-pointer">Mark as Certified Organic</label>
                 </div>
               </div>
-
-              <div className="pt-2 flex gap-3">
-                <button type="submit" className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-2 rounded-lg cursor-pointer">
-                  Publish Item
+              <div className="flex gap-3 pt-2">
+                <button type="submit" className="bg-[#1B6B3A] text-white text-xs font-bold px-5 py-2.5 rounded-lg">
+                  {editingProductId ? 'Save Changes' : 'Publish Product'}
                 </button>
-                <button type="button" onClick={() => setShowProductForm(false)} className="bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2 rounded-lg cursor-pointer">
-                  Cancel
-                </button>
+                <button type="button" onClick={() => { setShowProductForm(false); resetProductForm(); }} className="bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-lg">Cancel</button>
               </div>
             </form>
           )}
 
-          {/* Product Items Table list */}
           <div className="border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-600 border-collapse">
-              <thead className="bg-[#F7F9F4] font-display font-extrabold text-slate-700 border-b border-slate-100">
-                <tr>
-                  <th className="p-4">Cover</th>
-                  <th className="p-4">Product details</th>
-                  <th className="p-4">Brand</th>
-                  <th className="p-4">Price</th>
-                  <th className="p-4">Action</th>
-                </tr>
+            <table className="w-full text-xs text-slate-600 border-collapse">
+              <thead className="bg-slate-50 font-bold text-slate-600 border-b border-slate-200">
+                <tr>{['Image','Product','Category','Brand','Price','Stock','Actions'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredProducts.map((p) => (
+                {filteredProducts.map(p => (
                   <tr key={p.id} className="hover:bg-slate-50/40">
-                    <td className="p-4">
-                      <img src={p.images[0]} alt="" className="h-10 w-10 object-cover rounded-lg border" />
+                    <td className="p-3"><img src={p.images?.[0]} alt={p.name} className="h-10 w-10 rounded-lg object-cover border" onError={imgFallback} /></td>
+                    <td className="p-3 max-w-[180px]">
+                      <div className="font-bold text-slate-800 truncate">{p.name}</div>
+                      <div className="text-[10px] text-slate-400">SKU: {p.id.slice(0, 10)}</div>
                     </td>
-                    <td className="p-4">
-                      <div className="font-bold text-slate-800 leading-none">{p.name}</div>
-                      <div className="text-[10px] text-slate-400 mt-1">{p.category} • SKU: {p.id.slice(0, 10)}</div>
-                    </td>
-                    <td className="p-4">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${p.isIgoOwn ? 'bg-emerald-50 text-emerald-800' : 'bg-slate-100 text-slate-600'}`}>
-                        {p.brand}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <div className="font-bold text-slate-800 leading-none">₹{p.price}</div>
-                      <div className="text-[9px] text-slate-400 line-through mt-0.5">₹{p.mrp}</div>
-                    </td>
-                    <td className="p-4">
-                      <button
-                        onClick={() => handleDeleteProductObj(p.id)}
-                        className="p-1.5 text-slate-400 hover:text-[#D94F3D] hover:bg-red-50 rounded-lg transition"
-                        title="Delete product"
-                      >
-                        <Trash2 className="h-4.5 w-4.5" />
-                      </button>
+                    <td className="p-3 text-[11px]">{p.category}</td>
+                    <td className="p-3"><span className={'px-2 py-0.5 rounded text-[10px] font-bold ' + (p.isIgoOwn ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600')}>{p.brand}</span></td>
+                    <td className="p-3"><div className="font-bold">Rs.{p.price}</div><div className="text-[10px] text-slate-400 line-through">Rs.{p.mrp}</div></td>
+                    <td className="p-3 font-black" style={{ color: p.stock === 0 ? '#dc2626' : p.stock < 20 ? '#d97706' : '#16a34a' }}>{p.stock}</td>
+                    <td className="p-3">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => startEditProduct(p)} title="Edit product" className="p-1.5 text-slate-400 hover:text-[#1B6B3A] hover:bg-emerald-50 rounded-lg transition">
+                          <Edit3 className="h-4 w-4" />
+                        </button>
+                        <button onClick={() => handleDeleteProduct(p.id)} title="Delete product" className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -572,6 +858,552 @@ export default function AdminComponent({
         </div>
       )}
 
+      {activeTab === 'Inventory' && (
+        <div className="space-y-5">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <h3 className="font-extrabold text-sm text-slate-800">Inventory Management</h3>
+            <div className="flex gap-2 flex-wrap items-center">
+              <button onClick={handleRefillAll}
+                className="bg-[#E8A020] hover:bg-amber-400 text-emerald-950 text-xs font-black px-4 py-1.5 rounded-lg shadow-sm">
+                ⟳ Refill All to 200
+              </button>
+              {(['all','low','out'] as const).map(f => (
+                <button key={f} onClick={() => setStockFilter(f)}
+                  className={'text-xs font-bold px-3 py-1.5 rounded-lg border transition ' + (stockFilter === f ? 'bg-[#1B6B3A] text-white border-[#1B6B3A]' : 'bg-white border-slate-200 text-slate-600')}>
+                  {f === 'all' ? 'All (' + products.length + ')' : f === 'low' ? 'Low (' + lowStockProducts.length + ')' : 'Out (' + outOfStockProducts.length + ')'}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { count: products.filter(p=>p.stock>=20).length, label: 'In Stock', color: 'bg-green-50 border-green-200 text-green-700' },
+              { count: lowStockProducts.length, label: 'Low Stock', color: 'bg-amber-50 border-amber-200 text-amber-700' },
+              { count: outOfStockProducts.length, label: 'Out of Stock', color: 'bg-red-50 border-red-200 text-red-700' },
+            ].map((c, i) => (
+              <div key={i} className={'border rounded-xl p-4 ' + c.color}>
+                <div className="text-2xl font-black">{c.count}</div>
+                <div className="text-xs font-bold mt-1 opacity-70">{c.label}</div>
+              </div>
+            ))}
+          </div>
+          <div className="border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
+            <table className="w-full text-xs text-slate-600 border-collapse">
+              <thead className="bg-slate-50 font-bold text-slate-600 border-b border-slate-200">
+                <tr>{['Product','Category','Brand','Unit','Stock','Status'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {inventoryProducts.length === 0 ? (
+                  <tr><td colSpan={6} className="py-10 text-center text-slate-400 italic">No products match this filter.</td></tr>
+                ) : inventoryProducts.map(p => (
+                  <tr key={p.id} className="hover:bg-slate-50/40">
+                    <td className="p-3">
+                      <div className="flex items-center gap-2">
+                        <img src={p.images?.[0]} alt="" className="h-8 w-8 rounded-lg object-cover border" onError={imgFallback} />
+                        <div className="font-bold text-slate-800 max-w-[200px] truncate">{p.name}</div>
+                      </div>
+                    </td>
+                    <td className="p-3">{p.category}</td>
+                    <td className="p-3">{p.brand}</td>
+                    <td className="p-3">{p.unit || '-'}</td>
+                    <td className="p-3">
+                      <input
+                        type="number" min={0} value={p.stock}
+                        onChange={e => handleUpdateStock(p.id, Number(e.target.value))}
+                        className="w-20 bg-white border border-slate-200 rounded-lg px-2 py-1.5 font-black text-sm outline-none focus:border-[#1B6B3A]"
+                        style={{ color: p.stock===0?'#dc2626':p.stock<20?'#d97706':'#16a34a' }}
+                      />
+                    </td>
+                    <td className="p-3">
+                      <span className={'px-2 py-0.5 rounded-full text-[10px] font-bold ' + (p.stock===0?'bg-red-50 text-red-700':p.stock<20?'bg-amber-50 text-amber-700':'bg-green-50 text-green-700')}>
+                        {p.stock===0?'Out of Stock':p.stock<20?'Low Stock':'In Stock'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'Customers' && (
+        <div className="space-y-5">
+          <div className="flex items-center justify-between">
+            <h3 className="font-extrabold text-sm text-slate-800">Customers ({customers.length})</h3>
+            <button onClick={loadCustomers} className="flex items-center gap-1.5 text-xs text-slate-500 border border-slate-200 px-3 py-1.5 rounded-lg hover:text-[#1B6B3A]">
+              <RefreshCw className="h-3.5 w-3.5" /> Refresh
+            </button>
+          </div>
+          {loadingCustomers ? (
+            <div className="py-12 text-center text-xs text-slate-400">Loading customers...</div>
+          ) : customers.length === 0 ? (
+            <div className="py-16 text-center">
+              <Users className="h-12 w-12 text-slate-200 mx-auto mb-3" />
+              <p className="text-sm font-bold text-slate-400">No registered customers yet</p>
+            </div>
+          ) : (
+            <div className="border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
+              <table className="w-full text-xs text-slate-600 border-collapse">
+                <thead className="bg-slate-50 font-bold text-slate-600 border-b border-slate-200">
+                  <tr>{['Customer','Email','Phone','Role','Wishlist','Addresses'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {customers.map((c: any) => (
+                    <tr key={c.uid} className="hover:bg-slate-50/40">
+                      <td className="p-3 font-bold text-slate-800">{c.name || '-'}</td>
+                      <td className="p-3 text-slate-500">{c.email || '-'}</td>
+                      <td className="p-3">{c.phone || '-'}</td>
+                      <td className="p-3"><span className={'px-2 py-0.5 rounded-full text-[10px] font-bold ' + (c.role==='admin'?'bg-red-50 text-red-700':'bg-green-50 text-green-700')}>{c.role||'customer'}</span></td>
+                      <td className="p-3">{c.wishlist?.length || 0} items</td>
+                      <td className="p-3">{c.addresses?.length || 0} saved</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'Reports' && (
+        <div className="space-y-6">
+          <h3 className="font-extrabold text-sm text-slate-800">Reports & Analytics</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: 'Total Revenue', value: 'Rs.' + revenue.toLocaleString('en-IN'), icon: DollarSign, color: 'bg-emerald-50 border-emerald-200 text-emerald-700' },
+              { label: 'Avg Order Value', value: 'Rs.' + (orders.filter(o=>o.status!=='Cancelled').length ? Math.round(revenue/(orders.filter(o=>o.status!=='Cancelled').length||1)).toLocaleString('en-IN') : 0), icon: TrendingUp, color: 'bg-blue-50 border-blue-200 text-blue-700' },
+              { label: 'Total Orders', value: orders.length, icon: ShoppingBag, color: 'bg-violet-50 border-violet-200 text-violet-700' },
+              { label: 'Products Listed', value: products.length, icon: Tag, color: 'bg-amber-50 border-amber-200 text-amber-700' },
+            ].map((item, i) => (
+              <div key={i} className={'border rounded-xl p-4 ' + item.color}>
+                <item.icon className="h-5 w-5 opacity-60 mb-2" />
+                <div className="text-2xl font-black">{item.value}</div>
+                <div className="text-xs font-bold mt-1 opacity-70">{item.label}</div>
+              </div>
+            ))}
+          </div>
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-4">Order Status Breakdown</h4>
+            <div className="space-y-3">
+              {['Placed','Confirmed','Dispatched','Delivered','Cancelled'].map(s => {
+                const count = orders.filter(o => o.status === s).length;
+                const pct = orders.length ? Math.round((count/orders.length)*100) : 0;
+                const barColors: Record<string,string> = { Placed:'bg-blue-400', Confirmed:'bg-amber-400', Dispatched:'bg-purple-400', Delivered:'bg-green-500', Cancelled:'bg-red-400' };
+                return (
+                  <div key={s} className="flex items-center gap-3">
+                    <div className="w-24 text-xs font-bold text-slate-600 shrink-0">{s}</div>
+                    <div className="flex-1 bg-slate-100 rounded-full h-4 overflow-hidden">
+                      <div className={'h-full ' + barColors[s] + ' rounded-full transition-all'} style={{ width: pct + '%' }} />
+                    </div>
+                    <div className="text-xs font-bold text-slate-700 w-20 text-right">{count} ({pct}%)</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          {topCategories.length > 0 && (
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-4">Revenue by Category</h4>
+              <div className="space-y-3">
+                {topCategories.map(([cat, rev]) => {
+                  const max = topCategories[0][1];
+                  const pct = Math.round((rev/max)*100);
+                  return (
+                    <div key={cat} className="flex items-center gap-3">
+                      <div className="w-40 text-xs font-bold text-slate-600 truncate shrink-0">{cat}</div>
+                      <div className="flex-1 bg-slate-100 rounded-full h-4 overflow-hidden">
+                        <div className="h-full bg-[#1B6B3A] rounded-full" style={{ width: pct + '%' }} />
+                      </div>
+                      <div className="text-xs font-bold text-slate-700 w-24 text-right">Rs.{rev.toLocaleString('en-IN')}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-4">Products by Category</h4>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {Object.entries(products.reduce((acc, p) => { acc[p.category] = (acc[p.category]||0)+1; return acc; }, {} as Record<string,number>))
+                .sort((a,b)=>b[1]-a[1]).slice(0, 9).map(([cat, count]) => (
+                <div key={cat} className="bg-slate-50 border border-slate-100 rounded-lg p-3">
+                  <div className="font-bold text-slate-800 text-xs truncate">{cat}</div>
+                  <div className="text-xl font-black text-[#1B6B3A] mt-1">{count}</div>
+                  <div className="text-[10px] text-slate-400">products</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'Coupons' && (
+        <div className="space-y-5">
+          <div className="flex items-center justify-between">
+            <h3 className="font-extrabold text-sm text-slate-800">Coupons & Offers ({coupons.length})</h3>
+            <button onClick={() => setShowCouponForm(!showCouponForm)}
+              className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5">
+              <Plus className="h-4 w-4" /> Create Coupon
+            </button>
+          </div>
+          {showCouponForm && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 max-w-lg space-y-4">
+              <h4 className="font-extrabold text-xs text-[#1B6B3A] uppercase tracking-widest">New Coupon</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2">
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Coupon Code</label>
+                  <input type="text" value={newCoupon.code} onChange={e => setNewCoupon({...newCoupon, code: e.target.value})}
+                    placeholder="e.g. KHARIF20" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold uppercase" />
+                </div>
+                <div>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Type</label>
+                  <select value={newCoupon.type} onChange={e => setNewCoupon({...newCoupon, type: e.target.value as 'percentage' | 'fixed'})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold">
+                    <option value="percentage">Percentage (%)</option>
+                    <option value="fixed">Fixed Amount (Rs.)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Value</label>
+                  <input type="number" value={newCoupon.value} onChange={e => setNewCoupon({...newCoupon, value: Number(e.target.value)})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
+                </div>
+                <div>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Min Order (Rs.)</label>
+                  <input type="number" value={newCoupon.minOrder} onChange={e => setNewCoupon({...newCoupon, minOrder: Number(e.target.value)})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
+                </div>
+                <div>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Usage Limit</label>
+                  <input type="number" value={newCoupon.usageLimit} onChange={e => setNewCoupon({...newCoupon, usageLimit: Number(e.target.value)})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
+                </div>
+                <div className="col-span-2">
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Expiry Date</label>
+                  <input type="date" value={newCoupon.expiry} onChange={e => setNewCoupon({...newCoupon, expiry: e.target.value})}
+                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
+                </div>
+                <div className="col-span-2 flex items-center gap-2">
+                  <input type="checkbox" checked={newCoupon.active} onChange={e => setNewCoupon({...newCoupon, active: e.target.checked})}
+                    className="h-4 w-4 accent-[#1B6B3A]" />
+                  <label className="text-xs font-bold text-slate-700">Active</label>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <button onClick={saveCoupon} className="bg-[#1B6B3A] text-white text-xs font-bold px-5 py-2.5 rounded-lg">Save Coupon</button>
+                <button onClick={() => setShowCouponForm(false)} className="bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-lg">Cancel</button>
+              </div>
+            </div>
+          )}
+          {coupons.length === 0 ? (
+            <div className="py-16 text-center">
+              <Gift className="h-12 w-12 text-slate-200 mx-auto mb-3" />
+              <p className="text-sm font-bold text-slate-400">No coupons created yet</p>
+            </div>
+          ) : (
+            <div className="border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
+              <table className="w-full text-xs text-slate-600 border-collapse">
+                <thead className="bg-slate-50 font-bold text-slate-600 border-b border-slate-200">
+                  <tr>{['Code','Discount','Min Order','Limit','Expiry','Status','Action'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {coupons.map(c => (
+                    <tr key={c.code} className="hover:bg-slate-50/40">
+                      <td className="p-3 font-mono font-black text-[#1B6B3A] text-sm">{c.code}</td>
+                      <td className="p-3 font-bold">{c.type==='percentage'?c.value+'%':'Rs.'+c.value} off</td>
+                      <td className="p-3">Rs.{c.minOrder}</td>
+                      <td className="p-3">{c.usageLimit}</td>
+                      <td className="p-3">{c.expiry || 'No expiry'}</td>
+                      <td className="p-3">
+                        <button onClick={() => toggleCoupon(c.code)} title="Click to toggle"
+                          className={'px-2 py-0.5 rounded-full text-[10px] font-bold cursor-pointer border ' + (c.active?'bg-green-50 text-green-700 border-green-200 hover:bg-green-100':'bg-red-50 text-red-700 border-red-200 hover:bg-red-100')}>
+                          {c.active?'Active':'Inactive'}
+                        </button>
+                      </td>
+                      <td className="p-3"><button onClick={() => deleteCoupon(c.code)} className="text-slate-400 hover:text-red-500 p-1.5 hover:bg-red-50 rounded-lg"><Trash2 className="h-3.5 w-3.5" /></button></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'Content' && (
+        <div className="space-y-6">
+          <h3 className="font-extrabold text-sm text-slate-800">Content Management</h3>
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Marquee Banner Text</h4>
+              {!editingMarquee ? (
+                <button onClick={() => { setEditingMarquee(true); setMarqueeInput(marqueeLines.join('\n')); }}
+                  className="text-xs font-bold text-[#1B6B3A] flex items-center gap-1 hover:underline">
+                  <Edit3 className="h-3.5 w-3.5" /> Edit
+                </button>
+              ) : (
+                <div className="flex gap-2">
+                  <button onClick={saveMarquee} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-1.5 rounded-lg">Save</button>
+                  <button onClick={() => setEditingMarquee(false)} className="bg-slate-200 text-slate-700 text-xs font-bold px-3 py-1.5 rounded-lg">Cancel</button>
+                </div>
+              )}
+            </div>
+            {editingMarquee ? (
+              <textarea value={marqueeInput} onChange={e => setMarqueeInput(e.target.value)} rows={6}
+                placeholder="One line per marquee item..."
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs font-mono outline-none resize-none" />
+            ) : (
+              <div className="space-y-2">
+                {marqueeLines.map((line, i) => (
+                  <div key={i} className="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-lg text-xs text-slate-700">
+                    <span className="text-slate-300 font-bold w-5">#{i+1}</span> {line}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-1">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Homepage Hero Banners</h4>
+              <button onClick={handleSaveBanners} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-1.5 rounded-lg">Save Banners</button>
+            </div>
+            <p className="text-[11px] text-slate-400 mb-4">Fill image URL + title to replace the default homepage slider. Leave all empty to keep defaults.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {banners.map((b, i) => (
+                <div key={i} className="border border-slate-200 rounded-xl p-4 space-y-2.5">
+                  <div className="flex items-center gap-2 text-xs font-black text-slate-600">
+                    <Image className="h-4 w-4 text-[#1B6B3A]" /> Banner Slot {i + 1}
+                  </div>
+                  {b.img ? (
+                    <img src={b.img} alt={'Banner ' + (i+1) + ' preview'} className="w-full h-20 object-cover rounded-lg border"
+                      onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                  ) : (
+                    <div className="w-full h-20 bg-slate-50 border-2 border-dashed border-slate-200 rounded-lg flex items-center justify-center text-[10px] text-slate-400 font-bold">No image yet</div>
+                  )}
+                  <input type="text" value={b.img} onChange={e => updateBanner(i, 'img', e.target.value)}
+                    placeholder="Image URL (https://...)" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
+                  <input type="text" value={b.badge} onChange={e => updateBanner(i, 'badge', e.target.value)}
+                    placeholder="Badge text (e.g. Mega Sale)" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
+                  <input type="text" value={b.title} onChange={e => updateBanner(i, 'title', e.target.value)}
+                    placeholder="Headline" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] font-bold outline-none focus:border-[#1B6B3A]" />
+                  <input type="text" value={b.sub} onChange={e => updateBanner(i, 'sub', e.target.value)}
+                    placeholder="Sub-text" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
+                  <div className="grid grid-cols-2 gap-2">
+                    <input type="text" value={b.btn} onChange={e => updateBanner(i, 'btn', e.target.value)}
+                      placeholder="Button text" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
+                    <select value={b.btnAction} onChange={e => updateBanner(i, 'btnAction', e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-[11px] outline-none focus:border-[#1B6B3A]">
+                      {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </select>
+                  </div>
+                  {b.img && (
+                    <button onClick={() => setBanners(banners.map((x, idx) => idx === i ? { img: '', badge: '', title: '', sub: '', btn: 'Shop Now', btnAction: 'seeds-saplings' } : x))}
+                      className="text-[10px] text-red-500 font-bold hover:underline">Clear slot</button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-3 flex items-center gap-1.5">
+              <Bell className="h-3.5 w-3.5 text-[#E8A020]" /> Site Notification Bar
+            </h4>
+            {activeNotif && (
+              <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-3">
+                <span className="text-xs font-bold text-amber-800 flex-1">Live now: "{activeNotif.text}"</span>
+                <button onClick={handleClearNotification} className="text-[10px] text-red-600 font-bold hover:underline whitespace-nowrap">Remove</button>
+              </div>
+            )}
+            <div className="flex gap-3">
+              <input type="text" value={notifInput} onChange={e => setNotifInput(e.target.value)}
+                placeholder="e.g. Kharif Season Sale starts tomorrow!"
+                className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs font-medium outline-none focus:border-[#1B6B3A]" />
+              <button onClick={handleSendNotification} className="bg-[#E8A020] text-emerald-950 text-xs font-bold px-5 py-2.5 rounded-lg whitespace-nowrap">Publish</button>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-2">Shows as a yellow bar at the top of the site for all visitors until removed.</p>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'Settings' && (
+        <div className="space-y-6 max-w-2xl">
+          <h3 className="font-extrabold text-sm text-slate-800">Store Settings</h3>
+          {[
+            { section: 'Store Information', fields: [
+              { label: 'Store Name', key: 'storeName', type: 'text' },
+              { label: 'Phone', key: 'phone', type: 'text' },
+              { label: 'Email', key: 'email', type: 'email' },
+              { label: 'Address', key: 'address', type: 'text' },
+            ]},
+            { section: 'Delivery & Tax (applies to Cart & Checkout)', fields: [
+              { label: 'Free Delivery Above (Rs.)', key: 'freeDeliveryAbove', type: 'number' },
+              { label: 'Delivery Charge (Rs.)', key: 'deliveryCharge', type: 'number' },
+              { label: 'GST Percentage (%)', key: 'gstPercent', type: 'number' },
+            ]},
+            { section: 'Social Media', fields: [
+              { label: 'Instagram URL', key: 'instagramUrl', type: 'url' },
+              { label: 'Facebook URL', key: 'facebookUrl', type: 'url' },
+              { label: 'WhatsApp Number', key: 'whatsappNumber', type: 'text' },
+            ]},
+          ].map(section => (
+            <div key={section.section} className="bg-white border border-slate-200 rounded-xl p-5">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-4">{section.section}</h4>
+              <div className="space-y-4">
+                {section.fields.map(f => (
+                  <div key={f.key}>
+                    <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">{f.label}</label>
+                    <input type={f.type} value={settings[f.key] || ''} onChange={e => setSettings({...settings, [f.key]: f.type==='number'?Number(e.target.value):e.target.value})}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs font-medium outline-none focus:border-[#1B6B3A]" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+          <button onClick={saveSettings} className="bg-[#1B6B3A] text-white font-bold text-sm px-6 py-3 rounded-xl w-full">
+            Save All Settings
+          </button>
+
+          <form onSubmit={handleChangePassword} className="bg-white border border-slate-200 rounded-xl p-5">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-1 flex items-center gap-1.5">
+              <KeyRound className="h-3.5 w-3.5 text-[#1B6B3A]" /> Security — Change Admin Password
+            </h4>
+            <p className="text-[10px] text-slate-400 mb-4">This password protects the /admin login page on this device/browser.</p>
+            <div className="space-y-4">
+              <div>
+                <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Current Password</label>
+                <input type="password" required value={pwdForm.current} onChange={e => setPwdForm({ ...pwdForm, current: e.target.value })}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs font-medium outline-none focus:border-[#1B6B3A]" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">New Password (min 8 chars)</label>
+                  <input type="password" required minLength={8} value={pwdForm.next} onChange={e => setPwdForm({ ...pwdForm, next: e.target.value })}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs font-medium outline-none focus:border-[#1B6B3A]" />
+                </div>
+                <div>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Confirm New Password</label>
+                  <input type="password" required value={pwdForm.confirm} onChange={e => setPwdForm({ ...pwdForm, confirm: e.target.value })}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs font-medium outline-none focus:border-[#1B6B3A]" />
+                </div>
+              </div>
+              {pwdMsg && (
+                <p className={'text-xs font-bold ' + (pwdMsg.ok ? 'text-green-600' : 'text-red-500')}>{pwdMsg.text}</p>
+              )}
+              <button type="submit" className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-5 py-2.5 rounded-lg">
+                Update Password
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* ── CUSTOMER 360 / ORDER DETAIL MODAL ─────────────────────────── */}
+      {viewOrder && (() => {
+        const cEmail = (viewOrder.deliveryAddress?.email || '').toLowerCase();
+        const cPhone = viewOrder.phone || viewOrder.deliveryAddress?.phone || '';
+        const customerOrders = orders.filter(o =>
+          (cEmail && (o.deliveryAddress?.email || '').toLowerCase() === cEmail) ||
+          (cPhone && (o.phone === cPhone || o.deliveryAddress?.phone === cPhone))
+        );
+        const totalSpent = customerOrders.filter(o => o.status !== 'Cancelled').reduce((sm, o) => sm + o.totalAmount, 0);
+        return (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" style={{ background: 'rgba(15,23,42,0.55)' }} onClick={() => setViewOrder(null)}>
+            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[88vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+              <div className="bg-[#1B6B3A] text-white px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-200">Order Details</p>
+                  <h3 className="font-black text-lg font-mono">{viewOrder.id}</h3>
+                </div>
+                <button onClick={() => setViewOrder(null)} className="text-white/70 hover:text-white text-xl font-black px-2">✕</button>
+              </div>
+
+              <div className="p-6 space-y-5">
+                {/* Customer card */}
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                  <h4 className="font-extrabold text-xs text-slate-500 uppercase tracking-widest mb-3">Customer Profile</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Name</span><span className="font-black text-slate-800">{viewOrder.deliveryAddress?.name || '-'}</span></div>
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Phone</span><a href={'tel:' + cPhone} className="font-black text-[#1B6B3A]">{cPhone || '-'}</a></div>
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Email</span><span className="font-bold text-slate-700">{viewOrder.deliveryAddress?.email || '-'}</span></div>
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Pincode</span><span className="font-bold text-slate-700">{viewOrder.deliveryAddress?.pincode || '-'}</span></div>
+                    <div className="sm:col-span-2"><span className="text-slate-400 font-bold block text-[10px] uppercase">Full Address</span>
+                      <span className="font-bold text-slate-700">
+                        {[viewOrder.deliveryAddress?.addressLine1, viewOrder.deliveryAddress?.addressLine2, viewOrder.deliveryAddress?.city, viewOrder.deliveryAddress?.state].filter(Boolean).join(', ')}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3 mt-4">
+                    {[
+                      { v: customerOrders.length, l: 'Total Orders' },
+                      { v: 'Rs.' + totalSpent.toLocaleString('en-IN'), l: 'Total Spent' },
+                      { v: customerOrders.filter(o => o.status === 'Delivered').length, l: 'Delivered' },
+                    ].map((st, i) => (
+                      <div key={i} className="bg-white border border-slate-200 rounded-xl p-3 text-center">
+                        <div className="font-black text-[#1B6B3A] text-lg">{st.v}</div>
+                        <div className="text-[9px] font-bold uppercase tracking-wider text-slate-400">{st.l}</div>
+                      </div>
+                    ))}
+                  </div>
+                  {customerOrders.length > 1 && (
+                    <div className="mt-3 text-[10px] text-slate-500">
+                      <span className="font-bold uppercase tracking-wider text-slate-400">All orders: </span>
+                      {customerOrders.map(o => o.id).join(', ')}
+                    </div>
+                  )}
+                </div>
+
+                {/* Items */}
+                <div className="border border-slate-200 rounded-2xl overflow-hidden">
+                  <div className="bg-slate-50 px-4 py-2.5 text-xs font-extrabold text-slate-500 uppercase tracking-widest border-b border-slate-200">Items in this order</div>
+                  {viewOrder.items?.map((it, i) => (
+                    <div key={i} className="flex items-center gap-3 px-4 py-2.5 border-b border-slate-100 last:border-0">
+                      <img src={it.image} alt="" className="h-9 w-9 rounded-lg object-cover border" onError={imgFallback} />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-bold text-slate-800 truncate">{it.name}</div>
+                        <div className="text-[10px] text-slate-400">{it.brand} · Qty {it.quantity}</div>
+                      </div>
+                      <div className="text-xs font-black text-slate-700">Rs.{(it.price * it.quantity).toLocaleString('en-IN')}</div>
+                    </div>
+                  ))}
+                  <div className="flex items-center justify-between px-4 py-3 bg-emerald-50">
+                    <span className="text-xs font-bold text-slate-500">{viewOrder.paymentMethod || 'COD'} · {new Date(viewOrder.createdAt).toLocaleString('en-IN')}</span>
+                    <span className="font-black text-[#1B6B3A]">Total Rs.{viewOrder.totalAmount.toLocaleString('en-IN')}</span>
+                  </div>
+                </div>
+
+                {/* Status + message */}
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-bold text-slate-500">Update status:</span>
+                  <select value={viewOrder.status}
+                    onChange={e => { handleStatusChange(viewOrder.id, e.target.value as Order['status']); setViewOrder({ ...viewOrder, status: e.target.value as Order['status'] }); }}
+                    className={'border rounded-lg px-3 py-1.5 text-xs font-bold ' + statusColor(viewOrder.status)}>
+                    {['Placed','Confirmed','Dispatched','Delivered','Cancelled'].map(st => <option key={st}>{st}</option>)}
+                  </select>
+                  <span className="text-[10px] text-slate-400">Customer is notified in their profile inbox automatically.</span>
+                </div>
+
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                  <h4 className="font-extrabold text-xs text-slate-500 uppercase tracking-widest mb-2">Send Message to Customer Inbox</h4>
+                  <textarea value={adminMsg} onChange={e => setAdminMsg(e.target.value)} rows={2}
+                    placeholder="e.g. Your seeds batch is fresh stock from today's arrival — dispatching tomorrow morning."
+                    className="w-full bg-white border border-slate-200 rounded-xl p-3 text-xs outline-none focus:border-[#1B6B3A] resize-none" />
+                  <button
+                    onClick={() => {
+                      if (!adminMsg.trim()) return;
+                      sendInboxMessage({ toEmail: viewOrder.deliveryAddress?.email || 'all', title: 'Message about order ' + viewOrder.id, body: adminMsg.trim(), orderId: viewOrder.id });
+                      setAdminMsg('');
+                      alert('Message sent to the customer profile inbox.');
+                    }}
+                    className="mt-2 bg-[#1B6B3A] text-white text-xs font-bold px-5 py-2 rounded-lg">
+                    Send to Inbox
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

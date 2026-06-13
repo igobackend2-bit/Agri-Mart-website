@@ -41,8 +41,37 @@ export default function ProductDetailComponent({
   const t: LanguageDict = translations[lang];
 
   // Image selectors
-  const [activeImage, setActiveImage] = useState<string>(product.images[0]);
+  const [activeImage, setActiveImage] = useState<string>(product.images?.[0] || '/catalog/nursery-essentials/Pots.png');
   const [quantity, setQuantity] = useState<number>(1);
+
+  // ── Pack-size variants (1kg / 5kg, 1L / 5L etc. based on product unit) ──
+  const unitInfo = (() => {
+    const u = (product.unit || '').toLowerCase();
+    if (/litre|liter|\bl\b|ml/.test(u)) return { base: u.includes('ml') ? u : '1 L', kind: 'L' };
+    if (/kg|gram|\bg\b/.test(u)) return { base: u.includes('kg') ? u : '1 kg', kind: 'kg' };
+    return null;
+  })();
+  const PACK_VARIANTS = unitInfo ? [
+    { label: unitInfo.kind === 'L' ? '1 Litre' : '1 kg', mult: 1 },
+    { label: unitInfo.kind === 'L' ? '5 Litre' : '5 kg', mult: 5, save: 4 },
+    { label: unitInfo.kind === 'L' ? '10 Litre' : '10 kg', mult: 10, save: 8 },
+  ] : [
+    { label: '1 Pack', mult: 1 },
+    { label: 'Pack of 3', mult: 3, save: 5 },
+    { label: 'Pack of 5', mult: 5, save: 8 },
+  ];
+  const [packIdx, setPackIdx] = useState(0);
+  const pack = PACK_VARIANTS[packIdx];
+  // Bigger packs get a small bulk discount
+  const packPrice = Math.round(product.price * pack.mult * (1 - (pack.save || 0) / 100));
+  const packMrp = product.mrp * pack.mult;
+  const cartProduct: typeof product = pack.mult === 1 ? product : {
+    ...product,
+    id: product.id + '::pack' + pack.mult,
+    name: product.name + ' — ' + pack.label + ' pack',
+    price: packPrice,
+    mrp: packMrp,
+  };
   const [activeTab, setActiveTab] = useState<'Overview' | 'Usage' | 'Composition' | 'Reviews'>('Overview');
   
   // Pincode validation state
@@ -60,7 +89,7 @@ export default function ProductDetailComponent({
 
   // Update active image when changing products
   useEffect(() => {
-    setActiveImage(product.images[0]);
+    setActiveImage(product.images?.[0] || '/catalog/nursery-essentials/Pots.png');
     setQuantity(1);
     setPincodeStatus('unchecked');
     setPincode('');
@@ -157,7 +186,7 @@ export default function ProductDetailComponent({
             {/* Always seed 4 identical images with different filters or Unsplash backups if none available */}
             {Array.from({ length: 4 }).map((_, idx) => {
               // Cycle through secondary images if available, else repeat the main
-              const imgUrl = product.images[idx] || product.images[0];
+              const imgUrl = product.images?.[idx] || product.images?.[0] || '/catalog/nursery-essentials/Pots.png';
               const isActive = activeImage === imgUrl;
               return (
                 <div
@@ -247,6 +276,33 @@ export default function ProductDetailComponent({
               )}
             </div>
 
+            {/* Pack size selector */}
+            <div className="pt-4">
+              <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">Select Pack Size</p>
+              <div className="flex gap-2 flex-wrap">
+                {PACK_VARIANTS.map((v, i) => {
+                  const vPrice = Math.round(product.price * v.mult * (1 - (v.save || 0) / 100));
+                  return (
+                    <button key={i} onClick={() => setPackIdx(i)}
+                      className={'relative px-4 py-2.5 rounded-xl border-2 text-left transition ' + (packIdx === i ? 'border-[#1B6B3A] bg-emerald-50 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300')}>
+                      <span className={'block text-xs font-black ' + (packIdx === i ? 'text-[#1B6B3A]' : 'text-slate-700')}>{v.label}</span>
+                      <span className="block text-[11px] font-bold text-slate-500 mt-0.5">₹{vPrice.toLocaleString('en-IN')}</span>
+                      {v.save ? (
+                        <span className="absolute -top-2 -right-2 bg-[#E8A020] text-emerald-950 text-[8px] font-black px-1.5 py-0.5 rounded-full">SAVE {v.save}%</span>
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Stock urgency */}
+            {product.stock === 0 ? (
+              <p className="text-xs font-black text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 inline-block">Out of Stock — restocking soon</p>
+            ) : product.stock < 20 ? (
+              <p className="text-xs font-black text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 inline-block">🔥 Low stock — only {product.stock} left, order soon!</p>
+            ) : null}
+
             {/* Stepper + Action CTA tools */}
             <div className="flex items-center gap-4 flex-wrap pt-4">
               {/* Stepper counter */}
@@ -271,7 +327,7 @@ export default function ProductDetailComponent({
               {/* Add To Cart CTA Button */}
               <button
                 onClick={() => {
-                  addToCart(product, quantity);
+                  addToCart(cartProduct, quantity);
                 }}
                 className="bg-[#1B6B3A] hover:bg-emerald-950 text-white font-extrabold text-xs px-6 py-3 rounded-lg flex items-center justify-center gap-2 flex-1 min-w-[140px] shadow transition select-none cursor-pointer"
               >
@@ -324,7 +380,7 @@ export default function ProductDetailComponent({
             <div className="flex items-center gap-3 sm:gap-6 flex-wrap justify-center sm:justify-start">
               {/* Product 1 */}
               <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-slate-100 shadow-sm max-w-xs">
-                <img src={product.images[0]} alt="p1" className="h-10 w-10 object-cover rounded" />
+                <img src={product.images?.[0] || '/catalog/nursery-essentials/Pots.png'} onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} alt="p1" className="h-10 w-10 object-cover rounded" />
                 <div className="text-[11px] font-bold text-slate-700 line-clamp-1 truncate max-w-[120px]">{product.name}</div>
               </div>
 
@@ -335,7 +391,7 @@ export default function ProductDetailComponent({
                 className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-slate-100 shadow-sm max-w-xs cursor-pointer hover:border-[#1B6B3A]"
                 onClick={() => setSelectedProduct(frequentlyBoughtProduct)}
               >
-                <img src={frequentlyBoughtProduct.images[0]} alt="p2" className="h-10 w-10 object-cover rounded" />
+                <img src={frequentlyBoughtProduct.images?.[0] || '/catalog/nursery-essentials/Pots.png'} alt="p2" onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} className="h-10 w-10 object-cover rounded" />
                 <div className="text-[11px] font-bold text-slate-700 line-clamp-1 truncate max-w-[120px]">{frequentlyBoughtProduct.name}</div>
               </div>
             </div>
@@ -523,7 +579,7 @@ export default function ProductDetailComponent({
               >
                 <div>
                   <div className="h-36 bg-slate-50 relative">
-                    <img src={p.images[0]} alt={p.name} className="w-full h-full object-cover" />
+                    <img src={p.images?.[0] || '/catalog/nursery-essentials/Pots.png'} onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} alt={p.name} className="w-full h-full object-cover" />
                     {p.isIgoOwn && (
                       <span className="absolute top-2 left-2 bg-[#1B6B3A] text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest">
                         IGO

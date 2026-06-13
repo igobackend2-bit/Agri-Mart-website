@@ -16,6 +16,8 @@ import {
 import { db, auth } from '../firebase';
 import { Product, Order, UserProfile, Address } from '../types';
 import { fetchUserOrders, cancelUserOrder } from '../dbHelper';
+import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, InboxMessage } from '../storeData';
+import { Inbox as InboxIcon, Mail } from 'lucide-react';
 
 interface AccountComponentProps {
   lang: 'en' | 'ta';
@@ -126,7 +128,8 @@ export default function AccountComponent({
   addToCart
 }: AccountComponentProps) {
   const t = accountTranslations[lang];
-  const [activeTab, setActiveTab] = useState<'Orders' | 'Wishlist' | 'Addresses' | 'Profile'>('Orders');
+  const [activeTab, setActiveTab] = useState<'Orders' | 'Inbox' | 'Wishlist' | 'Addresses' | 'Profile'>('Orders');
+  const [inboxMsgs, setInboxMsgs] = useState<InboxMessage[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
 
@@ -142,21 +145,35 @@ export default function AccountComponent({
     pincode: ''
   });
 
-  // Pull orders when account opens
+  // Pull orders when account opens (cloud + this-device orders merged)
   useEffect(() => {
+    const local = getLocalOrders();
     if (userProfile?.uid) {
       setIsLoadingOrders(true);
       fetchUserOrders(userProfile.uid)
         .then((items) => {
-          setOrders(items);
+          const map = new Map<string, Order>();
+          [...items, ...local].forEach(o => { if (!map.has(o.id)) map.set(o.id, o); });
+          setOrders(Array.from(map.values()).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '')));
           setIsLoadingOrders(false);
         })
-        .catch((err) => {
-          console.error(err);
+        .catch(() => {
+          setOrders(local);
           setIsLoadingOrders(false);
         });
+    } else {
+      setOrders(local);
     }
+    setInboxMsgs(getInbox(userProfile?.email));
   }, [userProfile]);
+
+  // Mark inbox read when opened
+  useEffect(() => {
+    if (activeTab === 'Inbox') {
+      markInboxRead(userProfile?.email);
+      setInboxMsgs(getInbox(userProfile?.email));
+    }
+  }, [activeTab]);
 
   const handleCancelOrder = async (orderId: string) => {
     if (!window.confirm(t.confirmCancel)) return;
@@ -257,6 +274,7 @@ export default function AccountComponent({
           <div className="flex flex-col gap-1">
             {([
               { key: 'Orders', icon: ShoppingBag, label: t.orders },
+              { key: 'Inbox', icon: InboxIcon, label: 'Inbox' },
               { key: 'Wishlist', icon: Heart, label: t.wishlist },
               { key: 'Addresses', icon: MapPin, label: t.addresses },
               { key: 'Profile', icon: User, label: t.profile }
@@ -275,6 +293,9 @@ export default function AccountComponent({
                 >
                   <IconComp className="h-4.5 w-4.5" />
                   <span>{tab.label}</span>
+                  {tab.key === 'Inbox' && unreadInboxCount(userProfile?.email) > 0 && (
+                    <span className="ml-auto bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">{unreadInboxCount(userProfile?.email)}</span>
+                  )}
                 </button>
               );
             })}
@@ -436,6 +457,39 @@ export default function AccountComponent({
           )}
 
           {/* WISHLIST VIEW TAB */}
+          {/* INBOX VIEW TAB */}
+          {activeTab === 'Inbox' && (
+            <div className="space-y-5">
+              <div className="border-b border-slate-100 pb-3">
+                <h3 className="font-display font-extrabold text-slate-900 text-lg">Profile Inbox</h3>
+                <p className="text-xs text-slate-400 mt-0.5">Order updates and messages from the IGO Agri Mart team</p>
+              </div>
+              {inboxMsgs.length === 0 ? (
+                <div className="py-16 text-center">
+                  <Mail className="h-12 w-12 text-slate-200 mx-auto mb-3" />
+                  <p className="text-sm font-bold text-slate-400">No messages yet</p>
+                  <p className="text-[11px] text-slate-400 mt-1">Order confirmations and updates from our team will appear here.</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {inboxMsgs.map(m => (
+                    <div key={m.id} className={'border rounded-2xl p-4 ' + (m.read ? 'bg-white border-slate-200' : 'bg-emerald-50/60 border-emerald-200')}>
+                      <div className="flex items-start justify-between gap-3">
+                        <h4 className="font-extrabold text-slate-800 text-sm">{m.title}</h4>
+                        <span className="text-[10px] text-slate-400 whitespace-nowrap shrink-0">
+                          {new Date(m.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })} · {new Date(m.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{m.body}</p>
+                      {m.orderId && <span className="inline-block mt-2 bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded font-mono">{m.orderId}</span>}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* WISHLIST VIEW TAB */}
           {activeTab === 'Wishlist' && (
             <div className="space-y-6">
               <div className="border-b border-slate-100 pb-3">
@@ -448,7 +502,7 @@ export default function AccountComponent({
                   {wishlistProducts.map((p) => (
                     <div key={p.id} className="border border-slate-200 p-4 rounded-xl flex gap-4 items-center justify-between hover:shadow-sm transition">
                       <div className="flex gap-3 items-center cursor-pointer overflow-hidden" onClick={() => { setSelectedProduct(p); setCurrentPage('product'); }}>
-                        <img src={p.images[0]} alt="" className="h-12 w-12 object-cover rounded-lg border" />
+                        <img src={p.images?.[0] || '/catalog/nursery-essentials/Pots.png'} onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} alt="" className="h-12 w-12 object-cover rounded-lg border" />
                         <div className="truncate">
                           <h4 className="font-display font-bold text-xs text-slate-800 line-clamp-1">{p.name}</h4>
                           <span className="text-[10px] text-slate-400 font-semibold block mt-0.5">{p.brand}</span>

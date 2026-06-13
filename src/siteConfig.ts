@@ -1,0 +1,205 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Site-wide configuration helper.
+// Everything the Admin panel edits is stored here (localStorage) and read by
+// the live site (Header marquee, Home hero banners, Cart coupons/GST/delivery,
+// site notification bar, admin password).
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface SiteSettings {
+  storeName: string;
+  phone: string;
+  email: string;
+  address: string;
+  freeDeliveryAbove: number;
+  deliveryCharge: number;
+  gstPercent: number;
+  instagramUrl: string;
+  facebookUrl: string;
+  whatsappNumber: string;
+}
+
+export interface AdminCoupon {
+  code: string;
+  type: 'percentage' | 'fixed';
+  value: number;
+  minOrder: number;
+  expiry: string;       // yyyy-mm-dd or ''
+  usageLimit: number;
+  active: boolean;
+}
+
+export interface HeroBanner {
+  img: string;
+  badge: string;
+  title: string;
+  sub: string;
+  btn: string;
+  btnAction: string;    // category slug to open
+}
+
+export interface SiteNotification {
+  text: string;
+  ts: number;
+  active: boolean;
+}
+
+// Defaults match the site's current live behaviour.
+export const DEFAULT_SETTINGS: SiteSettings = {
+  storeName: 'IGO Agri Mart',
+  phone: '+91 73977 85803',
+  email: 'igobackend3@gmail.com',
+  address: 'Chengalpattu & Chennai HQ, Tamil Nadu',
+  freeDeliveryAbove: 1300,
+  deliveryCharge: 120,
+  gstPercent: 18,
+  instagramUrl: '',
+  facebookUrl: '',
+  whatsappNumber: '917397785803',
+};
+
+export const DEFAULT_MARQUEE: string[] = [
+  'Free Delivery on orders above Rs.1,300',
+  'Seeds • Fertilizers • Equipment • Pesticides',
+  'Trusted by 10,000+ Farmers across India',
+  'Genuine Products • Best Prices • Fast Delivery',
+];
+
+const KEYS = {
+  settings: 'igo_settings',
+  marquee: 'igo_marquee',
+  coupons: 'igo_coupons',
+  banners: 'igo_banners',
+  notification: 'igo_notification',
+  adminPwdHash: 'igo_admin_pwd_hash',
+  adminSession: 'igo_admin_session',
+} as const;
+
+function readJSON<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+// ── Settings ─────────────────────────────────────────────────────────────────
+export function getSettings(): SiteSettings {
+  return { ...DEFAULT_SETTINGS, ...readJSON<Partial<SiteSettings>>(KEYS.settings, {}) };
+}
+export function saveSettings(s: SiteSettings): void {
+  localStorage.setItem(KEYS.settings, JSON.stringify(s));
+}
+
+// ── Marquee ──────────────────────────────────────────────────────────────────
+export function getMarqueeLines(): string[] {
+  const lines = readJSON<string[]>(KEYS.marquee, DEFAULT_MARQUEE);
+  return Array.isArray(lines) && lines.length > 0 ? lines : DEFAULT_MARQUEE;
+}
+export function saveMarqueeLines(lines: string[]): void {
+  localStorage.setItem(KEYS.marquee, JSON.stringify(lines));
+}
+
+// ── Coupons ──────────────────────────────────────────────────────────────────
+export function getCoupons(): AdminCoupon[] {
+  return readJSON<AdminCoupon[]>(KEYS.coupons, []);
+}
+export function saveCoupons(coupons: AdminCoupon[]): void {
+  localStorage.setItem(KEYS.coupons, JSON.stringify(coupons));
+}
+
+export interface CouponResult {
+  ok: boolean;
+  /** percentage (< 100) or fixed amount (>= 100) — matches existing cart logic */
+  discount: number;
+  message: string;
+}
+
+/** Validate a coupon code against admin-created coupons (plus built-in legacy codes). */
+export function validateCoupon(code: string, subtotal: number): CouponResult {
+  const c = code.trim().toUpperCase();
+  const admin = getCoupons().find(x => x.code.toUpperCase() === c);
+  if (admin) {
+    if (!admin.active) return { ok: false, discount: 0, message: 'This coupon is currently inactive.' };
+    if (admin.expiry && new Date(admin.expiry + 'T23:59:59') < new Date())
+      return { ok: false, discount: 0, message: 'This coupon has expired.' };
+    if (subtotal < admin.minOrder)
+      return { ok: false, discount: 0, message: `This coupon is only valid for orders above ₹${admin.minOrder.toLocaleString('en-IN')}.` };
+    const discount = admin.type === 'percentage' ? admin.value : admin.value;
+    const label = admin.type === 'percentage' ? `${admin.value}% savings unlocked` : `₹${admin.value} flat discount applied`;
+    return { ok: true, discount, message: `✓ Coupon ${admin.code} successfully applied! ${label}.` };
+  }
+  // Legacy built-in codes (kept for backwards compatibility)
+  if (c === 'HARVEST20') {
+    if (subtotal < 1000) return { ok: false, discount: 0, message: 'This coupon is only valid for orders above ₹1,000.' };
+    return { ok: true, discount: 20, message: '✓ Coupon HARVEST20 successfully applied! 20% savings unlocked.' };
+  }
+  if (c === 'IGO500') {
+    if (subtotal < 2500) return { ok: false, discount: 0, message: 'This coupon is only valid for orders above ₹2,500.' };
+    return { ok: true, discount: 500, message: '✓ Coupon IGO500 successfully applied! ₹500 flat discount applied.' };
+  }
+  return { ok: false, discount: 0, message: '✗ Invalid coupon code.' };
+}
+
+// ── Hero banners ─────────────────────────────────────────────────────────────
+export function getBanners(): HeroBanner[] {
+  const banners = readJSON<HeroBanner[]>(KEYS.banners, []);
+  return Array.isArray(banners) ? banners.filter(b => b && b.img && b.title) : [];
+}
+export function saveBanners(banners: HeroBanner[]): void {
+  localStorage.setItem(KEYS.banners, JSON.stringify(banners));
+}
+
+// ── Site notification bar ────────────────────────────────────────────────────
+export function getNotification(): SiteNotification | null {
+  const n = readJSON<SiteNotification | null>(KEYS.notification, null);
+  return n && n.active && n.text ? n : null;
+}
+export function setNotification(text: string): void {
+  localStorage.setItem(KEYS.notification, JSON.stringify({ text, ts: Date.now(), active: true }));
+}
+export function clearNotification(): void {
+  localStorage.removeItem(KEYS.notification);
+}
+
+// ── Admin password ───────────────────────────────────────────────────────────
+// Default password (used until the admin changes it from Settings → Security):
+const DEFAULT_ADMIN_PASSWORD = 'IgoAgri@2026';
+
+async function hashText(text: string): Promise<string> {
+  try {
+    if (window.crypto?.subtle) {
+      const buf = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+  } catch { /* fall through */ }
+  // Non-secure-context fallback (dev over plain http on LAN)
+  let h = 5381;
+  for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) >>> 0;
+  return 'djb2:' + h.toString(16) + ':' + text.length;
+}
+
+export async function verifyAdminPassword(input: string): Promise<boolean> {
+  const stored = localStorage.getItem(KEYS.adminPwdHash);
+  if (!stored) return input === DEFAULT_ADMIN_PASSWORD;
+  return (await hashText(input)) === stored;
+}
+
+export async function changeAdminPassword(current: string, next: string): Promise<{ ok: boolean; error?: string }> {
+  if (!(await verifyAdminPassword(current))) return { ok: false, error: 'Current password is incorrect.' };
+  if (next.length < 8) return { ok: false, error: 'New password must be at least 8 characters.' };
+  localStorage.setItem(KEYS.adminPwdHash, await hashText(next));
+  return { ok: true };
+}
+
+// ── Admin session (survives page refresh on /admin within the same tab) ──────
+export function isAdminSessionActive(): boolean {
+  return sessionStorage.getItem(KEYS.adminSession) === '1';
+}
+export function startAdminSession(): void {
+  sessionStorage.setItem(KEYS.adminSession, '1');
+}
+export function endAdminSession(): void {
+  sessionStorage.removeItem(KEYS.adminSession);
+}

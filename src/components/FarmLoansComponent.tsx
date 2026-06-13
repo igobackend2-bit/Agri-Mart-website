@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { captureLead } from '../leads';
 import { 
   FileText, 
   Percent, 
@@ -123,6 +124,8 @@ export default function FarmLoansComponent({
       return;
     }
 
+    // Save application so it appears in Admin -> Visitor Leads
+    captureLead({ source: 'Farm Loan', name, phone, subject: 'Loan pre-qualification request' });
     setIsSubmitted(true);
   };
 
@@ -267,7 +270,7 @@ export default function FarmLoansComponent({
               </div>
               <button 
                 onClick={() => setIsSubventionApplied(!isSubventionApplied)}
-                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${isSubventionApplied ? 'bg-[#1B6B3A]' : 'bg-slate-350'}`}
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${isSubventionApplied ? 'bg-[#1B6B3A]' : 'bg-slate-300'}`}
               >
                 <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${isSubventionApplied ? 'translate-x-5' : 'translate-x-0'}`}></span>
               </button>

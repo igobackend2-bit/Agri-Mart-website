@@ -8,12 +8,15 @@ import {
   X, 
   Globe, 
   CheckCircle, 
-  Award 
+  Award,
+  Mic
 } from 'lucide-react';
 import { auth, db } from '../firebase';
 import { GoogleAuthProvider, signInWithPopup, signOut, User as FirebaseUser } from 'firebase/auth';
 import { fetchProducts, saveUserProfile, fetchUserProfile } from '../dbHelper';
 import { Product, UserProfile } from '../types';
+import { getMarqueeLines } from '../siteConfig';
+import { detectLocation, getSavedLocation } from '../storeData';
 import { translations, LanguageDict } from '../translation';
 
 interface HeaderProps {
@@ -44,6 +47,15 @@ export default function Header({
   setUserProfile
 }: HeaderProps) {
   const t: LanguageDict = translations[lang];
+  const [cxLoc, setCxLoc] = useState(() => getSavedLocation());
+  const [locBusy, setLocBusy] = useState(false);
+  const handleDetectLoc = async () => {
+    if (locBusy) return;
+    setLocBusy(true);
+    try { setCxLoc(await detectLocation()); }
+    catch { alert('Please allow location access to detect your delivery area.'); }
+    finally { setLocBusy(false); }
+  };
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState<Product[]>([]);
@@ -152,7 +164,7 @@ export default function Header({
       {/* Announcement Bar */}
       <div className="bg-[#1B6B3A] text-[#F7F9F4] text-xs py-1.5 px-4 text-center font-medium tracking-wide border-b border-[#248F4E]">
         <div className="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-2 text-center">
-          <span className="mx-auto block text-center w-full sm:-mr-2">{t.announcement}</span>
+          <span className="mx-auto block text-center w-full sm:-mr-2 truncate sm:whitespace-normal">{getMarqueeLines().join('  |  ')}</span>
         </div>
       </div>
 
@@ -182,6 +194,21 @@ export default function Header({
             </div>
           </div>
 
+          {/* Deliver-to location chip (Swiggy/Zepto-style) */}
+          <button
+            onClick={(e) => { e.stopPropagation(); handleDetectLoc(); }}
+            className="hidden md:flex items-center gap-1.5 ml-2 px-3 py-1.5 rounded-xl border border-slate-200 bg-[#F7F9F4] hover:border-[#1B6B3A] transition text-left shrink-0"
+            title="Detect my delivery location"
+          >
+            <span className="text-base leading-none">📍</span>
+            <span>
+              <span className="block text-[8px] font-black uppercase tracking-widest text-slate-400">Deliver to</span>
+              <span className="block text-[11px] font-black text-[#1B6B3A] leading-tight max-w-[120px] truncate">
+                {locBusy ? 'Detecting...' : cxLoc ? (cxLoc.city + (cxLoc.pincode ? ' ' + cxLoc.pincode : '')) : 'Detect location'}
+              </span>
+            </span>
+          </button>
+
           {/* Autocomplete Search Bar */}
           <div ref={searchRef} className="hidden md:block relative flex-1 max-w-xl">
             <form onSubmit={handleSearchSubmit} className="relative">
@@ -193,7 +220,10 @@ export default function Header({
                 placeholder={t.searchPlaceholder}
                 className="w-full bg-[#F7F9F4] text-[#1a1a1a] pl-4 pr-10 py-2 rounded-lg text-sm border border-slate-200 focus:outline-none focus:border-[#1B6B3A] focus:ring-1 focus:ring-[#1B6B3A] transition"
               />
-              <button type="submit" className="absolute right-3 top-2.5 text-slate-400 hover:text-[#1B6B3A]">
+              <button type="button" className="absolute right-10 top-2.5 text-slate-400 hover:text-[#1B6B3A] transition">
+                <Mic className="h-4.5 w-4.5" />
+              </button>
+              <button type="submit" className="absolute right-3 top-2.5 text-slate-400 hover:text-[#1B6B3A] transition">
                 <Search className="h-4.5 w-4.5" />
               </button>
             </form>
@@ -211,7 +241,7 @@ export default function Header({
                     className="flex items-center justify-between px-3 py-2.5 hover:bg-[#F7F9F4] cursor-pointer transition"
                   >
                     <div className="flex items-center gap-3">
-                      <img src={p.images[0]} alt={p.name} className="h-8 w-8 rounded object-cover" />
+                      <img src={p.images?.[0] || '/catalog/nursery-essentials/Pots.png'} alt={p.name} className="h-8 w-8 rounded object-cover" onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} />
                       <div>
                         <div className="text-xs font-semibold text-slate-800 line-clamp-1">{p.name}</div>
                         <div className="text-[10px] text-[#1B6B3A] font-medium">
@@ -299,7 +329,7 @@ export default function Header({
                 </div>
               ) : (
                 <button
-                  onClick={executeGoogleLogin}
+                  onClick={() => setCurrentPage('auth')}
                   className="bg-[#1B6B3A] hover:bg-[#15532d] text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-sm border border-[#248F4E]"
                 >
                   {t.login}
@@ -337,52 +367,10 @@ export default function Header({
 
       {/* Desktop Sub-Navigation Bar */}
       <div className="hidden md:block bg-slate-900 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-slate-350 select-none">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-slate-300 select-none">
           <div className="flex gap-5 items-center py-2.5">
-            <span 
-              onClick={() => { setSelectedCategory('seeds-saplings'); setCurrentPage('category'); }}
-              className="hover:text-[#E8A020] cursor-pointer transition py-0.5"
-            >
-              {lang === 'ta' ? 'விதைகள்' : 'Seeds & Saplings'}
-            </span>
-            <span 
-              onClick={() => { setSelectedCategory('fertilizers'); setCurrentPage('category'); }}
-              className="hover:text-[#E8A020] cursor-pointer transition py-0.5"
-            >
-              {lang === 'ta' ? 'உரங்கள்' : 'Fertilizers'}
-            </span>
-            <span 
-              onClick={() => { setSelectedCategory('crop-care'); setCurrentPage('category'); }}
-              className="hover:text-[#E8A020] cursor-pointer transition py-0.5"
-            >
-              Crops Care
-            </span>
-            <span 
-              onClick={() => { setSelectedCategory('bioproducts'); setCurrentPage('category'); }}
-              className="hover:text-[#E8A020] cursor-pointer transition py-0.5"
-            >
-              Bioproducts
-            </span>
-            <span 
-              onClick={() => { setSelectedCategory('farm-implements'); setCurrentPage('category'); }}
-              className="hover:text-[#E8A020] cursor-pointer transition py-0.5"
-            >
-              Implements
-            </span>
-            <span 
-              onClick={() => { setSelectedCategory('farm-automation'); setCurrentPage('category'); }}
-              className="hover:text-[#E8A020] cursor-pointer transition py-0.5"
-            >
-              Farm Automation
-            </span>
-            <span 
-              onClick={() => { setSelectedCategory('protein-cuts'); setCurrentPage('category'); }}
-              className="hover:text-[#E8A020] cursor-pointer transition py-0.5"
-            >
-              Protein Cuts
-            </span>
 
-            <span className="h-4 w-[1px] bg-slate-800 self-center"></span>
+
 
             {/* Custom Interactive Module Pages */}
             <span 
@@ -394,7 +382,7 @@ export default function Header({
             </span>
             <span 
               onClick={() => setCurrentPage('academy')}
-              className="hover:text-emerald-400 text-teal-350 font-bold normal-case cursor-pointer transition py-0.5 flex items-center gap-1"
+              className="hover:text-emerald-400 text-teal-300 font-bold normal-case cursor-pointer transition py-0.5 flex items-center gap-1"
             >
               <span>🎓</span>
               <span>IGO Academy</span>
@@ -450,16 +438,16 @@ export default function Header({
               🧪 Fertilizers
             </button>
             <button 
-              onClick={() => { setMobileMenuOpen(false); setSelectedCategory('crop-care'); setCurrentPage('category'); }}
+              onClick={() => { setMobileMenuOpen(false); setSelectedCategory('crop-protection'); setCurrentPage('category'); }}
               className="text-left py-1.5 px-2.5 bg-slate-50 rounded hover:bg-[#1B6B3A]/10 text-slate-800"
             >
-              🩺 Crop Care
+              🛡️ Crop Protection
             </button>
             <button 
-              onClick={() => { setMobileMenuOpen(false); setSelectedCategory('farm-automation'); setCurrentPage('category'); }}
+              onClick={() => { setMobileMenuOpen(false); setSelectedCategory('irrigation-systems'); setCurrentPage('category'); }}
               className="text-left py-1.5 px-2.5 bg-slate-50 rounded hover:bg-[#1B6B3A]/10 text-slate-800"
             >
-              ⚙️ Automation
+              💧 Irrigation
             </button>
             <button 
               onClick={() => { setMobileMenuOpen(false); setCurrentPage('farm-loans'); }}
@@ -516,7 +504,7 @@ export default function Header({
               </>
             ) : (
               <button
-                onClick={() => { setMobileMenuOpen(false); executeGoogleLogin(); }}
+                onClick={() => { setMobileMenuOpen(false); setCurrentPage('auth'); }}
                 className="w-full bg-[#1B6B3A] hover:bg-[#134D29] text-white text-xs font-bold py-2 px-4 rounded-lg text-center"
               >
                 {t.login}
@@ -533,7 +521,7 @@ export default function Header({
                 <button
                   onClick={() => setLang('en')}
                   className={`px-3 py-1 text-[10px] font-black rounded-full transition cursor-pointer ${
-                    lang === 'en' ? 'bg-[#1B6B3A] text-white shadow' : 'text-slate-550 text-slate-500 hover:text-slate-800'
+                    lang === 'en' ? 'bg-[#1B6B3A] text-white shadow' : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   English
@@ -541,7 +529,7 @@ export default function Header({
                 <button
                   onClick={() => setLang('ta')}
                   className={`px-3 py-1 text-[10px] font-black rounded-full transition cursor-pointer ${
-                    lang === 'ta' ? 'bg-[#1B6B3A] text-white shadow' : 'text-slate-550 text-slate-500 hover:text-slate-800'
+                    lang === 'ta' ? 'bg-[#1B6B3A] text-white shadow' : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   தமிழ்

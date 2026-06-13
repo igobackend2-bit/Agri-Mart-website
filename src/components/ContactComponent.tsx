@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { captureLead } from '../leads';
 import { 
   Send, 
   MapPin, 
@@ -50,7 +51,8 @@ export default function ContactComponent({
     }
 
     setLoading(true);
-    // Mimic secure message sync
+    // Save enquiry so it appears in Admin -> Visitor Leads
+    captureLead({ source: 'Contact Form', name, phone, subject, message });
     setTimeout(() => {
       setLoading(false);
       setIsSent(true);

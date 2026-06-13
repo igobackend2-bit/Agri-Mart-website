@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { captureLead } from '../leads';
 import { 
   ArrowLeft, 
   CheckCircle, 
@@ -127,6 +128,12 @@ export default function ServicesDetailComponent({
       };
 
       await placeServiceLead(newLead);
+      // Mirror into Admin -> Visitor Leads
+      captureLead({
+        source: 'Expert Service', name, phone, email,
+        subject: selectedService.name,
+        message: `District: ${district} | Crop: ${cropType} | ${acres} acres${additionalNotes ? ' | ' + additionalNotes : ''}`,
+      });
       setSubmitSuccess(true);
     } catch (err: any) {
       console.error('Failed to submit service lead request:', err);

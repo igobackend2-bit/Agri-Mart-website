@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { 
-  ChevronRight, 
-  SlidersHorizontal, 
-  Trash2, 
-  ExternalLink, 
-  Percent, 
-  Tag, 
-  Grid3X3, 
+import {
+  ChevronRight,
+  SlidersHorizontal,
+  Trash2,
+  ExternalLink,
+  Percent,
+  Tag,
+  Grid3X3,
   RefreshCcw,
   Sparkles
 } from 'lucide-react';
@@ -73,12 +73,12 @@ export default function CategoryComponent({
 
   // Compute category details
   const currentCategoryObj = categories.find(x => x.slug === selectedCategory);
-  const categoryHeaderTitle = activeBrandName 
-    ? `Brand: ${activeBrandName}` 
-    : (searchQuery 
-        ? `Search Results for "${searchQuery}"` 
-        : (currentCategoryObj ? currentCategoryObj.name : 'All Farming Products')
-      );
+  const categoryHeaderTitle = activeBrandName
+    ? `Brand: ${activeBrandName}`
+    : (searchQuery
+      ? `Search Results for "${searchQuery}"`
+      : (currentCategoryObj ? currentCategoryObj.name : 'All Farming Products')
+    );
 
   // Clear all filters
   const resetFilters = () => {
@@ -99,21 +99,69 @@ export default function CategoryComponent({
   const getFilteredProducts = () => {
     let result = [...products];
 
-    // Category / Brand filter
+    // Category / Brand filter with ROLLUP for subcategory matching
     if (selectedCategory && !isBrandOnlyFilter) {
-      // support matching either real category name or normalized slug matches
-      result = result.filter(p => 
-        p.category.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-') === selectedCategory ||
-        p.category.toLowerCase() === selectedCategory.toLowerCase()
-      );
+      const categoryName = selectedCategory.toLowerCase().replace(/-/g, ' ');
+      const slugNorm = selectedCategory.toLowerCase();
+
+      const ROLLUP: Record<string, string[]> = {
+        'fertilizers': ['chemical fertilizers', 'organic fertilizers', 'liquid nutrients', 'powder & micronutrients', 'water soluble fertilizers', 'organic manures', 'micronutrients', 'bio-stimulants', 'organic bio-boosters', 'soil conditioners', 'bioproducts'],
+        'seeds-saplings': ['vegetable seeds', 'herb seeds', 'microgreen seeds', 'leafy green seeds', 'tree seeds', 'field crops', 'fruit plants', 'flower seeds', 'flowering plants', 'seeds', 'plants & saplings', 'seeds & saplings'],
+        'fresh-farm-produce': ['vegetables', 'fruits', 'exotic fruit plants', 'berry plants', 'fresh farm produce'],
+        'outdoor-plants-trees': ['flowers', 'medicinal plants', 'fruit plants', 'exotic fruit plants', 'berry plants', 'outdoor plants & trees'],
+        'nursery-garden-essentials': ['tools & accessories', 'garden tools', 'grow bags', 'coir pots', 'hanging baskets', 'balcony planters', 'self-watering pots', 'seedling trays', 'microgreen trays', 'farm tools & implements', 'hand tools', 'gardening products', 'nursery & garden essentials', 'pots & planters'],
+        'hydroponic-systems': ['nft systems', 'nft channels', 'dwc systems', 'dutch bucket systems', 'compact systems', 'vertical grow towers', 'hobby systems', 'microgreen systems', 'ph & ec meters', 'hydroponic nutrients', 'grow lights', 'grow tents', 'full spectrum led', 'high power led', 'multi spectrum led', 'wall & panel grow lights', 'timers', 'hydroponic systems'],
+        'native-foods-millets': ['valluvam native foods', 'native foods & millets'],
+        'irrigation-systems': ['submersible pumps', 'drip irrigation', 'sprinkler', 'irrigation', 'spray pumps', 'pump', 'pumps & irrigation', 'irrigation systems'],
+        'animal-husbandry': ['cattle feed', 'poultry feed', 'goat shelter', 'fish farming', 'poultry supplements', 'mineral mixture', 'fodder', 'cattle', 'poultry', 'animal husbandry'],
+        'crop-protection': ['insecticides', 'fungicides', 'herbicides', 'bio-pesticides', 'bio pesticides', 'bio-fungicides', 'seed treatment', 'crop protection'],
+        'organic-natural-farming': ['organic & bio inputs', 'organic bio-boosters', 'bio-stimulants', 'cocopeat', 'coco peat'],
+        'soil-health': ['soil conditioners', 'leca', 'perlite', 'vermiculite', 'pumice', 'lava rock', 'peat moss', 'soil health'],
+        'grow-media': ['cocopeat', 'leca', 'perlite', 'vermiculite', 'pumice', 'lava rock', 'peat moss', 'germination media', 'grow media & substrates', 'grow media'],
+        'farm-machinery': ['farm machinery', 'tractor', 'sprayer'],
+        'farm-tools-implements': ['farm tools & implements', 'hand tools'],
+        'indoor-plants': ['indoor plants'],
+        'post-harvest-storage': ['post-harvest & storage'],
+        'beekeeping': ['beekeeping'],
+        'mushroom-farming': ['mushroom farming'],
+        'fencing': ['fencing'],
+        'packaging-materials': ['packaging materials'],
+        'solar-agriculture': ['solar agriculture'],
+        'precision-agriculture': ['precision agriculture'],
+        'forestry': ['forestry'],
+        'lab-testing': ['lab & testing'],
+        'agricultural-services': ['agricultural services'],
+        // Extra slugs from HomeComponent sticky nav + potential Header categories
+        'bioproducts': ['organic & bio inputs', 'bio fertilizer', 'bioproducts', 'bio-stimulants', 'organic bio-boosters', 'bioproducts', 'bio inputs', 'natural farming'],
+        'agri-tools': ['farm tools & implements', 'hand tools', 'garden tools', 'tools & accessories', 'agri tools'],
+        'greenhouse': ['greenhouse', 'grow tents', 'poly house', 'shade net', 'grow lights', 'greenhouse & polyhouse'],
+        'greenhouse-polyhouse': ['greenhouse & polyhouse', 'gi structure pipes', 'foundation materials', 'covering materials', 'polyhouse'],
+        'hydroponics': ['nft systems', 'nft channels', 'dwc systems', 'dutch bucket systems', 'compact systems', 'vertical grow towers', 'hobby systems', 'hydroponic systems', 'hydroponic nutrients', 'ph & ec meters'],
+        'livestock': ['cattle feed', 'poultry feed', 'goat shelter', 'fish farming', 'poultry supplements', 'mineral mixture', 'fodder', 'cattle', 'poultry', 'animal husbandry', 'livestock'],
+        'plants-saplings': ['vegetable seeds', 'herb seeds', 'microgreen seeds', 'leafy green seeds', 'tree seeds', 'fruit plants', 'flower seeds', 'flowering plants', 'seeds', 'plants & saplings', 'seeds & saplings', 'plant', 'sapling'],
+        'organic': ['organic & bio inputs', 'organic bio-boosters', 'bio-stimulants', 'cocopeat', 'coco peat', 'organic manures', 'organic natural farming', 'organic'],
+      };
+
+      const rollupSubs = ROLLUP[slugNorm] || [];
+
+      result = result.filter(p => {
+        const pCat = p.category.toLowerCase();
+        const pSub = (p.subcategory || '').toLowerCase();
+        return (
+          pCat === categoryName ||
+          pCat === slugNorm ||
+          pCat.replace(/ & /g, '-').replace(/ /g, '-') === slugNorm ||
+          rollupSubs.some(s => pCat === s || pSub === s || pCat.includes(s) || pSub.includes(s))
+        );
+      });
     }
 
     // Search query filter
     if (searchQuery.trim()) {
       const sq = searchQuery.toLowerCase();
-      result = result.filter(p => 
-        p.name.toLowerCase().includes(sq) || 
-        p.brand.toLowerCase().includes(sq) || 
+      result = result.filter(p =>
+        p.name.toLowerCase().includes(sq) ||
+        p.brand.toLowerCase().includes(sq) ||
         p.category.toLowerCase().includes(sq)
       );
     }
@@ -169,7 +217,7 @@ export default function CategoryComponent({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      
+
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-1.5 text-xs text-slate-400 select-none mb-6">
         <span className="hover:text-[#1B6B3A] cursor-pointer font-medium" onClick={() => { setSelectedCategory(null); setSearchQuery(''); setCurrentPage('home'); }}>
@@ -192,9 +240,9 @@ export default function CategoryComponent({
       {/* Category header image placeholder card */}
       <div className="relative bg-emerald-950 text-white rounded-xl mb-8 p-6 sm:p-10 overflow-hidden min-h-[140px] sm:min-h-[180px] flex items-center shadow-md">
         <div className="absolute inset-0 z-0 opacity-15">
-          <img 
-            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80" 
-            alt="Mountains fields background" 
+          <img
+            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80"
+            alt="Mountains fields background"
             className="w-full h-full object-cover"
           />
         </div>
@@ -214,7 +262,7 @@ export default function CategoryComponent({
 
       {/* Main layout grid (Sidebar + Product grid) */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        
+
         {/* Left Filters Sidebar */}
         <aside className="lg:col-span-1 bg-white border border-slate-200 p-5 rounded-xl space-y-6 h-fit sticky top-[150px]">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -242,11 +290,10 @@ export default function CategoryComponent({
                 <button
                   key={prob}
                   onClick={() => setSelectedProblem(selectedProblem === prob ? null : prob)}
-                  className={`text-left px-3 py-2 rounded-lg text-xs font-semibold transition ${
-                    selectedProblem === prob
-                      ? 'bg-amber-100 text-amber-800 border-l-4 border-amber-500'
-                      : 'bg-[#F7F9F4] text-slate-700 hover:bg-slate-100'
-                  }`}
+                  className={`text-left px-3 py-2 rounded-lg text-xs font-semibold transition ${selectedProblem === prob
+                    ? 'bg-amber-100 text-amber-800 border-l-4 border-amber-500'
+                    : 'bg-[#F7F9F4] text-slate-700 hover:bg-slate-100'
+                    }`}
                 >
                   {prob}
                 </button>
@@ -317,11 +364,10 @@ export default function CategoryComponent({
                 <button
                   key={r}
                   onClick={() => setMinRating(minRating === r ? 0 : r)}
-                  className={`px-3 py-1 text-xs rounded-lg font-bold border transition ${
-                    minRating === r
-                      ? 'bg-yellow-100 text-[#E8A020] border-yellow-200'
-                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                  }`}
+                  className={`px-3 py-1 text-xs rounded-lg font-bold border transition ${minRating === r
+                    ? 'bg-yellow-100 text-[#E8A020] border-yellow-200'
+                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                    }`}
                 >
                   ★ {r}+
                 </button>
@@ -334,13 +380,11 @@ export default function CategoryComponent({
             <span className="text-xs text-slate-600 font-semibold">Display In Stock Only</span>
             <button
               onClick={() => setInStockOnly(!inStockOnly)}
-              className={`relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                inStockOnly ? 'bg-[#1B6B3A]' : 'bg-slate-200'
-              }`}
+              className={`relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${inStockOnly ? 'bg-[#1B6B3A]' : 'bg-slate-200'
+                }`}
             >
-              <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                inStockOnly ? 'translate-x-5' : 'translate-x-0'
-              }`} />
+              <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${inStockOnly ? 'translate-x-5' : 'translate-x-0'
+                }`} />
             </button>
           </div>
 
@@ -354,17 +398,16 @@ export default function CategoryComponent({
                 <button
                   key={d}
                   onClick={() => setMinDiscount(minDiscount === d ? 0 : d)}
-                  className={`py-1 text-xs rounded-lg font-extrabold transition ${
-                    minDiscount === d
-                      ? 'bg-red-50 text-[#D94F3D] border border-red-200'
-                      : 'bg-slate-50 text-slate-600 border border-slate-100 hover:bg-slate-100'
-                  }`}
+                  className={`py-1 text-xs rounded-lg font-extrabold transition ${minDiscount === d
+                    ? 'bg-red-50 text-[#D94F3D] border border-red-200'
+                    : 'bg-slate-50 text-slate-600 border border-slate-100 hover:bg-slate-100'
+                    }`}
                 >
                   {d}%+
                 </button>
               ))}
-              <button 
-                onClick={() => setMinDiscount(0)} 
+              <button
+                onClick={() => setMinDiscount(0)}
                 className={`py-1 text-xs rounded-lg font-bold transition ${minDiscount === 0 ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600'}`}
               >
                 All
@@ -375,7 +418,7 @@ export default function CategoryComponent({
 
         {/* Right side product catalog flow */}
         <div className="lg:col-span-3 space-y-6">
-          
+
           {/* Top Sort and details toolbar bar */}
           <div className="bg-white border border-slate-200 p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-xs font-bold text-slate-500 text-center sm:text-left">
@@ -408,13 +451,22 @@ export default function CategoryComponent({
                 >
                   <div className="cursor-pointer" onClick={() => handleProductCardClick(p)}>
                     <div className="relative h-44 bg-slate-50">
-                      <img src={p.images[0]} alt={p.name} className="w-full h-full object-cover" />
+                      <img src={p.images?.[0] || '/catalog/nursery-essentials/Pots.png'} alt={p.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} />
                       {p.isIgoOwn && (
                         <span className="absolute top-2 left-2 bg-[#1B6B3A] text-white text-[9px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-widest border border-emerald-600">
                           IGO Brand
                         </span>
                       )}
-                      {p.discount > 0 && (
+                      {p.stock === 0 ? (
+                      <span className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
+                        <span className="bg-slate-800 text-white text-[10px] font-black px-2.5 py-1 rounded-full">OUT OF STOCK</span>
+                      </span>
+                    ) : p.stock < 20 ? (
+                      <span className="absolute bottom-2 left-2 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded animate-pulse z-10">
+                        Only {p.stock} left
+                      </span>
+                    ) : null}
+                    {p.discount > 0 && (
                         <span className="absolute top-2 right-2 bg-[#D94F3D] text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
                           {p.discount}% OFF
                         </span>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -7,38 +7,323 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+/* ─── Base ─────────────────────────────────────────────────────────── */
 body {
   font-family: var(--font-sans);
   background-color: #F7F9F4;
   color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom smooth animations & scrollbars */
-.custom-scroll::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
-}
-.custom-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-.custom-scroll::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-.custom-scroll::-webkit-scrollbar-thumb:hover {
-  background: #1B6B3A;
+/* ─── CSS Custom Properties ─────────────────────────────────────────── */
+:root {
+  --green-primary: #1B6B3A;
+  --green-dark: #134D29;
+  --green-light: #248F4E;
+  --gold: #E8A020;
+  --gold-dark: #C8881A;
+  --red-accent: #D94F3D;
+  --bg-base: #F7F9F4;
 }
 
-/* Accent overlays */
-.banner-glow {
-  box-shadow: 0 4px 30px rgba(27, 107, 58, 0.15);
+/* ─── Scrollbars ─────────────────────────────────────────────────────── */
+.custom-scroll::-webkit-scrollbar { height: 5px; width: 5px; }
+.custom-scroll::-webkit-scrollbar-track { background: transparent; }
+.custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+.custom-scroll::-webkit-scrollbar-thumb:hover { background: var(--green-primary); }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Shimmer Skeleton ───────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -800px 0; }
+  100% { background-position: 800px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #e8ede9 25%, #d4ddd5 50%, #e8ede9 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 6px;
 }
 
-/* Crop Animation */
+/* ─── Float Animation ────────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float { animation: float 4s ease-in-out infinite; }
+
+/* ─── Sway Animation ─────────────────────────────────────────────────── */
 @keyframes sway {
-  0%, 100% { transform: rotate(-1deg); }
-  50% { transform: rotate(1deg); }
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.5deg); }
 }
-.animate-sway {
-  animation: sway 3s ease-in-out infinite;
+.animate-sway { animation: sway 3s ease-in-out infinite; }
+
+/* ─── Fade In Up ─────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+.animate-fadeInUp { animation: fadeInUp 0.6s ease-out both; }
+.animate-fadeInUp-delay-1 { animation: fadeInUp 0.6s 0.1s ease-out both; }
+.animate-fadeInUp-delay-2 { animation: fadeInUp 0.6s 0.2s ease-out both; }
+.animate-fadeInUp-delay-3 { animation: fadeInUp 0.6s 0.3s ease-out both; }
+
+/* ─── Ticker / Marquee ───────────────────────────────────────────────── */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track { animation: ticker 28s linear infinite; display: flex; width: max-content; }
+.ticker-track:hover { animation-play-state: paused; }
+
+/* ─── Gradient Text ──────────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #1B6B3A 0%, #4ade80 50%, #E8A020 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Glass Card ─────────────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ─── Product Card Premium Hover ─────────────────────────────────────── */
+.product-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(27, 107, 58, 0.15), 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* ─── Category Card Hover ────────────────────────────────────────────── */
+.category-card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.category-card:hover {
+  transform: translateY(-6px) scale(1.025);
+  box-shadow: 0 20px 44px rgba(27, 107, 58, 0.18);
+}
+
+/* ─── Hero Gradient ──────────────────────────────────────────────────── */
+.hero-gradient {
+  background: linear-gradient(135deg, #0a2917 0%, #1B6B3A 45%, #134d29 75%, #081f10 100%);
+}
+
+/* ─── Banner Glow ────────────────────────────────────────────────────── */
+.banner-glow { box-shadow: 0 4px 30px rgba(27, 107, 58, 0.15); }
+
+/* ─── Stat Number ─────────────────────────────────────────────────────── */
+.stat-number {
+  font-family: var(--font-display);
+  font-weight: 900;
+  background: linear-gradient(135deg, #E8A020, #f5c842);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Trust Badge ────────────────────────────────────────────────────── */
+.trust-badge {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border: 1px solid #bbf7d0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.trust-badge:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(27, 107, 58, 0.14);
+}
+
+/* ─── Offer Ribbon ───────────────────────────────────────────────────── */
+.offer-ribbon {
+  position: absolute;
+  top: 12px;
+  right: -8px;
+  background: var(--red-accent);
+  color: white;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 3px 10px 3px 8px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 4px 100%);
+}
+
+/* ─── Pulse Ring ─────────────────────────────────────────────────────── */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(232, 160, 32, 0.5); }
+  70% { box-shadow: 0 0 0 10px rgba(232, 160, 32, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(232, 160, 32, 0); }
+}
+.animate-pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+
+/* ─── Input Focus Ring ───────────────────────────────────────────────── */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(27, 107, 58, 0.25);
+}
+
+/* ─── Button Press Effect ────────────────────────────────────────────── */
+.btn-press:active { transform: scale(0.97); }
+
+/* ─── Image Zoom on Hover ────────────────────────────────────────────── */
+.img-zoom { overflow: hidden; }
+.img-zoom img { transition: transform 0.4s ease; }
+.img-zoom:hover img { transform: scale(1.07); }
+
+/* ─── Horizontal Scroll Section ──────────────────────────────────────── */
+.h-scroll { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.h-scroll > * { scroll-snap-align: start; }
+
+/* ─── Section Header Accent Line ─────────────────────────────────────── */
+.section-header-line::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(180deg, #1B6B3A, #E8A020);
+  border-radius: 4px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* ─── Promo Badge Pulse ───────────────────────────────────────────────── */
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.badge-pulse { animation: badge-pulse 2s ease-in-out infinite; }
+
+/* ─── Mobile-first global touch targets ─────────────────────────────── */
+button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
+
+/* ─── Safe area insets (iPhone notch / bottom bar) ───────────────────── */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.safe-top    { padding-top:    env(safe-area-inset-top,    0px); }
+
+/* ─── Prevent horizontal overflow on mobile ─────────────────────────── */
+html, body { max-width: 100%; overflow-x: hidden; }
+
+/* ─── Better mobile tap area for small buttons ───────────────────────── */
+.tap-target { min-height: 44px; min-width: 44px; }
+
+/* ─── Card entrance animation ───────────────────────────────────────── */
+@keyframes cardEnter {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card-enter { animation: cardEnter 0.35s ease-out both; }
+
+/* ─── Sticky header shadow on scroll ────────────────────────────────── */
+header.sticky { will-change: transform; }
+
+/* ─── Mobile horizontal scroll snap ──────────────────────────────────── */
+.snap-scroll-x {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.snap-scroll-x::-webkit-scrollbar { display: none; }
+.snap-scroll-x > * { scroll-snap-align: start; }
+
+/* ─── Smooth page transitions ────────────────────────────────────────── */
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-enter { animation: pageIn 0.3s ease-out both; }
+
+/* ─── Typography responsive scale ───────────────────────────────────── */
+.heading-xl {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 900;
+  line-height: 1.15;
+}
+.heading-lg {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 800;
+  line-height: 1.2;
+}
+.text-responsive {
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+}
+
+/* ─── Better form inputs on mobile ───────────────────────────────────── */
+input[type="text"], input[type="tel"], input[type="email"],
+input[type="number"], select, textarea {
+  font-size: 16px; /* prevents iOS zoom on focus */
+}
+
+/* ─── Loading dots ────────────────────────────────────────────────────── */
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40%           { transform: scale(1); }
+}
+.dot-bounce > span {
+  display: inline-block;
+  width: 6px; height: 6px;
+  margin: 0 2px;
+  background: var(--green-primary);
+  border-radius: 50%;
+  animation: dotBounce 1.4s infinite ease-in-out;
+}
+.dot-bounce > span:nth-child(2) { animation-delay: 0.16s; }
+.dot-bounce > span:nth-child(3) { animation-delay: 0.32s; }
+
+/* ─── Product card image lazy-load blur-up ───────────────────────────── */
+img[loading="lazy"] {
+  transition: filter 0.3s ease;
+}
+
+/* ─── Sticky bottom nav shadow ───────────────────────────────────────── */
+.sticky-shadow {
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ─── Price tag style ────────────────────────────────────────────────── */
+.price-tag {
+  font-family: var(--font-display);
+  font-weight: 900;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Admin-managed marquee bar ──────────────────────────────────────── */
+@keyframes igoMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.igo-marquee {
+  animation: igoMarquee 30s linear infinite;
+  will-change: transform;
+}
+.igo-marquee:hover { animation-play-state: paused; }
+
+/* ─── Premium hero effects ───────────────────────────────────────────── */
+@keyframes kenburns {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.08) translate(-1%, -1%); }
+}
+.kenburns { animation: kenburns 7s ease-out forwards; will-change: transform; }
+
+@keyframes heroContentIn {
+  0% { opacity: 0; transform: translateY(22px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.hero-content-in { animation: heroContentIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ─── Premium card hover (apply via existing card classes) ───────────── */
+.card-lift { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.card-lift:hover { transform: translateY(-4px); box-shadow: 0 14px 30px -12px rgba(20, 61, 38, 0.25); }
+
+/* ─── Hide scrollbars on horizontal rails (mobile-friendly swipe) ────── */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
