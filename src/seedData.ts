@@ -46,7 +46,23 @@ import { PASTED_CATALOG_CATEGORIES, PASTED_CATALOG_PRODUCTS } from './pastedCata
 import { POLYHOUSE_CATEGORIES, POLYHOUSE_PRODUCTS } from './polyhouseProducts';
 import { IGO_EXTRA_PRODUCTS } from './igoExtraProducts';
 
-const RAW_PRODUCTS: Product[] = [...REAL_PRODUCTS, ...PDF_PRODUCTS, ...MARKETPLACE_EXPANSION_PRODUCTS, ...PASTED_CATALOG_PRODUCTS, ...POLYHOUSE_PRODUCTS, ...IGO_EXTRA_PRODUCTS];
+const ALL_PRODUCTS: Product[] = [...REAL_PRODUCTS, ...PDF_PRODUCTS, ...MARKETPLACE_EXPANSION_PRODUCTS, ...PASTED_CATALOG_PRODUCTS, ...POLYHOUSE_PRODUCTS, ...IGO_EXTRA_PRODUCTS];
+
+const ALLOWED_FOLDERS = [
+  '/catalog/farmer-factory-vegetables',
+  '/catalog/farmer-factory-valluvam',
+  '/catalog/farmer-factory-fruits',
+  '/catalog/crop-care',
+  '/catalog/nursery-indoor',
+  '/catalog/nursery-outdoor'
+];
+
+const RAW_PRODUCTS: Product[] = ALL_PRODUCTS.filter(p => {
+  if (!p.images || p.images.length === 0) return false;
+  const img = p.images[0];
+  // Strictly allow only products whose primary image is in one of the allowed local folders
+  return ALLOWED_FOLDERS.some(folder => img.startsWith(folder));
+});
 const RAW_CATEGORIES: Category[] = [
   ...REAL_CATEGORIES,
   ...PDF_CATEGORIES,
