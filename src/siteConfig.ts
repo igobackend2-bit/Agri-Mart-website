@@ -130,6 +130,10 @@ export function validateCoupon(code: string, subtotal: number): CouponResult {
     const label = admin.type === 'percentage' ? `${admin.value}% savings unlocked` : `₹${admin.value} flat discount applied`;
     return { ok: true, discount, message: `✓ Coupon ${admin.code} successfully applied! ${label}.` };
   }
+  // First-order welcome discount (10% off) — advertised on the welcome popup
+  if (c === 'WELCOME10') {
+    return { ok: true, discount: 10, message: '✓ Welcome! WELCOME10 applied — 10% off your first order.' };
+  }
   // Legacy built-in codes (kept for backwards compatibility)
   if (c === 'HARVEST20') {
     if (subtotal < 1000) return { ok: false, discount: 0, message: 'This coupon is only valid for orders above ₹1,000.' };

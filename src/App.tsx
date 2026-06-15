@@ -31,6 +31,9 @@ import AIAssistantWidget from './components/AIAssistantWidget';
 import Footer from './components/Footer';
 import OrderTrackingComponent from './components/OrderTrackingComponent';
 import AgriEventsComponent from './components/AgriEventsComponent';
+import FloatingCartBar from './components/FloatingCartBar';
+import PolicyPages from './components/PolicyPages';
+import TrustBar from './components/TrustBar';
 
 // ── Cart Toast notification ───────────────────────────────────────────────────
 interface CartToastProps {
@@ -217,10 +220,15 @@ function WelcomePrompt({ onLogin, onClose }: { onLogin: () => void; onClose: () 
           <p className="relative text-emerald-200 text-xs mt-1">India's trusted farm supplies marketplace</p>
         </div>
         <div className="p-6 space-y-3">
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3 text-center">
+            <p className="text-[10px] font-black text-amber-700 uppercase tracking-widest">Limited-time offer</p>
+            <p className="text-lg font-black text-[#1B6B3A] leading-tight mt-0.5">Get 10% OFF your first order</p>
+            <p className="text-[11px] font-bold text-slate-500 mt-0.5">Use code <span className="text-[#1B6B3A]">WELCOME10</span> at checkout</p>
+          </div>
           {[
-            '🚜 835+ genuine agri products at best prices',
-            '⚡ Same-day dispatch, pan-India delivery',
-            '🎁 Member-only offers & order tracking',
+            '🚜 1000+ genuine agri products at best prices',
+            '⚡ Fast dispatch, pan-India delivery',
+            '🎁 Member offers, order tracking & IGO Coins',
           ].map((b, i) => <p key={i} className="text-xs font-bold text-slate-600">{b}</p>)}
           <button onClick={onLogin}
             className="w-full bg-[#1B6B3A] hover:bg-emerald-950 text-white font-black text-sm py-3.5 rounded-2xl transition mt-2">
@@ -293,9 +301,25 @@ export default function App() {
     setPageKey(k => k + 1);
   }, []);
 
+  // Build the live catalog and strip any "IGO" branding from product names/brands
+  // so the storefront shows clean names (e.g. "IGO AgriMart Tomato" → "Tomato").
+  const buildCleanProducts = () => {
+    const strip = (s?: string) =>
+      (s || '').replace(/^IGO\s+Agri\s*Mart\s+/i, '').replace(/^IGO\s+/i, '').trim();
+    return applyCatalogOverlay(SEED_PRODUCTS).map((p) => {
+      const name = strip(p.name) || p.name;
+      return {
+        ...p,
+        name,
+        displayName: strip(p.displayName) || name,
+        brand: /IGO/i.test(p.brand) ? 'Farmers Factory' : p.brand,
+        isIgoOwn: false,
+      };
+    });
+  };
+
   const loadInventory = () => {
-    // Seed catalog + persistent admin overlay (add/edit/delete/stock changes).
-    setProducts(applyCatalogOverlay(SEED_PRODUCTS));
+    setProducts(buildCleanProducts());
     setIsInventoryLoading(false);
   };
 
@@ -303,7 +327,7 @@ export default function App() {
 
   // Live-refresh products when admin edits catalog or an order decrements stock
   useEffect(() => {
-    const onCatalogChange = () => setProducts(applyCatalogOverlay(SEED_PRODUCTS));
+    const onCatalogChange = () => setProducts(buildCleanProducts());
     window.addEventListener(CATALOG_CHANGED_EVENT, onCatalogChange);
     return () => window.removeEventListener(CATALOG_CHANGED_EVENT, onCatalogChange);
   }, []);
@@ -395,7 +419,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9F4] text-slate-800 font-sans flex flex-col justify-between">
+    <div className="min-h-screen bg-[#F7F9F4] text-slate-800 font-sans flex flex-col justify-between overflow-x-hidden w-full relative">
+      {/* ─── SCROLL TO TOP UTILITY ──────────────────────────────────── */}
+      <ScrollToTop />
       <div>
         {currentPage !== 'admin' && <NotificationBar />}
         {currentPage !== 'admin' && (
@@ -413,6 +439,7 @@ export default function App() {
           setUserProfile={setUserProfile}
         />
         )}
+        {currentPage !== 'admin' && <TrustBar />}
 
         {isInventoryLoading ? (
           <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
@@ -504,7 +531,9 @@ export default function App() {
             {currentPage === 'auth' && (
               <AuthComponent
                 lang={lang}
-                setCurrentPage={setCurrentPage}
+                setCurrentPage={navigateTo}
+                setUserProfile={setUserProfile}
+                userProfile={userProfile}
               />
             )}
 
@@ -593,6 +622,10 @@ export default function App() {
               <OrderTrackingComponent setCurrentPage={navigateTo} />
             )}
 
+            {(currentPage === 'privacy' || currentPage === 'terms' || currentPage === 'returns') && (
+              <PolicyPages page={currentPage as 'privacy' | 'terms' | 'returns'} setCurrentPage={navigateTo} />
+            )}
+
           </main>
         )}
       </div>
@@ -616,6 +649,11 @@ export default function App() {
           onClose={closeCartToast}
           onViewCart={viewCartHandler}
         />
+      )}
+
+      {/* Floating cart bar (Zepto-style) — hidden on cart/checkout/admin/auth and while toast shows */}
+      {!cartToast && !['cart', 'checkout', 'admin', 'auth'].includes(currentPage) && (
+        <FloatingCartBar cart={cart} onViewCart={viewCartHandler} />
       )}
     </div>
   );

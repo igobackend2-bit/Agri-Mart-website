@@ -7,12 +7,12 @@ interface FooterProps {
 }
 
 const IGO_BRANDS = [
-  { name: 'IGO Agritech Farms', tag: 'Core Business', active: true, url: '#' },
+  { name: 'IGO Agritech Farms', tag: 'Core Business', active: true, url: 'https://www.igoagritechfarms.com' },
   { name: 'Farmers Factory', tag: 'Organic Produce', active: true, url: 'https://famersfactory.com' },
   { name: 'Valluvam', tag: 'Consultancy', active: true, url: '#' },
   { name: 'Protein Cuts', tag: 'Farm-to-Table', active: true, url: '#' },
   { name: 'IGO Agri Mart', tag: 'Distribution', active: true, url: '#' },
-  { name: 'IGO Nursery', tag: 'Plant Propagation', active: true, url: '#' },
+  { name: 'IGO Nursery', tag: 'Plant Propagation', active: true, url: 'https://www.igonursery.com' },
   { name: 'Palm Cafe', tag: 'F&B', active: true, url: '#' },
   { name: 'IGO Exports & Imports', tag: 'Trade', active: true, url: '#' },
   { name: 'IGO Fintech', tag: 'Micro Finance', active: false, url: '#' },
@@ -175,9 +175,11 @@ export default function Footer({ setCurrentPage, setSelectedCategory }: FooterPr
             <span>•</span>
             <button onClick={() => setCurrentPage('contact')} className="hover:text-white transition">Contact</button>
             <span>•</span>
-            <a href="#" className="hover:text-white transition">Privacy Policy</a>
+            <button onClick={() => setCurrentPage('privacy')} className="hover:text-white transition">Privacy Policy</button>
             <span>•</span>
-            <a href="#" className="hover:text-white transition">Terms</a>
+            <button onClick={() => setCurrentPage('terms')} className="hover:text-white transition">Terms</button>
+            <span>•</span>
+            <button onClick={() => setCurrentPage('returns')} className="hover:text-white transition">Returns</button>
             <span>•</span>
             <button onClick={() => setCurrentPage('admin')} className="hover:text-emerald-400 transition font-bold">Admin Login</button>
           </div>

@@ -18,6 +18,7 @@ import { Product, UserProfile } from '../types';
 import { getMarqueeLines } from '../siteConfig';
 import { detectLocation, getSavedLocation } from '../storeData';
 import { translations, LanguageDict } from '../translation';
+import NotificationBell from './NotificationBell';
 
 interface HeaderProps {
   lang: 'en' | 'ta';
@@ -269,9 +270,12 @@ export default function Header({
               <span>{lang === 'en' ? 'தமிழ்' : 'English'}</span>
             </button>
 
+            {/* Notification Bell */}
+            <NotificationBell userProfile={userProfile} setCurrentPage={setCurrentPage} />
+
             {/* Wishlist Button */}
-            <button 
-              onClick={() => setCurrentPage('account')} 
+            <button
+              onClick={() => setCurrentPage('account')}
               className="relative p-1.5 text-slate-600 hover:text-[#D94F3D] transition"
               title={t.wishlist}
             >

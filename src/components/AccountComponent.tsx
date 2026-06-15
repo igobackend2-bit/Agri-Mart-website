@@ -16,7 +16,7 @@ import {
 import { db, auth } from '../firebase';
 import { Product, Order, UserProfile, Address } from '../types';
 import { fetchUserOrders, cancelUserOrder } from '../dbHelper';
-import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, InboxMessage } from '../storeData';
+import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, InboxMessage, getWalletCoins } from '../storeData';
 import { Inbox as InboxIcon, Mail } from 'lucide-react';
 
 interface AccountComponentProps {
@@ -271,6 +271,15 @@ export default function AccountComponent({
             </div>
           </div>
 
+          {/* IGO Coins wallet */}
+          <div className="flex items-center justify-between bg-gradient-to-r from-amber-50 to-emerald-50 border border-amber-200/60 rounded-xl px-3.5 py-2.5">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🪙</span>
+              <span className="text-[11px] font-black text-slate-700 uppercase tracking-wide">IGO Coins</span>
+            </div>
+            <span className="text-sm font-black text-[#1B6B3A]">{getWalletCoins().toLocaleString('en-IN')}</span>
+          </div>
+
           <div className="flex flex-col gap-1">
             {([
               { key: 'Orders', icon: ShoppingBag, label: t.orders },
@@ -433,17 +442,29 @@ export default function AccountComponent({
                           ))}
                         </div>
 
-                        {/* Cancel order CTA */}
-                        {o.status !== 'Cancelled' && o.status !== 'Delivered' && o.status !== 'Dispatched' && o.status !== 'Shipped' && (
-                          <div className="border-t border-slate-100 pt-3 mt-4 flex justify-end">
+                        {/* Action CTAs: Reorder + Cancel */}
+                        <div className="border-t border-slate-100 pt-3 mt-4 flex justify-end gap-2">
+                          <button
+                            onClick={() => {
+                              (o.items || []).forEach((it) => {
+                                const prod = allProducts.find((p) => p.id === it.productId);
+                                if (prod) addToCart(prod);
+                              });
+                              setCurrentPage('cart');
+                            }}
+                            className="bg-emerald-50 hover:bg-emerald-100 text-[#1B6B3A] text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg border border-emerald-200 cursor-pointer transition shadow-sm"
+                          >
+                            ↻ Reorder
+                          </button>
+                          {o.status !== 'Cancelled' && o.status !== 'Delivered' && o.status !== 'Dispatched' && o.status !== 'Shipped' && (
                             <button
                               onClick={() => handleCancelOrder(o.id)}
                               className="bg-red-50 hover:bg-red-100 text-[#D94F3D] text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg border border-red-200 cursor-pointer transition shadow-sm"
                             >
                               {t.cancelOrder}
                             </button>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
                     );
                   })}

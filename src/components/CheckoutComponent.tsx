@@ -14,7 +14,7 @@ import { placeOrder } from '../dbHelper';
 import { getSettings } from '../siteConfig';
 import {
   saveLocalOrder, decrementStocks, saveLastAddress, getLastAddress,
-  playOrderSuccessSound, sendInboxMessage, detectLocation
+  playOrderSuccessSound, sendInboxMessage, detectLocation, earnWalletCoins
 } from '../storeData';
 
 interface CheckoutComponentProps {
@@ -61,6 +61,8 @@ export default function CheckoutComponent({
   };
 
   const [paymentMethod, setPaymentMethod] = useState<'COD' | 'UPI' | 'Card' | 'NetBanking'>('COD');
+  const DELIVERY_SLOTS = ['Tomorrow, 6–9 AM', 'Tomorrow, 9 AM–12 PM', 'Tomorrow, 4–7 PM', 'Standard (2–4 days)'];
+  const [deliverySlot, setDeliverySlot] = useState<string>(DELIVERY_SLOTS[3]);
   const [isPlacing, setIsPlacing] = useState(false);
   const [orderIdCreated, setOrderIdCreated] = useState<string | null>(null);
 
@@ -145,10 +147,12 @@ export default function CheckoutComponent({
       sendInboxMessage({
         toEmail: formData.email || 'all',
         title: 'Order ' + nextId + ' placed successfully 🎉',
-        body: 'Hi ' + formData.name + ', we received your order of ' + orderItems.length + ' item(s) worth ₹' + finalTotal.toLocaleString('en-IN') + '. We will confirm and dispatch it shortly. Track it anytime from My Orders.',
+        body: 'Hi ' + formData.name + ', we received your order of ' + orderItems.length + ' item(s) worth ₹' + finalTotal.toLocaleString('en-IN') + '. Delivery slot: ' + deliverySlot + '. We will confirm and dispatch it shortly. Track it anytime from My Orders.',
         orderId: nextId,
       });
       playOrderSuccessSound();
+      // Reward IGO Coins (2% of order value) — demo loyalty
+      earnWalletCoins(finalTotal * 0.02);
       setOrderIdCreated(nextId);
       setCart([]);
       setCouponDiscount(0);
@@ -382,9 +386,32 @@ export default function CheckoutComponent({
             </div>
 
             <div className="pt-6">
+              <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-4">
+                <Truck className="h-5 w-5" />
+                <span>2. Choose a Delivery Slot</span>
+              </h3>
+              <div className="grid grid-cols-2 gap-2.5 mb-2">
+                {DELIVERY_SLOTS.map((slot) => (
+                  <button
+                    key={slot}
+                    type="button"
+                    onClick={() => setDeliverySlot(slot)}
+                    className={`text-left px-3 py-2.5 rounded-xl text-xs font-bold border-2 transition ${deliverySlot === slot
+                      ? 'border-[#1B6B3A] bg-emerald-50/40 text-[#1B6B3A]'
+                      : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                      }`}
+                  >
+                    {slot}
+                  </button>
+                ))}
+              </div>
+              <p className="text-[10px] text-slate-400 font-medium mb-2">Fresh produce ships next-day; inputs &amp; tools ship standard.</p>
+            </div>
+
+            <div className="pt-6">
               <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-5">
                 <CreditCard className="h-5 w-5" />
-                <span>2. Select Payment Methods</span>
+                <span>3. Select Payment Methods</span>
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

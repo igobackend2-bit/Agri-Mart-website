@@ -51,12 +51,16 @@ export default function CategoryComponent({
 
   // Filters State
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<number>(5000);
+  const [priceRange, setPriceRange] = useState<number>(50000);
   const [minRating, setMinRating] = useState<number>(0);
   const [inStockOnly, setInStockOnly] = useState<boolean>(false);
   const [minDiscount, setMinDiscount] = useState<number>(0);
   const [selectedProblem, setSelectedProblem] = useState<string | null>(null);
+  const [selectedCrop, setSelectedCrop] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<string>('relevance');
+
+  // Distinct crops available across the current product set (for "Buy by Crop")
+  const availableCrops = Array.from(new Set(products.flatMap(p => p.crops || []))).sort();
 
   // Parse if selectedCategory is actually a brand filter passed from Home (e.g., "brand:Syngenta")
   const isBrandOnlyFilter = selectedCategory && selectedCategory.startsWith('brand:');
@@ -77,17 +81,22 @@ export default function CategoryComponent({
     ? `Brand: ${activeBrandName}`
     : (searchQuery
       ? `Search Results for "${searchQuery}"`
-      : (currentCategoryObj ? currentCategoryObj.name : 'All Farming Products')
+      : (currentCategoryObj
+          ? currentCategoryObj.name
+          : (selectedCategory
+              ? selectedCategory.replace(/-/g, ' ').replace(/\b\w/g, (ch) => ch.toUpperCase())
+              : 'All Farming Products'))
     );
 
   // Clear all filters
   const resetFilters = () => {
     setSelectedBrands([]);
-    setPriceRange(5000);
+    setPriceRange(50000);
     setMinRating(0);
     setInStockOnly(false);
     setMinDiscount(0);
     setSelectedProblem(null);
+    setSelectedCrop(null);
     setSearchQuery('');
     setSortBy('relevance');
     if (isBrandOnlyFilter) {
@@ -111,10 +120,13 @@ export default function CategoryComponent({
         'outdoor-plants-trees': ['flowers', 'medicinal plants', 'fruit plants', 'exotic fruit plants', 'berry plants', 'outdoor plants & trees'],
         'nursery-garden-essentials': ['tools & accessories', 'garden tools', 'grow bags', 'coir pots', 'hanging baskets', 'balcony planters', 'self-watering pots', 'seedling trays', 'microgreen trays', 'farm tools & implements', 'hand tools', 'gardening products', 'nursery & garden essentials', 'pots & planters'],
         'hydroponic-systems': ['nft systems', 'nft channels', 'dwc systems', 'dutch bucket systems', 'compact systems', 'vertical grow towers', 'hobby systems', 'microgreen systems', 'ph & ec meters', 'hydroponic nutrients', 'grow lights', 'grow tents', 'full spectrum led', 'high power led', 'multi spectrum led', 'wall & panel grow lights', 'timers', 'hydroponic systems'],
-        'native-foods-millets': ['valluvam native foods', 'native foods & millets'],
+        'native-foods-millets': ['valluvam native foods', 'native foods & millets', 'valluvam products', 'valluvam'],
         'irrigation-systems': ['submersible pumps', 'drip irrigation', 'sprinkler', 'irrigation', 'spray pumps', 'pump', 'pumps & irrigation', 'irrigation systems'],
         'animal-husbandry': ['cattle feed', 'poultry feed', 'goat shelter', 'fish farming', 'poultry supplements', 'mineral mixture', 'fodder', 'cattle', 'poultry', 'animal husbandry'],
-        'crop-protection': ['insecticides', 'fungicides', 'herbicides', 'bio-pesticides', 'bio pesticides', 'bio-fungicides', 'seed treatment', 'crop protection'],
+        'crop-protection': ['insecticides', 'fungicides', 'herbicides', 'bio-pesticides', 'bio pesticides', 'bio-fungicides', 'seed treatment', 'crop protection', 'plant protection', 'pest defenders', 'disease & fungal shields', 'weed management', 'pest & disease shields'],
+        'vegetables': ['vegetables', 'leafy greens'],
+        'fruits': ['fruits'],
+        'field-tools': ['tool', 'tools', 'sprayer', 'implement', 'pump', 'harvest', 'digging', 'irrigation'],
         'organic-natural-farming': ['organic & bio inputs', 'organic bio-boosters', 'bio-stimulants', 'cocopeat', 'coco peat'],
         'soil-health': ['soil conditioners', 'leca', 'perlite', 'vermiculite', 'pumice', 'lava rock', 'peat moss', 'soil health'],
         'grow-media': ['cocopeat', 'leca', 'perlite', 'vermiculite', 'pumice', 'lava rock', 'peat moss', 'germination media', 'grow media & substrates', 'grow media'],
@@ -194,6 +206,11 @@ export default function CategoryComponent({
       result = result.filter(p => p.problemFilter === selectedProblem);
     }
 
+    // Buy by Crop
+    if (selectedCrop) {
+      result = result.filter(p => (p.crops || []).includes(selectedCrop));
+    }
+
     // Sorting implementations
     if (sortBy === 'price-low') {
       result.sort((a, b) => a.price - b.price);
@@ -214,6 +231,50 @@ export default function CategoryComponent({
     setSelectedProduct(p);
     setCurrentPage('product');
   };
+
+  // ── Category landing grid: shown when no category/search/brand is active ──
+  const showCategoryLanding = !selectedCategory && !isBrandOnlyFilter && !searchQuery.trim();
+  if (showCategoryLanding) {
+    const CATEGORY_TILES: { emoji: string; label: string; slug: string; bg: string }[] = [
+      { emoji: '🥬', label: 'Fresh Vegetables', slug: 'vegetables', bg: 'from-emerald-50 to-emerald-100' },
+      { emoji: '🍎', label: 'Fresh Fruits', slug: 'fruits', bg: 'from-rose-50 to-rose-100' },
+      { emoji: '🌱', label: 'Vegetable Seeds', slug: 'vegetable-seeds', bg: 'from-lime-50 to-lime-100' },
+      { emoji: '🌳', label: 'Fruit Plants', slug: 'fruit-plants', bg: 'from-green-50 to-green-100' },
+      { emoji: '🌾', label: 'Field & Millet Seeds', slug: 'field-millet-seeds', bg: 'from-yellow-50 to-yellow-100' },
+      { emoji: '🍯', label: 'Valluvam Products', slug: 'native-foods-millets', bg: 'from-amber-50 to-amber-100' },
+      { emoji: '💧', label: 'Liquid Fertilizers', slug: 'liquid-fertilizers', bg: 'from-sky-50 to-sky-100' },
+      { emoji: '🧂', label: 'Powder Fertilizers', slug: 'powder-fertilizers', bg: 'from-cyan-50 to-cyan-100' },
+      { emoji: '♻️', label: 'Organic Manures', slug: 'organic-manures', bg: 'from-green-50 to-lime-100' },
+      { emoji: '🛠️', label: 'Farm Tools', slug: 'farm-tools', bg: 'from-slate-50 to-slate-100' },
+      { emoji: '🚿', label: 'Irrigation', slug: 'irrigation-equipment', bg: 'from-blue-50 to-blue-100' },
+      { emoji: '🪴', label: 'Indoor Plants', slug: 'indoor-office-plants', bg: 'from-teal-50 to-teal-100' },
+      { emoji: '🌺', label: 'Outdoor Plants', slug: 'flowering-outdoor-plants', bg: 'from-pink-50 to-pink-100' },
+    ];
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <nav className="flex items-center gap-1.5 text-xs text-slate-400 select-none mb-6">
+          <span className="hover:text-[#1B6B3A] cursor-pointer font-medium" onClick={() => { setSelectedCategory(null); setSearchQuery(''); setCurrentPage('home'); }}>Home</span>
+          <ChevronRight className="h-3.5 w-3.5" />
+          <span className="text-slate-700 font-bold">Shop by Category</span>
+        </nav>
+        <h1 className="font-display font-black text-2xl sm:text-3xl text-slate-900 tracking-tight">Shop by Category</h1>
+        <p className="text-slate-500 text-sm mt-1.5 mb-7">Pick a category to see all related products.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          {CATEGORY_TILES.map((c) => (
+            <button
+              key={c.slug}
+              onClick={() => { setSelectedCategory(c.slug); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`group bg-gradient-to-br ${c.bg} border border-white rounded-2xl p-5 text-left shadow-sm hover:shadow-md hover:-translate-y-0.5 transition flex flex-col gap-2`}
+            >
+              <span className="text-3xl">{c.emoji}</span>
+              <span className="font-black text-sm text-slate-800 leading-tight">{c.label}</span>
+              <span className="text-[11px] font-bold text-[#1B6B3A] group-hover:translate-x-0.5 transition">Explore →</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -263,8 +324,8 @@ export default function CategoryComponent({
       {/* Main layout grid (Sidebar + Product grid) */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
-        {/* Left Filters Sidebar */}
-        <aside className="lg:col-span-1 bg-white border border-slate-200 p-5 rounded-xl space-y-6 h-fit sticky top-[150px]">
+        {/* Left Filters Sidebar — sticky, scrolls internally if tall; page scroll stays on the right grid */}
+        <aside className="lg:col-span-1 bg-white border border-slate-200 p-5 rounded-xl space-y-6 h-fit lg:sticky lg:top-[150px] lg:max-h-[calc(100vh-170px)] lg:overflow-y-auto custom-scroll">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <h3 className="font-display font-bold text-slate-800 text-sm flex items-center gap-2">
               <SlidersHorizontal className="h-4 w-4 text-[#1B6B3A]" />
@@ -280,22 +341,37 @@ export default function CategoryComponent({
             </button>
           </div>
 
-          {/* Shop By Problem selector */}
+          {/* Shop by Category quick links */}
           <div>
             <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2.5">
-              Shop by Problem Target:
+              Shop by Category:
             </label>
-            <div className="flex flex-col gap-2">
-              {PROBLEM_FILTERS.map((prob) => (
+            <div className="flex flex-wrap gap-1.5">
+              {([
+                { label: 'All', slug: null },
+                { label: '🥬 Vegetables', slug: 'vegetables' },
+                { label: '🍎 Fruits', slug: 'fruits' },
+                { label: '🌱 Veg Seeds', slug: 'vegetable-seeds' },
+                { label: '🌳 Fruit Plants', slug: 'fruit-plants' },
+                { label: '🌾 Field Seeds', slug: 'field-millet-seeds' },
+                { label: '🍯 Valluvam', slug: 'native-foods-millets' },
+                { label: '💧 Liquid Fert.', slug: 'liquid-fertilizers' },
+                { label: '🧂 Powder Fert.', slug: 'powder-fertilizers' },
+                { label: '♻️ Manures', slug: 'organic-manures' },
+                { label: '🛠️ Tools', slug: 'farm-tools' },
+                { label: '🚿 Irrigation', slug: 'irrigation-equipment' },
+                { label: '🪴 Indoor', slug: 'indoor-office-plants' },
+                { label: '🌺 Outdoor', slug: 'flowering-outdoor-plants' },
+              ] as const).map((c) => (
                 <button
-                  key={prob}
-                  onClick={() => setSelectedProblem(selectedProblem === prob ? null : prob)}
-                  className={`text-left px-3 py-2 rounded-lg text-xs font-semibold transition ${selectedProblem === prob
-                    ? 'bg-amber-100 text-amber-800 border-l-4 border-amber-500'
-                    : 'bg-[#F7F9F4] text-slate-700 hover:bg-slate-100'
+                  key={c.label}
+                  onClick={() => setSelectedCategory(c.slug)}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-bold border transition ${selectedCategory === c.slug
+                    ? 'bg-[#1B6B3A] text-white border-[#1B6B3A]'
+                    : 'bg-[#F7F9F4] text-slate-700 border-slate-200 hover:bg-slate-100'
                     }`}
                 >
-                  {prob}
+                  {c.label}
                 </button>
               ))}
             </div>
@@ -337,20 +413,20 @@ export default function CategoryComponent({
           <div>
             <div className="flex justify-between items-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
               <span>Max Budget:</span>
-              <span className="font-display text-[#1B6B3A] font-black">₹{priceRange}</span>
+              <span className="font-display text-[#1B6B3A] font-black">{priceRange >= 50000 ? 'Any' : `₹${priceRange.toLocaleString('en-IN')}`}</span>
             </div>
             <input
               type="range"
-              min="150"
-              max="5000"
-              step="50"
+              min="100"
+              max="50000"
+              step="100"
               value={priceRange}
               onChange={(e) => setPriceRange(Number(e.target.value))}
               className="w-full accent-[#1B6B3A] cursor-pointer h-1.5 bg-slate-100 rounded-lg"
             />
             <div className="flex justify-between text-[10px] text-slate-400 mt-1">
-              <span>₹150</span>
-              <span>₹5k+</span>
+              <span>₹100</span>
+              <span>{priceRange >= 50000 ? 'Any price' : `₹${priceRange.toLocaleString('en-IN')}`}</span>
             </div>
           </div>
 

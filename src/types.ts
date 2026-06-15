@@ -63,6 +63,8 @@ export interface UserProfile {
   role: 'customer' | 'admin';
   addresses: Address[];
   wishlist: string[]; // array of productIds
+  profileComplete?: boolean; // true once the customer finishes the join/profile form
+  passwordHash?: string;     // demo only — real auth/passwords move to Supabase/DLT later
 }
 
 export interface Address {

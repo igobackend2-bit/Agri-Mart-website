@@ -158,6 +158,28 @@ export function unreadInboxCount(email?: string | null): number {
   return getInbox(email).filter(m => !m.read).length;
 }
 
+// ── IGO Coins wallet (demo loyalty — earn on orders, redeem at checkout) ─────
+// Real loyalty/ledger should move to the backend (Supabase) later; this is a
+// per-device demo store so the feature is visible and testable now.
+const K_WALLET = 'igo_wallet_coins';
+
+export function getWalletCoins(): number {
+  return read<number>(K_WALLET, 0);
+}
+/** Award coins (e.g. 2% of order value) and return the new balance. */
+export function earnWalletCoins(amount: number): number {
+  const next = Math.max(0, getWalletCoins() + Math.round(amount));
+  write(K_WALLET, next);
+  return next;
+}
+/** Redeem up to `max` coins; returns the number actually redeemed. */
+export function redeemWalletCoins(max: number): number {
+  const have = getWalletCoins();
+  const used = Math.max(0, Math.min(have, Math.round(max)));
+  write(K_WALLET, have - used);
+  return used;
+}
+
 // ── Sounds (WebAudio, no asset files needed) ─────────────────────────────────
 function tone(ctx: AudioContext, freq: number, start: number, dur: number, vol = 0.18) {
   const o = ctx.createOscillator();

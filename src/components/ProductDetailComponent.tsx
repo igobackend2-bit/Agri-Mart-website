@@ -11,11 +11,16 @@ import {
   Minus,
   MessageSquare,
   Sparkles,
-  Award
+  Award,
+  ShieldCheck,
+  Leaf,
+  Sprout,
+  BadgeCheck
 } from 'lucide-react';
 import { Product, Review } from '../types';
 import { translations, LanguageDict } from '../translation';
 import { fetchReviews, addReview } from '../dbHelper';
+import { sendInboxMessage } from '../storeData';
 
 interface ProductDetailProps {
   lang: 'en' | 'ta';
@@ -73,6 +78,15 @@ export default function ProductDetailComponent({
     mrp: packMrp,
   };
   const [activeTab, setActiveTab] = useState<'Overview' | 'Usage' | 'Composition' | 'Reviews'>('Overview');
+  const [notified, setNotified] = useState<boolean>(false);
+
+  const handleNotifyMe = () => {
+    sendInboxMessage({
+      title: 'Back-in-stock alert set',
+      body: `We'll notify you here when "${product.name}" is back in stock.`,
+    });
+    setNotified(true);
+  };
   
   // Pincode validation state
   const [pincode, setPincode] = useState<string>('');
@@ -298,10 +312,57 @@ export default function ProductDetailComponent({
 
             {/* Stock urgency */}
             {product.stock === 0 ? (
-              <p className="text-xs font-black text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 inline-block">Out of Stock — restocking soon</p>
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-xs font-black text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 inline-block">Out of Stock — restocking soon</p>
+                {notified ? (
+                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 inline-flex items-center gap-1.5">
+                    <CheckCircle className="h-3.5 w-3.5" /> We'll alert you
+                  </span>
+                ) : (
+                  <button
+                    onClick={handleNotifyMe}
+                    className="text-xs font-black text-[#1B6B3A] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg px-3 py-2 inline-flex items-center gap-1.5 transition"
+                  >
+                    <Sparkles className="h-3.5 w-3.5" /> Notify me when back
+                  </button>
+                )}
+              </div>
             ) : product.stock < 20 ? (
               <p className="text-xs font-black text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 inline-block">🔥 Low stock — only {product.stock} left, order soon!</p>
             ) : null}
+
+            {/* Crop suitability chips (from product.crops) */}
+            {product.crops && product.crops.length > 0 && (
+              <div className="pt-4">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                  <Sprout className="h-3.5 w-3.5 text-[#1B6B3A]" /> Best suited for these crops
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {product.crops.map((crop) => (
+                    <span key={crop} className="text-[11px] font-bold text-[#1B6B3A] bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1">
+                      {crop}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Trust & certification badges */}
+            <div className="flex flex-wrap items-center gap-2 pt-4">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg px-2.5 py-1.5">
+                <BadgeCheck className="h-3.5 w-3.5 text-emerald-600" /> 100% Genuine Product
+              </span>
+              {product.isOrganic && (
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-green-800 bg-green-50 border border-green-200 rounded-lg px-2.5 py-1.5">
+                  <Leaf className="h-3.5 w-3.5 text-green-600" /> Organic
+                </span>
+              )}
+              {(product.certifications || []).map((c) => (
+                <span key={c.name} className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-700 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[#1B6B3A]" /> {c.name}{c.isVerified ? ' ✓' : ''}
+                </span>
+              ))}
+            </div>
 
             {/* Stepper + Action CTA tools */}
             <div className="flex items-center gap-4 flex-wrap pt-4">
