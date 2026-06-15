@@ -169,7 +169,7 @@ export function clearNotification(): void {
 
 // ── Admin password ───────────────────────────────────────────────────────────
 // Default password (used until the admin changes it from Settings → Security):
-const DEFAULT_ADMIN_PASSWORD = 'IgoAgri@2026';
+const DEFAULT_ADMIN_PASSWORD = 'Admin@123';
 
 async function hashText(text: string): Promise<string> {
   try {
