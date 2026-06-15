@@ -26,6 +26,7 @@ import {
   getBanners, saveBanners, HeroBanner,
   getNotification, setNotification, clearNotification,
   changeAdminPassword,
+  getHomeOverrides, saveHomeOverrides, HomeOverrides
 } from '../siteConfig';
 
 interface AdminComponentProps {
@@ -98,6 +99,10 @@ export default function AdminComponent({ lang, products, setProducts, categories
     while (stored.length < 3) stored.push({ img: '', badge: '', title: '', sub: '', btn: 'Shop Now', btnAction: 'seeds-saplings' });
     return stored.slice(0, 3);
   });
+
+  // Homepage Section Overrides
+  const [homeOverrides, setHomeOverrides] = useState<HomeOverrides>(() => getHomeOverrides());
+  const [activeOverrideSection, setActiveOverrideSection] = useState<string>('');
 
   // Site notification
   const [notifInput, setNotifInput] = useState('');
@@ -799,9 +804,28 @@ export default function AdminComponent({ lang, products, setProducts, categories
                     placeholder="e.g. 1kg, 500ml" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
                 </div>
                 <div className="col-span-2">
-                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Image URL</label>
-                  <input type="text" value={newProduct.images} onChange={e => setNewProduct({...newProduct, images: e.target.value})}
-                    className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Product Image (URL or Local File)</label>
+                  <div className="flex gap-2 items-center">
+                    <input type="text" value={newProduct.images} onChange={e => setNewProduct({...newProduct, images: e.target.value})}
+                      placeholder="Paste image URL here" className="flex-1 bg-white border rounded-lg p-2.5 text-xs font-bold" />
+                    <span className="text-xs font-bold text-slate-400">OR</span>
+                    <label className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2.5 rounded-lg cursor-pointer transition whitespace-nowrap">
+                      Upload File
+                      <input type="file" accept="image/*" className="hidden" onChange={e => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = (ev) => setNewProduct({...newProduct, images: ev.target?.result as string});
+                          reader.readAsDataURL(file);
+                        }
+                      }} />
+                    </label>
+                  </div>
+                  {newProduct.images && (
+                    <div className="mt-2">
+                      <img src={newProduct.images} alt="Preview" className="h-20 w-20 object-cover rounded-lg border border-slate-200 shadow-sm" />
+                    </div>
+                  )}
                 </div>
                 <div className="col-span-2">
                   <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Description</label>
@@ -823,38 +847,40 @@ export default function AdminComponent({ lang, products, setProducts, categories
             </form>
           )}
 
-          <div className="border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
-            <table className="w-full text-xs text-slate-600 border-collapse">
-              <thead className="bg-slate-50 font-bold text-slate-600 border-b border-slate-200">
-                <tr>{['Image','Product','Category','Brand','Price','Stock','Actions'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredProducts.map(p => (
-                  <tr key={p.id} className="hover:bg-slate-50/40">
-                    <td className="p-3"><img src={p.images?.[0]} alt={p.name} className="h-10 w-10 rounded-lg object-cover border" onError={imgFallback} /></td>
-                    <td className="p-3 max-w-[180px]">
-                      <div className="font-bold text-slate-800 truncate">{p.name}</div>
-                      <div className="text-[10px] text-slate-400">SKU: {p.id.slice(0, 10)}</div>
-                    </td>
-                    <td className="p-3 text-[11px]">{p.category}</td>
-                    <td className="p-3"><span className={'px-2 py-0.5 rounded text-[10px] font-bold ' + (p.isIgoOwn ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600')}>{p.brand}</span></td>
-                    <td className="p-3"><div className="font-bold">Rs.{p.price}</div><div className="text-[10px] text-slate-400 line-through">Rs.{p.mrp}</div></td>
-                    <td className="p-3 font-black" style={{ color: p.stock === 0 ? '#dc2626' : p.stock < 20 ? '#d97706' : '#16a34a' }}>{p.stock}</td>
-                    <td className="p-3">
-                      <div className="flex items-center gap-1">
-                        <button onClick={() => startEditProduct(p)} title="Edit product" className="p-1.5 text-slate-400 hover:text-[#1B6B3A] hover:bg-emerald-50 rounded-lg transition">
-                          <Edit3 className="h-4 w-4" />
-                        </button>
-                        <button onClick={() => handleDeleteProduct(p.id)} title="Delete product" className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {!showProductForm && (
+            <div className="border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
+              <table className="w-full text-xs text-slate-600 border-collapse">
+                <thead className="bg-slate-50 font-bold text-slate-600 border-b border-slate-200">
+                  <tr>{['Image','Product','Category','Brand','Price','Stock','Actions'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filteredProducts.map(p => (
+                    <tr key={p.id} className="hover:bg-slate-50/40">
+                      <td className="p-3"><img src={p.images?.[0]} alt={p.name} className="h-10 w-10 rounded-lg object-cover border" onError={imgFallback} /></td>
+                      <td className="p-3 max-w-[180px]">
+                        <div className="font-bold text-slate-800 truncate">{p.name}</div>
+                        <div className="text-[10px] text-slate-400">SKU: {p.id.slice(0, 10)}</div>
+                      </td>
+                      <td className="p-3 text-[11px]">{p.category}</td>
+                      <td className="p-3"><span className={'px-2 py-0.5 rounded text-[10px] font-bold ' + (p.isIgoOwn ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600')}>{p.brand}</span></td>
+                      <td className="p-3"><div className="font-bold">Rs.{p.price}</div><div className="text-[10px] text-slate-400 line-through">Rs.{p.mrp}</div></td>
+                      <td className="p-3 font-black" style={{ color: p.stock === 0 ? '#dc2626' : p.stock < 20 ? '#d97706' : '#16a34a' }}>{p.stock}</td>
+                      <td className="p-3">
+                        <div className="flex items-center gap-1">
+                          <button onClick={() => startEditProduct(p)} title="Edit product" className="p-1.5 text-slate-400 hover:text-[#1B6B3A] hover:bg-emerald-50 rounded-lg transition">
+                            <Edit3 className="h-4 w-4" />
+                          </button>
+                          <button onClick={() => handleDeleteProduct(p.id)} title="Delete product" className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 
@@ -1203,6 +1229,73 @@ export default function AdminComponent({ lang, products, setProducts, categories
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-3 flex items-center gap-1.5">
+              Homepage Section Overrides
+            </h4>
+            <p className="text-[10px] text-slate-400 mb-4">Manually assign specific products to homepage sections. Leave a section empty to use the automatic dynamic products.</p>
+            <div className="space-y-4">
+              <div>
+                <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Select Section to Override</label>
+                <select value={activeOverrideSection} onChange={e => setActiveOverrideSection(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold outline-none focus:border-[#1B6B3A]">
+                  <option value="">-- Choose a section --</option>
+                  {['Best Selling', "Freshly Arrived", 'Combo Kits & Deals', 'Shop By Crop', 'Seeds', 'Organic & Bio Inputs', 'Urban & Balcony Gardening', 'Animal Husbandry Essentials', 'Precision Tools & Equipments', 'Trending Products', 'Popular Agri Brands', 'Brands', 'AgriMart Farmer Updates'].map(sec => (
+                    <option key={sec} value={sec}>{sec} ({homeOverrides[sec]?.length || 0} items)</option>
+                  ))}
+                </select>
+              </div>
+              {activeOverrideSection && (
+                <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+                  <div className="font-bold text-xs text-[#1B6B3A]">Products for {activeOverrideSection}</div>
+                  <div className="flex gap-2">
+                    <input type="text" id="override-product-id" placeholder="Paste Product ID (SKU) to add..."
+                      className="flex-1 bg-white border border-slate-200 rounded-lg p-2 text-xs font-mono outline-none focus:border-[#1B6B3A]" />
+                    <button onClick={() => {
+                      const input = document.getElementById('override-product-id') as HTMLInputElement;
+                      const pid = input.value.trim();
+                      if (!pid) return;
+                      if (!products.find(p => p.id === pid)) { alert('Product ID not found in catalog.'); return; }
+                      const current = homeOverrides[activeOverrideSection] || [];
+                      if (current.includes(pid)) return;
+                      const updated = { ...homeOverrides, [activeOverrideSection]: [...current, pid] };
+                      setHomeOverrides(updated);
+                      saveHomeOverrides(updated);
+                      input.value = '';
+                    }} className="bg-[#1B6B3A] text-white px-4 py-2 rounded-lg text-xs font-bold">Add</button>
+                  </div>
+                  <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                    {(homeOverrides[activeOverrideSection] || []).length === 0 ? (
+                      <div className="text-[10px] text-slate-400 italic py-2">No manual overrides. Showing dynamic products automatically.</div>
+                    ) : (
+                      (homeOverrides[activeOverrideSection] || []).map(pid => {
+                        const p = products.find(x => x.id === pid);
+                        return (
+                          <div key={pid} className="flex items-center justify-between bg-white border border-slate-200 p-2 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              <img src={p?.images?.[0]} alt="" className="h-8 w-8 rounded object-cover border" onError={imgFallback} />
+                              <div>
+                                <div className="text-[10px] font-bold text-slate-800">{p?.name || 'Unknown Product'}</div>
+                                <div className="text-[9px] text-slate-400 font-mono">{pid}</div>
+                              </div>
+                            </div>
+                            <button onClick={() => {
+                              const updatedList = homeOverrides[activeOverrideSection].filter(id => id !== pid);
+                              const updated = { ...homeOverrides, [activeOverrideSection]: updatedList };
+                              setHomeOverrides(updated);
+                              saveHomeOverrides(updated);
+                            }} className="text-red-500 hover:text-red-700 p-1">
+                              <Trash2 className="h-3 w-3" />
+                            </button>
+                          </div>
+                        )
+                      })
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           <div className="bg-white border border-slate-200 rounded-xl p-5">

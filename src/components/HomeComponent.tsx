@@ -45,7 +45,7 @@ import {
 import { Product, Category, Brand } from '../types';
 import { SEED_CATEGORIES, SEED_BRANDS, CROP_KITS, SUBSIDY_INFO, SEED_POSTS } from '../seedData';
 import { translations, LanguageDict } from '../translation';
-import { getBanners } from '../siteConfig';
+import { getBanners, getHomeOverrides } from '../siteConfig';
 import { detectLocation, getSavedLocation } from '../storeData';
 import { FarmStories, LiveTrialFields, IgoEcosystemCarousel } from './HomeAdaptedFeatures';
 
@@ -426,14 +426,24 @@ export default function HomeComponent({
     { name: 'Marigold', img: 'https://images.unsplash.com/photo-1599754890761-9e3bf27f9e3e?w=200&q=75&fit=crop', slug: 'outdoor-plants-trees' },
   ];
 
-  const todaysOffers = [...products].sort((a, b) => {
+  const homeOverrides = getHomeOverrides();
+  const getOverrideProducts = (sectionName: string, defaultProducts: Product[]) => {
+    const overrideIds = homeOverrides[sectionName];
+    if (overrideIds && overrideIds.length > 0) {
+      const selected = overrideIds.map(id => products.find(p => p.id === id)).filter(Boolean) as Product[];
+      if (selected.length > 0) return selected;
+    }
+    return defaultProducts;
+  };
+
+  const todaysOffers = getOverrideProducts("Today's Selection", [...products].sort((a, b) => {
     const da = a.mrp > 0 ? Math.round((1 - a.price / a.mrp) * 100) : 0;
     const db = b.mrp > 0 ? Math.round((1 - b.price / b.mrp) * 100) : 0;
     return db - da;
-  }).slice(0, 12);
+  }).slice(0, 12));
 
-  const bestSellers = [...products].sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 12);
-  const trendingProducts = [...products].filter(p => p.rating >= 4.2).sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 12);
+  const bestSellers = getOverrideProducts("Best Selling", [...products].sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 12));
+  const trendingProducts = getOverrideProducts("Trending Products", [...products].filter(p => p.rating >= 4.2).sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 12));
   const comboDeals = CROP_KITS.slice(0, 3);
 
   const renderProductCard = (p: typeof products[0]) => {
@@ -880,8 +890,8 @@ export default function HomeComponent({
           onViewAll={() => handleCategoryClick('seeds-saplings')}
         />
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {products.filter(p => normalizeCategory(p.category) === 'seeds saplings').slice(0, 10).map((p) => (<div key={p.id} className="contents">{renderProductCard(p)}</div>))}
-          {products.filter(p => normalizeCategory(p.category) === 'seeds saplings').length === 0 &&
+          {getOverrideProducts('Seeds', products.filter(p => normalizeCategory(p.category) === 'seeds saplings')).slice(0, 10).map((p) => (<div key={p.id} className="contents">{renderProductCard(p)}</div>))}
+          {getOverrideProducts('Seeds', products.filter(p => normalizeCategory(p.category) === 'seeds saplings')).length === 0 &&
             products.slice(0, 10).map(p => renderProductCard(p))
           }
         </div>
@@ -895,8 +905,8 @@ export default function HomeComponent({
           onViewAll={() => handleCategoryClick('organic-natural-farming')}
         />
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {products.filter(p => normalizeCategory(p.category).includes('organic') || normalizeCategory(p.category).includes('bio') || normalizeCategory(p.category) === 'organic natural farming').slice(0, 10).map((p) => (<div key={p.id} className="contents">{renderProductCard(p)}</div>))}
-          {products.filter(p => normalizeCategory(p.category).includes('organic') || normalizeCategory(p.category).includes('bio') || normalizeCategory(p.category) === 'organic natural farming').length === 0 &&
+          {getOverrideProducts('Organic & Bio Inputs', products.filter(p => normalizeCategory(p.category).includes('organic') || normalizeCategory(p.category).includes('bio') || normalizeCategory(p.category) === 'organic natural farming')).slice(0, 10).map((p) => (<div key={p.id} className="contents">{renderProductCard(p)}</div>))}
+          {getOverrideProducts('Organic & Bio Inputs', products.filter(p => normalizeCategory(p.category).includes('organic') || normalizeCategory(p.category).includes('bio') || normalizeCategory(p.category) === 'organic natural farming')).length === 0 &&
             products.slice(10, 20).map(p => renderProductCard(p))
           }
         </div>
@@ -910,10 +920,10 @@ export default function HomeComponent({
           onViewAll={() => handleCategoryClick('urban-balcony-gardening')}
         />
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {products.filter(p => normalizeCategory(p.category) === 'urban balcony gardening').slice(0, 10).map((p) => (
+          {getOverrideProducts('Urban & Balcony Gardening', products.filter(p => normalizeCategory(p.category) === 'urban balcony gardening')).slice(0, 10).map((p) => (
             <div key={p.id} className="contents">{renderProductCard(p)}</div>
           ))}
-          {products.filter(p => normalizeCategory(p.category) === 'urban balcony gardening').length === 0 &&
+          {getOverrideProducts('Urban & Balcony Gardening', products.filter(p => normalizeCategory(p.category) === 'urban balcony gardening')).length === 0 &&
             products.slice(20, 30).map(p => renderProductCard(p))
           }
         </div>
@@ -927,10 +937,10 @@ export default function HomeComponent({
           onViewAll={() => handleCategoryClick('animal-husbandry')}
         />
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {products.filter(p => normalizeCategory(p.category) === 'animal husbandry').slice(0, 10).map((p) => (
+          {getOverrideProducts('Animal Husbandry Essentials', products.filter(p => normalizeCategory(p.category) === 'animal husbandry')).slice(0, 10).map((p) => (
             <div key={p.id} className="contents">{renderProductCard(p)}</div>
           ))}
-          {products.filter(p => normalizeCategory(p.category) === 'animal husbandry').length === 0 &&
+          {getOverrideProducts('Animal Husbandry Essentials', products.filter(p => normalizeCategory(p.category) === 'animal husbandry')).length === 0 &&
             products.slice(0, 10).map(p => renderProductCard(p))
           }
         </div>
@@ -944,10 +954,10 @@ export default function HomeComponent({
           onViewAll={() => handleCategoryClick('precision-tools-equipments')}
         />
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {products.filter(p => normalizeCategory(p.category) === 'precision tools equipments').slice(0, 10).map((p) => (
+          {getOverrideProducts('Precision Tools & Equipments', products.filter(p => normalizeCategory(p.category) === 'precision tools equipments')).slice(0, 10).map((p) => (
             <div key={p.id} className="contents">{renderProductCard(p)}</div>
           ))}
-          {products.filter(p => normalizeCategory(p.category) === 'precision tools equipments').length === 0 &&
+          {getOverrideProducts('Precision Tools & Equipments', products.filter(p => normalizeCategory(p.category) === 'precision tools equipments')).length === 0 &&
             products.slice(30, 40).map(p => renderProductCard(p))
           }
         </div>

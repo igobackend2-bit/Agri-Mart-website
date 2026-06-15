@@ -70,6 +70,7 @@ const KEYS = {
   coupons: 'igo_coupons',
   banners: 'igo_banners',
   notification: 'igo_notification',
+  homeOverrides: 'igo_home_overrides',
   adminPwdHash: 'igo_admin_pwd_hash',
   adminSession: 'igo_admin_session',
 } as const;
@@ -165,6 +166,16 @@ export function setNotification(text: string): void {
 }
 export function clearNotification(): void {
   localStorage.removeItem(KEYS.notification);
+}
+
+// ── Homepage Overrides ───────────────────────────────────────────────────────
+export type HomeOverrides = Record<string, string[]>;
+
+export function getHomeOverrides(): HomeOverrides {
+  return readJSON<HomeOverrides>(KEYS.homeOverrides, {});
+}
+export function saveHomeOverrides(overrides: HomeOverrides): void {
+  localStorage.setItem(KEYS.homeOverrides, JSON.stringify(overrides));
 }
 
 // ── Admin password ───────────────────────────────────────────────────────────
