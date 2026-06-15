@@ -26,7 +26,8 @@ import {
   getBanners, saveBanners, HeroBanner,
   getNotification, setNotification, clearNotification,
   changeAdminPassword,
-  getHomeOverrides, saveHomeOverrides, HomeOverrides
+  getHomeOverrides, saveHomeOverrides, HomeOverrides,
+  getComplexOverrides, saveComplexOverrides, ComplexOverrides
 } from '../siteConfig';
 
 interface AdminComponentProps {
@@ -102,7 +103,9 @@ export default function AdminComponent({ lang, products, setProducts, categories
 
   // Homepage Section Overrides
   const [homeOverrides, setHomeOverrides] = useState<HomeOverrides>(() => getHomeOverrides());
+  const [complexOverrides, setComplexOverrides] = useState<ComplexOverrides>(() => getComplexOverrides());
   const [activeOverrideSection, setActiveOverrideSection] = useState<string>('');
+  const [overrideForm, setOverrideForm] = useState<any>({});
 
   // Site notification
   const [notifInput, setNotifInput] = useState('');
@@ -1249,51 +1252,147 @@ export default function AdminComponent({ lang, products, setProducts, categories
               </div>
               {activeOverrideSection && (
                 <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
-                  <div className="font-bold text-xs text-[#1B6B3A]">Products for {activeOverrideSection}</div>
-                  <div className="flex gap-2">
-                    <input type="text" id="override-product-id" placeholder="Paste Product ID (SKU) to add..."
-                      className="flex-1 bg-white border border-slate-200 rounded-lg p-2 text-xs font-mono outline-none focus:border-[#1B6B3A]" />
-                    <button onClick={() => {
-                      const input = document.getElementById('override-product-id') as HTMLInputElement;
-                      const pid = input.value.trim();
-                      if (!pid) return;
-                      if (!products.find(p => p.id === pid)) { alert('Product ID not found in catalog.'); return; }
-                      const current = homeOverrides[activeOverrideSection] || [];
-                      if (current.includes(pid)) return;
-                      const updated = { ...homeOverrides, [activeOverrideSection]: [...current, pid] };
-                      setHomeOverrides(updated);
-                      saveHomeOverrides(updated);
-                      input.value = '';
-                    }} className="bg-[#1B6B3A] text-white px-4 py-2 rounded-lg text-xs font-bold">Add</button>
-                  </div>
-                  <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                    {(homeOverrides[activeOverrideSection] || []).length === 0 ? (
-                      <div className="text-[10px] text-slate-400 italic py-2">No manual overrides. Showing dynamic products automatically.</div>
-                    ) : (
-                      (homeOverrides[activeOverrideSection] || []).map(pid => {
-                        const p = products.find(x => x.id === pid);
-                        return (
-                          <div key={pid} className="flex items-center justify-between bg-white border border-slate-200 p-2 rounded-lg">
-                            <div className="flex items-center gap-2">
-                              <img src={p?.images?.[0]} alt="" className="h-8 w-8 rounded object-cover border" onError={imgFallback} />
-                              <div>
-                                <div className="text-[10px] font-bold text-slate-800">{p?.name || 'Unknown Product'}</div>
-                                <div className="text-[9px] text-slate-400 font-mono">{pid}</div>
-                              </div>
-                            </div>
-                            <button onClick={() => {
-                              const updatedList = homeOverrides[activeOverrideSection].filter(id => id !== pid);
-                              const updated = { ...homeOverrides, [activeOverrideSection]: updatedList };
-                              setHomeOverrides(updated);
-                              saveHomeOverrides(updated);
-                            }} className="text-red-500 hover:text-red-700 p-1">
-                              <Trash2 className="h-3 w-3" />
-                            </button>
+                  <div className="font-bold text-xs text-[#1B6B3A]">Override for {activeOverrideSection}</div>
+                  
+                  {activeOverrideSection === 'Combo Kits & Deals' ? (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div><label className="text-[10px] text-slate-500 font-bold block mb-1">Kit Name</label><input type="text" value={overrideForm.name || ''} onChange={e => setOverrideForm({...overrideForm, name: e.target.value})} className="w-full border rounded p-2 text-xs" /></div>
+                        <div><label className="text-[10px] text-slate-500 font-bold block mb-1">Price (₹)</label><input type="number" value={overrideForm.price || ''} onChange={e => setOverrideForm({...overrideForm, price: Number(e.target.value)})} className="w-full border rounded p-2 text-xs" /></div>
+                        <div><label className="text-[10px] text-slate-500 font-bold block mb-1">MRP (₹)</label><input type="number" value={overrideForm.mrp || ''} onChange={e => setOverrideForm({...overrideForm, mrp: Number(e.target.value)})} className="w-full border rounded p-2 text-xs" /></div>
+                        <div>
+                          <label className="text-[10px] text-slate-500 font-bold block mb-1">Image Upload</label>
+                          <label className="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-3 py-2 rounded flex items-center justify-center cursor-pointer">
+                            Upload File
+                            <input type="file" className="hidden" accept="image/*" onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                const reader = new FileReader();
+                                reader.onloadend = () => setOverrideForm({...overrideForm, image: reader.result as string});
+                                reader.readAsDataURL(file);
+                              }
+                            }} />
+                          </label>
+                        </div>
+                        <div className="col-span-2"><label className="text-[10px] text-slate-500 font-bold block mb-1">Description</label><input type="text" value={overrideForm.description || ''} onChange={e => setOverrideForm({...overrideForm, description: e.target.value})} className="w-full border rounded p-2 text-xs" /></div>
+                        <div className="col-span-2"><label className="text-[10px] text-slate-500 font-bold block mb-1">Items (comma separated)</label><input type="text" value={overrideForm.items || ''} onChange={e => setOverrideForm({...overrideForm, items: e.target.value})} className="w-full border rounded p-2 text-xs" /></div>
+                      </div>
+                      <button onClick={() => {
+                        const newKit = { id: 'kit-'+Date.now(), name: overrideForm.name||'', description: overrideForm.description||'', price: overrideForm.price||0, mrp: overrideForm.mrp||0, items: (overrideForm.items||'').split(',').map((s:string)=>s.trim()), image: overrideForm.image||'' };
+                        const updated = {...complexOverrides, kits: [...complexOverrides.kits, newKit]};
+                        setComplexOverrides(updated); saveComplexOverrides(updated); setOverrideForm({});
+                      }} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-2 rounded">Add Kit</button>
+                      <div className="space-y-2 mt-3">
+                        {complexOverrides.kits.map(k => (
+                          <div key={k.id} className="flex items-center justify-between bg-white border p-2 rounded">
+                            <div className="flex items-center gap-2"><img src={k.image} className="w-8 h-8 rounded border object-cover" /> <div className="text-xs font-bold">{k.name}</div></div>
+                            <button onClick={() => { const u = {...complexOverrides, kits: complexOverrides.kits.filter(x => x.id !== k.id)}; setComplexOverrides(u); saveComplexOverrides(u); }} className="text-red-500"><Trash2 className="w-4 h-4"/></button>
                           </div>
-                        )
-                      })
-                    )}
-                  </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : activeOverrideSection === 'Shop By Crop' ? (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div><label className="text-[10px] text-slate-500 font-bold block mb-1">Crop Name</label><input type="text" value={overrideForm.name || ''} onChange={e => setOverrideForm({...overrideForm, name: e.target.value})} className="w-full border rounded p-2 text-xs" /></div>
+                        <div><label className="text-[10px] text-slate-500 font-bold block mb-1">Category Slug</label><input type="text" value={overrideForm.slug || ''} onChange={e => setOverrideForm({...overrideForm, slug: e.target.value})} placeholder="e.g. seeds-saplings" className="w-full border rounded p-2 text-xs" /></div>
+                        <div className="col-span-2">
+                          <label className="text-[10px] text-slate-500 font-bold block mb-1">Crop Image</label>
+                          <label className="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-3 py-2 rounded flex items-center justify-center cursor-pointer">
+                            Upload File
+                            <input type="file" className="hidden" accept="image/*" onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                const reader = new FileReader();
+                                reader.onloadend = () => setOverrideForm({...overrideForm, img: reader.result as string});
+                                reader.readAsDataURL(file);
+                              }
+                            }} />
+                          </label>
+                        </div>
+                      </div>
+                      <button onClick={() => {
+                        const newCrop = { id: 'crop-'+Date.now(), name: overrideForm.name||'', slug: overrideForm.slug||'', img: overrideForm.img||'' };
+                        const updated = {...complexOverrides, crops: [...complexOverrides.crops, newCrop]};
+                        setComplexOverrides(updated); saveComplexOverrides(updated); setOverrideForm({});
+                      }} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-2 rounded">Add Crop</button>
+                      <div className="space-y-2 mt-3">
+                        {complexOverrides.crops.map(c => (
+                          <div key={c.id} className="flex items-center justify-between bg-white border p-2 rounded">
+                            <div className="flex items-center gap-2"><img src={c.img} className="w-8 h-8 rounded border object-cover" /> <div className="text-xs font-bold">{c.name}</div></div>
+                            <button onClick={() => { const u = {...complexOverrides, crops: complexOverrides.crops.filter(x => x.id !== c.id)}; setComplexOverrides(u); saveComplexOverrides(u); }} className="text-red-500"><Trash2 className="w-4 h-4"/></button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : activeOverrideSection === 'Brands' || activeOverrideSection === 'Popular Agri Brands' ? (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div><label className="text-[10px] text-slate-500 font-bold block mb-1">Brand Name</label><input type="text" value={overrideForm.name || ''} onChange={e => setOverrideForm({...overrideForm, name: e.target.value})} className="w-full border rounded p-2 text-xs" /></div>
+                        <div><label className="text-[10px] text-slate-500 font-bold block mb-1">Category Slug</label><input type="text" value={overrideForm.slug || ''} onChange={e => setOverrideForm({...overrideForm, slug: e.target.value})} placeholder="e.g. brand:brandname" className="w-full border rounded p-2 text-xs" /></div>
+                      </div>
+                      <button onClick={() => {
+                        const newBrand = { id: 'brand-'+Date.now(), name: overrideForm.name||'', slug: overrideForm.slug||'' };
+                        const updated = {...complexOverrides, brands: [...complexOverrides.brands, newBrand]};
+                        setComplexOverrides(updated); saveComplexOverrides(updated); setOverrideForm({});
+                      }} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-2 rounded">Add Brand</button>
+                      <div className="space-y-2 mt-3">
+                        {complexOverrides.brands.map(b => (
+                          <div key={b.id} className="flex items-center justify-between bg-white border p-2 rounded">
+                            <div className="flex items-center gap-2"><div className="text-xs font-bold">{b.name}</div></div>
+                            <button onClick={() => { const u = {...complexOverrides, brands: complexOverrides.brands.filter(x => x.id !== b.id)}; setComplexOverrides(u); saveComplexOverrides(u); }} className="text-red-500"><Trash2 className="w-4 h-4"/></button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex gap-2">
+                        <input type="text" id="override-product-id" placeholder="Paste Product ID (SKU) to add..."
+                          className="flex-1 bg-white border border-slate-200 rounded-lg p-2 text-xs font-mono outline-none focus:border-[#1B6B3A]" />
+                        <button onClick={() => {
+                          const input = document.getElementById('override-product-id') as HTMLInputElement;
+                          const pid = input.value.trim();
+                          if (!pid) return;
+                          if (!products.find(p => p.id === pid)) { alert('Product ID not found in catalog.'); return; }
+                          const current = homeOverrides[activeOverrideSection] || [];
+                          if (current.includes(pid)) return;
+                          const updated = { ...homeOverrides, [activeOverrideSection]: [...current, pid] };
+                          setHomeOverrides(updated);
+                          saveHomeOverrides(updated);
+                          input.value = '';
+                        }} className="bg-[#1B6B3A] text-white px-4 py-2 rounded-lg text-xs font-bold">Add</button>
+                      </div>
+                      <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                        {(homeOverrides[activeOverrideSection] || []).length === 0 ? (
+                          <div className="text-[10px] text-slate-400 italic py-2">No manual overrides. Showing dynamic products automatically.</div>
+                        ) : (
+                          (homeOverrides[activeOverrideSection] || []).map(pid => {
+                            const p = products.find(x => x.id === pid);
+                            return (
+                              <div key={pid} className="flex items-center justify-between bg-white border border-slate-200 p-2 rounded-lg">
+                                <div className="flex items-center gap-2">
+                                  <img src={p?.images?.[0]} alt="" className="h-8 w-8 rounded object-cover border" onError={imgFallback} />
+                                  <div>
+                                    <div className="text-[10px] font-bold text-slate-800">{p?.name || 'Unknown Product'}</div>
+                                    <div className="text-[9px] text-slate-400 font-mono">{pid}</div>
+                                  </div>
+                                </div>
+                                <button onClick={() => {
+                                  const updatedList = homeOverrides[activeOverrideSection].filter(id => id !== pid);
+                                  const updated = { ...homeOverrides, [activeOverrideSection]: updatedList };
+                                  setHomeOverrides(updated);
+                                  saveHomeOverrides(updated);
+                                }} className="text-red-500 hover:text-red-700 p-1">
+                                  <Trash2 className="h-3 w-3" />
+                                </button>
+                              </div>
+                            )
+                          })
+                        )}
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>

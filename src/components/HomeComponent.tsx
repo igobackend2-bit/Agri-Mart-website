@@ -45,7 +45,7 @@ import {
 import { Product, Category, Brand } from '../types';
 import { SEED_CATEGORIES, SEED_BRANDS, CROP_KITS, SUBSIDY_INFO, SEED_POSTS } from '../seedData';
 import { translations, LanguageDict } from '../translation';
-import { getBanners, getHomeOverrides } from '../siteConfig';
+import { getBanners, getHomeOverrides, getComplexOverrides } from '../siteConfig';
 import { detectLocation, getSavedLocation } from '../storeData';
 import { FarmStories, LiveTrialFields, IgoEcosystemCarousel } from './HomeAdaptedFeatures';
 
@@ -409,9 +409,12 @@ export default function HomeComponent({
     }
   ];
 
-  const popularBrands = SEED_BRANDS.slice(0, 8);
+  const homeOverrides = getHomeOverrides();
+  const complexOverrides = getComplexOverrides();
 
-  const CROP_ITEMS = [
+  const popularBrands = complexOverrides.brands.length > 0 ? complexOverrides.brands : SEED_BRANDS.slice(0, 8);
+
+  const CROP_ITEMS = complexOverrides.crops.length > 0 ? complexOverrides.crops : [
     { name: 'Tomato', img: 'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
     { name: 'Green Chilli', img: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
     { name: 'Brinjal', img: 'https://images.unsplash.com/photo-1644630406799-1ac69fd70b9b?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
@@ -426,7 +429,6 @@ export default function HomeComponent({
     { name: 'Marigold', img: 'https://images.unsplash.com/photo-1599754890761-9e3bf27f9e3e?w=200&q=75&fit=crop', slug: 'outdoor-plants-trees' },
   ];
 
-  const homeOverrides = getHomeOverrides();
   const getOverrideProducts = (sectionName: string, defaultProducts: Product[]) => {
     const overrideIds = homeOverrides[sectionName];
     if (overrideIds && overrideIds.length > 0) {
@@ -444,7 +446,7 @@ export default function HomeComponent({
 
   const bestSellers = getOverrideProducts("Best Selling", [...products].sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 12));
   const trendingProducts = getOverrideProducts("Trending Products", [...products].filter(p => p.rating >= 4.2).sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 12));
-  const comboDeals = CROP_KITS.slice(0, 3);
+  const comboDeals = complexOverrides.kits.length > 0 ? complexOverrides.kits : CROP_KITS.slice(0, 3);
 
   const renderProductCard = (p: typeof products[0]) => {
     const disc = p.mrp > 0 ? Math.round((1 - p.price / p.mrp) * 100) : 0;

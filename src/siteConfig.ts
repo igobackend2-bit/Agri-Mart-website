@@ -178,6 +178,43 @@ export function saveHomeOverrides(overrides: HomeOverrides): void {
   localStorage.setItem(KEYS.homeOverrides, JSON.stringify(overrides));
 }
 
+// ── Complex Homepage Overrides (Kits, Crops, Brands) ─────────────────────────
+export interface OverrideKit {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  mrp: number;
+  items: string[];
+  image: string;
+}
+
+export interface OverrideCrop {
+  id: string;
+  name: string;
+  slug: string;
+  img: string;
+}
+
+export interface OverrideBrand {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface ComplexOverrides {
+  kits: OverrideKit[];
+  crops: OverrideCrop[];
+  brands: OverrideBrand[];
+}
+
+export function getComplexOverrides(): ComplexOverrides {
+  return readJSON<ComplexOverrides>('igo_complex_overrides', { kits: [], crops: [], brands: [] });
+}
+export function saveComplexOverrides(overrides: ComplexOverrides): void {
+  localStorage.setItem('igo_complex_overrides', JSON.stringify(overrides));
+}
+
 // ── Admin password ───────────────────────────────────────────────────────────
 // Default password (used until the admin changes it from Settings → Security):
 const DEFAULT_ADMIN_PASSWORD = 'Admin@123';
