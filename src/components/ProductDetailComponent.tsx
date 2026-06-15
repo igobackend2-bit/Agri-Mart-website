@@ -77,7 +77,7 @@ export default function ProductDetailComponent({
     price: packPrice,
     mrp: packMrp,
   };
-  const [activeTab, setActiveTab] = useState<'Overview' | 'Usage' | 'Composition' | 'Reviews'>('Overview');
+  const [activeTab, setActiveTab] = useState<'Overview' | 'Usage' | 'Composition' | 'Reviews' | 'Video'>('Overview');
   const [notified, setNotified] = useState<boolean>(false);
 
   const handleNotifyMe = () => {
@@ -390,7 +390,7 @@ export default function ProductDetailComponent({
                 onClick={() => {
                   addToCart(cartProduct, quantity);
                 }}
-                className="bg-[#1B6B3A] hover:bg-emerald-950 text-white font-extrabold text-xs px-6 py-3 rounded-lg flex items-center justify-center gap-2 flex-1 min-w-[140px] shadow transition select-none cursor-pointer"
+                className="bg-[#1B6B3A] hover:bg-emerald-950 text-white font-extrabold text-xs px-6 py-3 rounded-lg flex items-center justify-center gap-2 flex-1 min-w-[140px] shadow transition transform active:scale-95 hover:scale-[1.02] select-none cursor-pointer"
               >
                 <ShoppingCart className="h-4 w-4" />
                 <span>{t.addToCart}</span>
@@ -399,13 +399,13 @@ export default function ProductDetailComponent({
               {/* Wishlist Heart toggle */}
               <button
                 onClick={() => toggleWishlist(product.id)}
-                className={`p-3 border rounded-lg transition shrink-0 cursor-pointer ${
+                className={`p-3 border rounded-lg transition transform active:scale-90 hover:scale-110 shrink-0 cursor-pointer ${
                   isLiked 
                     ? 'border-[#D94F3D] bg-red-50 text-[#D94F3D]' 
                     : 'border-slate-300 text-slate-400 hover:text-[#D94F3D] hover:border-[#D94F3D]'
                 }`}
               >
-                <Heart className={`h-4.5 w-4.5 ${isLiked ? 'fill-current' : ''}`} />
+                <Heart className={`h-4.5 w-4.5 transition-transform duration-300 ${isLiked ? 'fill-current scale-110' : ''}`} />
               </button>
             </div>
           </div>
@@ -482,7 +482,7 @@ export default function ProductDetailComponent({
       <section className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 mt-12 space-y-6">
         {/* Tabs picker bar */}
         <div className="flex border-b border-slate-100 flex-wrap">
-          {(['Overview', 'Usage', 'Composition', 'Reviews'] as const).map((tab) => {
+          {(['Overview', 'Usage', 'Composition', 'Reviews', 'Video'] as const).map((tab) => {
             const isActive = activeTab === tab;
             return (
               <button
@@ -498,6 +498,7 @@ export default function ProductDetailComponent({
                 {tab === 'Usage' && 'Usage Instructions'}
                 {tab === 'Composition' && 'Composition Details'}
                 {tab === 'Reviews' && `Reviews (${reviewsList.length})`}
+                {tab === 'Video' && 'Product Video'}
               </button>
             );
           })}
@@ -613,6 +614,30 @@ export default function ProductDetailComponent({
                 )}
               </div>
 
+            </div>
+          )}
+
+          {activeTab === 'Video' && (
+            <div className="space-y-4">
+              <h5 className="font-bold text-slate-800">Product Demonstration & Guides:</h5>
+              <div className="bg-slate-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-slate-200">
+                {(product as any).videoUrl ? (
+                  <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src={(product as any).videoUrl.replace('watch?v=', 'embed/')} 
+                    title="Product Video" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  ></iframe>
+                ) : (
+                  <div className="text-center p-8">
+                    <div className="text-4xl mb-2">🎥</div>
+                    <p className="text-slate-400 font-bold text-sm">A video guide for this product is coming soon.</p>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>

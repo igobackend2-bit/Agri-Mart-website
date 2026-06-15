@@ -511,7 +511,7 @@ export default function HomeComponent({
             </select>
           </div>
           <button
-            className="mt-2 w-full bg-[#1B6B3A] hover:bg-emerald-700 text-white text-[11px] font-bold py-1.5 rounded-lg transition"
+            className="mt-2 w-full bg-[#1B6B3A] hover:bg-emerald-700 text-white text-[11px] font-bold py-1.5 rounded-lg transition transform active:scale-95 hover:scale-[1.02]"
             onClick={e => { e.stopPropagation(); addToCart(p); }}
           >
             Add to Cart

@@ -25,10 +25,11 @@ async function hashText(text: string): Promise<string> {
   return 'djb2:' + h.toString(16);
 }
 
-type Phase = 'phone' | 'otp' | 'profile';
+type Phase = 'phone' | 'otp' | 'profile' | 'email_login';
 
 export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthComponentProps) {
   const [tab, setTab] = useState<'login' | 'join'>('login');
+  const [loginMethod, setLoginMethod] = useState<'phone' | 'email'>('phone');
   const [phase, setPhase] = useState<Phase>('phone');
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
@@ -46,8 +47,13 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
   const [stateName, setStateName] = useState('Tamil Nadu');
   const [pincode, setPincode] = useState('');
 
+  // Email login state
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+
   const resetFlow = () => {
-    setPhase('phone'); setOtp(''); setGeneratedOtp(''); setError(''); setInfo('');
+    setPhase(loginMethod === 'phone' ? 'phone' : 'email_login'); 
+    setOtp(''); setGeneratedOtp(''); setError(''); setInfo(''); setLoginPassword(''); setLoginEmail('');
   };
 
   const handleGoogleLogin = async () => {
@@ -59,6 +65,41 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
     } catch (err) {
       console.error('Google Sign-In failed:', err);
       setError('Google sign-in could not be completed. Please try again.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    if (!loginEmail || !loginPassword) { setError('Please enter both email and password.'); return; }
+    setBusy(true);
+    try {
+      // For demo, we just sign in anonymously and simulate email login.
+      // In production, use signInWithEmailAndPassword(auth, email, password)
+      const cred = auth.currentUser ?? (await signInAnonymously(auth)).user;
+      const existing = await fetchUserProfile(cred.uid);
+      if (existing) {
+        setUserProfile(existing);
+        setCurrentPage('account');
+      } else {
+        // Mock success for unlinked accounts
+        setUserProfile({
+          uid: cred.uid,
+          name: loginEmail.split('@')[0],
+          email: loginEmail,
+          phone: '',
+          role: 'customer',
+          addresses: [],
+          wishlist: [],
+          profileComplete: true,
+        });
+        setCurrentPage('account');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Invalid email or password.');
     } finally {
       setBusy(false);
     }
@@ -245,6 +286,24 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
             </div>
           )}
 
+          {/* Method toggler */}
+          {(phase === 'phone' || phase === 'email_login') && (
+            <div className="flex gap-4 mb-6 justify-center">
+              <button 
+                onClick={() => { setLoginMethod('phone'); setPhase('phone'); }} 
+                className={`text-xs font-bold pb-1 border-b-2 transition-colors ${loginMethod === 'phone' ? 'border-[#1B6B3A] text-[#1B6B3A]' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+              >
+                Mobile OTP
+              </button>
+              <button 
+                onClick={() => { setLoginMethod('email'); setPhase('email_login'); }} 
+                className={`text-xs font-bold pb-1 border-b-2 transition-colors ${loginMethod === 'email' ? 'border-[#1B6B3A] text-[#1B6B3A]' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+              >
+                Email ID
+              </button>
+            </div>
+          )}
+
           {/* Alerts */}
           {info && (
             <div className="mb-4 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-center">
@@ -281,6 +340,47 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
               >
                 <span>{tab === 'login' ? 'Get OTP' : 'Register Free'}</span>
                 <ChevronRight className="h-4 w-4" />
+              </button>
+            </form>
+          )}
+
+          {/* Phase 1b: email login */}
+          {phase === 'email_login' && (
+            <form onSubmit={handleEmailLogin} className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
+                <div className="relative flex items-center">
+                  <input
+                    type="email"
+                    value={loginEmail}
+                    onChange={e => setLoginEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="w-full bg-slate-50 border-2 border-slate-100 text-slate-800 rounded-2xl py-3.5 pl-12 pr-4 focus:outline-none focus:border-[#1B6B3A] focus:bg-white transition font-bold text-sm"
+                    required
+                  />
+                  <Mail className="absolute left-4 h-4 w-4 text-slate-300" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Password</label>
+                <div className="relative flex items-center">
+                  <input
+                    type="password"
+                    value={loginPassword}
+                    onChange={e => setLoginPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    className="w-full bg-slate-50 border-2 border-slate-100 text-slate-800 rounded-2xl py-3.5 pl-12 pr-4 focus:outline-none focus:border-[#1B6B3A] focus:bg-white transition font-bold text-sm"
+                    required
+                  />
+                  <Lock className="absolute left-4 h-4 w-4 text-slate-300" />
+                </div>
+              </div>
+              <button
+                type="submit"
+                disabled={busy}
+                className="w-full bg-[#1B6B3A] hover:bg-emerald-950 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl transition shadow-lg shadow-emerald-900/20 disabled:opacity-60"
+              >
+                {busy ? 'Verifying...' : (tab === 'login' ? 'Secure Login' : 'Register Free')}
               </button>
             </form>
           )}
@@ -344,8 +444,8 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
             </form>
           )}
 
-          {/* Google option (only on phone step) */}
-          {phase === 'phone' && (
+          {/* Google option (only on first steps) */}
+          {(phase === 'phone' || phase === 'email_login') && (
             <>
               <div className="my-7 relative flex items-center justify-center">
                 <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100"></div></div>

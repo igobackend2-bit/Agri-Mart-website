@@ -221,7 +221,24 @@ export default function Header({
                 placeholder={t.searchPlaceholder}
                 className="w-full bg-[#F7F9F4] text-[#1a1a1a] pl-4 pr-10 py-2 rounded-lg text-sm border border-slate-200 focus:outline-none focus:border-[#1B6B3A] focus:ring-1 focus:ring-[#1B6B3A] transition"
               />
-              <button type="button" className="absolute right-10 top-2.5 text-slate-400 hover:text-[#1B6B3A] transition">
+              <button 
+                type="button" 
+                onClick={() => {
+                  const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+                  if (!SpeechRecognition) {
+                    alert("Voice search is not supported in your browser.");
+                    return;
+                  }
+                  const recognition = new SpeechRecognition();
+                  recognition.lang = lang === 'en' ? 'en-IN' : 'ta-IN';
+                  recognition.start();
+                  recognition.onresult = (event: any) => {
+                    handleSearchChange(event.results[0][0].transcript);
+                  };
+                }}
+                className="absolute right-10 top-2.5 text-slate-400 hover:text-[#1B6B3A] transition"
+                title="Voice Search"
+              >
                 <Mic className="h-4.5 w-4.5" />
               </button>
               <button type="submit" className="absolute right-3 top-2.5 text-slate-400 hover:text-[#1B6B3A] transition">

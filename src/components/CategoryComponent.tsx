@@ -59,6 +59,22 @@ export default function CategoryComponent({
   const [selectedCrop, setSelectedCrop] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<string>('relevance');
 
+  // Product Comparison State
+  const [compareList, setCompareList] = useState<Product[]>([]);
+  const [showCompareModal, setShowCompareModal] = useState<boolean>(false);
+
+  const toggleCompare = (p: Product) => {
+    if (compareList.find(x => x.id === p.id)) {
+      setCompareList(compareList.filter(x => x.id !== p.id));
+    } else {
+      if (compareList.length >= 4) {
+        alert("You can only compare up to 4 products at a time.");
+        return;
+      }
+      setCompareList([...compareList, p]);
+    }
+  };
+
   // Distinct crops available across the current product set (for "Buy by Crop")
   const availableCrops = Array.from(new Set(products.flatMap(p => p.crops || []))).sort();
 
@@ -568,18 +584,29 @@ export default function CategoryComponent({
                   </div>
 
                   <div className="px-4 pb-4 pt-2 border-t border-slate-50 flex items-center justify-between gap-2 mt-auto select-none">
-                    <div>
-                      {p.mrp > p.price && (
-                        <div className="text-xs text-slate-400 line-through leading-none">₹{p.mrp}</div>
-                      )}
-                      <div className="font-display font-black text-slate-900 text-base leading-tight">₹{p.price}</div>
+                    <div className="flex flex-col">
+                      <div>
+                        {p.mrp > p.price && (
+                          <div className="text-xs text-slate-400 line-through leading-none">₹{p.mrp}</div>
+                        )}
+                        <div className="font-display font-black text-slate-900 text-base leading-tight">₹{p.price}</div>
+                      </div>
+                      <label className="flex items-center gap-1 mt-1 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={!!compareList.find(x => x.id === p.id)}
+                          onChange={() => toggleCompare(p)}
+                          className="rounded text-[#1B6B3A] focus:ring-[#1B6B3A] h-3 w-3 border-slate-300"
+                        />
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Compare</span>
+                      </label>
                     </div>
 
                     <button
                       onClick={() => {
                         addToCart(p);
                       }}
-                      className="bg-[#1B6B3A] hover:bg-emerald-950 text-white text-xs font-bold px-3 py-2 rounded-lg transition shrink-0 cursor-pointer"
+                      className="bg-[#1B6B3A] hover:bg-emerald-950 text-white text-xs font-bold px-3 py-2 rounded-lg transition transform active:scale-95 hover:scale-105 shrink-0 cursor-pointer"
                     >
                       + {t.addToCart}
                     </button>
@@ -605,6 +632,141 @@ export default function CategoryComponent({
 
         </div>
       </div>
+
+      {/* Floating Compare Action Bar */}
+      {compareList.length > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-2xl p-4 z-50 transform transition-transform translate-y-0">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <span className="font-bold text-sm text-slate-800">
+                Compare Products ({compareList.length}/4)
+              </span>
+              <div className="flex gap-2">
+                {compareList.map(p => (
+                  <div key={p.id} className="relative w-10 h-10 border border-slate-200 rounded overflow-hidden">
+                    <img src={p.images?.[0] || '/catalog/nursery-essentials/Pots.png'} alt={p.name} className="w-full h-full object-cover" />
+                    <button 
+                      onClick={() => toggleCompare(p)}
+                      className="absolute top-0 right-0 bg-red-500 text-white rounded-bl-lg w-4 h-4 flex items-center justify-center text-[10px]"
+                    >
+                      <Trash2 className="w-2.5 h-2.5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setCompareList([])}
+                className="text-xs font-bold text-slate-500 hover:text-slate-800"
+              >
+                Clear All
+              </button>
+              <button 
+                onClick={() => setShowCompareModal(true)}
+                disabled={compareList.length < 2}
+                className="bg-[#1B6B3A] hover:bg-emerald-950 disabled:opacity-50 text-white text-xs font-bold px-6 py-2 rounded-lg transition"
+              >
+                Compare Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Compare Modal */}
+      {showCompareModal && (
+        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 sm:p-6 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-[#F7F9F4]">
+              <h2 className="font-display font-black text-xl text-slate-800 flex items-center gap-2">
+                <Grid3X3 className="h-5 w-5 text-[#1B6B3A]" />
+                Product Comparison
+              </h2>
+              <button 
+                onClick={() => setShowCompareModal(false)}
+                className="p-1.5 hover:bg-slate-200 rounded-lg transition text-slate-500"
+              >
+                Close
+              </button>
+            </div>
+            <div className="flex-1 overflow-auto p-6 custom-scroll">
+              <table className="w-full border-collapse min-w-[600px]">
+                <thead>
+                  <tr>
+                    <th className="p-3 border-b-2 border-slate-200 text-left w-48 font-bold text-slate-500 text-sm uppercase tracking-widest bg-slate-50 sticky top-0 z-10">Features</th>
+                    {compareList.map(p => (
+                      <th key={p.id} className="p-3 border-b-2 border-slate-200 w-64 bg-white sticky top-0 z-10 text-center">
+                        <div className="relative">
+                          <button 
+                            onClick={() => {
+                              toggleCompare(p);
+                              if (compareList.length <= 2) setShowCompareModal(false);
+                            }}
+                            className="absolute -top-2 -right-2 text-slate-400 hover:text-red-500"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                          <img src={p.images?.[0] || '/catalog/nursery-essentials/Pots.png'} className="w-24 h-24 object-cover rounded-xl mx-auto border border-slate-100 mb-2" />
+                          <h4 className="font-display font-bold text-slate-800 text-xs line-clamp-2">{p.name}</h4>
+                          <div className="font-black text-[#1B6B3A] text-lg mt-1">₹{p.price}</div>
+                          <button
+                            onClick={() => { addToCart(p); }}
+                            className="w-full mt-3 bg-[#1B6B3A] text-white text-[10px] font-bold py-1.5 rounded-lg hover:bg-emerald-950 transition"
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="p-3 border-b border-slate-100 text-xs font-bold text-slate-600 bg-slate-50">Brand</td>
+                    {compareList.map(p => (
+                      <td key={p.id} className="p-3 border-b border-slate-100 text-xs font-medium text-slate-800 text-center">{p.brand}</td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-3 border-b border-slate-100 text-xs font-bold text-slate-600 bg-slate-50">Category</td>
+                    {compareList.map(p => (
+                      <td key={p.id} className="p-3 border-b border-slate-100 text-xs font-medium text-slate-800 text-center">{p.category}</td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-3 border-b border-slate-100 text-xs font-bold text-slate-600 bg-slate-50">Rating</td>
+                    {compareList.map(p => (
+                      <td key={p.id} className="p-3 border-b border-slate-100 text-xs font-medium text-slate-800 text-center">★ {p.rating} ({p.reviewCount})</td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-3 border-b border-slate-100 text-xs font-bold text-slate-600 bg-slate-50">Stock Status</td>
+                    {compareList.map(p => (
+                      <td key={p.id} className="p-3 border-b border-slate-100 text-xs font-bold text-center">
+                        {p.stock > 0 ? <span className="text-[#1B6B3A]">In Stock ({p.stock})</span> : <span className="text-red-500">Out of Stock</span>}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-3 border-b border-slate-100 text-xs font-bold text-slate-600 bg-slate-50">Specifications</td>
+                    {compareList.map(p => (
+                      <td key={p.id} className="p-3 border-b border-slate-100 text-[10px] text-slate-600 align-top">
+                        <ul className="list-disc pl-4 text-left space-y-1">
+                          {Object.entries(p.specifications || {}).map(([k, v]) => (
+                            <li key={k}><span className="font-bold">{k}:</span> {v}</li>
+                          ))}
+                        </ul>
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
