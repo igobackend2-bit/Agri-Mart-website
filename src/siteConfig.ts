@@ -75,6 +75,8 @@ const KEYS = {
   adminSession: 'igo_admin_session',
 } as const;
 
+import { supabase } from './lib/supabase';
+
 function readJSON<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(key);
@@ -85,12 +87,22 @@ function readJSON<T>(key: string, fallback: T): T {
   }
 }
 
+// Write to localStorage immediately for instant UI response, then async sync to Supabase
+async function writeWithSync(key: string, value: any) {
+  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    await supabase.from('igo_kv_store').upsert({ key, value });
+  } catch (err) {
+    console.error('Supabase sync error:', err);
+  }
+}
+
 // ── Settings ─────────────────────────────────────────────────────────────────
 export function getSettings(): SiteSettings {
   return { ...DEFAULT_SETTINGS, ...readJSON<Partial<SiteSettings>>(KEYS.settings, {}) };
 }
 export function saveSettings(s: SiteSettings): void {
-  localStorage.setItem(KEYS.settings, JSON.stringify(s));
+  writeWithSync(KEYS.settings, s);
 }
 
 // ── Marquee ──────────────────────────────────────────────────────────────────
@@ -99,7 +111,7 @@ export function getMarqueeLines(): string[] {
   return Array.isArray(lines) && lines.length > 0 ? lines : DEFAULT_MARQUEE;
 }
 export function saveMarqueeLines(lines: string[]): void {
-  localStorage.setItem(KEYS.marquee, JSON.stringify(lines));
+  writeWithSync(KEYS.marquee, lines);
 }
 
 // ── Coupons ──────────────────────────────────────────────────────────────────
@@ -107,7 +119,7 @@ export function getCoupons(): AdminCoupon[] {
   return readJSON<AdminCoupon[]>(KEYS.coupons, []);
 }
 export function saveCoupons(coupons: AdminCoupon[]): void {
-  localStorage.setItem(KEYS.coupons, JSON.stringify(coupons));
+  writeWithSync(KEYS.coupons, coupons);
 }
 
 export interface CouponResult {
@@ -153,7 +165,7 @@ export function getBanners(): HeroBanner[] {
   return Array.isArray(banners) ? banners.filter(b => b && b.img && b.title) : [];
 }
 export function saveBanners(banners: HeroBanner[]): void {
-  localStorage.setItem(KEYS.banners, JSON.stringify(banners));
+  writeWithSync(KEYS.banners, banners);
 }
 
 // ── Site notification bar ────────────────────────────────────────────────────
@@ -162,7 +174,7 @@ export function getNotification(): SiteNotification | null {
   return n && n.active && n.text ? n : null;
 }
 export function setNotification(text: string): void {
-  localStorage.setItem(KEYS.notification, JSON.stringify({ text, ts: Date.now(), active: true }));
+  writeWithSync(KEYS.notification, { text, ts: Date.now(), active: true });
 }
 export function clearNotification(): void {
   localStorage.removeItem(KEYS.notification);
@@ -175,7 +187,7 @@ export function getHomeOverrides(): HomeOverrides {
   return readJSON<HomeOverrides>(KEYS.homeOverrides, {});
 }
 export function saveHomeOverrides(overrides: HomeOverrides): void {
-  localStorage.setItem(KEYS.homeOverrides, JSON.stringify(overrides));
+  writeWithSync(KEYS.homeOverrides, overrides);
 }
 
 // ── Complex Homepage Overrides (Kits, Crops, Brands) ─────────────────────────
@@ -212,7 +224,7 @@ export function getComplexOverrides(): ComplexOverrides {
   return readJSON<ComplexOverrides>('igo_complex_overrides', { kits: [], crops: [], brands: [] });
 }
 export function saveComplexOverrides(overrides: ComplexOverrides): void {
-  localStorage.setItem('igo_complex_overrides', JSON.stringify(overrides));
+  writeWithSync('igo_complex_overrides', overrides);
 }
 
 // ── Admin password ───────────────────────────────────────────────────────────
@@ -241,7 +253,7 @@ export async function verifyAdminPassword(input: string): Promise<boolean> {
 export async function changeAdminPassword(current: string, next: string): Promise<{ ok: boolean; error?: string }> {
   if (!(await verifyAdminPassword(current))) return { ok: false, error: 'Current password is incorrect.' };
   if (next.length < 8) return { ok: false, error: 'New password must be at least 8 characters.' };
-  localStorage.setItem(KEYS.adminPwdHash, await hashText(next));
+  writeWithSync(KEYS.adminPwdHash, await hashText(next));
   return { ok: true };
 }
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { auth } from './firebase';
 import { fetchProducts, fetchUserProfile, saveUserProfile } from './dbHelper';
 import { getNotification } from './siteConfig';
-import { applyCatalogOverlay, CATALOG_CHANGED_EVENT } from './storeData';
+import { applyCatalogOverlay, CATALOG_CHANGED_EVENT, syncWithSupabase } from './storeData';
 import { Product, CartItem, UserProfile, Service } from './types';
 import { SEED_CATEGORIES, SEED_BRANDS, SEED_PRODUCTS } from './seedData';
 import { ShoppingCart, X, CheckCircle, ArrowRight } from 'lucide-react';
@@ -364,7 +364,11 @@ export default function App() {
     setIsInventoryLoading(false);
   };
 
-  useEffect(() => { loadInventory(); }, []);
+  useEffect(() => { 
+    syncWithSupabase().then(() => {
+      loadInventory(); 
+    });
+  }, []);
 
   // Live-refresh products when admin edits catalog or an order decrements stock
   useEffect(() => {

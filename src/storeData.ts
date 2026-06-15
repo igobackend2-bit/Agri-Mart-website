@@ -20,10 +20,35 @@ const K_LASTADDR = 'igo_last_address';
 
 export const CATALOG_CHANGED_EVENT = 'igo-catalog-changed';
 
+import { supabase } from './lib/supabase';
+
+export async function syncWithSupabase() {
+  try {
+    const { data, error } = await supabase.from('igo_kv_store').select('key, value');
+    if (error) {
+      console.error('Failed to sync from Supabase', error);
+      return;
+    }
+    if (data && data.length > 0) {
+      data.forEach((row) => {
+        localStorage.setItem(row.key, JSON.stringify(row.value));
+      });
+      // Emit event so UI refreshes
+      emitCatalogChanged();
+    }
+  } catch (err) {
+    console.error('Supabase sync error', err);
+  }
+}
+
 function read<T>(k: string, fb: T): T {
   try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : fb; } catch { return fb; }
 }
-function write(k: string, v: any) { localStorage.setItem(k, JSON.stringify(v)); }
+function write(k: string, v: any) { 
+  localStorage.setItem(k, JSON.stringify(v)); 
+  // Fire and forget sync
+  supabase.from('igo_kv_store').upsert({ key: k, value: v }).catch(err => console.error('Supabase error', err));
+}
 function emitCatalogChanged() { try { window.dispatchEvent(new Event(CATALOG_CHANGED_EVENT)); } catch { } }
 
 // ── Catalog overlay ──────────────────────────────────────────────────────────
