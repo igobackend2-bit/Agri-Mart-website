@@ -147,7 +147,7 @@ export default function CategoryComponent({
         'soil-health': ['soil conditioners', 'leca', 'perlite', 'vermiculite', 'pumice', 'lava rock', 'peat moss', 'soil health'],
         'grow-media': ['cocopeat', 'leca', 'perlite', 'vermiculite', 'pumice', 'lava rock', 'peat moss', 'germination media', 'grow media & substrates', 'grow media'],
         'farm-machinery': ['farm machinery', 'tractor', 'sprayer'],
-        'farm-tools-implements': ['farm tools & implements', 'hand tools'],
+        'farm-tools-implements': ['farm tools & implements', 'hand tools', 'precision tools & equipments'],
         'indoor-plants': ['indoor plants'],
         'post-harvest-storage': ['post-harvest & storage'],
         'beekeeping': ['beekeeping'],
@@ -161,7 +161,7 @@ export default function CategoryComponent({
         'agricultural-services': ['agricultural services'],
         // Extra slugs from HomeComponent sticky nav + potential Header categories
         'bioproducts': ['organic & bio inputs', 'bio fertilizer', 'bioproducts', 'bio-stimulants', 'organic bio-boosters', 'bioproducts', 'bio inputs', 'natural farming'],
-        'agri-tools': ['farm tools & implements', 'hand tools', 'garden tools', 'tools & accessories', 'agri tools'],
+        'agri-tools': ['farm tools & implements', 'hand tools', 'garden tools', 'tools & accessories', 'agri tools', 'precision tools & equipments'],
         'greenhouse': ['greenhouse', 'grow tents', 'poly house', 'shade net', 'grow lights', 'greenhouse & polyhouse'],
         'greenhouse-polyhouse': ['greenhouse & polyhouse', 'gi structure pipes', 'foundation materials', 'covering materials', 'polyhouse'],
         'hydroponics': ['nft systems', 'nft channels', 'dwc systems', 'dutch bucket systems', 'compact systems', 'vertical grow towers', 'hobby systems', 'hydroponic systems', 'hydroponic nutrients', 'ph & ec meters'],
@@ -265,6 +265,7 @@ export default function CategoryComponent({
       { emoji: '♻️', label: 'Organic Fertilizers', slug: 'organic-fertilizers', bg: 'from-green-50 to-lime-100' },
       { emoji: '🪴', label: 'Indoor Plants', slug: 'indoor-plants', bg: 'from-teal-50 to-teal-100' },
       { emoji: '🌳', label: 'Outdoor Plants', slug: 'outdoor-plants-trees', bg: 'from-green-50 to-green-100' },
+      { emoji: '🔧', label: 'Precision Tools & Equipments', slug: 'precision-tools-equipments', bg: 'from-slate-50 to-slate-200' },
     ];
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -378,6 +379,7 @@ export default function CategoryComponent({
                 { label: '♻️ Organic Fert.', slug: 'organic-fertilizers' },
                 { label: '🪴 Indoor Plants', slug: 'indoor-plants' },
                 { label: '🌳 Outdoor Plants', slug: 'outdoor-plants-trees' },
+                { label: '🔧 Tools & Equipments', slug: 'precision-tools-equipments' },
               ] as const).map((c) => (
                 <button
                   key={c.label}

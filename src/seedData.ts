@@ -57,6 +57,7 @@ const CATEGORY_ICONS: Record<string, string> = {
   'Organic Fertilizers': 'Leaf',
   'Indoor Plants': 'Home',
   'Outdoor Plants & Trees': 'TreePine',
+  'Precision Tools & Equipments': 'Wrench',
 };
 
 // Display order for the storefront
@@ -64,7 +65,7 @@ const CATEGORY_ORDER = [
   'Vegetables', 'Fruits', 'Valluvam Products',
   'Vegetable Seeds', 'Fruit Seeds', 'Field Seeds', 'Flower Seeds',
   'Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers',
-  'Indoor Plants', 'Outdoor Plants & Trees',
+  'Indoor Plants', 'Outdoor Plants & Trees', 'Precision Tools & Equipments',
 ];
 
 export const SEED_CATEGORIES: Category[] = CATEGORY_ORDER

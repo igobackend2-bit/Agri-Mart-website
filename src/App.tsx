@@ -19,6 +19,7 @@ import AuthComponent from './components/AuthComponent';
 import AdminGatekeeper from './components/AdminGatekeeper';
 import ServicesComponent from './components/ServicesComponent';
 import ServicesDetailComponent from './components/ServicesDetailComponent';
+import IgoGroupBrandsComponent from './components/IgoGroupBrandsComponent';
 import FarmLoansComponent from './components/FarmLoansComponent';
 import AcademyComponent from './components/AcademyComponent';
 import BlogComponent from './components/BlogComponent';
@@ -355,6 +356,7 @@ export default function App() {
       '/catalog/crop-care',
       '/catalog/nursery-indoor',
       '/catalog/nursery-outdoor',
+      '/catalog/tools',
     ];
     return applyCatalogOverlay(SEED_PRODUCTS)
       .filter((p) => p.images && p.images[0] && ALLOWED.some((f) => p.images[0].startsWith(f)))
@@ -699,6 +701,10 @@ export default function App() {
 
             {(currentPage === 'privacy' || currentPage === 'terms' || currentPage === 'returns') && (
               <PolicyPages page={currentPage as 'privacy' | 'terms' | 'returns'} setCurrentPage={navigateTo} />
+            )}
+
+            {currentPage === 'igo-groups' && (
+              <IgoGroupBrandsComponent setCurrentPage={setCurrentPage} />
             )}
 
           </main>

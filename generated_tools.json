@@ -1,0 +1,808 @@
+[
+  {
+    "id": "tools-1",
+    "name": "Aggregate",
+    "displayName": "Aggregate",
+    "slug": "aggregate-1",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Aggregate.jpg"
+    ],
+    "description": "Aggregate — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 36,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-2",
+    "name": "Air Release Valve",
+    "displayName": "Air Release Valve",
+    "slug": "air-release-valve-2",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Air Release Valve.jpg"
+    ],
+    "description": "Air Release Valve — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 53,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-3",
+    "name": "Arch Bottom Pipe",
+    "displayName": "Arch Bottom Pipe",
+    "slug": "arch-bottom-pipe-3",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Arch Bottom Pipe.jpg"
+    ],
+    "description": "Arch Bottom Pipe — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 36,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-4",
+    "name": "Arch Pipe (5.5 & 4.5)",
+    "displayName": "Arch Pipe (5.5 & 4.5)",
+    "slug": "arch-pipe-5-5-4-5--4",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Arch Pipe (5.5 & 4.5).jpg"
+    ],
+    "description": "Arch Pipe (5.5 & 4.5) — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 12,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-5",
+    "name": "Arch Support Pipe",
+    "displayName": "Arch Support Pipe",
+    "slug": "arch-support-pipe-5",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Arch Support Pipe.jpg"
+    ],
+    "description": "Arch Support Pipe — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 38,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-6",
+    "name": "calcuam pouder",
+    "displayName": "calcuam pouder",
+    "slug": "calcuam-pouder-6",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/calcuam pouder.jpeg"
+    ],
+    "description": "calcuam pouder — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 39,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-7",
+    "name": "Cement",
+    "displayName": "Cement",
+    "slug": "cement-7",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Cement.jpg"
+    ],
+    "description": "Cement — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 23,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-8",
+    "name": "Column Pipe",
+    "displayName": "Column Pipe",
+    "slug": "column-pipe-8",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Column Pipe.jpg"
+    ],
+    "description": "Column Pipe — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 58,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-9",
+    "name": "Compound Pipe",
+    "displayName": "Compound Pipe",
+    "slug": "compound-pipe-9",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Compound Pipe.webp"
+    ],
+    "description": "Compound Pipe — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 56,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-10",
+    "name": "Disc Filter",
+    "displayName": "Disc Filter",
+    "slug": "disc-filter-10",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Disc Filter.jpg"
+    ],
+    "description": "Disc Filter — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 54,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-11",
+    "name": "End Stop (16 mm)",
+    "displayName": "End Stop (16 mm)",
+    "slug": "end-stop-16-mm--11",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/End Stop (16 mm).png"
+    ],
+    "description": "End Stop (16 mm) — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 44,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-12",
+    "name": "Foundation Pipe",
+    "displayName": "Foundation Pipe",
+    "slug": "foundation-pipe-12",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Foundation Pipe.jpg"
+    ],
+    "description": "Foundation Pipe — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 22,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-13",
+    "name": "Grommet (16 mm)",
+    "displayName": "Grommet (16 mm)",
+    "slug": "grommet-16-mm--13",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Grommet (16 mm).avif"
+    ],
+    "description": "Grommet (16 mm) — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 56,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-14",
+    "name": "Hockey Pipe",
+    "displayName": "Hockey Pipe",
+    "slug": "hockey-pipe-14",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Hockey Pipe.jpeg"
+    ],
+    "description": "Hockey Pipe — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 14,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-15",
+    "name": "Inline Lateral (16 mm)",
+    "displayName": "Inline Lateral (16 mm)",
+    "slug": "inline-lateral-16-mm--15",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Inline Lateral (16 mm).webp"
+    ],
+    "description": "Inline Lateral (16 mm) — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 24,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-16",
+    "name": "Jain Fogger",
+    "displayName": "Jain Fogger",
+    "slug": "jain-fogger-16",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Jain Fogger.png"
+    ],
+    "description": "Jain Fogger — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 59,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-17",
+    "name": "Mini Valve (16 mm)",
+    "displayName": "Mini Valve (16 mm)",
+    "slug": "mini-valve-16-mm--17",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Mini Valve (16 mm).jpg"
+    ],
+    "description": "Mini Valve (16 mm) — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 58,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-18",
+    "name": "Plain Lateral (16 mm)",
+    "displayName": "Plain Lateral (16 mm)",
+    "slug": "plain-lateral-16-mm--18",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Plain Lateral (16 mm).webp"
+    ],
+    "description": "Plain Lateral (16 mm) — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 45,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-19",
+    "name": "Pressure Gauge",
+    "displayName": "Pressure Gauge",
+    "slug": "pressure-gauge-19",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Pressure Gauge.jpg"
+    ],
+    "description": "Pressure Gauge — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 32,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-20",
+    "name": "Purline Pipe",
+    "displayName": "Purline Pipe",
+    "slug": "purline-pipe-20",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Purline Pipe.jpg"
+    ],
+    "description": "Purline Pipe — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 22,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-21",
+    "name": "PVC Elbow (16 mm)",
+    "displayName": "PVC Elbow (16 mm)",
+    "slug": "pvc-elbow-16-mm--21",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/PVC Elbow (16 mm).jpg"
+    ],
+    "description": "PVC Elbow (16 mm) — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 48,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-22",
+    "name": "PVC Elbow (2'')",
+    "displayName": "PVC Elbow (2'')",
+    "slug": "pvc-elbow-2--22",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/PVC Elbow (2'').jpg"
+    ],
+    "description": "PVC Elbow (2'') — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 58,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-23",
+    "name": "PVC Joiner (16 mm)",
+    "displayName": "PVC Joiner (16 mm)",
+    "slug": "pvc-joiner-16-mm--23",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/PVC Joiner (16 mm).jpeg"
+    ],
+    "description": "PVC Joiner (16 mm) — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 54,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-24",
+    "name": "PVC Pipe (2'')",
+    "displayName": "PVC Pipe (2'')",
+    "slug": "pvc-pipe-2--24",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/PVC Pipe (2'').jpg"
+    ],
+    "description": "PVC Pipe (2'') — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 41,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-25",
+    "name": "rope",
+    "displayName": "rope",
+    "slug": "rope-25",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/rope.jpeg"
+    ],
+    "description": "rope — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 27,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-26",
+    "name": "Sand Filter",
+    "displayName": "Sand Filter",
+    "slug": "sand-filter-26",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Sand Filter.jpg"
+    ],
+    "description": "Sand Filter — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 53,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-27",
+    "name": "Screen Filter",
+    "displayName": "Screen Filter",
+    "slug": "screen-filter-27",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Screen Filter.jpg"
+    ],
+    "description": "Screen Filter — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 46,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-28",
+    "name": "Shade Net",
+    "displayName": "Shade Net",
+    "slug": "shade-net-28",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Shade Net.jpg"
+    ],
+    "description": "Shade Net — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 11,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-29",
+    "name": "Silica Sand Bag",
+    "displayName": "Silica Sand Bag",
+    "slug": "silica-sand-bag-29",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Silica Sand Bag.jpeg"
+    ],
+    "description": "Silica Sand Bag — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 43,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-30",
+    "name": "Take Off (16 mm)",
+    "displayName": "Take Off (16 mm)",
+    "slug": "take-off-16-mm--30",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Take Off (16 mm).webp"
+    ],
+    "description": "Take Off (16 mm) — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 43,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "tools-31",
+    "name": "Venturi",
+    "displayName": "Venturi",
+    "slug": "venturi-31",
+    "brand": "IGO Farm Automation",
+    "category": "Precision Tools & Equipments",
+    "subcategory": "Tools",
+    "price": 499,
+    "mrp": 599,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/tools/Venturi.jpeg"
+    ],
+    "description": "Venturi — high-grade farm automation and precision equipment.",
+    "composition": "Standard farm-grade material.",
+    "usage": "Use as directed for agricultural purposes.",
+    "rating": 4.5,
+    "reviewCount": 21,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  }
+]

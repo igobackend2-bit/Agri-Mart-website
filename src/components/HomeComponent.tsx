@@ -1430,6 +1430,84 @@ export default function HomeComponent({
         </div>
       </section>
 
+      {/* ── OUR BRANDS CAROUSEL (Farmers Factory Style) ─── */}
+      <section className="bg-slate-50 py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex justify-between items-end mb-8">
+            <div>
+              <h2 className="font-display font-black text-3xl md:text-4xl text-slate-900 tracking-tight">Our Brands</h2>
+            </div>
+            <button
+              onClick={() => (setCurrentPage as (p: string) => void)('igo-groups')}
+              className="text-[#1B6B3A] font-bold text-sm hover:underline"
+            >
+              View All Directory &rarr;
+            </button>
+          </div>
+
+          <div className="flex gap-6 overflow-x-auto pb-8 snap-x scrollbar-hide">
+            {[
+              {
+                logoText: "IGO AGRI TECHFARMS",
+                subtitle: "CORE BUSINESS",
+                title: "IGO Agritech Farms",
+                desc: "Leading agricultural engineering and infrastructure development for modern tech-enabled farming across India."
+              },
+              {
+                logoText: "FARMERS FACTORY",
+                subtitle: "PROCESSING & MFG",
+                title: "Farmers Factory",
+                desc: "State-of-the-art food processing and manufacturing division delivering pure, fresh, organic products directly to consumers."
+              },
+              {
+                logoText: "VALLUVAM",
+                subtitle: "AGRI CONSULTANCY",
+                title: "Valluvam",
+                desc: "Expert agricultural consultancy providing strategic guidance, research, and sustainable farming methodologies."
+              },
+              {
+                logoText: "PROTEIN CUTS",
+                subtitle: "FARM-TO-TABLE",
+                title: "Protein Cuts",
+                desc: "Premium quality, ethically sourced protein products from our trusted network directly to your kitchen."
+              }
+            ].map((brand, i) => (
+              <div 
+                key={i} 
+                className="snap-start shrink-0 w-[280px] sm:w-[320px] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex flex-col cursor-pointer hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 overflow-hidden"
+                onClick={() => (setCurrentPage as (p: string) => void)('igo-groups')}
+              >
+                {/* Logo Area (Placeholder styling matching the white boxes in screenshot) */}
+                <div className="bg-slate-50/50 p-8 flex items-center justify-center border-b border-slate-100 h-48">
+                  <div className="bg-white w-32 h-32 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center text-center p-2">
+                    <span className="font-black text-[#1B6B3A] leading-tight text-sm uppercase">{brand.logoText}</span>
+                  </div>
+                </div>
+                
+                {/* Content Area */}
+                <div className="p-6 sm:p-8 flex flex-col flex-1">
+                  <span className="text-[10px] font-black text-[#E8A020] tracking-widest uppercase mb-2">
+                    {brand.subtitle}
+                  </span>
+                  <h3 className="font-display font-black text-xl text-slate-900 mb-3">
+                    {brand.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm leading-relaxed mb-8 flex-1">
+                    {brand.desc}
+                  </p>
+                  
+                  {/* Footer Arrow */}
+                  <div className="flex items-center justify-between text-[10px] font-bold text-[#E8A020] uppercase tracking-widest pt-4 border-t border-slate-100/60">
+                    <span>Active Division</span>
+                    <span className="text-lg leading-none">&rarr;</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── APP DOWNLOAD BANNER (KisaanTrade-style) ─────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 mb-4">
         <div className="rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden shadow-xl">
@@ -1469,70 +1547,6 @@ export default function HomeComponent({
                 <div className="text-sm font-black">App Store</div>
               </div>
             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── IGO GROUP ECOSYSTEM (like Farmers Factory 26 Verticals) ─── */}
-      <section className="bg-[#0f2d1b] text-white py-14">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <span className="inline-block bg-white/10 text-emerald-300 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">The Sovereign Ecosystem</span>
-            <h2 className="font-extrabold text-2xl md:text-3xl text-white mb-2">The 26 Verticals of IGO Group</h2>
-            <p className="text-emerald-400 text-sm max-w-xl mx-auto">A sovereign agricultural ecosystem covering Engineering, Production, Trade, and Consumer Lifestyle.</p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-            {[
-              { name: 'IGO Agritech Farms', tag: 'Core Business', emoji: '🌾', active: true },
-              { name: 'Farmers Factory', tag: 'Organic Produce', emoji: '🥦', active: true, url: 'https://famersfactory.com' },
-              { name: 'Valluvam', tag: 'Consultancy', emoji: '📋', active: true },
-              { name: 'Protein Cuts', tag: 'Farm-to-Table', emoji: '🥩', active: true },
-              { name: 'IGO Agri Mart', tag: 'Distribution', emoji: '🏪', active: true, current: true },
-              { name: 'IGO Nursery', tag: 'Plant Propagation', emoji: '🪴', active: true },
-              { name: 'Palm Cafe', tag: 'F&B', emoji: '☕', active: true },
-              { name: 'IGO Exports & Imports', tag: 'Trade', emoji: '🌍', active: true },
-              { name: 'IGO Tech Foundation', tag: 'Foundation', emoji: '🔬', active: true },
-              { name: 'IGO Mart', tag: 'Retail', emoji: '🛒', active: true },
-              { name: 'IGO Fintech', tag: 'Micro Finance', emoji: '💰', active: true },
-              { name: 'IGO Farmgate Mandi', tag: 'Programme', emoji: '🏦', active: true },
-              { name: 'IGO Farm Land Estates', tag: 'Real Estate', emoji: '🏡', active: false },
-              { name: 'IGO Wealth Management', tag: 'Investment', emoji: '📈', active: false },
-              { name: 'IGO Franchise', tag: 'Franchise', emoji: '🤝', active: false },
-              { name: 'IGO Crop Care', tag: 'Agri Input', emoji: '🌿', active: false },
-              { name: 'IGO Organic Pharmacy', tag: 'Healthcare', emoji: '💊', active: false },
-              { name: 'IGO Natural Cosmetics', tag: 'Lifestyle', emoji: '✨', active: false },
-              { name: 'IGO Farm Factories', tag: 'Infrastructure', emoji: '🏭', active: false },
-              { name: 'India Green', tag: 'Sustainability', emoji: '♻️', active: false },
-              { name: 'India Green Organics', tag: 'Organic', emoji: '🌱', active: false },
-              { name: 'IGO Farm Loans', tag: 'Finance', emoji: '🏛️', active: false },
-              { name: 'IGO Farm Automation', tag: 'Technology', emoji: '🤖', active: false },
-              { name: 'IGO Training Courses', tag: 'Education', emoji: '🎓', active: false },
-              { name: 'IGO Green Energy', tag: 'Energy', emoji: '☀️', active: false },
-              { name: 'IGO Foundation', tag: 'Social Impact', emoji: '❤️', active: false },
-            ].map((brand, i) => (
-              <div key={i}
-                className={`relative rounded-xl p-3 border cursor-pointer transition-all hover:scale-105 ${
-                  (brand as any).current
-                    ? 'bg-[#1B6B3A] border-emerald-500 shadow-lg shadow-emerald-900/40'
-                    : brand.active
-                    ? 'bg-white/5 border-white/10 hover:bg-white/10'
-                    : 'bg-white/[0.02] border-white/5 opacity-60 hover:opacity-80'
-                }`}
-                onClick={() => (brand as any).url ? window.open((brand as any).url, '_blank') : null}
-              >
-                {(brand as any).current && (
-                  <span className="absolute -top-2 -right-2 bg-[#E8A020] text-emerald-950 text-[8px] font-black px-1.5 py-0.5 rounded-full">YOU ARE HERE</span>
-                )}
-                <div className="text-2xl mb-1.5">{brand.emoji}</div>
-                <div className="text-[11px] font-extrabold text-white leading-tight mb-0.5">{brand.name}</div>
-                <div className="text-[9px] text-emerald-400">{brand.tag}</div>
-                <div className={`mt-2 text-[8px] font-black uppercase px-1.5 py-0.5 rounded inline-block ${
-                  brand.active ? 'bg-emerald-900 text-emerald-400' : 'bg-slate-800 text-slate-500'
-                }`}>
-                  {brand.active ? 'ACTIVE' : 'IN DEV'}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
