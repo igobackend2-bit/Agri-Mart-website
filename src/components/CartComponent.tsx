@@ -7,7 +7,8 @@ import {
   Plus, 
   Minus,
   Truck,
-  Sparkles
+  Sparkles,
+  Bookmark
 } from 'lucide-react';
 import { CartItem } from '../types';
 import { translations, LanguageDict } from '../translation';
@@ -34,6 +35,31 @@ export default function CartComponent({
   const [couponCode, setCouponCode] = useState<string>('');
   const [couponError, setCouponError] = useState<string>('');
   const [couponSuccess, setCouponSuccess] = useState<string>('');
+
+  const [savedForLater, setSavedForLater] = useState<CartItem[]>(() => {
+    const cached = localStorage.getItem('igo_agrimart_saved_for_later');
+    return cached ? JSON.parse(cached) : [];
+  });
+
+  const saveToLater = (item: CartItem) => {
+    const newSaved = [...savedForLater, item];
+    setSavedForLater(newSaved);
+    localStorage.setItem('igo_agrimart_saved_for_later', JSON.stringify(newSaved));
+    setCart(cart.filter(c => c.id !== item.id));
+  };
+
+  const moveToCart = (item: CartItem) => {
+    setCart([...cart, item]);
+    const newSaved = savedForLater.filter(c => c.id !== item.id);
+    setSavedForLater(newSaved);
+    localStorage.setItem('igo_agrimart_saved_for_later', JSON.stringify(newSaved));
+  };
+
+  const deleteSavedItem = (id: string) => {
+    const newSaved = savedForLater.filter(item => item.id !== id);
+    setSavedForLater(newSaved);
+    localStorage.setItem('igo_agrimart_saved_for_later', JSON.stringify(newSaved));
+  };
 
   // Calculations (delivery/GST controlled from Admin → Settings)
   const siteSettings = getSettings();
@@ -146,25 +172,64 @@ export default function CartComponent({
                       </div>
                     </div>
 
-                    {/* Delete item button */}
-                    <button
-                      onClick={() => deleteItem(item.id)}
-                      className="p-2 text-slate-400 hover:text-[#D94F3D] hover:bg-red-50 rounded-lg transition"
-                      title="Remove article"
-                    >
-                      <Trash2 className="h-4.5 w-4.5" />
-                    </button>
+                    {/* Delete and Save buttons */}
+                    <div className="flex flex-col gap-1">
+                      <button
+                        onClick={() => deleteItem(item.id)}
+                        className="p-1.5 text-slate-400 hover:text-[#D94F3D] hover:bg-red-50 rounded-lg transition"
+                        title="Remove article"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => saveToLater(item)}
+                        className="p-1.5 text-slate-400 hover:text-[#1B6B3A] hover:bg-emerald-50 rounded-lg transition"
+                        title="Save for later"
+                      >
+                        <Bookmark className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
             })}
 
             {/* Free shipping alert banner trigger */}
-            {subtotal < siteSettings.freeDeliveryAbove && (
-              <div className="bg-[#fff9eb] border border-[#ffe09e] text-amber-800 px-4 py-3 rounded-lg flex items-center gap-3">
+            {subtotal < siteSettings.freeDeliveryAbove && subtotal > 0 && (
+              <div className="bg-[#fff9eb] border border-[#ffe09e] text-amber-800 px-4 py-3 rounded-lg flex items-center gap-3 mt-4">
                 <Truck className="h-5 w-5 text-[#E8A020] shrink-0" />
                 <div className="text-xs font-semibold leading-relaxed">
                   {t.freeShippingAlert.replace('{amount}', (siteSettings.freeDeliveryAbove - subtotal).toString())} (Standard courier is available for small packages!)
+                </div>
+              </div>
+            )}
+
+            {/* Saved for Later Section */}
+            {savedForLater.length > 0 && (
+              <div className="mt-8 pt-6 border-t border-slate-200">
+                <h3 className="font-display font-extrabold text-[#1B6B3A] text-lg mb-4 flex items-center gap-2">
+                  <Bookmark className="h-5 w-5" /> Saved for Later ({savedForLater.length})
+                </h3>
+                <div className="space-y-4">
+                  {savedForLater.map((item) => (
+                    <div key={item.id} className="bg-white border border-slate-100 p-4 rounded-xl flex items-center justify-between gap-5 opacity-75 hover:opacity-100 transition">
+                      <div className="flex items-center gap-4">
+                        <img src={item.product.images?.[0] || '/catalog/nursery-essentials/Pots.png'} alt={item.product.name} className="h-12 w-12 object-cover rounded-lg" />
+                        <div>
+                          <h4 className="font-display font-bold text-slate-800 text-xs">{item.product.name}</h4>
+                          <div className="text-[10px] text-slate-500 font-bold mt-1">₹{item.product.price}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => moveToCart(item)} className="text-[10px] font-bold text-[#1B6B3A] bg-emerald-50 px-3 py-1.5 rounded hover:bg-emerald-100">
+                          Move to Cart
+                        </button>
+                        <button onClick={() => deleteSavedItem(item.id)} className="text-[10px] font-bold text-slate-400 bg-slate-50 px-3 py-1.5 rounded hover:bg-slate-100 hover:text-[#D94F3D]">
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

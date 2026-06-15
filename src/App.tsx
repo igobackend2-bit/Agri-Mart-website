@@ -243,13 +243,54 @@ function WelcomePrompt({ onLogin, onClose }: { onLogin: () => void; onClose: () 
   );
 }
 
+// ── Auth Guard Popup ────────────────────────────────────────────────────────────
+function AuthGuardPopup({ onLogin, onClose }: { onLogin: () => void; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)' }} onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 text-center space-y-4" onClick={e => e.stopPropagation()}>
+        <div className="mx-auto bg-amber-100 text-amber-600 w-12 h-12 rounded-full flex items-center justify-center mb-2">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        </div>
+        <h3 className="font-display font-black text-xl text-slate-800">Please sign in first</h3>
+        <p className="text-sm text-slate-500">You must be logged in to continue with this action.</p>
+        <div className="pt-2 space-y-2">
+          <button onClick={onLogin} className="w-full bg-[#1B6B3A] text-white font-bold py-2.5 rounded-lg hover:bg-emerald-900 transition">
+            Login / Register
+          </button>
+          <button onClick={onClose} className="w-full text-slate-400 font-bold py-2 hover:text-slate-600 transition">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main App ──────────────────────────────────────────────────────────────────
 export default function App() {
   const [lang, setLang] = useState<'en' | 'ta'>('en');
   const [currentPage, setCurrentPageRaw] = useState<string>(pageFromPath);
 
+  // Auth Guard States
+  const [authGuardVisible, setAuthGuardVisible] = useState(false);
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+
+  const requireAuth = (action: () => void) => {
+    if (auth.currentUser) {
+      action();
+    } else {
+      setPendingAction(() => action);
+      setAuthGuardVisible(true);
+    }
+  };
+
   // Keep the browser URL in sync: /admin for the admin panel, / for the rest.
   const setCurrentPage = useCallback((page: string) => {
+    if (page === 'checkout' && !auth.currentUser) {
+      setPendingAction(() => () => navigateTo('checkout'));
+      setAuthGuardVisible(true);
+      return;
+    }
     const want = page === 'admin' ? '/admin' : '/';
     if (window.location.pathname !== want) {
       window.history.pushState({ page }, '', want);
@@ -353,7 +394,9 @@ export default function App() {
       if (user) {
         try {
           const profile = await fetchUserProfile(user.uid);
-          if (profile) setUserProfile(profile);
+          if (profile) {
+            setUserProfile(profile);
+          }
         } catch { /* ignore */ }
       } else {
         setUserProfile(null);
@@ -362,13 +405,22 @@ export default function App() {
     return () => unsub();
   }, []);
 
+  // Execute pending action upon successful login
+  useEffect(() => {
+    if (userProfile && pendingAction) {
+      pendingAction();
+      setPendingAction(null);
+    }
+  }, [userProfile, pendingAction]);
+
   const persistCart = (newCart: CartItem[]) => {
     setCart(newCart);
     localStorage.setItem('igo_agrimart_cart_cache', JSON.stringify(newCart));
   };
 
   const addToCart = (prod: Product, qTyped: number = 1) => {
-    setCart(prev => {
+    requireAuth(() => {
+      setCart(prev => {
       const freshCart = [...prev];
       const existingIdx = freshCart.findIndex(item => item.product.id === prod.id);
       if (existingIdx > -1) {
@@ -387,15 +439,12 @@ export default function App() {
     // Show toast - reset if already showing
     if (toastTimer.current) clearTimeout(toastTimer.current);
     setCartToast({ product: prod, qty: qTyped });
+    });
   };
 
   const toggleWishlist = async (productId: string) => {
-    if (!auth.currentUser) {
-      setCartToast(null);
-      alert('Please sign in with Google to save wishlist items!');
-      return;
-    }
-    let nextWishlist = [...wishlist];
+    requireAuth(async () => {
+      let nextWishlist = [...wishlist];
     if (nextWishlist.includes(productId)) {
       nextWishlist = nextWishlist.filter(id => id !== productId);
     } else {
@@ -407,6 +456,7 @@ export default function App() {
       setUserProfile(revisedProfile);
       await saveUserProfile(revisedProfile);
     }
+    });
   };
 
   const totalCartCount = cart.reduce((tot, item) => tot + item.quantity, 0);
@@ -420,6 +470,18 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F7F9F4] text-slate-800 font-sans flex flex-col justify-between overflow-x-hidden w-full relative">
+      {authGuardVisible && (
+        <AuthGuardPopup 
+          onLogin={() => {
+            setAuthGuardVisible(false);
+            navigateTo('account');
+          }} 
+          onClose={() => {
+            setAuthGuardVisible(false);
+            setPendingAction(null);
+          }} 
+        />
+      )}
       <div>
         {currentPage !== 'admin' && <NotificationBar />}
         {currentPage !== 'admin' && (

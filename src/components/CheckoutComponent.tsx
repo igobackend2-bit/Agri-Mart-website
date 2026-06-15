@@ -6,7 +6,8 @@ import {
   Sparkles, 
   ArrowLeft,
   Truck,
-  FileText
+  FileText,
+  ChevronRight
 } from 'lucide-react';
 import { CartItem, Address, Order, OrderItem } from '../types';
 import { db, auth } from '../firebase';
@@ -35,6 +36,8 @@ export default function CheckoutComponent({
   setCouponDiscount
 }: CheckoutComponentProps) {
   // Checkout States
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1); // 1: Address, 2: Delivery, 3: Payment, 4: Review
+
   const saved = getLastAddress();
   const [formData, setFormData] = useState({
     name: saved?.name || '',
@@ -69,10 +72,10 @@ export default function CheckoutComponent({
   // Calculations (delivery/GST controlled from Admin -> Settings)
   const siteSettings = getSettings();
   const subtotal = cart.reduce((sum, item) => sum + (pPrice(item) * item.quantity), 0);
-  const deliveryCharge = (subtotal >= siteSettings.freeDeliveryAbove) ? 0 : siteSettings.deliveryCharge;
+  const deliveryCharge = (subtotal >= siteSettings.freeDeliveryAbove || subtotal === 0) ? 0 : siteSettings.deliveryCharge;
   const gstAmount = Math.round(subtotal * (siteSettings.gstPercent / 100));
   const couponValue = couponDiscount > 0 ? (couponDiscount < 100 ? Math.round(subtotal * (couponDiscount/100)) : couponDiscount) : 0;
-  const finalTotal = subtotal + deliveryCharge + gstAmount - couponValue;
+  const finalTotal = Math.max(0, subtotal + deliveryCharge + gstAmount - couponValue);
 
   // COD logic: 20% partial advance required if total > 2000
   const isCodPartialAdvanceRequired = paymentMethod === 'COD' && finalTotal > 2000;
@@ -83,18 +86,21 @@ export default function CheckoutComponent({
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handlePlaceOrderSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name.trim() || !formData.phone.trim() || !formData.address1.trim() || !formData.city.trim() || !formData.pincode.trim()) {
-      alert("Please enter all required address form fields.");
-      return;
+  const handleNextStep = () => {
+    if (step === 1) {
+      if (!formData.name.trim() || !formData.phone.trim() || !formData.address1.trim() || !formData.city.trim() || !formData.pincode.trim()) {
+        alert("Please enter all required address form fields.");
+        return;
+      }
+      if (formData.pincode.length !== 6) {
+        alert("Pincode must be exactly 6 digits.");
+        return;
+      }
     }
+    setStep((s) => Math.min(4, s + 1) as any);
+  };
 
-    if (formData.pincode.length !== 6) {
-      alert("Pincode must be exactly 6 digits.");
-      return;
-    }
-
+  const handlePlaceOrderSubmit = async () => {
     setIsPlacing(true);
 
     const checkAddr: Address = {
@@ -118,7 +124,10 @@ export default function CheckoutComponent({
       image: item.product.images?.[0] || '/catalog/nursery-essentials/Pots.png'
     }));
 
-    const nextId = 'IGO-' + Math.floor(100000 + Math.random() * 900000).toString();
+    // Generate AGM-YYYYMMDD-XXXXX
+    const dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
+    const randStr = Math.floor(10000 + Math.random() * 90000).toString();
+    const nextId = `AGM-${dateStr}-${randStr}`;
     const currUid = auth.currentUser?.uid || 'guest-' + Math.random().toString(36).substring(2, 9);
 
     const placedOrder: Order = {
@@ -217,7 +226,6 @@ export default function CheckoutComponent({
     );
   }
 
-  // Render Checkout Page Form setup
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       
@@ -236,268 +244,345 @@ export default function CheckoutComponent({
             Checkout Order Terminal
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Fill in delivery pin codes and direct shipping billing coordinates
+            Complete your order in 4 easy steps
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         
-        {/* Left column Delivery address form */}
+        {/* Left column Content */}
         <div className="lg:col-span-2 space-y-6">
-          <form onSubmit={handlePlaceOrderSubmit} className="bg-white border border-slate-200 p-6 sm:p-10 rounded-xl space-y-6">
-            <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100">
-              <MapPin className="h-5 w-5" />
-              <span>1. Shipping & Delivery Address</span>
-            </h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
-                  Consignee Full name *
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="e.g. Shanmuga Sundaram"
-                  className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
-                />
+          {/* Stepper Header */}
+          <div className="flex items-center justify-between mb-6 px-2">
+            {['Address', 'Delivery', 'Payment', 'Review'].map((s, i) => (
+              <div key={s} className="flex items-center gap-2">
+                <div className={`w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold border-2 ${step > i + 1 ? 'bg-[#1B6B3A] border-[#1B6B3A] text-white' : step === i + 1 ? 'border-[#1B6B3A] text-[#1B6B3A]' : 'border-slate-300 text-slate-400'}`}>
+                  {step > i + 1 ? <CheckCircle className="h-4 w-4" /> : i + 1}
+                </div>
+                <span className={`text-xs font-bold hidden sm:block ${step >= i + 1 ? 'text-[#1B6B3A]' : 'text-slate-400'}`}>{s}</span>
+                {i < 3 && <div className="w-8 sm:w-16 h-px bg-slate-300 mx-1"></div>}
               </div>
+            ))}
+          </div>
 
-              <div>
-                <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
-                  Secure Phone Contact Phone *
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="e.g. 7397785803"
-                  className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
-                />
-              </div>
+          <div className="bg-white border border-slate-200 p-6 sm:p-10 rounded-xl space-y-6">
+            
+            {step === 1 && (
+              <div className="space-y-6 animate-fade-in">
+                <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100">
+                  <MapPin className="h-5 w-5" />
+                  <span>1. Shipping & Delivery Address</span>
+                </h3>
 
-              <div className="sm:col-span-2">
-                <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
-                  Email Address (for order updates)
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="e.g. farmer@gmail.com"
-                  className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
-                />
-              </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
+                      Consignee Full name *
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder="e.g. Shanmuga Sundaram"
+                      className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
+                    />
+                  </div>
 
-              <div className="sm:col-span-2 -mb-2">
-                <button type="button" onClick={handleDetectLocation} disabled={detectingLoc}
-                  className="inline-flex items-center gap-1.5 text-xs font-black text-[#1B6B3A] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition disabled:opacity-60">
-                  📍 {detectingLoc ? 'Detecting your location...' : 'Use my current location (auto-fill city & pincode)'}
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
+                      Secure Phone Contact Phone *
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder="e.g. 7397785803"
+                      className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
+                      Email Address (for order updates)
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="e.g. farmer@gmail.com"
+                      className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2 -mb-2">
+                    <button type="button" onClick={handleDetectLocation} disabled={detectingLoc}
+                      className="inline-flex items-center gap-1.5 text-xs font-black text-[#1B6B3A] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition disabled:opacity-60">
+                      📍 {detectingLoc ? 'Detecting your location...' : 'Use my current location (auto-fill city & pincode)'}
+                    </button>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
+                      Address Line 1 *
+                    </label>
+                    <input
+                      type="text"
+                      name="address1"
+                      value={formData.address1}
+                      onChange={handleInputChange}
+                      placeholder="e.g. No. 17 Kovalan Street, Uthandi"
+                      className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
+                      Address Line 2 (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      name="address2"
+                      value={formData.address2}
+                      onChange={handleInputChange}
+                      placeholder="e.g. Kanathur, close to beach line"
+                      className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
+                      City *
+                    </label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      placeholder="e.g. Chennai"
+                      className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
+                        State *
+                      </label>
+                      <select
+                        name="state"
+                        value={formData.state}
+                        onChange={handleInputChange}
+                        className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] cursor-pointer"
+                      >
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Puducherry">Puducherry</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
+                        Pincode *
+                      </label>
+                      <input
+                        type="text"
+                        name="pincode"
+                        maxLength={6}
+                        value={formData.pincode}
+                        onChange={handleInputChange}
+                        placeholder="e.g. 600119"
+                        className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
+                      />
+                    </div>
+                  </div>
+                </div>
+                
+                <button
+                  type="button"
+                  onClick={handleNextStep}
+                  className="w-full bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-xs py-3.5 rounded-lg text-center flex items-center justify-center gap-1.5 shadow-lg relative cursor-pointer"
+                >
+                  Proceed to Delivery Options <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
+            )}
 
-              <div className="sm:col-span-2">
-                <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
-                  Address Line 1 *
-                </label>
-                <input
-                  type="text"
-                  name="address1"
-                  value={formData.address1}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="e.g. No. 17 Kovalan Street, Uthandi"
-                  className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
-                  Address Line 2 (Optional)
-                </label>
-                <input
-                  type="text"
-                  name="address2"
-                  value={formData.address2}
-                  onChange={handleInputChange}
-                  placeholder="e.g. Kanathur, close to beach line"
-                  className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
-                />
-              </div>
-
-              <div>
-                <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
-                  City *
-                </label>
-                <input
-                  type="text"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="e.g. Chennai"
-                  className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
-                    State *
-                  </label>
-                  <select
-                    name="state"
-                    value={formData.state}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] cursor-pointer"
-                  >
-                    <option value="Tamil Nadu">Tamil Nadu</option>
-                    <option value="Puducherry">Puducherry</option>
-                    <option value="Karnataka">Karnataka</option>
-                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-                    <option value="Kerala">Kerala</option>
-                    <option value="Maharashtra">Maharashtra</option>
-                  </select>
+            {step === 2 && (
+              <div className="space-y-6 animate-fade-in">
+                <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-4">
+                  <Truck className="h-5 w-5" />
+                  <span>2. Choose a Delivery Slot</span>
+                </h3>
+                <div className="grid grid-cols-2 gap-2.5 mb-2">
+                  {DELIVERY_SLOTS.map((slot) => (
+                    <button
+                      key={slot}
+                      type="button"
+                      onClick={() => setDeliverySlot(slot)}
+                      className={`text-left px-3 py-2.5 rounded-xl text-xs font-bold border-2 transition ${deliverySlot === slot
+                        ? 'border-[#1B6B3A] bg-emerald-50/40 text-[#1B6B3A]'
+                        : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                        }`}
+                    >
+                      {slot}
+                    </button>
+                  ))}
                 </div>
-
-                <div>
-                  <label className="text-[10px] font-extrabold text-slate-400 block uppercase tracking-wider mb-1.5">
-                    Pincode *
-                  </label>
-                  <input
-                    type="text"
-                    name="pincode"
-                    maxLength={6}
-                    value={formData.pincode}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="e.g. 600119"
-                    className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs font-bold rounded-lg outline-none text-[#1a1a1a] focus:border-[#1B6B3A]"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-6">
-              <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-4">
-                <Truck className="h-5 w-5" />
-                <span>2. Choose a Delivery Slot</span>
-              </h3>
-              <div className="grid grid-cols-2 gap-2.5 mb-2">
-                {DELIVERY_SLOTS.map((slot) => (
-                  <button
-                    key={slot}
-                    type="button"
-                    onClick={() => setDeliverySlot(slot)}
-                    className={`text-left px-3 py-2.5 rounded-xl text-xs font-bold border-2 transition ${deliverySlot === slot
-                      ? 'border-[#1B6B3A] bg-emerald-50/40 text-[#1B6B3A]'
-                      : 'border-slate-200 text-slate-600 hover:border-slate-300'
-                      }`}
-                  >
-                    {slot}
+                <p className="text-[10px] text-slate-400 font-medium mb-2">Fresh produce ships next-day; inputs &amp; tools ship standard.</p>
+                
+                <div className="flex gap-3 pt-4">
+                  <button type="button" onClick={() => setStep(1)} className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-3.5 rounded-lg text-center cursor-pointer">
+                    Back
                   </button>
-                ))}
-              </div>
-              <p className="text-[10px] text-slate-400 font-medium mb-2">Fresh produce ships next-day; inputs &amp; tools ship standard.</p>
-            </div>
-
-            <div className="pt-6">
-              <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-5">
-                <CreditCard className="h-5 w-5" />
-                <span>3. Select Payment Methods</span>
-              </h3>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Cash on Delivery option */}
-                <label className={`border-2 p-4 rounded-xl flex items-start gap-3 cursor-pointer select-none transition ${paymentMethod === 'COD' ? 'border-[#1B6B3A] bg-emerald-50/20' : 'border-slate-200'}`}>
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    checked={paymentMethod === 'COD'}
-                    onChange={() => setPaymentMethod('COD')}
-                    className="mt-1 text-[#1B6B3A] focus:ring-[#1B6B3A] h-3.5 w-3.5"
-                  />
-                  <div>
-                    <div className="text-xs font-bold text-slate-800">Cash on Delivery (COD)</div>
-                    <div className="text-[10px] text-slate-400 mt-0.5">Pay standard cash value upon arrival</div>
-                  </div>
-                </label>
-
-                {/* UPI option */}
-                <label className={`border-2 p-4 rounded-xl flex items-start gap-3 cursor-pointer select-none transition ${paymentMethod === 'UPI' ? 'border-[#1B6B3A] bg-emerald-50/20' : 'border-slate-200'}`}>
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    checked={paymentMethod === 'UPI'}
-                    onChange={() => setPaymentMethod('UPI')}
-                    className="mt-1 text-[#1B6B3A] focus:ring-[#1B6B3A] h-3.5 w-3.5"
-                  />
-                  <div>
-                    <div className="text-xs font-bold text-slate-800">UPI Instant Payments</div>
-                    <div className="text-[10px] text-slate-400 mt-0.5">Pay via GPay, PhonePe, Paytm, BHIM</div>
-                  </div>
-                </label>
-
-                {/* Net Banking */}
-                <label className={`border-2 p-4 rounded-xl flex items-start gap-3 cursor-pointer select-none transition ${paymentMethod === 'NetBanking' ? 'border-[#1B6B3A] bg-emerald-50/20' : 'border-slate-200'}`}>
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    checked={paymentMethod === 'NetBanking'}
-                    onChange={() => setPaymentMethod('NetBanking')}
-                    className="mt-1 text-[#1B6B3A] focus:ring-[#1B6B3A] h-3.5 w-3.5"
-                  />
-                  <div>
-                    <div className="text-xs font-bold text-slate-800">Net Banking online transfer</div>
-                    <div className="text-[10px] text-slate-400 mt-0.5">All certified Indian retail banks supported</div>
-                  </div>
-                </label>
-
-                {/* Credit Debit Cards */}
-                <label className={`border-2 p-4 rounded-xl flex items-start gap-3 cursor-pointer select-none transition ${paymentMethod === 'Card' ? 'border-[#1B6B3A] bg-emerald-50/20' : 'border-slate-200'}`}>
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    checked={paymentMethod === 'Card'}
-                    onChange={() => setPaymentMethod('Card')}
-                    className="mt-1 text-[#1B6B3A] focus:ring-[#1B6B3A] h-3.5 w-3.5"
-                  />
-                  <div>
-                    <div className="text-xs font-bold text-slate-800">Card Payment (Visa/Rupay)</div>
-                    <div className="text-[10px] text-slate-400 mt-0.5">Encrypted domestic card routing gateways</div>
-                  </div>
-                </label>
-              </div>
-
-              {/* Cash On Delivery Advance Rule check */}
-              {isCodPartialAdvanceRequired && (
-                <div className="bg-[#fff9eb] border border-[#ffe09e] text-amber-800 p-4 rounded-xl mt-5 space-y-2">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 leading-none">
-                    <Truck className="h-4.5 w-4.5 text-[#E8A020]" />
-                    <span>⚠️ Security COD Policy: 20% Advance Trigger</span>
-                  </div>
-                  <p className="text-[11px] text-slate-600 leading-relaxed">
-                    Orders exceeding ₹2000 require a <strong>20% partial advance confirmation payment</strong> (₹{codAdvanceAmount}) through UPI. Rest ₹{codRemainingAmount} collected upon delivery courier. This inhibits fake bulk bookings.
-                  </p>
+                  <button type="button" onClick={() => setStep(3)} className="flex-1 bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-xs py-3.5 rounded-lg text-center flex items-center justify-center gap-1.5 cursor-pointer">
+                    Proceed to Payment <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
-            <button
-              type="submit"
-              disabled={isPlacing || cart.length === 0}
-              className="w-full bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-xs py-3.5 rounded-lg text-center flex items-center justify-center gap-1.5 shadow-lg relative cursor-pointer"
-            >
-              {isPlacing ? 'Placing Order to Warehouse...' : 'CONFIRM AND PLACE ORDER'}
-            </button>
-          </form>
+            {step === 3 && (
+              <div className="space-y-6 animate-fade-in">
+                <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-5">
+                  <CreditCard className="h-5 w-5" />
+                  <span>3. Select Payment Methods</span>
+                </h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Cash on Delivery option */}
+                  <label className={`border-2 p-4 rounded-xl flex items-start gap-3 cursor-pointer select-none transition ${paymentMethod === 'COD' ? 'border-[#1B6B3A] bg-emerald-50/20' : 'border-slate-200'}`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      checked={paymentMethod === 'COD'}
+                      onChange={() => setPaymentMethod('COD')}
+                      className="mt-1 text-[#1B6B3A] focus:ring-[#1B6B3A] h-3.5 w-3.5"
+                    />
+                    <div>
+                      <div className="text-xs font-bold text-slate-800">Cash on Delivery (COD)</div>
+                      <div className="text-[10px] text-slate-400 mt-0.5">Pay standard cash value upon arrival</div>
+                    </div>
+                  </label>
+
+                  {/* UPI option */}
+                  <label className={`border-2 p-4 rounded-xl flex items-start gap-3 cursor-pointer select-none transition ${paymentMethod === 'UPI' ? 'border-[#1B6B3A] bg-emerald-50/20' : 'border-slate-200'}`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      checked={paymentMethod === 'UPI'}
+                      onChange={() => setPaymentMethod('UPI')}
+                      className="mt-1 text-[#1B6B3A] focus:ring-[#1B6B3A] h-3.5 w-3.5"
+                    />
+                    <div>
+                      <div className="text-xs font-bold text-slate-800">UPI Instant Payments</div>
+                      <div className="text-[10px] text-slate-400 mt-0.5">Pay via GPay, PhonePe, Paytm, BHIM</div>
+                    </div>
+                  </label>
+
+                  {/* Net Banking */}
+                  <label className={`border-2 p-4 rounded-xl flex items-start gap-3 cursor-pointer select-none transition ${paymentMethod === 'NetBanking' ? 'border-[#1B6B3A] bg-emerald-50/20' : 'border-slate-200'}`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      checked={paymentMethod === 'NetBanking'}
+                      onChange={() => setPaymentMethod('NetBanking')}
+                      className="mt-1 text-[#1B6B3A] focus:ring-[#1B6B3A] h-3.5 w-3.5"
+                    />
+                    <div>
+                      <div className="text-xs font-bold text-slate-800">Net Banking online transfer</div>
+                      <div className="text-[10px] text-slate-400 mt-0.5">All certified Indian retail banks supported</div>
+                    </div>
+                  </label>
+
+                  {/* Credit Debit Cards */}
+                  <label className={`border-2 p-4 rounded-xl flex items-start gap-3 cursor-pointer select-none transition ${paymentMethod === 'Card' ? 'border-[#1B6B3A] bg-emerald-50/20' : 'border-slate-200'}`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      checked={paymentMethod === 'Card'}
+                      onChange={() => setPaymentMethod('Card')}
+                      className="mt-1 text-[#1B6B3A] focus:ring-[#1B6B3A] h-3.5 w-3.5"
+                    />
+                    <div>
+                      <div className="text-xs font-bold text-slate-800">Card Payment (Visa/Rupay)</div>
+                      <div className="text-[10px] text-slate-400 mt-0.5">Encrypted domestic card routing gateways</div>
+                    </div>
+                  </label>
+                </div>
+
+                {/* Cash On Delivery Advance Rule check */}
+                {isCodPartialAdvanceRequired && (
+                  <div className="bg-[#fff9eb] border border-[#ffe09e] text-amber-800 p-4 rounded-xl mt-5 space-y-2">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 leading-none">
+                      <Truck className="h-4.5 w-4.5 text-[#E8A020]" />
+                      <span>⚠️ Security COD Policy: 20% Advance Trigger</span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Orders exceeding ₹2000 require a <strong>20% partial advance confirmation payment</strong> (₹{codAdvanceAmount}) through UPI. Rest ₹{codRemainingAmount} collected upon delivery courier. This inhibits fake bulk bookings.
+                    </p>
+                  </div>
+                )}
+                
+                <div className="flex gap-3 pt-4">
+                  <button type="button" onClick={() => setStep(2)} className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-3.5 rounded-lg text-center cursor-pointer">
+                    Back
+                  </button>
+                  <button type="button" onClick={() => setStep(4)} className="flex-1 bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-xs py-3.5 rounded-lg text-center flex items-center justify-center gap-1.5 cursor-pointer">
+                    Review Order <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {step === 4 && (
+              <div className="space-y-6 animate-fade-in">
+                <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-4">
+                  <FileText className="h-5 w-5" />
+                  <span>4. Review & Confirm Order</span>
+                </h3>
+                
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
+                  <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                    <span className="text-xs text-slate-500 font-bold">Shipping Address:</span>
+                    <button onClick={() => setStep(1)} className="text-xs text-[#1B6B3A] font-bold underline">Edit</button>
+                  </div>
+                  <p className="text-xs font-bold text-slate-800">{formData.name}, {formData.phone}</p>
+                  <p className="text-[11px] text-slate-600">{formData.address1}, {formData.city}, {formData.state} - {formData.pincode}</p>
+                </div>
+
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
+                  <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                    <span className="text-xs text-slate-500 font-bold">Delivery & Payment:</span>
+                    <button onClick={() => setStep(2)} className="text-xs text-[#1B6B3A] font-bold underline">Edit</button>
+                  </div>
+                  <p className="text-xs font-bold text-slate-800">Method: {paymentMethod}</p>
+                  <p className="text-[11px] text-slate-600">Slot: {deliverySlot}</p>
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <button type="button" onClick={() => setStep(3)} className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-3.5 rounded-lg text-center cursor-pointer">
+                    Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handlePlaceOrderSubmit}
+                    disabled={isPlacing || cart.length === 0}
+                    className="flex-1 bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-xs py-3.5 rounded-lg text-center flex items-center justify-center gap-1.5 shadow-lg relative cursor-pointer"
+                  >
+                    {isPlacing ? 'Placing Order to Warehouse...' : 'CONFIRM AND PLACE ORDER'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Right column sticky layout summary */}

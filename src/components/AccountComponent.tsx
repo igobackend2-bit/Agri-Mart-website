@@ -128,7 +128,7 @@ export default function AccountComponent({
   addToCart
 }: AccountComponentProps) {
   const t = accountTranslations[lang];
-  const [activeTab, setActiveTab] = useState<'Orders' | 'Inbox' | 'Wishlist' | 'Addresses' | 'Profile'>('Orders');
+  const [activeTab, setActiveTab] = useState<'Orders' | 'Inbox' | 'Wishlist' | 'Addresses' | 'Profile' | 'Support'>('Orders');
   const [inboxMsgs, setInboxMsgs] = useState<InboxMessage[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
@@ -286,7 +286,8 @@ export default function AccountComponent({
               { key: 'Inbox', icon: InboxIcon, label: 'Inbox' },
               { key: 'Wishlist', icon: Heart, label: t.wishlist },
               { key: 'Addresses', icon: MapPin, label: t.addresses },
-              { key: 'Profile', icon: User, label: t.profile }
+              { key: 'Profile', icon: User, label: t.profile },
+              { key: 'Support', icon: HelpCircle, label: 'Support Tickets' }
             ] as const).map((tab) => {
               const IconComp = tab.icon;
               const isActive = activeTab === tab.key;
@@ -442,8 +443,16 @@ export default function AccountComponent({
                           ))}
                         </div>
 
-                        {/* Action CTAs: Reorder + Cancel */}
-                        <div className="border-t border-slate-100 pt-3 mt-4 flex justify-end gap-2">
+                        {/* Action CTAs: Reorder + Cancel + Invoice */}
+                        <div className="border-t border-slate-100 pt-3 mt-4 flex justify-end gap-2 flex-wrap">
+                          <button
+                            onClick={() => {
+                              alert("Downloading PDF invoice for " + o.id + "...");
+                            }}
+                            className="bg-blue-50 hover:bg-blue-100 text-blue-700 text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg border border-blue-200 cursor-pointer transition shadow-sm flex items-center gap-1"
+                          >
+                            <FileCheck className="h-3 w-3" /> Invoice
+                          </button>
                           <button
                             onClick={() => {
                               (o.items || []).forEach((it) => {
@@ -452,7 +461,7 @@ export default function AccountComponent({
                               });
                               setCurrentPage('cart');
                             }}
-                            className="bg-emerald-50 hover:bg-emerald-100 text-[#1B6B3A] text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg border border-emerald-200 cursor-pointer transition shadow-sm"
+                            className="bg-emerald-50 hover:bg-emerald-100 text-[#1B6B3A] text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg border border-emerald-200 cursor-pointer transition shadow-sm flex items-center gap-1"
                           >
                             ↻ Reorder
                           </button>
@@ -680,6 +689,42 @@ export default function AccountComponent({
                   <div className="p-3 bg-slate-50 rounded-lg text-xs font-black text-slate-650 text-slate-700 border border-slate-100 uppercase uppercase-tracking-widest capitalize">
                     {userProfile?.role} {t.gateway}
                   </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* SUPPORT TICKETS TAB */}
+          {activeTab === 'Support' && (
+            <div className="space-y-6">
+              <div className="border-b border-slate-100 pb-3">
+                <h3 className="font-display font-extrabold text-[#1B6B3A] text-base sm:text-lg">Help & Support Tickets</h3>
+                <p className="text-xs text-slate-400 mt-1">Submit issues or track existing queries regarding your orders</p>
+              </div>
+
+              <div className="bg-[#F7F9F4] p-5 rounded-xl border border-slate-100 max-w-xl space-y-4">
+                <h4 className="font-display font-bold text-xs text-[#1B6B3A] uppercase tracking-wider mb-2">
+                  Create a new ticket
+                </h4>
+                <form onSubmit={(e) => { e.preventDefault(); alert('Support ticket raised successfully! Our team will contact you shortly.'); (e.target as HTMLFormElement).reset(); }} className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-500 uppercase">Subject / Related Order</label>
+                    <input type="text" required placeholder="e.g. Order AGM-2026... not delivered" className="w-full bg-white border border-slate-200 rounded p-2 text-xs" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-500 uppercase">Describe your issue</label>
+                    <textarea required rows={4} placeholder="Please provide detailed information..." className="w-full bg-white border border-slate-200 rounded p-2 text-xs"></textarea>
+                  </div>
+                  <button type="submit" className="bg-[#1B6B3A] text-white hover:bg-emerald-950 text-xs font-black uppercase tracking-wider px-4 py-2 rounded-lg cursor-pointer transition shadow-sm">
+                    Submit Ticket
+                  </button>
+                </form>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="font-display font-extrabold text-slate-800 text-sm">Previous Tickets</h4>
+                <div className="py-10 text-center border border-dashed rounded-xl bg-slate-50/40 text-xs text-slate-400">
+                  No previous support tickets found.
                 </div>
               </div>
             </div>
