@@ -338,8 +338,21 @@ export default function HomeComponent({
   }, []);
 
 
-  // BigHaat-style layout
-  const ALL_CATS = Object.entries(CATEGORY_MAP);
+  // Category rail — built from the REAL catalog so every tile has a real image
+  // and only categories that actually have products are shown (no empty circles).
+  const CAT_ORDER = [
+    'Vegetables', 'Fruits', 'Valluvam Products',
+    'Vegetable Seeds', 'Fruit Seeds', 'Field Seeds', 'Flower Seeds',
+    'Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers',
+    'Indoor Plants', 'Outdoor Plants & Trees',
+  ];
+  const ALL_CATS: [string, { text: string; images: string[] }][] = CAT_ORDER
+    .filter((name) => products.some((p) => p.category === name))
+    .map((name) => {
+      const rep = products.find((p) => p.category === name && p.images && p.images[0]);
+      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      return [slug, { text: name, images: rep ? [rep.images[0]] : [] }];
+    });
 
   const DEFAULT_HERO_SLIDES = [
     {
@@ -414,20 +427,21 @@ export default function HomeComponent({
 
   const popularBrands = complexOverrides.brands.length > 0 ? complexOverrides.brands : SEED_BRANDS.slice(0, 8);
 
-  const CROP_ITEMS = complexOverrides.crops.length > 0 ? complexOverrides.crops : [
-    { name: 'Tomato', img: 'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
-    { name: 'Green Chilli', img: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
-    { name: 'Brinjal', img: 'https://images.unsplash.com/photo-1644630406799-1ac69fd70b9b?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
-    { name: 'Paddy', img: 'https://images.unsplash.com/photo-1536054894844-6e2c8f29f854?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
-    { name: 'Sugarcane', img: 'https://images.unsplash.com/photo-1594578073426-32e6b91bd193?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
-    { name: 'Maize', img: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
-    { name: 'Mango', img: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=200&q=75&fit=crop', slug: 'fresh-farm-produce' },
-    { name: 'Banana', img: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=200&q=75&fit=crop', slug: 'fresh-farm-produce' },
-    { name: 'Okra', img: 'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
-    { name: 'Cotton', img: 'https://images.unsplash.com/photo-1573500883695-b96ed4e84bab?w=200&q=75&fit=crop', slug: 'seeds-saplings' },
-    { name: 'Rose', img: 'https://images.unsplash.com/photo-1548460518-a6bc9a265d60?w=200&q=75&fit=crop', slug: 'outdoor-plants-trees' },
-    { name: 'Marigold', img: 'https://images.unsplash.com/photo-1599754890761-9e3bf27f9e3e?w=200&q=75&fit=crop', slug: 'outdoor-plants-trees' },
-  ];
+  // Shop-by-Crop tiles built from REAL catalog images (no external/broken images).
+  const CROP_ITEMS = complexOverrides.crops.length > 0 ? complexOverrides.crops : (() => {
+    const list: { name: string; img: string; slug: string }[] = [];
+    const pushFrom = (cat: string, slug: string, max: number) => {
+      for (const p of products.filter((pp) => pp.category === cat && pp.images && pp.images[0])) {
+        if (list.filter((x) => x.slug === slug).length >= max) break;
+        if (!list.some((x) => x.name === p.displayName)) {
+          list.push({ name: p.displayName || p.name, img: p.images[0], slug });
+        }
+      }
+    };
+    pushFrom('Vegetables', 'vegetables', 8);
+    pushFrom('Fruits', 'fruits', 6);
+    return list.slice(0, 14);
+  })();
 
   const getOverrideProducts = (sectionName: string, defaultProducts: Product[]) => {
     const overrideIds = homeOverrides[sectionName];

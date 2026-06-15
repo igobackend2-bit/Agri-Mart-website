@@ -36,115 +36,46 @@ export const SEED_BRANDS: Brand[] = [
   { id: 'katyayani', name: 'Katyayani', type: 'third_party' }
 ];
 
-// Real product catalog — generated from images copied into /public/catalog
-// (see generate-catalog.cjs). Replaces the earlier demo/placeholder catalog
-// that used external Unsplash stock photo URLs.
-import { REAL_CATEGORIES, REAL_PRODUCTS } from './realCatalogData.generated';
-import { PDF_CATEGORIES, PDF_PRODUCTS } from './pdfCatalogProducts';
-import { MARKETPLACE_EXPANSION_CATEGORIES, MARKETPLACE_EXPANSION_PRODUCTS } from './marketplaceExpansionData';
-import { PASTED_CATALOG_CATEGORIES, PASTED_CATALOG_PRODUCTS } from './pastedCatalogProducts';
-import { POLYHOUSE_CATEGORIES, POLYHOUSE_PRODUCTS } from './polyhouseProducts';
-import { IGO_EXTRA_PRODUCTS } from './igoExtraProducts';
+// FULL CATALOG — built ONLY from the real product image folders
+// (farmer-factory-vegetables/-fruits/-valluvam, crop-care/*, nursery-indoor/outdoor).
+// One product per image, correct name, real category. No demo/placeholder data.
+import { CATALOG_PRODUCTS } from './catalogProducts';
 
-const ALL_PRODUCTS: Product[] = [...REAL_PRODUCTS, ...PDF_PRODUCTS, ...MARKETPLACE_EXPANSION_PRODUCTS, ...PASTED_CATALOG_PRODUCTS, ...POLYHOUSE_PRODUCTS, ...IGO_EXTRA_PRODUCTS];
+export const SEED_PRODUCTS: Product[] = CATALOG_PRODUCTS;
 
-const ALLOWED_FOLDERS = [
-  '/catalog/farmer-factory-vegetables',
-  '/catalog/farmer-factory-valluvam',
-  '/catalog/farmer-factory-fruits',
-  '/catalog/crop-care',
-  '/catalog/nursery-indoor',
-  '/catalog/nursery-outdoor'
-];
-
-const RAW_PRODUCTS: Product[] = ALL_PRODUCTS.filter(p => {
-  if (!p.images || p.images.length === 0) return false;
-  const img = p.images[0];
-  // Strictly allow only products whose primary image is in one of the allowed local folders
-  return ALLOWED_FOLDERS.some(folder => img.startsWith(folder));
-});
-const RAW_CATEGORIES: Category[] = [
-  ...REAL_CATEGORIES,
-  ...PDF_CATEGORIES,
-  ...MARKETPLACE_EXPANSION_CATEGORIES,
-  ...PASTED_CATALOG_CATEGORIES,
-  ...POLYHOUSE_CATEGORIES,
-];
-
-const REMAP_CATEGORIES: Record<string, string> = {
-  'Fertilizers': 'Plant Nutrition & Soil Care',
-  'Soil Health': 'Plant Nutrition & Soil Care',
-  'Indoor Plants': 'Urban & Balcony Gardening',
-  'Outdoor Plants & Trees': 'Urban & Balcony Gardening',
-  'Nursery & Garden Essentials': 'Urban & Balcony Gardening',
-  'Farm Tools & Implements': 'Precision Tools & Equipments',
-  'Crop Protection': 'Pest & Disease Shields',
+const CATEGORY_ICONS: Record<string, string> = {
+  'Vegetables': 'Carrot',
+  'Fruits': 'Apple',
+  'Valluvam Products': 'Wheat',
+  'Vegetable Seeds': 'Sprout',
+  'Fruit Seeds': 'Sprout',
+  'Field Seeds': 'Wheat',
+  'Flower Seeds': 'Flower2',
+  'Liquid Fertilizers': 'Droplets',
+  'Powder Fertilizers': 'Package',
+  'Chemical Fertilizers': 'FlaskConical',
+  'Organic Fertilizers': 'Leaf',
+  'Indoor Plants': 'Home',
+  'Outdoor Plants & Trees': 'TreePine',
 };
 
-const REMAP_SUBCATEGORIES: Record<string, string> = {
-  'Insecticides': 'Pest Defenders',
-  'Fungicides': 'Disease & Fungal Shields',
-  'Herbicides': 'Weed Management',
-};
+// Display order for the storefront
+const CATEGORY_ORDER = [
+  'Vegetables', 'Fruits', 'Valluvam Products',
+  'Vegetable Seeds', 'Fruit Seeds', 'Field Seeds', 'Flower Seeds',
+  'Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers',
+  'Indoor Plants', 'Outdoor Plants & Trees',
+];
 
-const remappedProducts = RAW_PRODUCTS.map(p => {
-  let newCat = REMAP_CATEGORIES[p.category] || p.category;
-  let newSub = REMAP_SUBCATEGORIES[p.subcategory] || p.subcategory;
-  
-  if (p.category === 'Crop Protection') {
-    const nameLower = p.name.toLowerCase();
-    if (nameLower.includes('insect') || nameLower.includes('pest') || nameLower.includes('fly') || nameLower.includes('thrip') || nameLower.includes('mite') || nameLower.includes('borer')) {
-      newCat = 'Pest Defenders';
-      newSub = 'Pest Defenders';
-    } else if (nameLower.includes('fung') || nameLower.includes('rot') || nameLower.includes('blight') || nameLower.includes('mildew') || nameLower.includes('rust')) {
-      newCat = 'Disease & Fungal Shields';
-      newSub = 'Disease & Fungal Shields';
-    } else if (nameLower.includes('weed') || nameLower.includes('herb')) {
-      newCat = 'Weed Management';
-      newSub = 'Weed Management';
-    } else if (REMAP_SUBCATEGORIES[p.subcategory]) {
-      newCat = REMAP_SUBCATEGORIES[p.subcategory];
-    } else {
-      newCat = 'Pest & Disease Shields';
-    }
-  }
-
-  return { ...p, category: newCat, subcategory: newSub };
-});
-
-const uniqueCategoriesMap = new Map<string, Category>();
-RAW_CATEGORIES.forEach(c => {
-  const newName = REMAP_CATEGORIES[c.name] || c.name;
-  if (!uniqueCategoriesMap.has(newName)) {
-    uniqueCategoriesMap.set(newName, { 
-      ...c, 
-      id: newName.toLowerCase().replace(/[^a-z0-9]+/g, '-'), 
-      name: newName, 
-      slug: newName.toLowerCase().replace(/[^a-z0-9]+/g, '-') 
-    });
-  }
-});
-
-['Pest Defenders', 'Disease & Fungal Shields', 'Weed Management', 'Pest & Disease Shields'].forEach(name => {
-  if (!uniqueCategoriesMap.has(name)) {
-    uniqueCategoriesMap.set(name, { 
-      id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), 
-      name, 
-      slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), 
-      icon: 'Shield', 
-      productCount: 0 
-    });
-  }
-});
-
-const remappedCategories = Array.from(uniqueCategoriesMap.values());
-
-export const SEED_CATEGORIES: Category[] = remappedCategories.map((category) => ({
-  ...category,
-  productCount: remappedProducts.filter((product) => product.category === category.name).length,
-})).filter(c => c.productCount > 0);
-
-export const SEED_PRODUCTS: Product[] = remappedProducts;
+export const SEED_CATEGORIES: Category[] = CATEGORY_ORDER
+  .filter((name) => CATALOG_PRODUCTS.some((p) => p.category === name))
+  .map((name) => ({
+    id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    name,
+    slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    icon: CATEGORY_ICONS[name] || 'Leaf',
+    productCount: CATALOG_PRODUCTS.filter((p) => p.category === name).length,
+  }));
 
 
 export const CROP_KITS = [

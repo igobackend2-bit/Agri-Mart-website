@@ -347,16 +347,27 @@ export default function App() {
   const buildCleanProducts = () => {
     const strip = (s?: string) =>
       (s || '').replace(/^IGO\s+Agri\s*Mart\s+/i, '').replace(/^IGO\s+/i, '').trim();
-    return applyCatalogOverlay(SEED_PRODUCTS).map((p) => {
-      const name = strip(p.name) || p.name;
-      return {
-        ...p,
-        name,
-        displayName: strip(p.displayName) || name,
-        brand: /IGO/i.test(p.brand) ? 'Farmers Factory' : p.brand,
-        isIgoOwn: false,
-      };
-    });
+    // Only show products whose image lives in the approved real-image folders.
+    const ALLOWED = [
+      '/catalog/farmer-factory-vegetables',
+      '/catalog/farmer-factory-fruits',
+      '/catalog/farmer-factory-valluvam',
+      '/catalog/crop-care',
+      '/catalog/nursery-indoor',
+      '/catalog/nursery-outdoor',
+    ];
+    return applyCatalogOverlay(SEED_PRODUCTS)
+      .filter((p) => p.images && p.images[0] && ALLOWED.some((f) => p.images[0].startsWith(f)))
+      .map((p) => {
+        const name = strip(p.name) || p.name;
+        return {
+          ...p,
+          name,
+          displayName: strip(p.displayName) || name,
+          brand: /IGO/i.test(p.brand) ? 'Farmers Factory' : p.brand,
+          isIgoOwn: false,
+        };
+      });
   };
 
   const loadInventory = () => {

@@ -1,68 +1,32 @@
-import { 
-  collection, 
-  doc, 
-  getDocs, 
-  getDoc, 
-  setDoc, 
-  updateDoc, 
-  deleteDoc, 
-  query, 
-  where, 
-  orderBy, 
-  limit, 
-  writeBatch 
-} from 'firebase/firestore';
-import { db, handleFirestoreError, OperationType } from './firebase';
-import { Product, Category, Brand, Order, UserProfile, Review, Address, ServiceLead } from './types';
+// ─────────────────────────────────────────────────────────────────────────────
+// Data layer — backed by Supabase (anon key + RLS). See supabase_schema.sql and
+// SUPABASE_SETUP.md. Transactional data (profiles, orders, reviews, service
+// leads, wishlist) lives in Supabase. Products/categories/brands are served from
+// the in-code seed catalog (they are large and already bundled with the app).
+//
+// User identity (uid) still comes from the existing sign-in (Firebase anonymous).
+// The same uid is stored as `user_id` on every Supabase row.
+// ─────────────────────────────────────────────────────────────────────────────
+import { supabase } from './supabase';
+import { Product, Category, Brand, Order, UserProfile, Review, ServiceLead } from './types';
 import { SEED_PRODUCTS, SEED_CATEGORIES, SEED_BRANDS } from './seedData';
 
-// Safe Collection references
-const PRODUCTS_COL = 'products';
-const CATEGORIES_COL = 'categories';
-const BRANDS_COL = 'brands';
-const ORDERS_COL = 'orders';
-const USERS_COL = 'users';
-const REVIEWS_COL = 'reviews';
+// Tables
+const T_PROFILES = 'profiles';
+const T_ORDERS = 'orders';
+const T_REVIEWS = 'reviews';
+const T_LEADS = 'service_leads';
 
-/**
- * Automatically populates the database with realistic sample items if the database is empty.
- */
-export async function seedDatabaseIfNeeded() {
-  try {
-    const pSnap = await getDocs(query(collection(db, PRODUCTS_COL), limit(1)));
-    if (pSnap.empty) {
-      console.log('Firestore is empty. Commencing background seed injection...');
-      const batch = writeBatch(db);
-
-      // Seed Brands
-      for (const b of SEED_BRANDS) {
-        const bRef = doc(db, BRANDS_COL, b.id);
-        batch.set(bRef, b);
-      }
-
-      // Seed Categories
-      for (const cat of SEED_CATEGORIES) {
-        const catRef = doc(db, CATEGORIES_COL, cat.id);
-        batch.set(catRef, cat);
-      }
-
-      // Seed Products
-      for (const p of SEED_PRODUCTS) {
-        const pRef = doc(db, PRODUCTS_COL, p.id);
-        batch.set(pRef, p);
-      }
-
-      await batch.commit();
-      console.log('Seeding transaction successfully committed!');
-    }
-  } catch (error) {
-    console.error('Failed to seed firestore database auto-setup:', error);
-  }
+function logErr(scope: string, error: unknown) {
+  if (error) console.error(`[Supabase:${scope}]`, error);
 }
 
-/**
- * Fetch all products, optionally filtered on category, search string, brand, and problem type
- */
+// ── Products / Categories / Brands (served from the in-code catalog) ──────────
+export async function seedDatabaseIfNeeded(): Promise<void> {
+  // No-op: the catalog ships with the app. Kept for backwards compatibility.
+  return;
+}
+
 export async function fetchProducts(filters?: {
   categorySlug?: string;
   searchQuery?: string;
@@ -71,361 +35,197 @@ export async function fetchProducts(filters?: {
   priceMin?: number;
   priceMax?: number;
 }): Promise<Product[]> {
-  const path = PRODUCTS_COL;
-  try {
-    const ref = collection(db, path);
-    // Query constraints
-    let q = query(ref);
-    
-    // We fetch everything and filter down in-memory for flexible multi-field filtering, 
-    // avoiding complex multi-field composite indexing issues during evaluation.
-    const snap = await getDocs(q);
-    let items = snap.docs.map(d => ({ id: d.id, ...d.data() } as Product));
-
-    if (filters) {
-      if (filters.categorySlug) {
-        const targetSlug = filters.categorySlug.toLowerCase();
-        items = items.filter(x => x.category.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-') === targetSlug || x.category.toLowerCase() === targetSlug);
-      }
-      if (filters.searchQuery) {
-        const sq = filters.searchQuery.toLowerCase();
-        items = items.filter(x => 
-          x.name.toLowerCase().includes(sq) || 
-          x.brand.toLowerCase().includes(sq) || 
+  let items = [...SEED_PRODUCTS];
+  if (filters) {
+    if (filters.categorySlug) {
+      const target = filters.categorySlug.toLowerCase();
+      items = items.filter(
+        x =>
+          x.category.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-') === target ||
+          x.category.toLowerCase() === target,
+      );
+    }
+    if (filters.searchQuery) {
+      const sq = filters.searchQuery.toLowerCase();
+      items = items.filter(
+        x =>
+          x.name.toLowerCase().includes(sq) ||
+          x.brand.toLowerCase().includes(sq) ||
           x.description.toLowerCase().includes(sq) ||
-          x.category.toLowerCase().includes(sq)
-        );
-      }
-      if (filters.brand) {
-        items = items.filter(x => x.brand.toLowerCase() === filters.brand?.toLowerCase());
-      }
-      if (filters.problemFilter) {
-        items = items.filter(x => x.problemFilter === filters.problemFilter);
-      }
-      if (filters.priceMin !== undefined) {
-        items = items.filter(x => x.price >= (filters.priceMin || 0));
-      }
-      if (filters.priceMax !== undefined) {
-        items = items.filter(x => x.price <= (filters.priceMax || 999999));
-      }
+          x.category.toLowerCase().includes(sq),
+      );
     }
-    return items;
-  } catch (err) {
-    handleFirestoreError(err, OperationType.GET, path);
-    return [];
+    if (filters.brand) items = items.filter(x => x.brand.toLowerCase() === filters.brand?.toLowerCase());
+    if (filters.problemFilter) items = items.filter(x => x.problemFilter === filters.problemFilter);
+    if (filters.priceMin !== undefined) items = items.filter(x => x.price >= (filters.priceMin || 0));
+    if (filters.priceMax !== undefined) items = items.filter(x => x.price <= (filters.priceMax || 999999));
   }
+  return items;
 }
 
-/**
- * Fetch a single product by its unique slug
- */
 export async function fetchProductBySlug(slug: string): Promise<Product | null> {
-  const path = PRODUCTS_COL;
-  try {
-    const q = query(collection(db, path), where('slug', '==', slug), limit(1));
-    const snap = await getDocs(q);
-    if (snap.empty) return null;
-    return { id: snap.docs[0].id, ...snap.docs[0].data() } as Product;
-  } catch (err) {
-    handleFirestoreError(err, OperationType.GET, path);
-    return null;
-  }
+  return SEED_PRODUCTS.find(p => p.slug === slug) || null;
 }
 
-/**
- * Fetch distinct categories
- */
 export async function fetchCategories(): Promise<Category[]> {
-  const path = CATEGORIES_COL;
-  try {
-    const snap = await getDocs(collection(db, path));
-    if (snap.empty) {
-      return SEED_CATEGORIES;
-    }
-    return snap.docs.map(d => ({ id: d.id, ...d.data() } as Category));
-  } catch (err) {
-    handleFirestoreError(err, OperationType.GET, path);
-    return SEED_CATEGORIES;
-  }
+  return SEED_CATEGORIES;
 }
 
-/**
- * Fetch distinct brands
- */
 export async function fetchBrands(): Promise<Brand[]> {
-  const path = BRANDS_COL;
-  try {
-    const snap = await getDocs(collection(db, path));
-    if (snap.empty) {
-      return SEED_BRANDS;
-    }
-    return snap.docs.map(d => ({ id: d.id, ...d.data() } as Brand));
-  } catch (err) {
-    handleFirestoreError(err, OperationType.GET, path);
-    return SEED_BRANDS;
-  }
+  return SEED_BRANDS;
 }
 
-/**
- * Place a shopping order
- */
+// ── Orders (Supabase) ─────────────────────────────────────────────────────────
 export async function placeOrder(order: Order): Promise<void> {
-  const path = `${ORDERS_COL}/${order.id}`;
-  try {
-    await setDoc(doc(db, ORDERS_COL, order.id), order);
-  } catch (err) {
-    handleFirestoreError(err, OperationType.WRITE, path);
-  }
+  const { error } = await supabase.from(T_ORDERS).insert({
+    id: order.id,
+    user_id: order.userId,
+    status: order.status,
+    total: order.totalAmount,
+    phone: order.phone || null,
+    created_at: typeof order.createdAt === 'string' ? order.createdAt : new Date().toISOString(),
+    data: order,
+  });
+  logErr('placeOrder', error);
 }
 
-/**
- * Fetch orders for a specific user
- */
 export async function fetchUserOrders(userId: string): Promise<Order[]> {
-  const path = ORDERS_COL;
-  try {
-    const q = query(collection(db, path), where('userId', '==', userId), orderBy('createdAt', 'desc'));
-    const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() } as Order));
-  } catch (err) {
-    // If ordering failed because index isn't built yet, fail back gracefully without orderby
-    try {
-      const qFallback = query(collection(db, path), where('userId', '==', userId));
-      const snapF = await getDocs(qFallback);
-      const items = snapF.docs.map(d => ({ id: d.id, ...d.data() } as Order));
-      // Sort in memory
-      return items.sort((a, b) => b.id.localeCompare(a.id));
-    } catch {
-      handleFirestoreError(err, OperationType.GET, path);
-      return [];
-    }
-  }
+  const { data, error } = await supabase
+    .from(T_ORDERS)
+    .select('data')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+  logErr('fetchUserOrders', error);
+  return (data || []).map(r => r.data as Order);
 }
 
-/**
- * Fetch order by ID
- */
 export async function fetchOrderById(orderId: string): Promise<Order | null> {
-  const path = `${ORDERS_COL}/${orderId}`;
-  try {
-    const d = await getDoc(doc(db, ORDERS_COL, orderId));
-    if (!d.exists()) return null;
-    return { id: d.id, ...d.data() } as Order;
-  } catch (err) {
-    handleFirestoreError(err, OperationType.GET, path);
-    return null;
-  }
+  const { data, error } = await supabase.from(T_ORDERS).select('data').eq('id', orderId).maybeSingle();
+  logErr('fetchOrderById', error);
+  return data ? (data.data as Order) : null;
 }
 
-/**
- * Cancel an order
- */
 export async function cancelUserOrder(orderId: string): Promise<void> {
-  const path = `${ORDERS_COL}/${orderId}`;
-  try {
-    await updateDoc(doc(db, ORDERS_COL, orderId), { status: 'Cancelled' });
-  } catch (err) {
-    handleFirestoreError(err, OperationType.UPDATE, path);
-  }
+  const { data } = await supabase.from(T_ORDERS).select('data').eq('id', orderId).maybeSingle();
+  const updated = data ? { ...(data.data as Order), status: 'Cancelled' as Order['status'] } : null;
+  const { error } = await supabase
+    .from(T_ORDERS)
+    .update({ status: 'Cancelled', data: updated })
+    .eq('id', orderId);
+  logErr('cancelUserOrder', error);
 }
 
-/**
- * Fetch user profile
- */
+// ── User profiles (Supabase) ──────────────────────────────────────────────────
 export async function fetchUserProfile(uid: string): Promise<UserProfile | null> {
-  const path = `${USERS_COL}/${uid}`;
-  try {
-    const d = await getDoc(doc(db, USERS_COL, uid));
-    if (!d.exists()) return null;
-    return d.data() as UserProfile;
-  } catch (err) {
-    handleFirestoreError(err, OperationType.GET, path);
-    return null;
-  }
+  const { data, error } = await supabase.from(T_PROFILES).select('data').eq('uid', uid).maybeSingle();
+  logErr('fetchUserProfile', error);
+  return data ? (data.data as UserProfile) : null;
 }
 
-/**
- * Save user profile
- */
 export async function saveUserProfile(profile: UserProfile): Promise<void> {
-  const path = `${USERS_COL}/${profile.uid}`;
-  try {
-    await setDoc(doc(db, USERS_COL, profile.uid), profile, { merge: true });
-  } catch (err) {
-    handleFirestoreError(err, OperationType.WRITE, path);
-  }
+  const { error } = await supabase.from(T_PROFILES).upsert(
+    {
+      uid: profile.uid,
+      email: profile.email || null,
+      phone: profile.phone || null,
+      role: profile.role,
+      data: profile,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'uid' },
+  );
+  logErr('saveUserProfile', error);
 }
 
-/**
- * Toggle Wishlist item
- */
-export async function toggleWishlistItem(uid: string, productId: string, currentWishlist: string[]): Promise<string[]> {
-  const path = `${USERS_COL}/${uid}`;
-  const existIndex = currentWishlist.indexOf(productId);
-  let updatedList = [...currentWishlist];
-  if (existIndex > -1) {
-    updatedList.splice(existIndex, 1);
-  } else {
-    updatedList.push(productId);
+export async function toggleWishlistItem(
+  uid: string,
+  productId: string,
+  currentWishlist: string[],
+): Promise<string[]> {
+  const idx = currentWishlist.indexOf(productId);
+  const updated = [...currentWishlist];
+  if (idx > -1) updated.splice(idx, 1);
+  else updated.push(productId);
+
+  const existing = await fetchUserProfile(uid);
+  if (existing) {
+    await saveUserProfile({ ...existing, wishlist: updated });
   }
-  try {
-    await updateDoc(doc(db, USERS_COL, uid), { wishlist: updatedList });
-    return updatedList;
-  } catch (err) {
-    handleFirestoreError(err, OperationType.UPDATE, path);
-    return currentWishlist;
-  }
+  return updated;
 }
 
-/**
- * Fetch reviews for a specific product
- */
+// ── Reviews (Supabase) ────────────────────────────────────────────────────────
 export async function fetchReviews(productId: string): Promise<Review[]> {
-  const path = REVIEWS_COL;
-  try {
-    const q = query(collection(db, path), where('productId', '==', productId));
-    const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() } as Review));
-  } catch (err) {
-    handleFirestoreError(err, OperationType.GET, path);
-    return [];
-  }
+  const { data, error } = await supabase.from(T_REVIEWS).select('data').eq('product_id', productId);
+  logErr('fetchReviews', error);
+  return (data || []).map(r => r.data as Review);
 }
 
-/**
- * Create a new review
- */
 export async function addReview(review: Review): Promise<void> {
-  const path = `${REVIEWS_COL}/${review.id}`;
-  try {
-    await setDoc(doc(db, REVIEWS_COL, review.id), review);
-  } catch (err) {
-    handleFirestoreError(err, OperationType.WRITE, path);
-  }
+  const { error } = await supabase.from(T_REVIEWS).insert({
+    id: review.id,
+    product_id: review.productId,
+    user_id: review.userId,
+    data: review,
+    created_at: new Date().toISOString(),
+  });
+  logErr('addReview', error);
 }
 
-// --- ADMIN SPECIFIC ENDPOINTS ---
+// ── Service leads (Supabase) ──────────────────────────────────────────────────
+export async function placeServiceLead(lead: ServiceLead): Promise<void> {
+  const { error } = await supabase.from(T_LEADS).insert({
+    id: lead.id,
+    status: lead.status,
+    data: lead,
+    created_at: new Date().toISOString(),
+  });
+  logErr('placeServiceLead', error);
+}
 
-/**
- * Fetch all orders (Admin only)
- */
+export async function adminFetchAllServiceLeads(): Promise<ServiceLead[]> {
+  const { data, error } = await supabase
+    .from(T_LEADS)
+    .select('data')
+    .order('created_at', { ascending: false });
+  logErr('adminFetchAllServiceLeads', error);
+  return (data || []).map(r => r.data as ServiceLead);
+}
+
+// ── Admin endpoints (Supabase) ────────────────────────────────────────────────
 export async function adminFetchAllOrders(): Promise<Order[]> {
-  const path = ORDERS_COL;
-  try {
-    const snap = await getDocs(collection(db, path));
-    return snap.docs.map(d => ({ id: d.id, ...d.data() } as Order));
-  } catch (err) {
-    handleFirestoreError(err, OperationType.GET, path);
-    return [];
-  }
+  const { data, error } = await supabase
+    .from(T_ORDERS)
+    .select('data')
+    .order('created_at', { ascending: false });
+  logErr('adminFetchAllOrders', error);
+  return (data || []).map(r => r.data as Order);
 }
 
-/**
- * Update order status (Admin only)
- */
 export async function adminUpdateOrderStatus(orderId: string, status: Order['status']): Promise<void> {
-  const path = `${ORDERS_COL}/${orderId}`;
-  try {
-    await updateDoc(doc(db, ORDERS_COL, orderId), { status });
-  } catch (err) {
-    handleFirestoreError(err, OperationType.UPDATE, path);
-  }
+  const { data } = await supabase.from(T_ORDERS).select('data').eq('id', orderId).maybeSingle();
+  const updated = data ? { ...(data.data as Order), status } : null;
+  const { error } = await supabase.from(T_ORDERS).update({ status, data: updated }).eq('id', orderId);
+  logErr('adminUpdateOrderStatus', error);
 }
 
-/**
- * Put or edit a product document (Admin only)
- */
-export async function adminAddOrUpdateProduct(product: Product): Promise<void> {
-  const path = `${PRODUCTS_COL}/${product.id}`;
-  try {
-    await setDoc(doc(db, PRODUCTS_COL, product.id), product, { merge: true });
-  } catch (err) {
-    handleFirestoreError(err, OperationType.WRITE, path);
-  }
+// Product admin writes persist via the local catalog overlay (storeData.ts).
+// These remain no-ops on the backend so the admin UI keeps working unchanged.
+export async function adminAddOrUpdateProduct(_product: Product): Promise<void> {
+  return;
 }
-
-/**
- * Delete a product document (Admin only)
- */
-export async function adminDeleteProduct(productId: string): Promise<void> {
-  const path = `${PRODUCTS_COL}/${productId}`;
-  try {
-    await deleteDoc(doc(db, PRODUCTS_COL, productId));
-  } catch (err) {
-    handleFirestoreError(err, OperationType.DELETE, path);
-  }
+export async function adminDeleteProduct(_productId: string): Promise<void> {
+  return;
 }
-
-/**
- * Force clear ALL products from Firestore and re-seed with fresh SEED_PRODUCTS
- */
 export async function clearAndReseedProducts(): Promise<{ deleted: number; seeded: number }> {
-  try {
-    const snap = await getDocs(collection(db, PRODUCTS_COL));
-    const deleteCount = snap.docs.length;
-    const chunks: typeof snap.docs[] = [];
-    for (let i = 0; i < snap.docs.length; i += 400) {
-      chunks.push(snap.docs.slice(i, i + 400));
-    }
-    for (const chunk of chunks) {
-      const batch = writeBatch(db);
-      chunk.forEach(d => batch.delete(d.ref));
-      await batch.commit();
-    }
-    const seedBatches: (typeof SEED_PRODUCTS[0])[][] = [];
-    for (let i = 0; i < SEED_PRODUCTS.length; i += 400) {
-      seedBatches.push(SEED_PRODUCTS.slice(i, i + 400));
-    }
-    let seeded = 0;
-    for (const chunk of seedBatches) {
-      const batch = writeBatch(db);
-      for (const p of chunk) {
-        batch.set(doc(db, PRODUCTS_COL, p.id), p);
-        seeded++;
-      }
-      await batch.commit();
-    }
-    return { deleted: deleteCount, seeded };
-  } catch (err) {
-    console.error('clearAndReseedProducts error:', err);
-    throw err;
-  }
+  return { deleted: 0, seeded: SEED_PRODUCTS.length };
 }
 
-// Alias exports for administrative components integration
+// Alias exports for existing component imports
 export {
   adminFetchAllOrders as fetchAllOrders,
   adminUpdateOrderStatus as updateOrderStatus,
   adminAddOrUpdateProduct as addProduct,
   adminDeleteProduct as deleteProduct,
-  seedDatabaseIfNeeded as seedProducts
+  seedDatabaseIfNeeded as seedProducts,
 };
-
-const SERVICE_LEADS_COL = 'serviceLeads';
-
-/**
- * Place a professional service lead request (anyone can submit)
- */
-export async function placeServiceLead(lead: ServiceLead): Promise<void> {
-  const path = `${SERVICE_LEADS_COL}/${lead.id}`;
-  try {
-    await setDoc(doc(db, SERVICE_LEADS_COL, lead.id), lead);
-  } catch (err) {
-    handleFirestoreError(err, OperationType.WRITE, path);
-  }
-}
-
-/**
- * Fetch all service leads (Admin only)
- */
-export async function adminFetchAllServiceLeads(): Promise<ServiceLead[]> {
-  const path = SERVICE_LEADS_COL;
-  try {
-    const snap = await getDocs(collection(db, path));
-    return snap.docs.map(d => ({ id: d.id, ...d.data() } as ServiceLead));
-  } catch (err) {
-    handleFirestoreError(err, OperationType.GET, path);
-    return [];
-  }
-}
-

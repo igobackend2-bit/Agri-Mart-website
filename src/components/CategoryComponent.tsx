@@ -252,19 +252,19 @@ export default function CategoryComponent({
   const showCategoryLanding = !selectedCategory && !isBrandOnlyFilter && !searchQuery.trim();
   if (showCategoryLanding) {
     const CATEGORY_TILES: { emoji: string; label: string; slug: string; bg: string }[] = [
-      { emoji: '🥬', label: 'Fresh Vegetables', slug: 'vegetables', bg: 'from-emerald-50 to-emerald-100' },
-      { emoji: '🍎', label: 'Fresh Fruits', slug: 'fruits', bg: 'from-rose-50 to-rose-100' },
+      { emoji: '🥬', label: 'Vegetables', slug: 'vegetables', bg: 'from-emerald-50 to-emerald-100' },
+      { emoji: '🍎', label: 'Fruits', slug: 'fruits', bg: 'from-rose-50 to-rose-100' },
+      { emoji: '🍯', label: 'Valluvam Products', slug: 'valluvam-products', bg: 'from-amber-50 to-amber-100' },
       { emoji: '🌱', label: 'Vegetable Seeds', slug: 'vegetable-seeds', bg: 'from-lime-50 to-lime-100' },
-      { emoji: '🌳', label: 'Fruit Plants', slug: 'fruit-plants', bg: 'from-green-50 to-green-100' },
-      { emoji: '🌾', label: 'Field & Millet Seeds', slug: 'field-millet-seeds', bg: 'from-yellow-50 to-yellow-100' },
-      { emoji: '🍯', label: 'Valluvam Products', slug: 'native-foods-millets', bg: 'from-amber-50 to-amber-100' },
+      { emoji: '🍉', label: 'Fruit Seeds', slug: 'fruit-seeds', bg: 'from-pink-50 to-pink-100' },
+      { emoji: '🌾', label: 'Field Seeds', slug: 'field-seeds', bg: 'from-yellow-50 to-yellow-100' },
+      { emoji: '🌸', label: 'Flower Seeds', slug: 'flower-seeds', bg: 'from-fuchsia-50 to-fuchsia-100' },
       { emoji: '💧', label: 'Liquid Fertilizers', slug: 'liquid-fertilizers', bg: 'from-sky-50 to-sky-100' },
       { emoji: '🧂', label: 'Powder Fertilizers', slug: 'powder-fertilizers', bg: 'from-cyan-50 to-cyan-100' },
-      { emoji: '♻️', label: 'Organic Manures', slug: 'organic-manures', bg: 'from-green-50 to-lime-100' },
-      { emoji: '🛠️', label: 'Farm Tools', slug: 'farm-tools', bg: 'from-slate-50 to-slate-100' },
-      { emoji: '🚿', label: 'Irrigation', slug: 'irrigation-equipment', bg: 'from-blue-50 to-blue-100' },
-      { emoji: '🪴', label: 'Indoor Plants', slug: 'indoor-office-plants', bg: 'from-teal-50 to-teal-100' },
-      { emoji: '🌺', label: 'Outdoor Plants', slug: 'flowering-outdoor-plants', bg: 'from-pink-50 to-pink-100' },
+      { emoji: '⚗️', label: 'Chemical Fertilizers', slug: 'chemical-fertilizers', bg: 'from-blue-50 to-blue-100' },
+      { emoji: '♻️', label: 'Organic Fertilizers', slug: 'organic-fertilizers', bg: 'from-green-50 to-lime-100' },
+      { emoji: '🪴', label: 'Indoor Plants', slug: 'indoor-plants', bg: 'from-teal-50 to-teal-100' },
+      { emoji: '🌳', label: 'Outdoor Plants', slug: 'outdoor-plants-trees', bg: 'from-green-50 to-green-100' },
     ];
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -367,17 +367,17 @@ export default function CategoryComponent({
                 { label: 'All', slug: null },
                 { label: '🥬 Vegetables', slug: 'vegetables' },
                 { label: '🍎 Fruits', slug: 'fruits' },
+                { label: '🍯 Valluvam', slug: 'valluvam-products' },
                 { label: '🌱 Veg Seeds', slug: 'vegetable-seeds' },
-                { label: '🌳 Fruit Plants', slug: 'fruit-plants' },
-                { label: '🌾 Field Seeds', slug: 'field-millet-seeds' },
-                { label: '🍯 Valluvam', slug: 'native-foods-millets' },
+                { label: '🍉 Fruit Seeds', slug: 'fruit-seeds' },
+                { label: '🌾 Field Seeds', slug: 'field-seeds' },
+                { label: '🌸 Flower Seeds', slug: 'flower-seeds' },
                 { label: '💧 Liquid Fert.', slug: 'liquid-fertilizers' },
                 { label: '🧂 Powder Fert.', slug: 'powder-fertilizers' },
-                { label: '♻️ Manures', slug: 'organic-manures' },
-                { label: '🛠️ Tools', slug: 'farm-tools' },
-                { label: '🚿 Irrigation', slug: 'irrigation-equipment' },
-                { label: '🪴 Indoor', slug: 'indoor-office-plants' },
-                { label: '🌺 Outdoor', slug: 'flowering-outdoor-plants' },
+                { label: '⚗️ Chemical Fert.', slug: 'chemical-fertilizers' },
+                { label: '♻️ Organic Fert.', slug: 'organic-fertilizers' },
+                { label: '🪴 Indoor Plants', slug: 'indoor-plants' },
+                { label: '🌳 Outdoor Plants', slug: 'outdoor-plants-trees' },
               ] as const).map((c) => (
                 <button
                   key={c.label}
