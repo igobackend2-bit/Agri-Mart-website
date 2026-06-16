@@ -34,13 +34,26 @@ async function sendSms(phone, otp) {
   try {
     const r = await fetch(url);
     const t = await r.text();
-    return r.ok && !/error|fail|invalid|unauthor/i.test(t);
-  } catch {
-    return false;
+    const ok = r.ok && !/error|fail|invalid|unauthor/i.test(t);
+    // Visible in Vercel → Deployments → your deployment → Functions/Logs.
+    console.log('[otp] sms provider', url.split('?')[0], 'status', r.status, 'ok', ok, 'body', t.slice(0, 300));
+    return { ok, status: r.status, body: t.slice(0, 300) };
+  } catch (e) {
+    console.log('[otp] sms send error', String(e));
+    return { ok: false, status: 0, body: String(e) };
   }
 }
 
 export default async function handler(req, res) {
+  // GET = health/diagnostic check (open /api/otp in a browser). Never exposes the key.
+  if (req.method === 'GET') {
+    return res.status(200).json({
+      ok: true,
+      function: 'live',
+      keySet: !!KEY,
+      provider: URL_TMPL.split('?')[0],
+    });
+  }
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
   const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
   const { action, phone, code, token } = body;
@@ -51,9 +64,10 @@ export default async function handler(req, res) {
     const otp = String(Math.floor(100000 + Math.random() * 900000));
     const exp = Date.now() + 5 * 60 * 1000; // valid 5 minutes
     const sig = sign(clean, otp, exp);
-    const sent = await sendSms(clean, otp);
+    const r = await sendSms(clean, otp);
     // Stateless: return a signed token (NOT the OTP). Verify recomputes the signature.
-    return res.status(200).json({ sent, token: `${exp}.${sig}` });
+    // `debug` only shows when you POST directly (the website ignores it) — helps diagnose providers.
+    return res.status(200).json({ sent: r.ok, token: `${exp}.${sig}`, debug: { status: r.status, body: r.body } });
   }
 
   if (action === 'verify') {
