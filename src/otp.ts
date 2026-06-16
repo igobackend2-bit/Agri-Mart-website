@@ -1,50 +1,62 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // OTP send/verify.
 //
-// SECURITY: SMS provider / DLT keys must NEVER live in the browser. They belong
-// in a backend. This module calls a backend endpoint (a Supabase Edge Function —
-// see supabase/functions/send-otp/index.ts) which holds the key and sends the SMS.
-//
-// Set the endpoint in a .env file:  VITE_OTP_API=https://<project>.functions.supabase.co/send-otp
-//
-// If no endpoint is configured (or it fails), we fall back to an on-screen DEMO
-// OTP so testing always works.
+// Calls the backend serverless function at /api/otp (deployed automatically on
+// Vercel — see api/otp.js). The SMS/DLT key lives only in the Vercel env var, not
+// in this bundle. If the backend is unreachable OR the SMS provider doesn't
+// confirm delivery, we fall back to an on-screen DEMO OTP so login always works.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const OTP_API = (import.meta as any).env?.VITE_OTP_API || '';
+const OTP_API = (import.meta as any).env?.VITE_OTP_API || '/api/otp';
 
 /** Request an OTP for a phone. Returns whether a real SMS was sent or a demo code. */
 export async function requestOtp(phone: string): Promise<{ mode: 'sms' | 'demo'; demoCode?: string }> {
-  if (OTP_API) {
-    try {
-      const r = await fetch(OTP_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'send', phone }),
-      });
-      if (r.ok) return { mode: 'sms' };
-    } catch { /* fall through to demo */ }
-  }
+  try {
+    const r = await fetch(OTP_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'send', phone }),
+    });
+    if (r.ok) {
+      const j = await r.json().catch(() => ({} as any));
+      if (j.sent && j.token) {
+        try {
+          sessionStorage.setItem('igo_otp_token_' + phone, j.token);
+          sessionStorage.removeItem('igo_otp_' + phone);
+        } catch { /* ignore */ }
+        return { mode: 'sms' };
+      }
+    }
+  } catch { /* backend unreachable — fall back to demo */ }
+
+  // Demo fallback (no SMS): generate + show the code on screen.
   const code = String(Math.floor(100000 + Math.random() * 900000));
-  try { sessionStorage.setItem('igo_otp_' + phone, code); } catch { /* ignore */ }
+  try {
+    sessionStorage.setItem('igo_otp_' + phone, code);
+    sessionStorage.removeItem('igo_otp_token_' + phone);
+  } catch { /* ignore */ }
   return { mode: 'demo', demoCode: code };
 }
 
 /** Verify an entered OTP. */
 export async function confirmOtp(phone: string, code: string): Promise<boolean> {
-  if (OTP_API) {
+  let token = '';
+  try { token = sessionStorage.getItem('igo_otp_token_' + phone) || ''; } catch { /* ignore */ }
+
+  if (token) {
     try {
       const r = await fetch(OTP_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'verify', phone, code }),
+        body: JSON.stringify({ action: 'verify', phone, code, token }),
       });
       if (r.ok) {
-        const j = await r.json().catch(() => ({}));
+        const j = await r.json().catch(() => ({} as any));
         return !!j.valid;
       }
-    } catch { /* fall through to demo */ }
+    } catch { /* fall through to demo check */ }
   }
+
   let stored = '';
   try { stored = sessionStorage.getItem('igo_otp_' + phone) || ''; } catch { /* ignore */ }
   return stored !== '' && stored === code;
