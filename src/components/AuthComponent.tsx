@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Phone, ChevronRight, ArrowLeft, ShieldCheck, Truck, BadgeCheck, Star, User, Mail, Lock, MapPin } from 'lucide-react';
 import { auth } from '../firebase';
-import { GoogleAuthProvider, signInWithPopup, signInAnonymously } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { fetchUserProfile, saveUserProfile } from '../dbHelper';
+import { currentUid, markSignedIn } from '../session';
+import { requestOtp, confirmOtp } from '../otp';
 import { UserProfile, Address } from '../types';
 
 interface AuthComponentProps {
@@ -52,8 +54,19 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
   const [loginPassword, setLoginPassword] = useState('');
 
   const resetFlow = () => {
-    setPhase(loginMethod === 'phone' ? 'phone' : 'email_login'); 
+    setPhase(loginMethod === 'phone' ? 'phone' : 'email_login');
     setOtp(''); setGeneratedOtp(''); setError(''); setInfo(''); setLoginPassword(''); setLoginEmail('');
+  };
+
+  // After a successful sign-in, resume where the user came from (e.g. the cart),
+  // otherwise go to their account.
+  const goAfterAuth = () => {
+    let dest = 'account';
+    try {
+      const r = localStorage.getItem('igo_resume');
+      if (r) { dest = r; localStorage.removeItem('igo_resume'); }
+    } catch { /* ignore */ }
+    setCurrentPage(dest);
   };
 
   const handleGoogleLogin = async () => {
@@ -61,7 +74,7 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
     setBusy(true); setError('');
     try {
       await signInWithPopup(auth, provider);
-      setCurrentPage('account');
+      goAfterAuth();
     } catch (err) {
       console.error('Google Sign-In failed:', err);
       setError('Google sign-in could not be completed. Please try again.');
@@ -76,17 +89,17 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
     if (!loginEmail || !loginPassword) { setError('Please enter both email and password.'); return; }
     setBusy(true);
     try {
-      // For demo, we just sign in anonymously and simulate email login.
-      // In production, use signInWithEmailAndPassword(auth, email, password)
-      const cred = auth.currentUser ?? (await signInAnonymously(auth)).user;
-      const existing = await fetchUserProfile(cred.uid);
+      // Demo email login. In production use signInWithEmailAndPassword.
+      markSignedIn();
+      const uid = currentUid();
+      const existing = await fetchUserProfile(uid);
       if (existing) {
         setUserProfile(existing);
-        setCurrentPage('account');
+        goAfterAuth();
       } else {
         // Mock success for unlinked accounts
         setUserProfile({
-          uid: cred.uid,
+          uid,
           name: loginEmail.split('@')[0],
           email: loginEmail,
           phone: '',
@@ -95,7 +108,7 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
           wishlist: [],
           profileComplete: true,
         });
-        setCurrentPage('account');
+        goAfterAuth();
       }
     } catch (err) {
       console.error(err);
@@ -105,36 +118,44 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
     }
   };
 
-  // ── Step 1: send (demo) OTP ──────────────────────────────────────────────────
-  const handleSendOtp = (e: React.FormEvent) => {
+  // ── Step 1: send OTP (real SMS via backend if configured, else on-screen demo) ─
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     if (phone.length !== 10) { setError('Please enter a valid 10-digit mobile number.'); return; }
-    // DEMO OTP: generated on-device. Swap this block for Firebase Phone Auth /
-    // a DLT SMS provider (MSG91 / Twilio) when you go live.
-    const code = String(Math.floor(100000 + Math.random() * 900000));
-    setGeneratedOtp(code);
-    setPhase('otp');
-    setInfo(`Demo OTP for +91 ${phone}: ${code}`);
+    setBusy(true);
+    try {
+      const res = await requestOtp(phone);
+      setPhase('otp');
+      if (res.mode === 'sms') {
+        setInfo(`OTP sent to +91 ${phone}. Check your messages.`);
+      } else {
+        setInfo(`Demo OTP for +91 ${phone}: ${res.demoCode}`);
+      }
+    } catch {
+      setError('Could not send OTP. Please try again.');
+    } finally {
+      setBusy(false);
+    }
   };
 
-  // ── Step 2: verify OTP, then sign in (anonymous) and route ───────────────────
+  // ── Step 2: verify OTP, then sign in and route ───────────────────────────────
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (otp !== generatedOtp) { setError('Incorrect OTP. Please check and try again.'); return; }
+    const valid = await confirmOtp(phone, otp);
+    if (!valid) { setError('Incorrect OTP. Please check and try again.'); return; }
     setBusy(true);
     try {
-      // Establish a real Firebase session so Firestore security rules pass.
-      // (Enable "Anonymous" provider in Firebase Console → Authentication.)
-      const cred = auth.currentUser ?? (await signInAnonymously(auth)).user;
-      const uid = cred.uid;
+      // Start a local session (no Firebase "Anonymous" provider needed).
+      markSignedIn();
+      const uid = currentUid();
       const existing = await fetchUserProfile(uid);
       if (existing && existing.profileComplete) {
         // Returning customer → straight to their profile.
         setUserProfile({ ...existing, phone: existing.phone || phone });
         setInfo('');
-        setCurrentPage('account');
+        goAfterAuth();
         return;
       }
       // New customer → collect profile details.
@@ -160,8 +181,8 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
     if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
     setBusy(true);
     try {
-      const uid = auth.currentUser?.uid;
-      if (!uid) { setError('Session expired. Please verify your number again.'); resetFlow(); return; }
+      markSignedIn();
+      const uid = currentUid();
 
       const address: Address | null = addressLine1.trim()
         ? {
@@ -189,10 +210,49 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
       };
       await saveUserProfile(profile);
       setUserProfile(profile);
-      setCurrentPage('account');
+      goAfterAuth();
     } catch (err) {
       console.error('Profile creation failed:', err);
       setError('Could not save your profile. Please try again.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  // Developer test login — skips OTP entirely. Creates/loads a ready test account
+  // so you can test the full cart → checkout → order flow without SMS/DLT.
+  // (Remove or hide this button before going to production.)
+  const handleDevLogin = async () => {
+    setBusy(true); setError('');
+    try {
+      markSignedIn();
+      const uid = currentUid();
+      let profile = await fetchUserProfile(uid);
+      if (!profile) {
+        profile = {
+          uid,
+          name: 'Test Developer',
+          phone: '9000000000',
+          email: 'dev@igo.test',
+          role: 'customer',
+          addresses: [{
+            id: 'addr-dev', name: 'Test Developer', phone: '9000000000', email: 'dev@igo.test',
+            addressLine1: 'IGO Test Address, OMR', city: 'Chennai', state: 'Tamil Nadu', pincode: '600001',
+          }],
+          wishlist: [],
+          profileComplete: true,
+        };
+        await saveUserProfile(profile);
+      }
+      setUserProfile(profile);
+      goAfterAuth();
+    } catch (err: any) {
+      const msg = String(err?.code || err?.message || '');
+      setError(
+        msg.includes('operation-not-allowed') || msg.includes('admin-restricted')
+          ? 'Enable "Anonymous" sign-in in Firebase Console → Authentication → Sign-in method.'
+          : 'Test login failed. Please try again.',
+      );
     } finally {
       setBusy(false);
     }
@@ -458,6 +518,15 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
               >
                 <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
                 <span>{busy ? 'Connecting...' : 'Google Account'}</span>
+              </button>
+
+              {/* Developer test login — no OTP. Remove before production. */}
+              <button
+                onClick={handleDevLogin}
+                disabled={busy}
+                className="w-full mt-3 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs py-3 rounded-2xl transition flex items-center justify-center gap-2 disabled:opacity-60"
+              >
+                <span>⚡ Developer Test Login (skip OTP)</span>
               </button>
             </>
           )}

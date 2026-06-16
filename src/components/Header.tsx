@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { auth, db } from '../firebase';
 import { GoogleAuthProvider, signInWithPopup, signOut, User as FirebaseUser } from 'firebase/auth';
+import { clearSession } from '../session';
 import { fetchProducts, saveUserProfile, fetchUserProfile } from '../dbHelper';
 import { Product, UserProfile } from '../types';
 import { getMarqueeLines } from '../siteConfig';
@@ -69,12 +70,11 @@ export default function Header({
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setCurrentUser(user);
       if (user) {
-        // Fetch custom user profile or bootstrap initial
+        // Fetch custom user profile or bootstrap initial (Google sign-in path)
         const profile = await fetchUserProfile(user.uid);
         if (profile) {
           setUserProfile(profile);
         } else {
-          // Setup a bootstrapped profile
           const bootstrapped: UserProfile = {
             uid: user.uid,
             name: user.displayName || 'Farmer Guest',
@@ -87,9 +87,9 @@ export default function Header({
           await saveUserProfile(bootstrapped);
           setUserProfile(bootstrapped);
         }
-      } else {
-        setUserProfile(null);
       }
+      // Do NOT clear the profile when Firebase has no user — the app also
+      // supports a local (phone OTP / dev) session managed in App.tsx.
     });
 
     // Load products for search autocomplete features
@@ -136,13 +136,10 @@ export default function Header({
   };
 
   const executeLogout = async () => {
-    try {
-      await signOut(auth);
-      setUserProfile(null);
-      setCurrentPage('home');
-    } catch (err) {
-      console.error('Sign-out failed:', err);
-    }
+    try { await signOut(auth); } catch { /* ignore — may be a local session */ }
+    clearSession();
+    setUserProfile(null);
+    setCurrentPage('home');
   };
 
   const selectSuggestedProduct = (p: Product) => {
@@ -320,7 +317,7 @@ export default function Header({
 
             {/* Login / Auth Portal */}
             <div className="hidden sm:block">
-              {currentUser ? (
+              {userProfile ? (
                 <div className="flex items-center gap-3">
                   {/* Dashboard Route */}
                   <button
@@ -491,11 +488,11 @@ export default function Header({
           </div>
 
           <div className="flex flex-col gap-3">
-            {currentUser ? (
+            {userProfile ? (
               <>
                 <div className="pb-2 border-b border-slate-100">
-                  <div className="text-xs font-bold text-slate-800">{currentUser.displayName}</div>
-                  <div className="text-[10px] text-slate-400">{currentUser.email}</div>
+                  <div className="text-xs font-bold text-slate-800">{userProfile.name}</div>
+                  <div className="text-[10px] text-slate-400">{userProfile.email}</div>
                 </div>
 
                 <button

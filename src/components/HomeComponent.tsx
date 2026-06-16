@@ -338,6 +338,7 @@ export default function HomeComponent({
   }, []);
 
 
+
   // Category rail — built from the REAL catalog so every tile has a real image
   // and only categories that actually have products are shown (no empty circles).
   const CAT_ORDER = [
@@ -591,21 +592,18 @@ export default function HomeComponent({
 
       {/* ── HERO BAND (Zepto/Blinkit-style q-commerce) ────────────────── */}
       <div className="relative overflow-hidden bg-gradient-to-br from-[#0B3D22] via-[#15522F] to-[#1B6B3A]">
-        {/* Faint farm backdrop + glow blobs */}
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1920&q=55&fit=crop')] bg-cover bg-center opacity-[0.14]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B3D22] via-transparent to-transparent" />
-        <div className="absolute -top-24 -right-24 h-80 w-80 bg-lime-400/25 rounded-full blur-3xl" />
-        <div className="absolute -bottom-28 -left-20 h-96 w-96 bg-emerald-300/15 rounded-full blur-3xl" />
+        <div className="absolute -top-24 -right-24 h-80 w-80 bg-lime-400/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-28 -left-20 h-96 w-96 bg-emerald-300/10 rounded-full blur-3xl" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-8 pt-10 sm:pt-16 pb-24 sm:pb-32 text-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-8 pt-10 sm:pt-14 pb-10 sm:pb-14 text-center">
           {/* Delivery promise pill */}
           <span className="inline-flex items-center gap-1.5 bg-lime-300 text-emerald-950 text-[10px] sm:text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg shadow-lime-400/30 mb-5 hero-content-in">
             <Zap className="h-3.5 w-3.5" /> Same-day dispatch · Pan-India delivery
           </span>
 
           <h1 className="font-display font-black text-white text-3xl sm:text-5xl lg:text-[3.4rem] leading-[1.12] tracking-tight mb-7 sm:mb-9 max-w-3xl mx-auto">
-            Order seeds, fertilizers & farm equipment.<br className="hidden sm:block" />
-            {' '}Discover the best agri brands. <span className="text-lime-300">IGO it!</span>
+            Fresh produce, seeds, plants & farm inputs<br className="hidden sm:block" />
+            {' '}delivered across Tamil Nadu. <span className="text-lime-300">Order in minutes.</span>
           </h1>
 
           {/* Swiggy-style location + search combo bar */}
@@ -646,11 +644,11 @@ export default function HomeComponent({
           {/* Quick category chips */}
           <div className="flex flex-wrap justify-center gap-2 mt-5">
             {[
-              { label: '🌱 Seeds', cat: 'seeds-saplings' },
-              { label: '🧪 Fertilizers', cat: 'plant-nutrition-soil-care' },
-              { label: '💧 Drip Irrigation', cat: 'irrigation-systems' },
-              { label: '🍃 Organic', cat: 'organic-natural-farming' },
-              { label: '🔧 Farm Tools', cat: 'precision-tools-equipments' },
+              { label: '🥬 Vegetables', cat: 'vegetables' },
+              { label: '🍎 Fruits', cat: 'fruits' },
+              { label: '🌱 Vegetable Seeds', cat: 'vegetable-seeds' },
+              { label: '🍯 Valluvam', cat: 'valluvam-products' },
+              { label: '🪴 Plants', cat: 'indoor-plants' },
             ].map((c) => (
               <button key={c.cat} onClick={() => handleCategoryClick(c.cat)}
                 className="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white text-[11px] sm:text-xs font-bold px-3.5 py-2 rounded-full transition">
@@ -661,55 +659,14 @@ export default function HomeComponent({
 
           {/* Mini stats */}
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:gap-x-8 mt-7 text-emerald-100/80 text-[11px] sm:text-xs font-bold">
-            <span className="flex items-center gap-1.5"><Package className="h-4 w-4 text-lime-300" /> 835+ Products</span>
-            <span className="flex items-center gap-1.5"><Award className="h-4 w-4 text-lime-300" /> 27 Brands</span>
-            <span className="flex items-center gap-1.5"><Users className="h-4 w-4 text-lime-300" /> 10,000+ Farmers</span>
+            <span className="flex items-center gap-1.5"><Package className="h-4 w-4 text-lime-300" /> Farm-fresh produce</span>
+            <span className="flex items-center gap-1.5"><Award className="h-4 w-4 text-lime-300" /> 100% genuine</span>
+            <span className="flex items-center gap-1.5"><Users className="h-4 w-4 text-lime-300" /> Pan-India delivery</span>
           </div>
         </div>
       </div>
 
-      {/* ── PROMO BANNER CAROUSEL (Swiggy.com-style big service cards) ── */}
-      <div className="relative -mt-16 sm:-mt-20 z-10">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-            {HERO_SLIDES.map((slide, i) => (
-              <div
-                key={i}
-                onClick={() => handleCategoryClick(slide.btnAction)}
-                className="group relative overflow-hidden rounded-3xl cursor-pointer shadow-xl shadow-emerald-950/15 h-[210px] sm:h-[240px] card-lift"
-              >
-                <img
-                  src={slide.img}
-                  alt={slide.title as string}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                />
-                <div className={`absolute inset-0 bg-gradient-to-b ${slide.color.replace('bg-gradient-to-r ', '')}`} />
-                <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/85 via-emerald-950/20 to-transparent" />
-
-                <div className="relative h-full p-5 flex flex-col justify-between">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-display font-black text-white text-lg sm:text-xl leading-snug max-w-[200px] uppercase tracking-tight drop-shadow">
-                      {slide.title}
-                    </h3>
-                    <span className="h-9 w-9 rounded-full bg-white text-emerald-900 flex items-center justify-center shrink-0 shadow-lg transition-transform group-hover:translate-x-1">
-                      <ArrowRight className="h-4 w-4" />
-                    </span>
-                  </div>
-                  <div>
-                    <span className="inline-block bg-[#E8A020] text-emerald-950 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg shadow mb-2">
-                      {slide.badge}
-                    </span>
-                    <p className="text-white font-black text-sm uppercase tracking-wide drop-shadow">{slide.btn} →</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── USP STRIP (Blinkit-style white assurance cards) ─────────────── */}
+      {/* ── USP STRIP (assurance cards) ─────────────── */}
       <div className="max-w-7xl mx-auto px-4 mt-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
@@ -1445,66 +1402,76 @@ export default function HomeComponent({
             </button>
           </div>
 
-          <div className="flex gap-6 overflow-x-auto pb-8 snap-x scrollbar-hide">
-            {[
-              {
-                logoText: "IGO AGRI TECHFARMS",
-                subtitle: "CORE BUSINESS",
-                title: "IGO Agritech Farms",
-                desc: "Leading agricultural engineering and infrastructure development for modern tech-enabled farming across India."
-              },
-              {
-                logoText: "FARMERS FACTORY",
-                subtitle: "PROCESSING & MFG",
-                title: "Farmers Factory",
-                desc: "State-of-the-art food processing and manufacturing division delivering pure, fresh, organic products directly to consumers."
-              },
-              {
-                logoText: "VALLUVAM",
-                subtitle: "AGRI CONSULTANCY",
-                title: "Valluvam",
-                desc: "Expert agricultural consultancy providing strategic guidance, research, and sustainable farming methodologies."
-              },
-              {
-                logoText: "PROTEIN CUTS",
-                subtitle: "FARM-TO-TABLE",
-                title: "Protein Cuts",
-                desc: "Premium quality, ethically sourced protein products from our trusted network directly to your kitchen."
-              }
-            ].map((brand, i) => (
-              <div 
-                key={i} 
-                className="snap-start shrink-0 w-[280px] sm:w-[320px] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex flex-col cursor-pointer hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 overflow-hidden"
-                onClick={() => (setCurrentPage as (p: string) => void)('igo-groups')}
-              >
-                {/* Logo Area (Placeholder styling matching the white boxes in screenshot) */}
-                <div className="bg-slate-50/50 p-8 flex items-center justify-center border-b border-slate-100 h-48">
-                  <div className="bg-white w-32 h-32 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center text-center p-2">
-                    <span className="font-black text-[#1B6B3A] leading-tight text-sm uppercase">{brand.logoText}</span>
+          {/* Auto-scrolling brand marquee (pauses on hover) */}
+          <div className="brand-marquee-wrap overflow-hidden">
+            <div className="brand-marquee-track flex gap-6 w-max pb-8" style={{ animation: 'brandmarquee 80s linear infinite' }}>
+              {(() => {
+                const DIV = [
+                  { logo: "/images/Brands/8.jpg", logoText: "IGO AGRI TECHFARMS", subtitle: "CORE BUSINESS", title: "IGO Agritech Farms", desc: "Leading agricultural engineering and infrastructure development for modern tech-enabled farming across India.", status: "active" },
+                  { logo: "/images/Brands/20.jpg", logoText: "FARMERS FACTORY", subtitle: "PROCESSING & MFG", title: "Farmers Factory", desc: "State-of-the-art food processing and manufacturing delivering pure, fresh, organic products directly to consumers.", status: "active" },
+                  { logo: "/images/Brands/7.jpg", logoText: "VALLUVAM", subtitle: "AGRI CONSULTANCY", title: "Valluvam", desc: "Expert agricultural consultancy providing strategic guidance, research, and sustainable farming methodologies.", status: "active" },
+                  { logo: "/images/Brands/10.jpg", logoText: "PROTEIN CUTS", subtitle: "FARM-TO-TABLE", title: "Protein Cuts", desc: "Premium quality, ethically sourced protein products from our trusted network directly to your kitchen.", status: "active" },
+                  { logo: "/images/Brands/14.jpg", logoText: "IGO NURSERY", subtitle: "PLANT PROPAGATION", title: "IGO Nursery", desc: "Premium polyhouse-grown plants, saplings and AgriTech greenery delivered across India.", status: "active" },
+                  { logo: "/images/Brands/6.jpg", logoText: "IGO AGRI MART", subtitle: "DISTRIBUTION", title: "IGO Agri Mart", desc: "Seeds, fertilizers, plants and farm essentials — the agri-distribution network for every farmer.", status: "active" },
+                  { logo: "/images/Brands/12.jpg", logoText: "PALM CAFE", subtitle: "F&B", title: "Palm Cafe", desc: "Farm-to-cafe dining showcasing fresh produce through healthy, sustainable culinary creations.", status: "active" },
+                  { logo: "/images/Brands/11.jpg", logoText: "IGO EXPORTS", subtitle: "TRADE", title: "IGO Exports & Imports", desc: "Connecting Indian agri products to global markets and bringing world-class inputs to India.", status: "active" },
+                  { logo: "/images/Brands/15.jpg", logoText: "IGO MART", subtitle: "RETAIL", title: "IGO Mart", desc: "Supermarket chain offering quality products at accessible prices for everyday consumers.", status: "active" },
+                  { logo: "/images/Brands/17.jpg", logoText: "IGO FINANCIAL", subtitle: "FINTECH", title: "IGO Financial Services", desc: "Financial support and micro-finance for farmers and agriculture entrepreneurs across India.", status: "active" },
+                  { logo: "/images/Brands/24.jpg", logoText: "FARMGATE MANDI", subtitle: "PROCUREMENT", title: "IGO Farmgate Mandi", desc: "Direct procurement empowering farmers to sell produce at fair market prices from the farm gate.", status: "active" },
+                  { logo: "/images/Brands/13.jpg", logoText: "IGO ACADEMY", subtitle: "EDUCATION", title: "IGO Academy", desc: "Training and education programs empowering the next generation of modern farmers.", status: "active" },
+                  { logo: "/images/Brands/21.jpg", logoText: "IGO CROP CARE", subtitle: "AGRI INPUT", title: "IGO Crop Care", desc: "Organic pest control and sustainable crop-protection inputs for healthier, higher-yield farming.", status: "soon" },
+                  { logo: "/images/Brands/16.jpg", logoText: "IGO FARM LOANS", subtitle: "FINANCE", title: "IGO Farm Loans & Subsidy", desc: "Facilitating loans, government subsidies and grants for farmers across India.", status: "soon" },
+                  { logo: "/images/Brands/2.jpg", logoText: "FARM AUTOMATION", subtitle: "TECHNOLOGY", title: "IGO Farm Automation", desc: "IoT, drones and automated systems delivering precision agriculture across India.", status: "soon" },
+                  { logo: "/images/Brands/3.jpg", logoText: "IGO AGRI ESTATES", subtitle: "REAL ESTATE", title: "IGO Agri Estates", desc: "Sustainable agricultural land development and farm-estate management.", status: "soon" },
+                  { logo: "/images/Brands/19.jpg", logoText: "FARM FACTORIES", subtitle: "INFRASTRUCTURE", title: "IGO Farm Factories", desc: "Next-generation agricultural processing facilities for maximum yield and minimum waste.", status: "soon" },
+                  { logo: "/images/Brands/18.jpg", logoText: "IGO FRANCHISE", subtitle: "FRANCHISE", title: "IGO Franchise", desc: "Expanding our successful agricultural models through franchise partnership opportunities.", status: "soon" },
+                  { logo: "/images/Brands/4.jpg", logoText: "IGO COSMETICS", subtitle: "LIFESTYLE", title: "IGO Natural Cosmetics", desc: "Premium organic beauty and personal care crafted from naturally-sourced farm ingredients.", status: "soon" },
+                  { logo: "/images/Brands/22.jpg", logoText: "IGO PHARMA", subtitle: "HEALTHCARE", title: "IGO Organic Pharmacy", desc: "Integrating traditional medicinal plants with modern pharmaceutical standards.", status: "soon" },
+                  { logo: "/images/Brands/23.jpg", logoText: "IGO FOUNDATION", subtitle: "FOUNDATION", title: "IGO Tech Farming Scientist", desc: "Research and education foundation advancing agri-science for the next generation of tech farming.", status: "soon" },
+                  { logo: "/images/Brands/25.jpg", logoText: "IGO WEALTH", subtitle: "INVESTMENT", title: "IGO Wealth Management", desc: "Financial advisory tailored for agricultural investments and rural wealth generation.", status: "soon" },
+                ];
+                return [...DIV, ...DIV];
+              })().map((brand, i) => (
+                <div
+                  key={i}
+                  className="shrink-0 w-[270px] sm:w-[300px] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex flex-col cursor-pointer hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 overflow-hidden"
+                  onClick={() => (setCurrentPage as (p: string) => void)('igo-groups')}
+                >
+                  {/* Logo on top */}
+                  <div className="relative bg-slate-50/50 p-8 flex items-center justify-center border-b border-slate-100 h-44">
+                    {brand.status === 'soon' && (
+                      <span className="absolute top-3 right-3 bg-[#E8A020] text-slate-900 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full">Coming Soon</span>
+                    )}
+                    <div className="bg-white w-28 h-28 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center text-center p-3 overflow-hidden">
+                      <img
+                        src={brand.logo}
+                        alt={brand.title}
+                        loading="lazy"
+                        className="w-full h-full object-contain"
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; const s = e.currentTarget.nextElementSibling as HTMLElement | null; if (s) s.style.display = 'block'; }}
+                      />
+                      <span style={{ display: 'none' }} className="font-black text-[#1B6B3A] leading-tight text-sm uppercase">{brand.logoText}</span>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 sm:p-7 flex flex-col flex-1">
+                    <span className="text-[10px] font-black text-[#E8A020] tracking-widest uppercase mb-2">{brand.subtitle}</span>
+                    <h3 className="font-display font-black text-lg text-slate-900 mb-3">{brand.title}</h3>
+                    <p className="text-slate-500 text-sm leading-relaxed mb-6 flex-1">{brand.desc}</p>
+                    <div className={`flex items-center justify-between text-[10px] font-bold uppercase tracking-widest pt-4 border-t border-slate-100/60 ${brand.status === 'soon' ? 'text-slate-400' : 'text-[#E8A020]'}`}>
+                      <span>{brand.status === 'soon' ? 'Coming Soon' : 'Active Division'}</span>
+                      <span className="text-lg leading-none">&rarr;</span>
+                    </div>
                   </div>
                 </div>
-                
-                {/* Content Area */}
-                <div className="p-6 sm:p-8 flex flex-col flex-1">
-                  <span className="text-[10px] font-black text-[#E8A020] tracking-widest uppercase mb-2">
-                    {brand.subtitle}
-                  </span>
-                  <h3 className="font-display font-black text-xl text-slate-900 mb-3">
-                    {brand.title}
-                  </h3>
-                  <p className="text-slate-500 text-sm leading-relaxed mb-8 flex-1">
-                    {brand.desc}
-                  </p>
-                  
-                  {/* Footer Arrow */}
-                  <div className="flex items-center justify-between text-[10px] font-bold text-[#E8A020] uppercase tracking-widest pt-4 border-t border-slate-100/60">
-                    <span>Active Division</span>
-                    <span className="text-lg leading-none">&rarr;</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+          <style>{`
+            @keyframes brandmarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+            .brand-marquee-wrap:hover .brand-marquee-track { animation-play-state: paused; }
+          `}</style>
         </div>
       </section>
 

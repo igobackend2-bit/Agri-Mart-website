@@ -13,6 +13,7 @@ import {
 import { CartItem } from '../types';
 import { translations, LanguageDict } from '../translation';
 import { getSettings, validateCoupon } from '../siteConfig';
+import { isSignedIn } from '../session';
 
 interface CartComponentProps {
   lang: 'en' | 'ta';
@@ -303,7 +304,16 @@ export default function CartComponent({
               {/* CTA proced to checkout */}
               <div className="pt-4 space-y-2.5">
                 <button
-                  onClick={() => setCurrentPage('checkout')}
+                  onClick={() => {
+                    // Require sign-in before checkout so the order links to the
+                    // customer's account. After login the user returns to the cart.
+                    if (!isSignedIn()) {
+                      try { localStorage.setItem('igo_resume', 'cart'); } catch { /* ignore */ }
+                      setCurrentPage('auth');
+                    } else {
+                      setCurrentPage('checkout');
+                    }
+                  }}
                   className="w-full bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-xs py-3 rounded-lg text-center flex items-center justify-center gap-1.5 shadow select-none cursor-pointer border border-[#248F4E]"
                 >
                   <span>Proceed to Checkout</span>

@@ -17,7 +17,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { VisitorLead, LeadStatus, LeadSource, fetchAllLeads, setLeadStatus, removeLead, downloadLeadsCsv } from '../leads';
 import {
   persistProductUpsert, persistProductDelete, persistStockSet, refillAllStocks,
-  getLocalOrders, updateLocalOrderStatus, sendInboxMessage, playAdminAlertSound
+  getLocalOrders, updateLocalOrderStatus, sendInboxMessage, playAdminAlertSound, mergeOrdersByStatus
 } from '../storeData';
 import {
   getSettings, saveSettings as persistSettings,
@@ -131,9 +131,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
       let all: Order[] = [];
       try { all = await fetchAllOrders(); } catch { }
       const local = getLocalOrders();
-      const map = new Map<string, Order>();
-      [...all, ...local].forEach(o => { if (!map.has(o.id)) map.set(o.id, o); });
-      setOrders(Array.from(map.values()).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '')));
+      setOrders(mergeOrdersByStatus(all, local));
     } catch (err) { console.error(err); }
     finally { setIsLoadingOrders(false); }
   };
@@ -553,7 +551,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
                         <td className="p-3">
                           <select value={o.status} onChange={e => handleStatusChange(o.id, e.target.value as Order['status'])}
                             className="bg-slate-100 border border-slate-200 rounded px-2 py-1 text-[10px] font-bold">
-                            {['Placed','Confirmed','Dispatched','Delivered','Cancelled'].map(s => <option key={s}>{s}</option>)}
+                            {['Placed','Confirmed','Packed','Shipped','Delivered','Cancelled'].map(s => <option key={s}>{s}</option>)}
                           </select>
                         </td>
                       </tr>
@@ -639,7 +637,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
                       <td className="p-3">
                         <select value={o.status} onChange={e => handleStatusChange(o.id, e.target.value as Order['status'])}
                           className={'border rounded px-2 py-1 text-[10px] font-bold focus:outline-none ' + statusColor(o.status)}>
-                          {['Placed','Confirmed','Dispatched','Delivered','Cancelled'].map(s => <option key={s}>{s}</option>)}
+                          {['Placed','Confirmed','Packed','Shipped','Delivered','Cancelled'].map(s => <option key={s}>{s}</option>)}
                         </select>
                       </td>
                     </tr>

@@ -1,12 +1,28 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Bell, Package, Megaphone, X } from 'lucide-react';
-import { getInbox, markInboxRead, InboxMessage } from '../storeData';
+import { getInbox, markInboxRead, InboxMessage, getLocalOrders, mergeOrdersByStatus } from '../storeData';
+import { fetchUserOrders } from '../dbHelper';
 import { UserProfile } from '../types';
 
 interface NotificationBellProps {
   userProfile: UserProfile | null;
   setCurrentPage: (p: string) => void;
 }
+
+interface Notif {
+  id: string;
+  title: string;
+  body: string;
+  createdAt: string;
+  read: boolean;
+  orderId?: string;
+}
+
+const SEEN_KEY = 'igo_order_status_seen';
+const readSeen = (): Record<string, string> => {
+  try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch { return {}; }
+};
+const writeSeen = (m: Record<string, string>) => localStorage.setItem(SEEN_KEY, JSON.stringify(m));
 
 function timeAgo(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
@@ -15,45 +31,88 @@ function timeAgo(iso: string): string {
   if (m < 60) return `${m}m ago`;
   const h = Math.floor(m / 60);
   if (h < 24) return `${h}h ago`;
-  const d = Math.floor(h / 24);
-  return `${d}d ago`;
+  return `${Math.floor(h / 24)}d ago`;
 }
+
+const statusLine = (s: string): string => ({
+  Placed: 'We received your order and will confirm it shortly.',
+  Confirmed: 'Your order is confirmed and being prepared.',
+  Packed: 'Your order is packed and ready to ship.',
+  Dispatched: 'Your order has been dispatched — on its way!',
+  Shipped: 'Your order has shipped — on its way!',
+  Delivered: 'Your order has been delivered. Thank you!',
+  Cancelled: 'Your order was cancelled. Any prepayment will be refunded.',
+}[s] || `Your order status is now ${s}.`);
 
 export default function NotificationBell({ userProfile, setCurrentPage }: NotificationBellProps) {
   const email = userProfile?.email || null;
+  const uid = userProfile?.uid || null;
   const [open, setOpen] = useState(false);
-  const [msgs, setMsgs] = useState<InboxMessage[]>(() => getInbox(email));
+  const [inbox, setInbox] = useState<InboxMessage[]>(() => getInbox(email));
+  const [orderNotifs, setOrderNotifs] = useState<Notif[]>([]);
   const ref = useRef<HTMLDivElement>(null);
 
-  const refresh = useCallback(() => setMsgs(getInbox(email)), [email]);
+  const refreshInbox = useCallback(() => setInbox(getInbox(email)), [email]);
 
-  // Poll for new admin/order notifications + react to cross-tab storage changes.
+  // Pull live order-status changes from Supabase (works across devices).
+  const refreshOrders = useCallback(async () => {
+    if (!uid) { setOrderNotifs([]); return; }
+    try {
+      let cloud: any[] = [];
+      try { cloud = await fetchUserOrders(uid); } catch { /* offline */ }
+      // Merge with the local mirror so admin status changes (same browser) show.
+      const orders = mergeOrdersByStatus(cloud, getLocalOrders());
+      const seen = readSeen();
+      const notifs: Notif[] = orders.map((o) => ({
+        id: 'ord-' + o.id,
+        title: `Order ${o.id} — ${o.status}`,
+        body: statusLine(o.status),
+        createdAt: typeof o.createdAt === 'string' ? o.createdAt : new Date().toISOString(),
+        read: seen[o.id] === o.status,
+        orderId: o.id,
+      }));
+      setOrderNotifs(notifs);
+    } catch { /* offline — keep last */ }
+  }, [uid]);
+
   useEffect(() => {
-    refresh();
-    const interval = setInterval(refresh, 3000);
-    const onStorage = (e: StorageEvent) => { if (e.key === 'igo_profile_inbox') refresh(); };
+    refreshInbox();
+    refreshOrders();
+    const interval = setInterval(() => { refreshInbox(); refreshOrders(); }, 5000);
+    const onStorage = (e: StorageEvent) => { if (e.key === 'igo_profile_inbox') refreshInbox(); };
     window.addEventListener('storage', onStorage);
     return () => { clearInterval(interval); window.removeEventListener('storage', onStorage); };
-  }, [refresh]);
+  }, [refreshInbox, refreshOrders]);
 
-  // Close on outside click
   useEffect(() => {
-    const onDown = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
+    const onDown = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
     document.addEventListener('mousedown', onDown);
     return () => document.removeEventListener('mousedown', onDown);
   }, []);
 
-  const unread = msgs.filter(m => !m.read).length;
+  // Merge order-status notifications + inbox messages, newest first.
+  const inboxNotifs: Notif[] = inbox.map((m) => ({
+    id: m.id, title: m.title, body: m.body, createdAt: m.createdAt, read: m.read, orderId: m.orderId,
+  }));
+  const all = [...orderNotifs, ...inboxNotifs].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+  const unread = all.filter((n) => !n.read).length;
+
+  const markAllSeen = () => {
+    // Mark inbox read + remember each order's current status as "seen".
+    markInboxRead(email);
+    const seen = readSeen();
+    orderNotifs.forEach((n) => { if (n.orderId) seen[n.orderId] = n.title.split('— ')[1] || ''; });
+    writeSeen(seen);
+    refreshInbox();
+    refreshOrders();
+  };
 
   const handleOpen = () => {
     const next = !open;
     setOpen(next);
-    if (next && unread > 0) {
-      // Mark read shortly after opening so the badge clears but text stays visible.
-      setTimeout(() => { markInboxRead(email); refresh(); }, 1200);
-    }
+    if (next && unread > 0) setTimeout(markAllSeen, 1200);
   };
 
   return (
@@ -85,14 +144,14 @@ export default function NotificationBell({ userProfile, setCurrentPage }: Notifi
           </div>
 
           <div className="max-h-80 overflow-y-auto divide-y divide-slate-50">
-            {msgs.length === 0 ? (
+            {all.length === 0 ? (
               <div className="px-4 py-10 text-center">
                 <Bell className="h-8 w-8 text-slate-200 mx-auto mb-2" />
                 <p className="text-xs font-bold text-slate-400">No notifications yet</p>
                 <p className="text-[10px] text-slate-300 mt-1">Order updates &amp; offers appear here</p>
               </div>
             ) : (
-              msgs.slice(0, 20).map(m => (
+              all.slice(0, 25).map((m) => (
                 <button
                   key={m.id}
                   onClick={() => { setOpen(false); setCurrentPage('account'); }}
@@ -114,7 +173,7 @@ export default function NotificationBell({ userProfile, setCurrentPage }: Notifi
             )}
           </div>
 
-          {msgs.length > 0 && (
+          {all.length > 0 && (
             <button
               onClick={() => { setOpen(false); setCurrentPage('account'); }}
               className="w-full py-3 text-xs font-black text-[#1B6B3A] hover:bg-emerald-50 transition border-t border-slate-100"

@@ -15,8 +15,9 @@ import {
 } from 'lucide-react';
 import { db, auth } from '../firebase';
 import { Product, Order, UserProfile, Address } from '../types';
-import { fetchUserOrders, cancelUserOrder } from '../dbHelper';
-import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, InboxMessage, getWalletCoins } from '../storeData';
+import { fetchUserOrders, cancelUserOrder, fetchUserProfile } from '../dbHelper';
+import { currentUid } from '../session';
+import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, InboxMessage, getWalletCoins, mergeOrdersByStatus } from '../storeData';
 import { Inbox as InboxIcon, Mail } from 'lucide-react';
 
 interface AccountComponentProps {
@@ -145,26 +146,43 @@ export default function AccountComponent({
     pincode: ''
   });
 
-  // Pull orders when account opens (cloud + this-device orders merged)
+  // Safety net: if the account opens without a profile in memory, load it from
+  // the session id (Supabase or local mirror) so the customer always sees it.
   useEffect(() => {
-    const local = getLocalOrders();
-    if (userProfile?.uid) {
-      setIsLoadingOrders(true);
-      fetchUserOrders(userProfile.uid)
-        .then((items) => {
-          const map = new Map<string, Order>();
-          [...items, ...local].forEach(o => { if (!map.has(o.id)) map.set(o.id, o); });
-          setOrders(Array.from(map.values()).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '')));
-          setIsLoadingOrders(false);
-        })
-        .catch(() => {
-          setOrders(local);
-          setIsLoadingOrders(false);
-        });
-    } else {
-      setOrders(local);
+    if (!userProfile) {
+      fetchUserProfile(currentUid()).then((p) => { if (p) setUserProfile(p); }).catch(() => { /* ignore */ });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Pull orders when account opens, then poll so admin status changes (shipping,
+  // packed, delivered…) appear live without a manual refresh.
+  useEffect(() => {
+    let active = true;
+    const loadOrders = (showSpinner: boolean) => {
+      const local = getLocalOrders();
+      if (userProfile?.uid) {
+        if (showSpinner) setIsLoadingOrders(true);
+        fetchUserOrders(userProfile.uid)
+          .then((items) => {
+            if (!active) return;
+            // Most-progressed status wins, so admin updates (local or cloud) show.
+            setOrders(mergeOrdersByStatus(items, local));
+            setIsLoadingOrders(false);
+          })
+          .catch(() => {
+            if (!active) return;
+            setOrders(mergeOrdersByStatus(local));
+            setIsLoadingOrders(false);
+          });
+      } else {
+        setOrders(local);
+      }
+    };
+    loadOrders(true);
     setInboxMsgs(getInbox(userProfile?.email));
+    const interval = setInterval(() => loadOrders(false), 8000);
+    return () => { active = false; clearInterval(interval); };
   }, [userProfile]);
 
   // Mark inbox read when opened
@@ -238,16 +256,18 @@ export default function AccountComponent({
     const norm = (status || '').toLowerCase();
     if (norm === 'placed' || norm === 'pending') return 1;
     if (norm === 'confirmed') return 2;
-    if (norm === 'dispatched' || norm === 'shipped') return 3;
-    if (norm === 'delivered') return 4;
+    if (norm === 'packed') return 3;
+    if (norm === 'shipped' || norm === 'dispatched') return 4;
+    if (norm === 'delivered') return 5;
     return 0; // Cancelled
   };
 
   const stepperSteps = [
-    { label: lang === 'ta' ? 'அனுப்பப்பட்டது' : 'Pending', step: 1 },
-    { label: lang === 'ta' ? 'உறுதி செய்யப்பட்டது' : 'Confirmed', step: 2 },
-    { label: lang === 'ta' ? 'வழியில் உள்ளது' : 'Shipped', step: 3 },
-    { label: lang === 'ta' ? 'சேர்க்கப்பட்டது' : 'Delivered', step: 4 }
+    { label: lang === 'ta' ? 'வைக்கப்பட்டது' : 'Placed', step: 1 },
+    { label: lang === 'ta' ? 'உறுதி' : 'Confirmed', step: 2 },
+    { label: lang === 'ta' ? 'பேக் செய்யப்பட்டது' : 'Packed', step: 3 },
+    { label: lang === 'ta' ? 'அனுப்பப்பட்டது' : 'Shipped', step: 4 },
+    { label: lang === 'ta' ? 'சேர்க்கப்பட்டது' : 'Delivered', step: 5 }
   ];
 
   return (
@@ -385,7 +405,7 @@ export default function AccountComponent({
                               <div 
                                 className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-[#1B6B3A] transition-all duration-500 rounded-full z-0"
                                 style={{ 
-                                  width: currentStep > 1 ? `${((currentStep - 1) / 3) * 100}%` : '0%' 
+                                  width: currentStep > 1 ? `${((currentStep - 1) / 4) * 100}%` : '0%'
                                 }}
                               ></div>
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { auth } from './firebase';
+import { isSignedIn, currentUid } from './session';
 import { fetchProducts, fetchUserProfile, saveUserProfile } from './dbHelper';
 import { getNotification } from './siteConfig';
 import { applyCatalogOverlay, CATALOG_CHANGED_EVENT, syncWithSupabase } from './storeData';
@@ -277,7 +278,7 @@ export default function App() {
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
 
   const requireAuth = (action: () => void) => {
-    if (auth.currentUser) {
+    if (isSignedIn()) {
       action();
     } else {
       setPendingAction(() => action);
@@ -287,7 +288,7 @@ export default function App() {
 
   // Keep the browser URL in sync: /admin for the admin panel, / for the rest.
   const setCurrentPage = useCallback((page: string) => {
-    if (page === 'checkout' && !auth.currentUser) {
+    if (page === 'checkout' && !isSignedIn()) {
       setPendingAction(() => () => navigateTo('checkout'));
       setAuthGuardVisible(true);
       return;
@@ -304,7 +305,7 @@ export default function App() {
   useEffect(() => {
     if (localStorage.getItem('igo_welcome_shown') || pageFromPath() === 'admin') return;
     const t = setTimeout(() => {
-      if (!auth.currentUser) setShowWelcome(true);
+      if (!isSignedIn()) setShowWelcome(true);
       localStorage.setItem('igo_welcome_shown', '1');
     }, 2500);
     return () => clearTimeout(t);
@@ -405,19 +406,27 @@ export default function App() {
     }
   }, []);
 
-  // Auth state listener
+  // Auth state listener (Firebase/Google) + local-session restore on load.
   useEffect(() => {
+    // Restore a local session (phone OTP / dev login) on page load.
+    (async () => {
+      if (isSignedIn() && !auth.currentUser) {
+        try {
+          const profile = await fetchUserProfile(currentUid());
+          if (profile) setUserProfile(profile);
+        } catch { /* ignore */ }
+      }
+    })();
+
     const unsub = auth.onAuthStateChanged(async (user) => {
       if (user) {
         try {
           const profile = await fetchUserProfile(user.uid);
-          if (profile) {
-            setUserProfile(profile);
-          }
+          if (profile) setUserProfile(profile);
         } catch { /* ignore */ }
-      } else {
-        setUserProfile(null);
       }
+      // Note: we do NOT clear the profile when Firebase has no user, because the
+      // app also supports a local (non-Firebase) session.
     });
     return () => unsub();
   }, []);

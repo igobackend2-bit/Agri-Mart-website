@@ -115,26 +115,50 @@ export async function cancelUserOrder(orderId: string): Promise<void> {
   logErr('cancelUserOrder', error);
 }
 
-// ── User profiles (Supabase) ──────────────────────────────────────────────────
+// ── User profiles (Supabase + local mirror) ───────────────────────────────────
+// A local mirror guarantees the profile persists and is always retrievable even
+// if the Supabase `profiles` table isn't set up yet — so the customer always
+// sees their account after signing up.
+const LOCAL_PROFILES = 'igo_local_profiles';
+function readLocalProfiles(): Record<string, UserProfile> {
+  try { return JSON.parse(localStorage.getItem(LOCAL_PROFILES) || '{}'); } catch { return {}; }
+}
+function writeLocalProfile(p: UserProfile): void {
+  try {
+    const m = readLocalProfiles();
+    m[p.uid] = p;
+    localStorage.setItem(LOCAL_PROFILES, JSON.stringify(m));
+  } catch { /* ignore */ }
+}
+
 export async function fetchUserProfile(uid: string): Promise<UserProfile | null> {
-  const { data, error } = await supabase.from(T_PROFILES).select('data').eq('uid', uid).maybeSingle();
-  logErr('fetchUserProfile', error);
-  return data ? (data.data as UserProfile) : null;
+  try {
+    const { data, error } = await supabase.from(T_PROFILES).select('data').eq('uid', uid).maybeSingle();
+    logErr('fetchUserProfile', error);
+    if (data && data.data) {
+      writeLocalProfile(data.data as UserProfile);
+      return data.data as UserProfile;
+    }
+  } catch { /* fall through to local */ }
+  return readLocalProfiles()[uid] || null;
 }
 
 export async function saveUserProfile(profile: UserProfile): Promise<void> {
-  const { error } = await supabase.from(T_PROFILES).upsert(
-    {
-      uid: profile.uid,
-      email: profile.email || null,
-      phone: profile.phone || null,
-      role: profile.role,
-      data: profile,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: 'uid' },
-  );
-  logErr('saveUserProfile', error);
+  writeLocalProfile(profile); // always mirror locally first
+  try {
+    const { error } = await supabase.from(T_PROFILES).upsert(
+      {
+        uid: profile.uid,
+        email: profile.email || null,
+        phone: profile.phone || null,
+        role: profile.role,
+        data: profile,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'uid' },
+    );
+    logErr('saveUserProfile', error);
+  } catch { /* offline — local mirror already saved */ }
 }
 
 export async function toggleWishlistItem(

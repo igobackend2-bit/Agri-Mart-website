@@ -135,6 +135,25 @@ export function updateLocalOrderStatus(orderId: string, status: Order['status'])
   write(K_ORDERS, read<Order[]>(K_ORDERS, []).map(o => o.id === orderId ? { ...o, status } : o));
 }
 
+// Merge order lists by id, keeping the MOST-PROGRESSED status for each order so
+// an admin's status change (local OR Supabase) always wins over a stale copy.
+const STATUS_RANK: Record<string, number> = {
+  Placed: 1, Confirmed: 2, Packed: 3, Shipped: 4, Dispatched: 4, Delivered: 5, Cancelled: 6,
+};
+export function mergeOrdersByStatus(...lists: Order[][]): Order[] {
+  const map = new Map<string, Order>();
+  for (const list of lists) {
+    for (const o of list) {
+      const cur = map.get(o.id);
+      if (!cur) { map.set(o.id, o); continue; }
+      const rNew = STATUS_RANK[o.status] || 0;
+      const rCur = STATUS_RANK[cur.status] || 0;
+      if (rNew >= rCur) map.set(o.id, { ...cur, ...o });
+    }
+  }
+  return Array.from(map.values()).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+}
+
 // ── Saved delivery details (auto-fill for repeat orders) ────────────────────
 export interface SavedAddress {
   name: string; phone: string; email?: string;

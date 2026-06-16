@@ -100,7 +100,7 @@ export interface Order {
   items: OrderItem[];
   totalAmount: number;
   paymentMethod: string;
-  status: 'Placed' | 'Confirmed' | 'Dispatched' | 'Delivered' | 'Cancelled';
+  status: 'Placed' | 'Confirmed' | 'Packed' | 'Shipped' | 'Dispatched' | 'Delivered' | 'Cancelled';
   deliveryAddress: Address;
   createdAt: any; // Firestore timestamp or UTC string
   phone: string;
