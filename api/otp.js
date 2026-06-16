@@ -45,6 +45,12 @@ async function sendSms(phone, otp) {
 }
 
 export default async function handler(req, res) {
+  // Allow localhost to call this live API
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
   // GET = health/diagnostic check (open /api/otp in a browser). Never exposes the key.
   if (req.method === 'GET') {
     return res.status(200).json({

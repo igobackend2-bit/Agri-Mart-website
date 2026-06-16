@@ -7,7 +7,8 @@
 // confirm delivery, we fall back to an on-screen DEMO OTP so login always works.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const OTP_API = (import.meta as any).env?.VITE_OTP_API || '/api/otp';
+const isLocal = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+const OTP_API = (import.meta as any).env?.VITE_OTP_API || (isLocal ? 'https://igoagri-mart-website.vercel.app/api/otp' : '/api/otp');
 
 /** Request an OTP for a phone. Returns whether a real SMS was sent or a demo code. */
 export async function requestOtp(phone: string): Promise<{ mode: 'sms' | 'demo'; demoCode?: string }> {
