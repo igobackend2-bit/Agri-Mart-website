@@ -16,7 +16,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import crypto from 'node:crypto';
 
-const KEY = process.env.SMS_API_KEY || '';
+const KEY = process.env.SMS_API_KEY || 'jMXeQOXCvv8AO8DrkJU5ZKIrUPBbVeXHbBOglA-La24';
 const SECRET = process.env.OTP_SECRET || KEY || 'igo-otp-secret-change-me';
 const URL_TMPL = process.env.SMS_API_URL || 'https://sms.renflair.in/V1.php?API={key}&PHONE={phone}&OTP={otp}';
 
