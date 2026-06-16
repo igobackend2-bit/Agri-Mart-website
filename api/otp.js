@@ -18,7 +18,7 @@ import crypto from 'node:crypto';
 
 const KEY = process.env.SMS_API_KEY || 'jMXeQOXCvv8AO8DrkJU5ZKIrUPBbVeXHbBOglA-La24';
 const SECRET = process.env.OTP_SECRET || KEY || 'igo-otp-secret-change-me';
-const URL_TMPL = process.env.SMS_API_URL || 'https://sms.renflair.in/V1.php?API={key}&PHONE={phone}&OTP={otp}';
+const URL_TMPL = process.env.SMS_API_URL || 'https://www.fast2sms.com/dev/bulkV2?authorization={key}&route=otp&variables_values={otp}&numbers={phone}';
 
 function sign(phone, otp, exp) {
   return crypto.createHmac('sha256', SECRET).update(`${phone}.${otp}.${exp}`).digest('hex');
