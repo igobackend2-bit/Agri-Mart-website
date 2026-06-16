@@ -49,22 +49,71 @@ export default function ProductDetailComponent({
   const [activeImage, setActiveImage] = useState<string>(product.images?.[0] || '/catalog/nursery-essentials/Pots.png');
   const [quantity, setQuantity] = useState<number>(1);
 
-  // ── Pack-size variants (1kg / 5kg, 1L / 5L etc. based on product unit) ──
-  const unitInfo = (() => {
-    const u = (product.unit || '').toLowerCase();
-    if (/litre|liter|\bl\b|ml/.test(u)) return { base: u.includes('ml') ? u : '1 L', kind: 'L' };
-    if (/kg|gram|\bg\b/.test(u)) return { base: u.includes('kg') ? u : '1 kg', kind: 'kg' };
-    return null;
+  // ── Size/quantity variants — unit-aware per product type ──
+  // Weight → kg/g, Liquid → L/ml, Seeds → packets, Plants → plants,
+  // Tools → pieces, everything else → packs. Derived from product.unit
+  // (with a category/name fallback) so every product shows the right option.
+  const { variants: PACK_VARIANTS, selectLabel: SELECT_LABEL } = (() => {
+    const raw = (product.unit || '').trim();
+    const u = raw.toLowerCase();
+    const ctx = `${product.category} ${product.subcategory} ${product.name}`.toLowerCase();
+    const qtyMatch = raw.match(/([\d.]+)/);
+    const qty = qtyMatch ? parseFloat(qtyMatch[1]) : 1;
+    const fmtW = (g: number) => g >= 1000 ? `${+(g / 1000).toFixed(g % 1000 ? 2 : 0)} kg` : `${Math.round(g)} g`;
+    const fmtV = (ml: number) => ml >= 1000 ? `${+(ml / 1000).toFixed(ml % 1000 ? 2 : 0)} L` : `${Math.round(ml)} ml`;
+
+    // WEIGHT — kilograms
+    if (/\bkg\b|kilo/.test(u)) {
+      const g = (qty || 1) * 1000;
+      return { selectLabel: 'Select Quantity', variants: [
+        { label: fmtW(g), mult: 1 }, { label: fmtW(g * 5), mult: 5, save: 4 }, { label: fmtW(g * 10), mult: 10, save: 8 },
+      ] };
+    }
+    // WEIGHT — grams
+    if (/gram|\bg\b/.test(u)) {
+      const g = qty || 500;
+      return { selectLabel: 'Select Quantity', variants: [
+        { label: fmtW(g), mult: 1 }, { label: fmtW(g * 2), mult: 2, save: 4 }, { label: fmtW(g * 4), mult: 4, save: 8 },
+      ] };
+    }
+    // VOLUME — litres
+    if (/\bl\b|litre|liter/.test(u)) {
+      const ml = (qty || 1) * 1000;
+      return { selectLabel: 'Select Quantity', variants: [
+        { label: fmtV(ml), mult: 1 }, { label: fmtV(ml * 5), mult: 5, save: 4 }, { label: fmtV(ml * 10), mult: 10, save: 8 },
+      ] };
+    }
+    // VOLUME — millilitres
+    if (/\bml\b/.test(u)) {
+      const ml = qty || 500;
+      return { selectLabel: 'Select Quantity', variants: [
+        { label: fmtV(ml), mult: 1 }, { label: fmtV(ml * 2), mult: 2, save: 4 }, { label: fmtV(ml * 4), mult: 4, save: 8 },
+      ] };
+    }
+    // SEEDS — packets
+    if (/seed/.test(u) || /seed/.test(ctx)) {
+      return { selectLabel: 'Select Packs', variants: [
+        { label: raw || '1 Packet', mult: 1 }, { label: '3 Packets', mult: 3, save: 5 }, { label: '5 Packets', mult: 5, save: 8 },
+      ] };
+    }
+    // PLANTS / SAPLINGS
+    if (/plant|sapling|pot|tree/.test(u) || /indoor plants|outdoor plants|nursery|sapling/.test(ctx)) {
+      const withPot = /pot/.test(u);
+      return { selectLabel: 'Select Quantity', variants: [
+        { label: withPot ? '1 plant (with pot)' : '1 plant', mult: 1 }, { label: '3 plants', mult: 3, save: 5 }, { label: '5 plants', mult: 5, save: 8 },
+      ] };
+    }
+    // TOOLS / EQUIPMENT / UNITS / PIECES
+    if (/unit|piece|\bpc\b|tool|equip/.test(u) || /tool|equip/.test(ctx)) {
+      return { selectLabel: 'Select Quantity', variants: [
+        { label: '1 piece', mult: 1 }, { label: '3 pieces', mult: 3, save: 5 }, { label: '5 pieces', mult: 5, save: 8 },
+      ] };
+    }
+    // DEFAULT — packs
+    return { selectLabel: 'Select Pack Size', variants: [
+      { label: '1 Pack', mult: 1 }, { label: 'Pack of 3', mult: 3, save: 5 }, { label: 'Pack of 5', mult: 5, save: 8 },
+    ] };
   })();
-  const PACK_VARIANTS = unitInfo ? [
-    { label: unitInfo.kind === 'L' ? '1 Litre' : '1 kg', mult: 1 },
-    { label: unitInfo.kind === 'L' ? '5 Litre' : '5 kg', mult: 5, save: 4 },
-    { label: unitInfo.kind === 'L' ? '10 Litre' : '10 kg', mult: 10, save: 8 },
-  ] : [
-    { label: '1 Pack', mult: 1 },
-    { label: 'Pack of 3', mult: 3, save: 5 },
-    { label: 'Pack of 5', mult: 5, save: 8 },
-  ];
   const [packIdx, setPackIdx] = useState(0);
   const pack = PACK_VARIANTS[packIdx];
   // Bigger packs get a small bulk discount
@@ -73,7 +122,7 @@ export default function ProductDetailComponent({
   const cartProduct: typeof product = pack.mult === 1 ? product : {
     ...product,
     id: product.id + '::pack' + pack.mult,
-    name: product.name + ' — ' + pack.label + ' pack',
+    name: product.name + ' — ' + pack.label,
     price: packPrice,
     mrp: packMrp,
   };
@@ -292,7 +341,7 @@ export default function ProductDetailComponent({
 
             {/* Pack size selector */}
             <div className="pt-4">
-              <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">Select Pack Size</p>
+              <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">{SELECT_LABEL}</p>
               <div className="flex gap-2 flex-wrap">
                 {PACK_VARIANTS.map((v, i) => {
                   const vPrice = Math.round(product.price * v.mult * (1 - (v.save || 0) / 100));
