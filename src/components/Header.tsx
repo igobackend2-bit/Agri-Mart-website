@@ -298,19 +298,7 @@ export default function Header({
             {/* Notification Bell */}
             <NotificationBell userProfile={userProfile} setCurrentPage={setCurrentPage} />
 
-            {/* Wishlist Button */}
-            <button
-              onClick={() => setCurrentPage('account')}
-              className="relative p-1.5 text-slate-600 hover:text-[#D94F3D] transition"
-              title={t.wishlist}
-            >
-              <Heart className="h-5 w-5" />
-              {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#D94F3D] text-white text-[9px] font-extrabold h-4 w-4 rounded-full flex items-center justify-center animate-pulse">
-                  {wishlistCount}
-                </span>
-              )}
-            </button>
+            {/* Wishlist/favourites moved into the profile dashboard (Farming Wishlist tab). */}
 
             {/* Cart Button */}
             <button 

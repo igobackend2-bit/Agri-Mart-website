@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, ChevronRight, ArrowLeft, ShieldCheck, Truck, BadgeCheck, Star, User, Mail, Lock, MapPin } from 'lucide-react';
+import { Phone, ChevronRight, ArrowLeft, ShieldCheck, Truck, BadgeCheck, Star, User, Mail, Lock, MapPin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
 import { auth } from '../firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { fetchUserProfile, saveUserProfile } from '../dbHelper';
@@ -280,11 +280,11 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
             </div>
 
             <div>
-              <h2 className="font-display text-white font-black text-3xl leading-tight">
-                Grow more.<br />Spend less.<br /><span className="text-lime-300">Order in minutes.</span>
+              <h2 className="font-display text-white font-black text-5xl xl:text-6xl leading-[1.05] tracking-tight">
+                Future<br />of<br />Farming<br /><span className="text-lime-300">Starts Here</span>
               </h2>
-              <p className="text-emerald-100/90 text-sm mt-3 max-w-xs">
-                Join 10,000+ farmers buying certified seeds, fertilizers and equipment at market-best prices.
+              <p className="text-emerald-100/90 text-sm mt-5 max-w-xs leading-relaxed">
+                Experience innovation through smart monitoring, certified inputs and advanced agricultural systems.
               </p>
 
               <div className="grid grid-cols-3 gap-3 mt-8">
@@ -301,7 +301,13 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
               </div>
             </div>
 
-            <p className="text-[10px] text-emerald-200/70 font-medium">Trusted across Tamil Nadu & pan-India since 2024</p>
+            <div className="flex items-center gap-4">
+              {[Facebook, Twitter, Instagram, Youtube].map((Ic, i) => (
+                <a key={i} href="#" onClick={(e) => e.preventDefault()} className="h-9 w-9 rounded-full bg-white/10 hover:bg-lime-300 hover:text-emerald-950 border border-white/20 flex items-center justify-center text-white transition">
+                  <Ic className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
