@@ -259,14 +259,22 @@ export default function Header({
               </button>
             </form>
 
-            {/* Listening indicator — shows the mic is actively capturing */}
+            {/* Listening Overlay — shows the mic is actively capturing (Full Screen) */}
             {listening && (
-              <div className="absolute left-0 right-0 mt-1 flex items-center justify-center gap-2 bg-red-50 border border-red-200 rounded-lg py-1.5 z-50 shadow-sm">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
-                </span>
-                <span className="text-[11px] font-bold text-red-600">Listening… speak now</span>
+              <div className="fixed inset-0 z-[9999] bg-slate-900/80 backdrop-blur-sm flex flex-col items-center justify-center">
+                <div className="bg-white p-8 rounded-full shadow-2xl relative mb-6">
+                  <div className="absolute inset-0 rounded-full border-4 border-red-500 animate-ping opacity-75"></div>
+                  <div className="absolute inset-0 rounded-full border-4 border-red-300 animate-pulse"></div>
+                  <Mic className="h-12 w-12 text-red-600 relative z-10 animate-bounce" />
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-display font-black text-white mb-2 tracking-wide text-center px-4">Listening...</h2>
+                <p className="text-red-200 font-medium text-lg sm:text-xl text-center px-4">Speak the product name you are looking for</p>
+                <button 
+                  onClick={() => setListening(false)}
+                  className="mt-10 px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition font-bold tracking-wide"
+                >
+                  Cancel
+                </button>
               </div>
             )}
 

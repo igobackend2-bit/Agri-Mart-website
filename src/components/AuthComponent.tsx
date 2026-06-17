@@ -270,8 +270,8 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
   return (
     <div className="min-h-screen relative flex items-stretch bg-[#0B3D22]">
       <img
-        src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&q=85&fit=crop"
-        alt=""
+        src="/images/agri_farm_bg.png"
+        alt="Agritech Farm"
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/40" />
@@ -290,10 +290,10 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
 
             <div>
               <h2 className="font-display text-white font-black text-5xl xl:text-6xl leading-[1.05] tracking-tight">
-                Future<br />of<br />Farming<br /><span className="text-lime-300">Starts Here</span>
+                Cultivating<br />Tomorrow's<br />Harvest<br /><span className="text-lime-400">Today.</span>
               </h2>
-              <p className="text-emerald-100/90 text-sm mt-5 max-w-xs leading-relaxed">
-                Experience innovation through smart monitoring, certified inputs and advanced agricultural systems.
+              <p className="text-emerald-50/90 text-sm mt-5 max-w-sm leading-relaxed font-medium">
+                Join India's most trusted agricultural marketplace. Access certified seeds, high-yield fertilizers, precision tools, and expert farming guidance all in one place.
               </p>
 
               <div className="grid grid-cols-3 gap-3 mt-8">
@@ -320,41 +320,42 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
           </div>
         </div>
 
-        {/* ── Right: form panel ── */}
-        <div className="relative p-8 sm:p-12 lg:px-16 flex flex-col justify-center min-h-screen">
-          <button
-            onClick={() => (phase === 'phone' ? setCurrentPage('home') : resetFlow())}
-            className="absolute top-5 left-5 sm:top-7 sm:left-7 h-9 w-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 hover:text-[#EA5B2A] hover:border-[#EA5B2A] transition"
+        {/* ── Right: form panel (Glassmorphism Card) ── */}
+        <div className="relative p-6 sm:p-10 lg:px-14 flex flex-col justify-center min-h-screen">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-[2.5rem] p-8 sm:p-10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] max-w-lg w-full mx-auto relative">
+            <button
+              onClick={() => (phase === 'phone' ? setCurrentPage('home') : resetFlow())}
+              className="absolute top-6 left-6 h-9 w-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-105 transition"
             aria-label="Back"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
 
-          <div className="mb-7 mt-6 lg:mt-0 max-w-md w-full mx-auto">
-            <h2 className="font-display font-black text-white text-4xl tracking-tight">
-              {phase === 'profile'
-                ? 'Create Profile'
-                : tab === 'login' ? 'Sign in' : 'Create Profile'}
-            </h2>
-            <p className="text-slate-400 text-sm mt-2 font-medium">
-              {phase === 'profile'
-                ? 'Just a few details to set up your account'
-                : tab === 'login' ? 'Login to track orders, offers & your farm cart' : 'Unlock member prices & faster checkout'}
-            </p>
-          </div>
+            <div className="mb-7 mt-8 max-w-md w-full mx-auto text-center">
+              <h2 className="font-display font-black text-white text-4xl tracking-tight">
+                {phase === 'profile'
+                  ? 'Complete Profile'
+                  : tab === 'login' ? 'Welcome Back' : 'Create Account'}
+              </h2>
+              <p className="text-slate-200 text-sm mt-2 font-medium">
+                {phase === 'profile'
+                  ? 'Just a few details to finalize your farmer profile.'
+                  : tab === 'login' ? 'Sign in to access exclusive agritech deals and track orders.' : 'Join 10,000+ farmers empowering their agriculture.'}
+              </p>
+            </div>
 
           {/* Pill tabs (hidden during profile step) */}
           {phase !== 'profile' && (
-            <div className="flex bg-slate-100 rounded-2xl p-1 mb-6 max-w-xs mx-auto">
+            <div className="flex bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-1.5 mb-8 max-w-[16rem] mx-auto">
               {(['login', 'join'] as const).map(k => (
                 <button
                   key={k}
                   onClick={() => { setTab(k); resetFlow(); setPhone(''); }}
                   className={`flex-1 py-2.5 text-xs font-black tracking-wider uppercase rounded-xl transition ${
-                    tab === k ? 'bg-white text-[#EA5B2A] shadow' : 'text-slate-400 hover:text-slate-600'
+                    tab === k ? 'bg-white text-[#1B6B3A] shadow-md' : 'text-slate-300 hover:text-white'
                   }`}
                 >
-                  {k === 'login' ? 'Login' : 'Join Us'}
+                  {k === 'login' ? 'Sign In' : 'Register'}
                 </button>
               ))}
             </div>
@@ -362,16 +363,16 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
 
           {/* Method toggler */}
           {(phase === 'phone' || phase === 'email_login') && (
-            <div className="flex gap-4 mb-6 justify-center">
+            <div className="flex gap-6 mb-8 justify-center">
               <button 
                 onClick={() => { setLoginMethod('phone'); setPhase('phone'); }} 
-                className={`text-xs font-bold pb-1 border-b-2 transition-colors ${loginMethod === 'phone' ? 'border-[#EA5B2A] text-[#EA5B2A]' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                className={`text-[11px] font-black uppercase tracking-widest pb-1.5 border-b-2 transition-colors ${loginMethod === 'phone' ? 'border-[#EA5B2A] text-white' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
               >
                 Mobile OTP
               </button>
               <button 
                 onClick={() => { setLoginMethod('email'); setPhase('email_login'); }} 
-                className={`text-xs font-bold pb-1 border-b-2 transition-colors ${loginMethod === 'email' ? 'border-[#EA5B2A] text-[#EA5B2A]' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                className={`text-[11px] font-black uppercase tracking-widest pb-1.5 border-b-2 transition-colors ${loginMethod === 'email' ? 'border-[#EA5B2A] text-white' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
               >
                 Email ID
               </button>
@@ -392,20 +393,20 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
 
           {/* Phase 1: phone */}
           {phase === 'phone' && (
-            <form onSubmit={handleSendOtp} className="space-y-4">
+            <form onSubmit={handleSendOtp} className="space-y-5">
               <div>
-                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Mobile Number</label>
+                <label className="block text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Mobile Number</label>
                 <div className="relative flex items-center">
-                  <span className="absolute left-4 font-black text-slate-500 text-sm border-r border-slate-200 pr-2.5">+91</span>
+                  <span className="absolute left-4 font-black text-slate-400 text-sm border-r border-slate-300/30 pr-2.5">+91</span>
                   <input
                     type="tel"
                     value={phone}
                     onChange={e => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                    placeholder="10-digit mobile number"
-                    className="w-full bg-white border-2 border-slate-200 text-slate-800 rounded-2xl py-3.5 pl-16 pr-11 focus:outline-none focus:border-[#EA5B2A] focus:bg-white transition font-bold text-sm"
+                    placeholder="Enter your 10-digit number"
+                    className="w-full bg-white/90 border-2 border-transparent text-slate-900 placeholder:text-slate-500 rounded-2xl py-3.5 pl-16 pr-11 focus:outline-none focus:border-[#EA5B2A] focus:bg-white transition font-bold text-sm"
                     required
                   />
-                  <Phone className="absolute right-4 h-4 w-4 text-slate-300" />
+                  <Phone className="absolute right-4 h-4 w-4 text-slate-400" />
                 </div>
               </div>
               <button
@@ -461,9 +462,9 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
 
           {/* Phase 2: OTP */}
           {phase === 'otp' && (
-            <form onSubmit={handleVerifyOtp} className="space-y-4">
+            <form onSubmit={handleVerifyOtp} className="space-y-5">
               <div className="text-center mb-2">
-                <p className="text-xs font-bold text-slate-500">Code sent to <span className="text-[#EA5B2A] font-black">+91 {phone}</span></p>
+                <p className="text-xs font-bold text-slate-300">Code sent to <span className="text-[#EA5B2A] font-black">+91 {phone}</span></p>
               </div>
               <input
                 type="text"
@@ -471,7 +472,7 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
                 onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 placeholder="••••••"
                 autoFocus
-                className="w-full text-center text-3xl tracking-[0.45em] font-black bg-white border-2 border-slate-200 text-slate-800 rounded-2xl py-4 focus:outline-none focus:border-[#EA5B2A] focus:bg-white transition"
+                className="w-full text-center text-3xl tracking-[0.45em] font-black bg-white/90 border-2 border-transparent text-slate-900 rounded-2xl py-4 focus:outline-none focus:border-[#EA5B2A] focus:bg-white transition"
                 required
               />
               <button
@@ -495,8 +496,8 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
               <Field icon={User} placeholder="Full name" value={name} onChange={setName} required />
               <Field icon={Mail} type="email" placeholder="Email address" value={email} onChange={setEmail} />
               <Field icon={Lock} type="password" placeholder="Create a password (min 6 chars)" value={password} onChange={setPassword} required />
-              <div className="pt-1">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+              <div className="pt-2">
+                <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-3 flex items-center gap-1.5">
                   <MapPin className="h-3 w-3" /> Delivery address (optional)
                 </p>
                 <div className="space-y-3">
@@ -522,13 +523,13 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
           {(phase === 'phone' || phase === 'email_login') && (
             <>
               <div className="my-7 relative flex items-center justify-center">
-                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100"></div></div>
-                <span className="relative bg-white px-3 text-[10px] font-black text-slate-300 uppercase tracking-widest">or continue with</span>
+                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/20"></div></div>
+                <span className="relative bg-transparent px-3 text-[10px] font-black text-slate-300 uppercase tracking-widest backdrop-blur-sm rounded-full">Or continue with</span>
               </div>
               <button
                 onClick={handleGoogleLogin}
                 disabled={busy}
-                className="w-full bg-white border-2 border-slate-200 hover:border-[#EA5B2A] text-slate-700 hover:text-[#EA5B2A] font-black text-sm py-3.5 rounded-2xl transition flex items-center justify-center gap-3 disabled:opacity-60"
+                className="w-full bg-white/90 hover:bg-white border-2 border-transparent text-slate-800 font-black text-sm py-3.5 rounded-2xl transition flex items-center justify-center gap-3 disabled:opacity-60 shadow-md"
               >
                 <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
                 <span>{busy ? 'Connecting...' : 'Google Account'}</span>
@@ -538,22 +539,24 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
               <button
                 onClick={handleDevLogin}
                 disabled={busy}
-                className="w-full mt-3 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs py-3 rounded-2xl transition flex items-center justify-center gap-2 disabled:opacity-60"
+                className="w-full mt-3 bg-slate-900/80 hover:bg-slate-900 border border-slate-700 text-white font-black text-xs py-3 rounded-2xl transition flex items-center justify-center gap-2 disabled:opacity-60 backdrop-blur-md"
               >
                 <span>⚡ Developer Test Login (skip OTP)</span>
               </button>
             </>
           )}
 
-          <div className="flex items-center justify-center gap-1.5 mt-6 text-[10px] text-slate-400 font-bold">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-            <span>Secure login · We never share your data</span>
+          <div className="flex items-center justify-center gap-1.5 mt-8 text-[10px] text-emerald-300 font-bold">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            <span>Bank-grade secure login · Data is strictly protected</span>
           </div>
           <p className="text-center text-[10px] text-slate-400 mt-3 leading-relaxed">
             By continuing, you agree to IGO Agri Mart's{' '}
-            <span className="font-bold text-slate-500 cursor-pointer hover:underline">Terms</span> &{' '}
-            <span className="font-bold text-slate-500 cursor-pointer hover:underline">Privacy Policy</span>.
+            <span className="font-bold text-slate-300 cursor-pointer hover:underline">Terms of Service</span> &{' '}
+            <span className="font-bold text-slate-300 cursor-pointer hover:underline">Privacy Policy</span>.
           </p>
+          
+          </div> {/* End Glassmorphism Card */}
         </div>
       </div>
     </div>
@@ -580,7 +583,7 @@ function Field({
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
-        className={`w-full bg-white border-2 border-slate-200 text-slate-800 rounded-2xl py-3 ${Icon ? 'pl-11' : 'pl-4'} pr-4 focus:outline-none focus:border-[#EA5B2A] focus:bg-white transition font-bold text-sm`}
+        className={`w-full bg-white/90 border-2 border-transparent text-slate-900 placeholder:text-slate-500 rounded-2xl py-3.5 ${Icon ? 'pl-11' : 'pl-4'} pr-4 focus:outline-none focus:border-[#EA5B2A] focus:bg-white transition font-bold text-sm shadow-sm`}
       />
     </div>
   );

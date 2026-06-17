@@ -242,7 +242,11 @@ export default function CategoryComponent({
     return result;
   };
 
-  const filteredItems = getFilteredProducts();
+  let filteredItems = getFilteredProducts();
+  const noExactMatches = filteredItems.length === 0 && searchQuery.trim().length > 0;
+  if (noExactMatches) {
+    filteredItems = [...products].sort((a, b) => b.rating - a.rating).slice(0, 6);
+  }
 
   const handleProductCardClick = (p: Product) => {
     setSelectedProduct(p);
@@ -539,6 +543,18 @@ export default function CategoryComponent({
           </div>
 
           {/* Product Cards Loop grid */}
+          {noExactMatches && (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <h4 className="font-bold text-amber-900 text-sm">No exact matches found for "{searchQuery}"</h4>
+                <p className="text-xs text-amber-700 mt-1">Showing our top recommended products instead.</p>
+              </div>
+              <button onClick={resetFilters} className="bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold px-4 py-2 rounded-lg transition shrink-0 cursor-pointer">
+                Clear Search
+              </button>
+            </div>
+          )}
+
           {filteredItems.length > 0 ? (
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredItems.map((p) => (
