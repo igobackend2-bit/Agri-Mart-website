@@ -17,7 +17,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { VisitorLead, LeadStatus, LeadSource, fetchAllLeads, setLeadStatus, removeLead, downloadLeadsCsv } from '../leads';
 import {
   persistProductUpsert, persistProductDelete, persistStockSet, refillAllStocks,
-  getLocalOrders, updateLocalOrderStatus, sendInboxMessage, playAdminAlertSound, mergeOrdersByStatus
+  getLocalOrders, updateLocalOrderStatus, saveLocalOrder, sendInboxMessage, playAdminAlertSound, mergeOrdersByStatus
 } from '../storeData';
 import {
   getSettings, saveSettings as persistSettings,
@@ -190,6 +190,10 @@ export default function AdminComponent({ lang, products, setProducts, categories
     try { await updateOrderStatus(orderId, nextStatus); } catch { }
     updateLocalOrderStatus(orderId, nextStatus);
     const order = orders.find(o => o.id === orderId);
+    // Persist the FULL order (with new status) to the local mirror so the change
+    // always survives a refresh and shows on the customer's order page, even if
+    // this order wasn't already cached on the admin's device.
+    if (order) { try { saveLocalOrder({ ...order, status: nextStatus }); } catch { } }
     sendInboxMessage({
       toEmail: order?.deliveryAddress?.email || 'all',
       title: 'Order ' + orderId + ' — ' + nextStatus,
@@ -451,10 +455,6 @@ export default function AdminComponent({ lang, products, setProducts, categories
               <Store className="h-3.5 w-3.5" /> View Store
             </button>
           )}
-          <a href="https://www.igonursery.com/admin-visitor-leads" target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-[#1B6B3A] border border-slate-200 px-3 py-1.5 rounded-lg font-bold">
-            <ExternalLink className="h-3.5 w-3.5" /> Nursery Admin
-          </a>
           <button onClick={() => { loadOrders(); loadLeads(); }} className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-[#1B6B3A] border border-slate-200 px-3 py-1.5 rounded-lg">
             <RefreshCw className="h-3.5 w-3.5" /> Refresh
           </button>

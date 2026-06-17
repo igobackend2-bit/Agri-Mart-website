@@ -5,31 +5,37 @@
 // becomes a serverless function). The SMS/DLT key stays in a Vercel Environment
 // Variable — never in the website bundle. The frontend (src/otp.ts) calls /api/otp.
 //
+// Provider: TEXTLOCAL (api.textlocal.in / api.txtlocal.com).
+//
 // SET THESE in Vercel → Project → Settings → Environment Variables, then redeploy:
-//   SMS_API_KEY  = jMXeQOXCvv8AO8DrkJU5ZKIrUPBbVeXHbBOglA-La24
-//   SMS_API_URL  = (optional) your provider's send URL with {key} {phone} {otp} placeholders.
-//                  Default below is Renflair (key-only OTP API). For another provider,
-//                  paste its URL, e.g. TextLocal:
-//                  https://api.textlocal.in/send/?apikey={key}&numbers=91{phone}&sender={sender}&message=Your%20IGO%20OTP%20is%20{otp}
-//   SMS_SENDER_ID, SMS_DLT_TEMPLATE_ID = (only if your provider's URL needs {sender}/{template})
-//   OTP_SECRET   = (optional) any random string used to sign OTP tokens.
+//   SMS_API_KEY    = your Textlocal API key   (REQUIRED — keep it ONLY here, never in code)
+//   SMS_SENDER_ID  = your Textlocal 6-char approved sender/header (e.g. IGOAGM)  (REQUIRED for India)
+//   SMS_MESSAGE    = (optional) the OTP text. MUST match your DLT-approved template, with {otp}
+//                    where the variable goes. Default: "Your IGO Agri Mart OTP is {otp}. ..."
+//   SMS_API_URL    = (optional) override the whole send URL. Placeholders: {key} {phone} {sender} {message} {otp}
+//   OTP_SECRET     = (optional) any random string used to sign OTP tokens.
 // ─────────────────────────────────────────────────────────────────────────────
 import crypto from 'node:crypto';
 
-const KEY = process.env.SMS_API_KEY || 'jMXeQOXCvv8AO8DrkJU5ZKIrUPBbVeXHbBOglA-La24';
+const KEY = process.env.SMS_API_KEY || '';
 const SECRET = process.env.OTP_SECRET || KEY || 'igo-otp-secret-change-me';
-const URL_TMPL = process.env.SMS_API_URL || 'https://www.fast2sms.com/dev/bulkV2?authorization={key}&route=otp&variables_values={otp}&numbers={phone}';
+const SENDER = process.env.SMS_SENDER_ID || 'TXTLCL';
+const MSG_TMPL = process.env.SMS_MESSAGE || 'Your IGO Agri Mart OTP is {otp}. Valid 5 minutes. Do not share it with anyone.';
+// Textlocal India send endpoint. Numbers must include country code (91).
+const URL_TMPL = process.env.SMS_API_URL || 'https://api.textlocal.in/send/?apikey={key}&numbers=91{phone}&sender={sender}&message={message}';
 
 function sign(phone, otp, exp) {
   return crypto.createHmac('sha256', SECRET).update(`${phone}.${otp}.${exp}`).digest('hex');
 }
 
 async function sendSms(phone, otp) {
+  const message = MSG_TMPL.split('{otp}').join(otp);
   const url = URL_TMPL
     .split('{key}').join(encodeURIComponent(KEY))
     .split('{phone}').join(encodeURIComponent(phone))
+    .split('{sender}').join(encodeURIComponent(SENDER))
+    .split('{message}').join(encodeURIComponent(message))
     .split('{otp}').join(encodeURIComponent(otp))
-    .split('{sender}').join(encodeURIComponent(process.env.SMS_SENDER_ID || ''))
     .split('{template}').join(encodeURIComponent(process.env.SMS_DLT_TEMPLATE_ID || ''));
   try {
     const r = await fetch(url);
@@ -57,6 +63,8 @@ export default async function handler(req, res) {
       ok: true,
       function: 'live',
       keySet: !!KEY,
+      senderSet: !!process.env.SMS_SENDER_ID,
+      sender: SENDER,
       provider: URL_TMPL.split('?')[0],
     });
   }

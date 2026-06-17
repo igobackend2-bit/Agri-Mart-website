@@ -18,7 +18,7 @@ import { Product, Order, UserProfile, Address } from '../types';
 import { fetchUserOrders, cancelUserOrder, fetchUserProfile } from '../dbHelper';
 import { currentUid } from '../session';
 import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, InboxMessage, getWalletCoins, mergeOrdersByStatus } from '../storeData';
-import { Inbox as InboxIcon, Mail } from 'lucide-react';
+import { Inbox as InboxIcon, Mail, Home, Store, ShoppingCart } from 'lucide-react';
 
 interface AccountComponentProps {
   lang: 'en' | 'ta';
@@ -289,6 +289,27 @@ export default function AccountComponent({
                 {userProfile?.role || t.customer}
               </span>
             </div>
+          </div>
+
+          {/* Quick store navigation */}
+          <div className="grid grid-cols-3 gap-2">
+            {([
+              { icon: Home, label: lang === 'ta' ? 'முகப்பு' : 'Home', page: 'home' },
+              { icon: Store, label: lang === 'ta' ? 'கடை' : 'Shop', page: 'category' },
+              { icon: ShoppingCart, label: lang === 'ta' ? 'கார்ட்' : 'Cart', page: 'cart' },
+            ] as const).map((n) => {
+              const NIcon = n.icon;
+              return (
+                <button
+                  key={n.page}
+                  onClick={() => setCurrentPage(n.page)}
+                  className="flex flex-col items-center gap-1 py-2.5 rounded-xl border border-slate-200 bg-white hover:border-[#1B6B3A] hover:bg-emerald-50 text-slate-600 hover:text-[#1B6B3A] transition"
+                >
+                  <NIcon className="h-4 w-4" />
+                  <span className="text-[10px] font-black uppercase tracking-wide">{n.label}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* IGO Coins wallet */}
