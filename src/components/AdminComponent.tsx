@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // Full admin control panel — products, orders, inventory, coupons, content, settings
 import {
   ShoppingBag, Tag, Users, Trash2, Plus, Edit3,
@@ -177,6 +177,31 @@ export default function AdminComponent({ lang, products, setProducts, categories
     if (activeTab === 'Reports') loadOrders();
     if (activeTab === 'Leads') loadLeads();
   }, [activeTab]);
+
+  // ── Live auto-refresh every 5s — but PAUSE while the admin is editing ─────────
+  // "Editing" = any form/modal open OR the cursor is in an input/select/textarea.
+  // Refresh is silent (no spinner) so it never disrupts the admin's work, and it
+  // resumes automatically the moment editing finishes.
+  const editingRef = useRef(false);
+  editingRef.current = !!(
+    viewOrder || showProductForm || showCouponForm || editingMarquee ||
+    activeOverrideSection
+  );
+  useEffect(() => {
+    const silentRefresh = async () => {
+      let all: Order[] = [];
+      try { all = await fetchAllOrders(); } catch { /* offline — keep local */ }
+      setOrders(mergeOrdersByStatus(all, getLocalOrders()));
+      try { setLeads(await fetchAllLeads()); } catch { /* ignore */ }
+    };
+    const id = setInterval(() => {
+      const el = document.activeElement as HTMLElement | null;
+      const typing = !!el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName || '');
+      if (editingRef.current || typing) return; // don't refresh mid-edit
+      silentRefresh();
+    }, 5000);
+    return () => clearInterval(id);
+  }, []);
 
   const STATUS_INBOX_TEXT: Record<string, string> = {
     Confirmed: 'has been confirmed ✅. We are preparing your items.',

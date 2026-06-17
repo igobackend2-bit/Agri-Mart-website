@@ -5,24 +5,35 @@
 // becomes a serverless function). The SMS/DLT key stays in a Vercel Environment
 // Variable — never in the website bundle. The frontend (src/otp.ts) calls /api/otp.
 //
-// Provider: TEXTLOCAL (api.textlocal.in / api.txtlocal.com).
+// Provider: APITxT (apitxt.com) — OTP route. Works with just the API key.
 //
-// SET THESE in Vercel → Project → Settings → Environment Variables, then redeploy:
-//   SMS_API_KEY    = your Textlocal API key   (REQUIRED — keep it ONLY here, never in code)
-//   SMS_SENDER_ID  = your Textlocal 6-char approved sender/header (e.g. IGOAGM)  (REQUIRED for India)
-//   SMS_MESSAGE    = (optional) the OTP text. MUST match your DLT-approved template, with {otp}
-//                    where the variable goes. Default: "Your IGO Agri Mart OTP is {otp}. ..."
-//   SMS_API_URL    = (optional) override the whole send URL. Placeholders: {key} {phone} {sender} {message} {otp}
-//   OTP_SECRET     = (optional) any random string used to sign OTP tokens.
+// SET THIS in Vercel → Project → Settings → Environment Variables, then redeploy:
+//   SMS_API_KEY    = your APITxT Auth Key   (REQUIRED — keep it ONLY here, never in code)
+//
+// OPTIONAL (only if APITxT asks for DLT details on your account):
+//   SMS_SENDER_ID  = your approved sender/header
+//   SMS_DLT_PE_ID  = your DLT Entity (PE) ID
+//   SMS_DLT_TEMPLATE_ID = your DLT template ID
+//   SMS_MESSAGE    = the OTP text (must contain {otp}); default below
+//   SMS_API_URL    = override the whole send URL. Placeholders: {key} {phone} {otp} {message} {sender} {pe_id} {template}
+//   OTP_SECRET     = any random string used to sign OTP tokens.
 // ─────────────────────────────────────────────────────────────────────────────
 import crypto from 'node:crypto';
 
 const KEY = process.env.SMS_API_KEY || '';
 const SECRET = process.env.OTP_SECRET || KEY || 'igo-otp-secret-change-me';
-const SENDER = process.env.SMS_SENDER_ID || 'TXTLCL';
+const SENDER = process.env.SMS_SENDER_ID || '';
 const MSG_TMPL = process.env.SMS_MESSAGE || 'Your IGO Agri Mart OTP is {otp}. Valid 5 minutes. Do not share it with anyone.';
-// Textlocal India send endpoint. Numbers must include country code (91).
-const URL_TMPL = process.env.SMS_API_URL || 'https://api.textlocal.in/send/?apikey={key}&numbers=91{phone}&sender={sender}&message={message}';
+// APITxT Send-OTP endpoint. mobile must include country code (91). We pass our own
+// {otp} so the code we generate (and verify) is exactly what the customer receives.
+// If DLT details are set, they are appended automatically below.
+const BASE_URL = process.env.SMS_API_URL || 'https://apitxt.com/api/sendOTP?authkey={key}&mobile=91{phone}&otp={otp}&message={message}';
+const PE_ID = process.env.SMS_DLT_PE_ID || '';
+const TEMPLATE_ID = process.env.SMS_DLT_TEMPLATE_ID || '';
+const URL_TMPL = BASE_URL
+  + (SENDER ? '&sender={sender}' : '')
+  + (PE_ID ? `&pe_id=${encodeURIComponent(PE_ID)}` : '')
+  + (TEMPLATE_ID ? `&template_id=${encodeURIComponent(TEMPLATE_ID)}` : '');
 
 function sign(phone, otp, exp) {
   return crypto.createHmac('sha256', SECRET).update(`${phone}.${otp}.${exp}`).digest('hex');
