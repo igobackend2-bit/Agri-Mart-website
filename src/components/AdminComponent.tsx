@@ -27,7 +27,8 @@ import {
   getNotification, setNotification, clearNotification,
   changeAdminPassword,
   getHomeOverrides, saveHomeOverrides, HomeOverrides,
-  getComplexOverrides, saveComplexOverrides, ComplexOverrides
+  getComplexOverrides, saveComplexOverrides, ComplexOverrides,
+  getSiteImages, saveSiteImages, SiteImages
 } from '../siteConfig';
 
 interface AdminComponentProps {
@@ -106,6 +107,16 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const [complexOverrides, setComplexOverrides] = useState<ComplexOverrides>(() => getComplexOverrides());
   const [activeOverrideSection, setActiveOverrideSection] = useState<string>('');
   const [overrideForm, setOverrideForm] = useState<any>({});
+
+  // Editable site images (Image Manager)
+  const SITE_IMAGE_SLOTS: { key: string; label: string; hint: string }[] = [
+    { key: 'login_bg', label: 'Login Page Background', hint: 'Full-screen image behind the login/sign-up form' },
+  ];
+  const [siteImages, setSiteImagesState] = useState<SiteImages>(() => getSiteImages());
+  const saveSiteImagesHandler = () => {
+    saveSiteImages(siteImages);
+    alert('Site images saved. They now apply across the website.');
+  };
 
   // Site notification
   const [notifInput, setNotifInput] = useState('');
@@ -1186,6 +1197,38 @@ export default function AdminComponent({ lang, products, setProducts, categories
       {activeTab === 'Content' && (
         <div className="space-y-6">
           <h3 className="font-extrabold text-sm text-slate-800">Content Management</h3>
+
+          {/* Image Manager — swap key site images by URL or /images/ path */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">🖼️ Image Manager</h4>
+              <button onClick={saveSiteImagesHandler} className="text-xs font-bold bg-[#1B6B3A] text-white px-4 py-1.5 rounded-lg hover:bg-emerald-950 transition">
+                Save Images
+              </button>
+            </div>
+            <p className="text-[11px] text-slate-400 mb-4">Paste an image URL, or a path to a file in your /public folder (e.g. <code>/images/hero.png</code>). Leave blank to keep the built-in image.</p>
+            <div className="space-y-4">
+              {SITE_IMAGE_SLOTS.map((slot) => (
+                <div key={slot.key} className="flex flex-col sm:flex-row gap-3 sm:items-center">
+                  <div className="sm:w-48 shrink-0">
+                    <div className="text-xs font-black text-slate-700">{slot.label}</div>
+                    <div className="text-[10px] text-slate-400">{slot.hint}</div>
+                  </div>
+                  <input
+                    type="text"
+                    value={siteImages[slot.key] || ''}
+                    onChange={(e) => setSiteImagesState({ ...siteImages, [slot.key]: e.target.value })}
+                    placeholder="https://…  or  /images/your-image.png"
+                    className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]"
+                  />
+                  {(siteImages[slot.key] || '').trim() && (
+                    <img src={siteImages[slot.key]} alt="" className="h-12 w-20 object-cover rounded-md border border-slate-200" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="bg-white border border-slate-200 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
               <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Marquee Banner Text</h4>

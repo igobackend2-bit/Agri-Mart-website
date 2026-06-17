@@ -71,6 +71,8 @@ const KEYS = {
   banners: 'igo_banners',
   notification: 'igo_notification',
   homeOverrides: 'igo_home_overrides',
+  siteImages: 'igo_site_images',
+  pageContent: 'igo_page_content',
   adminPwdHash: 'igo_admin_pwd_hash',
   adminSession: 'igo_admin_session',
 } as const;
@@ -178,6 +180,36 @@ export function setNotification(text: string): void {
 }
 export function clearNotification(): void {
   localStorage.removeItem(KEYS.notification);
+}
+
+// ── Editable site images (admin "Image Manager") ────────────────────────────
+// Named image slots the admin can override site-wide. Each component calls
+// siteImage('slotKey', builtInFallback) so it shows the admin's image if set,
+// otherwise the original. Syncs to Supabase like all other site config.
+export type SiteImages = Record<string, string>;
+export function getSiteImages(): SiteImages {
+  return readJSON<SiteImages>(KEYS.siteImages, {});
+}
+export function saveSiteImages(images: SiteImages): void {
+  writeWithSync(KEYS.siteImages, images);
+}
+export function siteImage(key: string, fallback: string): string {
+  const v = getSiteImages()[key];
+  return v && v.trim() ? v : fallback;
+}
+
+// ── Editable page text content (admin "Pages" editor) ────────────────────────
+// Per-page key→value text store. Components call pageText('page','field',fallback).
+export type PageContent = Record<string, Record<string, string>>;
+export function getPageContent(): PageContent {
+  return readJSON<PageContent>(KEYS.pageContent, {});
+}
+export function savePageContent(content: PageContent): void {
+  writeWithSync(KEYS.pageContent, content);
+}
+export function pageText(page: string, field: string, fallback: string): string {
+  const v = getPageContent()?.[page]?.[field];
+  return v && v.trim() ? v : fallback;
 }
 
 // ── Homepage Overrides ───────────────────────────────────────────────────────

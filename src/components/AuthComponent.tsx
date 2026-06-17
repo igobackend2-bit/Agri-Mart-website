@@ -6,6 +6,7 @@ import { fetchUserProfile, saveUserProfile } from '../dbHelper';
 import { currentUid, markSignedIn } from '../session';
 import { requestOtp, confirmOtp } from '../otp';
 import { sendInboxMessage } from '../storeData';
+import { siteImage } from '../siteConfig';
 import { UserProfile, Address } from '../types';
 
 interface AuthComponentProps {
@@ -270,7 +271,7 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
   return (
     <div className="min-h-screen relative flex items-stretch bg-[#0B3D22]">
       <img
-        src="/images/hero_1_new.png"
+        src={siteImage('login_bg', '/images/hero_1_new.png')}
         alt="Agritech Farm"
         className="absolute inset-0 w-full h-full object-cover"
       />

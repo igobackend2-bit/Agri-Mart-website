@@ -3,11 +3,11 @@ import { Play, Activity, Sun, CloudRain, ShieldCheck, Sprout, Wind, Globe, Trend
 
 export function FarmStories() {
   const stories = [
-    { name: 'Arjun, TN', time: 'LIVE', img: 'https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=100&q=80', active: true },
-    { name: 'Meera', time: '2h ago', img: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&q=80', active: true },
-    { name: 'Senthil', time: '5h ago', img: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=100&q=80', active: false },
-    { name: 'Kiran', time: '1d ago', img: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=100&q=80', active: false },
-    { name: 'Dinesh', time: '1d ago', img: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&q=80', active: false },
+    { name: 'Arjun, TN', time: 'LIVE', img: '/images/farmer_arjun.png', active: true },
+    { name: 'Meera', time: '2h ago', img: '/images/farmer_meera.png', active: true },
+    { name: 'Senthil', time: '5h ago', img: '/images/farmer_senthil.png', active: false },
+    { name: 'Kiran', time: '1d ago', img: '/images/farmer_kiran.png', active: false },
+    { name: 'Dinesh', time: '1d ago', img: '/images/farmer_dinesh.png', active: false },
   ];
 
   return (
