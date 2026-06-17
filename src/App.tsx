@@ -358,6 +358,7 @@ export default function App() {
       '/catalog/nursery-indoor',
       '/catalog/nursery-outdoor',
       '/catalog/tools',
+      '/catalog/nursery tools',
     ];
     return applyCatalogOverlay(SEED_PRODUCTS)
       .filter((p) => p.images && p.images[0] && ALLOWED.some((f) => p.images[0].startsWith(f)))
