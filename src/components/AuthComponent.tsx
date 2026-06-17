@@ -270,7 +270,7 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
   return (
     <div className="min-h-screen relative flex items-stretch bg-[#0B3D22]">
       <img
-        src="/images/agri_farm_bg.png"
+        src="/images/hero_1_new.png"
         alt="Agritech Farm"
         className="absolute inset-0 w-full h-full object-cover"
       />

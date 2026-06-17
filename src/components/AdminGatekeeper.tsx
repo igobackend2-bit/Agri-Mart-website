@@ -49,7 +49,7 @@ export default function AdminGatekeeper(props: AdminGatekeeperProps) {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4 bg-slate-900 relative">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=1600&q=80')] bg-cover bg-center opacity-10"></div>
+      <div className="absolute inset-0 bg-[url('/images/hero_2_new.png')] bg-cover bg-center opacity-10"></div>
 
       <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
         <button
