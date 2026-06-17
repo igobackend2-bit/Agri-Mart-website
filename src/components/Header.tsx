@@ -183,7 +183,7 @@ export default function Header({
             <img 
               src="/images/logo.jpg" 
               alt="IGO AGRIMART Logo" 
-              className="h-12 sm:h-14 object-contain"
+              className="h-20 sm:h-24 -my-4 sm:-my-5 -ml-2 object-contain mix-blend-multiply"
             />
           </div>
 
