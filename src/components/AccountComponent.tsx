@@ -11,12 +11,14 @@ import {
   FileCheck,
   Award,
   Calendar,
-  CheckCircle
+  CheckCircle,
+  LogOut
 } from 'lucide-react';
+import { signOut } from 'firebase/auth';
 import { db, auth } from '../firebase';
 import { Product, Order, UserProfile, Address } from '../types';
 import { fetchUserOrders, cancelUserOrder, fetchUserProfile } from '../dbHelper';
-import { currentUid } from '../session';
+import { currentUid, clearSession } from '../session';
 import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, InboxMessage, getWalletCoins, mergeOrdersByStatus } from '../storeData';
 import { Inbox as InboxIcon, Mail, Home, Store, ShoppingCart } from 'lucide-react';
 
@@ -204,6 +206,13 @@ export default function AccountComponent({
     }
   };
 
+  const handleLogout = async () => {
+    try { await signOut(auth); } catch { /* local session — ignore */ }
+    clearSession();
+    setUserProfile(null);
+    setCurrentPage('home');
+  };
+
   const handleAddAddress = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newAddress.name.trim() || !newAddress.phone.trim() || !newAddress.address1.trim() || !newAddress.city.trim() || !newAddress.pincode.trim()) {
@@ -350,6 +359,15 @@ export default function AccountComponent({
                 </button>
               );
             })}
+
+            {/* Logout — moved here from the main header */}
+            <button
+              onClick={handleLogout}
+              className="w-full text-left p-3 rounded-lg text-xs font-bold transition flex items-center gap-3 text-rose-600 hover:bg-rose-50 border-l-4 border-transparent mt-1 border-t border-slate-100 pt-3"
+            >
+              <LogOut className="h-4.5 w-4.5" />
+              <span>{lang === 'ta' ? 'வெளியேறு' : 'Logout'}</span>
+            </button>
           </div>
         </div>
 

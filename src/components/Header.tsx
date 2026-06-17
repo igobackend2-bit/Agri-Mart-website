@@ -208,7 +208,7 @@ export default function Header({
           </button>
 
           {/* Autocomplete Search Bar */}
-          <div ref={searchRef} className="hidden md:block relative flex-1 max-w-xl">
+          <div ref={searchRef} className="hidden md:block relative flex-1 max-w-sm">
             <form onSubmit={handleSearchSubmit} className="relative">
               <input
                 type="text"
@@ -228,9 +228,20 @@ export default function Header({
                   }
                   const recognition = new SpeechRecognition();
                   recognition.lang = lang === 'en' ? 'en-IN' : 'ta-IN';
+                  recognition.interimResults = false;
                   recognition.start();
                   recognition.onresult = (event: any) => {
-                    handleSearchChange(event.results[0][0].transcript);
+                    const transcript = String(event.results[0][0].transcript || '').replace(/\.$/, '').trim();
+                    if (!transcript) return;
+                    // Fill the box, show suggestions, AND open the results page.
+                    handleSearchChange(transcript);
+                    setShowSearchSuggestions(false);
+                    setCurrentPage('category');
+                  };
+                  recognition.onerror = (e: any) => {
+                    if (e?.error === 'not-allowed' || e?.error === 'service-not-allowed') {
+                      alert('Please allow microphone access in your browser to use voice search.');
+                    }
                   };
                 }}
                 className="absolute right-10 top-2.5 text-slate-400 hover:text-[#1B6B3A] transition"
@@ -337,13 +348,6 @@ export default function Header({
                       Admin Control
                     </button>
                   )}
-
-                  <button
-                    onClick={executeLogout}
-                    className="text-xs font-bold text-slate-400 hover:text-[#D94F3D] transition ml-1"
-                  >
-                    {t.logout}
-                  </button>
                 </div>
               ) : (
                 <button
@@ -513,12 +517,6 @@ export default function Header({
                   </button>
                 )}
 
-                <button
-                  onClick={() => { setMobileMenuOpen(false); executeLogout(); }}
-                  className="flex items-center gap-2 text-xs font-bold text-red-500 py-1 border-t border-slate-100 pt-2"
-                >
-                  <span>{t.logout}</span>
-                </button>
               </>
             ) : (
               <button
