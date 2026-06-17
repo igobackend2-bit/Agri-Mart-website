@@ -697,8 +697,7 @@ export default function HomeComponent({
 
         <div
           id="cat-rail"
-          className="no-scrollbar grid grid-rows-2 grid-flow-col auto-cols-[120px] sm:auto-cols-[150px] lg:auto-cols-[170px] gap-x-5 gap-y-7 overflow-x-auto pb-2 snap-x"
-          style={{ scrollbarWidth: 'none' }}
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-8 justify-items-center"
         >
           {ALL_CATS.map(([id, cat]) => (
             <button
@@ -753,35 +752,46 @@ export default function HomeComponent({
           sub="Pre-packed agri kits for fast setup and higher crop returns."
           onViewAll={() => { setSelectedCategory(null); setCurrentPage('category'); }}
         />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {comboDeals.map((kit) => (
-            <div key={kit.id} className="border border-slate-200 rounded-3xl p-5 hover:shadow-lg transition bg-slate-50">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <h3 className="font-display font-black text-slate-900 text-lg leading-tight">{kit.name}</h3>
-                  <p className="text-[11px] text-slate-500 mt-2 leading-snug">{kit.description}</p>
-                </div>
-                <span className="text-xs uppercase font-black tracking-[0.18em] bg-[#E8A020] text-emerald-950 px-2 py-1 rounded-full">Kit</span>
+            <div key={kit.id} className="relative bg-white border border-slate-200 rounded-3xl overflow-hidden hover:shadow-xl hover:border-emerald-300 transition-all duration-300 group flex flex-col">
+              <div className="absolute top-0 right-0 bg-[#E8A020] text-emerald-950 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-bl-xl z-10 shadow-sm">
+                Save 33%
               </div>
-              <div className="mt-4 text-slate-500 text-[11px] space-y-2">
-                {kit.items.map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#1B6B3A]" />
-                    <span>{item}</span>
+              <div className="p-6 flex-1 flex flex-col">
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="h-12 w-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
+                    <Package className="h-6 w-6" />
                   </div>
-                ))}
-              </div>
-              <div className="mt-5 flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-[10px] text-slate-400 uppercase tracking-widest">Deal Price</div>
-                  <div className="font-display font-black text-xl text-slate-900">₹{kit.price.toLocaleString('en-IN')}</div>
+                  <div>
+                    <h3 className="font-display font-black text-slate-900 text-[15px] leading-tight group-hover:text-emerald-700 transition-colors">{kit.name}</h3>
+                  </div>
                 </div>
-                <button
-                  onClick={() => { alert(`Add ${kit.name} combo to cart from the category page.`); setCurrentPage('category'); }}
-                  className="bg-[#1B6B3A] hover:bg-emerald-950 text-white text-[11px] font-bold px-4 py-2 rounded-xl transition"
-                >
-                  View Kit
-                </button>
+                <p className="text-[12px] text-slate-500 mb-5 leading-relaxed">{kit.description}</p>
+                <div className="mt-auto space-y-2 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Included Items:</div>
+                  {kit.items.map((item, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-[11px] text-slate-700 font-medium">
+                      <BadgeCheck className="h-4 w-4 text-emerald-500 shrink-0" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-100">
+                  <div>
+                    <div className="flex items-baseline gap-2">
+                      <div className="font-display font-black text-2xl text-slate-900">₹{kit.price.toLocaleString('en-IN')}</div>
+                      <div className="text-xs text-slate-400 line-through">₹{(kit.mrp || kit.price * 1.5).toLocaleString('en-IN')}</div>
+                    </div>
+                    <div className="text-[10px] text-emerald-600 font-bold tracking-widest uppercase">Combo Deal</div>
+                  </div>
+                  <button
+                    onClick={() => { alert(`Add ${kit.name} combo to cart from the category page.`); setCurrentPage('category'); }}
+                    className="bg-[#1B6B3A] hover:bg-emerald-950 text-white text-[12px] font-bold px-5 py-3 rounded-xl transition shadow-md hover:shadow-lg flex items-center gap-1.5"
+                  >
+                    View Kit <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -1278,18 +1288,30 @@ export default function HomeComponent({
           sub="Trade shows, farmer meets & expo near you"
           onViewAll={() => (setCurrentPage as (p: string) => void)('events')}
         />
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {AGRI_EVENTS.map((ev, i) => (
             <div
               key={i}
-              className={`border rounded-xl p-3 cursor-pointer hover:shadow-md transition-all ${ev.color}`}
+              className="bg-white border border-slate-200 rounded-xl overflow-hidden cursor-pointer hover:shadow-lg hover:border-emerald-500 transition-all flex flex-col group"
               onClick={() => (setCurrentPage as (p: string) => void)('events')}
             >
-              <div className="text-2xl mb-1.5">{ev.emoji}</div>
-              <div className="text-[10px] font-black text-slate-700 uppercase tracking-wide leading-tight mb-1">{ev.name}</div>
-              <div className="text-[10px] text-slate-500">{ev.city}</div>
-              <div className="text-[10px] font-bold text-[#1B6B3A] mt-1">{ev.date}</div>
-              <span className="inline-block mt-1.5 text-[9px] font-bold bg-white/70 text-slate-600 px-1.5 py-0.5 rounded-full border border-slate-200">{ev.type}</span>
+              <div className="bg-slate-50 p-4 flex items-center justify-center border-b border-slate-100 group-hover:bg-emerald-50 transition-colors">
+                <span className="text-3xl grayscale group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110">{ev.emoji}</span>
+              </div>
+              <div className="p-4 flex-1 flex flex-col">
+                <span className="inline-block text-[9px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md self-start mb-2 tracking-widest uppercase">{ev.type}</span>
+                <div className="text-[11px] font-black text-slate-800 uppercase tracking-wide leading-tight mb-2 line-clamp-2">{ev.name}</div>
+                <div className="mt-auto space-y-1.5">
+                  <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium">
+                    <MapPin className="h-3 w-3 shrink-0" />
+                    <span className="truncate">{ev.city}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[10px] text-slate-700 font-bold">
+                    <Clock className="h-3 w-3 text-emerald-600 shrink-0" />
+                    <span>{ev.date}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
         </div>

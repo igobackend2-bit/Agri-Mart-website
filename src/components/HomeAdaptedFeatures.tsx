@@ -7,23 +7,26 @@ export function FarmStories() {
     { name: 'Meera', time: '2h ago', img: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&q=80', active: true },
     { name: 'Senthil', time: '5h ago', img: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=100&q=80', active: false },
     { name: 'Kiran', time: '1d ago', img: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=100&q=80', active: false },
-    { name: 'Dinesh', time: '1d ago', img: 'https://images.unsplash.com/photo-1585454028886-1a1c9a3bc3d2?w=100&q=80', active: false },
+    { name: 'Dinesh', time: '1d ago', img: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&q=80', active: false },
   ];
 
   return (
-    <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-200">
-      <h3 className="font-display font-black text-slate-800 text-lg mb-4">AgriMart Farmer Updates</h3>
-      <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
+    <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+      <div className="flex items-center justify-between mb-5">
+        <h3 className="font-display font-black text-slate-800 text-lg">AgriMart Farmer Updates</h3>
+        <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md uppercase tracking-widest">Stories</span>
+      </div>
+      <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-none">
         {stories.map((s, i) => (
-          <div key={i} className="flex flex-col items-center gap-1.5 cursor-pointer flex-shrink-0">
-            <div className={`rounded-full p-0.5 ${s.active ? 'bg-gradient-to-tr from-[#E8A020] to-[#1B6B3A]' : 'bg-slate-200'}`}>
-              <div className="bg-white p-0.5 rounded-full">
-                <img src={s.img} alt={s.name} className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover" />
+          <div key={i} className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0 group">
+            <div className={`rounded-full p-[3px] transition-transform duration-300 group-hover:scale-105 ${s.active ? 'bg-gradient-to-tr from-[#E8A020] via-rose-500 to-[#1B6B3A] shadow-md' : 'bg-slate-200'}`}>
+              <div className="bg-white p-[2px] rounded-full">
+                <img src={s.img} alt={s.name} className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full object-cover border border-slate-100" />
               </div>
             </div>
             <div className="text-center">
-              <span className="block text-[11px] font-bold text-slate-700">{s.name}</span>
-              <span className={`block text-[9px] font-black uppercase tracking-widest ${s.time === 'LIVE' ? 'text-red-500 animate-pulse' : 'text-slate-400'}`}>{s.time}</span>
+              <span className="block text-[11px] font-black text-slate-800 group-hover:text-emerald-700 transition-colors">{s.name}</span>
+              <span className={`block text-[9px] font-bold uppercase tracking-widest mt-0.5 ${s.time === 'LIVE' ? 'text-red-500 animate-pulse bg-red-50 inline-block px-1.5 rounded' : 'text-slate-400'}`}>{s.time}</span>
             </div>
           </div>
         ))}
