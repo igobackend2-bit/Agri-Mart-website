@@ -510,8 +510,8 @@ export default function App() {
         />
       )}
       <div>
-        {currentPage !== 'admin' && <NotificationBar />}
-        {currentPage !== 'admin' && (
+        {currentPage !== 'admin' && currentPage !== 'auth' && <NotificationBar />}
+        {currentPage !== 'admin' && currentPage !== 'auth' && (
         <Header
           lang={lang}
           setLang={setLang}
@@ -526,7 +526,7 @@ export default function App() {
           setUserProfile={setUserProfile}
         />
         )}
-        {currentPage !== 'admin' && <TrustBar />}
+        {currentPage !== 'admin' && currentPage !== 'auth' && <TrustBar />}
 
         {isInventoryLoading ? (
           <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
@@ -721,7 +721,7 @@ export default function App() {
         )}
       </div>
 
-      {currentPage !== 'admin' && <Footer setCurrentPage={navigateTo} setSelectedCategory={setSelectedCategory} />}
+      {currentPage !== 'admin' && currentPage !== 'auth' && <Footer setCurrentPage={navigateTo} setSelectedCategory={setSelectedCategory} />}
       {currentPage !== 'admin' && <AIAssistantWidget lang={lang} />}
 
       {/* First-visit login prompt */}
