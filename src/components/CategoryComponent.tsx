@@ -538,9 +538,26 @@ export default function CategoryComponent({
                 <option value="price-low">Price: Low to High</option>
                 <option value="price-high">Price: High to Low</option>
                 <option value="rating">Best Rated</option>
+                <option value="newest">Biggest Discount</option>
               </select>
             </div>
           </div>
+
+          {/* Active filter chips — clear individually or all */}
+          {(selectedProblem || selectedCrop || selectedBrands.length > 0 || minRating > 0 || inStockOnly || minDiscount > 0 || priceRange < 50000) && (
+            <div className="flex flex-wrap items-center gap-2">
+              {selectedProblem && <FilterChip label={selectedProblem} onClear={() => setSelectedProblem(null)} />}
+              {selectedCrop && <FilterChip label={`Crop: ${selectedCrop}`} onClear={() => setSelectedCrop(null)} />}
+              {selectedBrands.map((b) => (
+                <FilterChip key={b} label={b} onClear={() => setSelectedBrands(selectedBrands.filter((x) => x !== b))} />
+              ))}
+              {minRating > 0 && <FilterChip label={`${minRating}★ & up`} onClear={() => setMinRating(0)} />}
+              {inStockOnly && <FilterChip label="In stock" onClear={() => setInStockOnly(false)} />}
+              {minDiscount > 0 && <FilterChip label={`${minDiscount}%+ off`} onClear={() => setMinDiscount(0)} />}
+              {priceRange < 50000 && <FilterChip label={`Under ₹${priceRange.toLocaleString('en-IN')}`} onClear={() => setPriceRange(50000)} />}
+              <button onClick={resetFilters} className="text-xs font-black text-[#1B6B3A] hover:underline ml-1">Clear all</button>
+            </div>
+          )}
 
           {/* Product Cards Loop grid */}
           {noExactMatches && (
@@ -789,5 +806,15 @@ export default function CategoryComponent({
       )}
 
     </div>
+  );
+}
+
+// Removable active-filter chip (Shop toolbar)
+function FilterChip({ label, onClear }: { label: string; onClear: () => void }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-[#1B6B3A] text-xs font-bold pl-3 pr-2 py-1.5 rounded-full">
+      {label}
+      <button onClick={onClear} className="h-4 w-4 flex items-center justify-center rounded-full hover:bg-emerald-200 text-emerald-700" aria-label={`Remove ${label} filter`}>×</button>
+    </span>
   );
 }
