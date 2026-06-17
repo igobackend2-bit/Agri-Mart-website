@@ -5,6 +5,7 @@
 // nursery-indoor, nursery-outdoor.  Regenerate with the catalog build script.
 // ─────────────────────────────────────────────────────────────────────────────
 import { Product } from './types';
+import { NURSERY_TOOLS_PRODUCTS } from './nurseryToolsProducts';
 
 export const CATALOG_PRODUCTS: Product[] = [
   {
@@ -7158,5 +7159,6 @@ export const CATALOG_PRODUCTS: Product[] = [
   "crops": [
     "All Crops"
   ]
-}
+},
+  ...NURSERY_TOOLS_PRODUCTS
 ];
