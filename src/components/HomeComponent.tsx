@@ -565,30 +565,7 @@ export default function HomeComponent({
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* ── PAGE NAV (CityInstamart-style clean menu) ─────────────────── */}
-      <nav className="bg-white border-b border-slate-100 shadow-sm select-none sticky top-[132px] md:top-[82px] z-40">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-1 sm:gap-2 min-h-[50px] overflow-x-auto no-scrollbar whitespace-nowrap">
-          {[
-            { name: 'Home', action: () => { window.scrollTo({ top: 0, behavior: 'smooth' }); } },
-            { name: 'Shop', action: () => { setSelectedCategory(null); setCurrentPage('category'); } },
-            { name: 'Sellers', action: () => setCurrentPage('partners') },
-            { name: 'Services', action: () => setCurrentPage('services') },
-            { name: 'Farm Loans', action: () => setCurrentPage('farm-loans') },
-            { name: 'Contact Us', action: () => setCurrentPage('contact') },
-            { name: 'FAQs', action: () => setCurrentPage('knowledge-hub') },
-            { name: 'Blogs', action: () => setCurrentPage('blog') },
-          ].map((link) => (
-            <button
-              key={link.name}
-              onClick={link.action}
-              className="relative px-3.5 sm:px-5 py-3.5 text-[13px] font-semibold text-slate-600 hover:text-[#1B6B3A] transition group"
-            >
-              {link.name}
-              <span className="absolute left-1/2 -translate-x-1/2 bottom-2 h-0.5 w-0 group-hover:w-6 bg-[#1B6B3A] rounded-full transition-all duration-300" />
-            </button>
-          ))}
-        </div>
-      </nav>
+      {/* Page nav is now global in Header.tsx (shown on every page). */}
 
       {/* ── HERO BAND (Zepto/Blinkit-style q-commerce) ────────────────── */}
       <div className="relative overflow-hidden bg-gradient-to-br from-[#0B3D22] via-[#15522F] to-[#1B6B3A]">

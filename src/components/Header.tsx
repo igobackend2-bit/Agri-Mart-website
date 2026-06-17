@@ -425,14 +425,14 @@ export default function Header({
           </div>
 
           <div className="flex gap-4 items-center font-mono text-[10px] normal-case text-slate-400 py-2.5">
-            <span 
+            <span
               onClick={() => setCurrentPage('about')}
               className="hover:text-white cursor-pointer transition"
             >
               About IGO
             </span>
             <span>•</span>
-            <span 
+            <span
               onClick={() => setCurrentPage('contact')}
               className="hover:text-white cursor-pointer transition"
             >
@@ -441,6 +441,31 @@ export default function Header({
           </div>
         </div>
       </div>
+
+      {/* Global page navigation — shown on EVERY page */}
+      <nav className="bg-white border-b border-slate-100 shadow-sm select-none">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-1 sm:gap-2 min-h-[46px] overflow-x-auto no-scrollbar whitespace-nowrap">
+          {[
+            { name: 'Home', action: () => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); } },
+            { name: 'Shop', action: () => { setSelectedCategory(null); setCurrentPage('category'); } },
+            { name: 'Sellers', action: () => setCurrentPage('partners') },
+            { name: 'Services', action: () => setCurrentPage('services') },
+            { name: 'Farm Loans', action: () => setCurrentPage('farm-loans') },
+            { name: 'Contact Us', action: () => setCurrentPage('contact') },
+            { name: 'FAQs', action: () => setCurrentPage('knowledge-hub') },
+            { name: 'Blogs', action: () => setCurrentPage('blog') },
+          ].map((link) => (
+            <button
+              key={link.name}
+              onClick={link.action}
+              className="relative px-3.5 sm:px-5 py-3 text-[13px] font-semibold text-slate-600 hover:text-[#1B6B3A] transition group"
+            >
+              {link.name}
+              <span className="absolute left-1/2 -translate-x-1/2 bottom-1.5 h-0.5 w-0 group-hover:w-6 bg-[#1B6B3A] rounded-full transition-all duration-300" />
+            </button>
+          ))}
+        </div>
+      </nav>
 
       {/* Mobile Menu Panel */}
       {mobileMenuOpen && (
