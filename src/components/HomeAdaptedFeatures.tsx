@@ -42,7 +42,7 @@ export function LiveTrialFields() {
       <div className="grid grid-cols-1 md:grid-cols-3 h-auto md:h-[280px]">
         {/* Main Feed */}
         <div className="md:col-span-2 relative h-[200px] md:h-full group cursor-pointer">
-          <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=800&q=80" alt="Center Field" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition" />
+          <img src="/images/live_trial_field_india.png" alt="Center Field" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
           <div className="absolute bottom-4 left-4">
             <h4 className="font-bold text-lg">Center Field • Hosur</h4>
@@ -58,7 +58,7 @@ export function LiveTrialFields() {
         {/* Side Feeds & Weather */}
         <div className="flex flex-col h-full bg-slate-950">
           <div className="flex-1 relative border-b border-slate-800">
-            <img src="https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=400&q=80" alt="North Field" className="w-full h-full object-cover opacity-60" />
+            <img src="/images/live_trial_agronomist_india.png" alt="North Field" className="w-full h-full object-cover opacity-60" />
             <div className="absolute bottom-2 left-2 text-xs font-bold">North Field • Maize</div>
           </div>
           <div className="flex-1 bg-slate-900 p-4 flex flex-col justify-center">
@@ -82,11 +82,11 @@ export function LiveTrialFields() {
 
 export function IgoEcosystemCarousel() {
   const verticals = [
-    { name: 'IGO AgriMart', icon: Globe, color: 'text-emerald-500' },
-    { name: 'IGO Farm Loans', icon: TrendingUp, color: 'text-amber-500' },
-    { name: 'IGO Crop Care', icon: ShieldCheck, color: 'text-blue-500' },
-    { name: 'IGO Green Energy', icon: Sun, color: 'text-yellow-500' },
-    { name: 'IGO Nursery', icon: Sprout, color: 'text-lime-500' },
+    { name: 'IGO AgriMart', logo: '/images/Brands/6.jpg' },
+    { name: 'IGO Farm Loans', logo: '/images/Brands/16.jpg' },
+    { name: 'IGO Crop Care', logo: '/images/Brands/21.jpg' },
+    { name: 'IGO Green Energy', logo: '/images/Brands/5.jpg' },
+    { name: 'IGO Nursery', logo: '/images/Brands/14.jpg' },
   ];
 
   return (
@@ -98,8 +98,8 @@ export function IgoEcosystemCarousel() {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {verticals.map((v, i) => (
           <div key={i} className="bg-white border border-slate-200 rounded-2xl p-4 text-center hover:shadow-lg hover:border-[#1B6B3A] transition cursor-pointer group">
-            <div className="w-12 h-12 mx-auto bg-slate-50 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition">
-              <v.icon className={`w-6 h-6 ${v.color}`} />
+            <div className="w-16 h-16 mx-auto bg-slate-50 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition p-1">
+              <img src={v.logo} alt={v.name} className="w-full h-full object-contain mix-blend-multiply rounded-xl" onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/images/logo.jpg'; }} />
             </div>
             <h4 className="font-bold text-slate-800 text-xs">{v.name}</h4>
           </div>

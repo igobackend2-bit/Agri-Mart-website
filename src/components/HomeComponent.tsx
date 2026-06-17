@@ -931,21 +931,6 @@ export default function HomeComponent({
         </div>
       </section>
 
-      {/* ── BRANDS ROW ───────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-6 bg-white rounded-2xl shadow-sm mb-6">
-        <SectionHeader title="Brands" onViewAll={() => setCurrentPage('category')} />
-        <div className="flex gap-3 flex-wrap">
-          {SEED_BRANDS.slice(0, 12).map((b, i) => (
-            <button
-              key={i}
-              onClick={() => handleBrandPillClick(b.name)}
-              className="bg-slate-50 border border-slate-200 hover:border-[#1B6B3A] hover:bg-emerald-50 text-slate-700 hover:text-[#1B6B3A] text-xs font-semibold px-4 py-2 rounded-xl transition cursor-pointer"
-            >
-              {b.name}
-            </button>
-          ))}
-        </div>
-      </section>
 
       {/* ── LIVE COMMODITY PRICE TICKER (FarmerShrine-style) ───────────── */}
       <div className="bg-emerald-950 border-b border-emerald-900 overflow-hidden py-2.5">
@@ -1425,7 +1410,7 @@ export default function HomeComponent({
                     {brand.status === 'soon' && (
                       <span className="absolute top-3 right-3 bg-[#E8A020] text-slate-900 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full">Coming Soon</span>
                     )}
-                    <div className="bg-white w-28 h-28 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center text-center p-3 overflow-hidden">
+                    <div className="bg-white w-36 h-36 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center text-center p-1 overflow-hidden">
                       <img
                         src={brand.logo}
                         alt={brand.title}

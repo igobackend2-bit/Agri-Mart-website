@@ -381,7 +381,7 @@ export const SEED_POSTS: BlogPost[] = [
     category: 'Crop Advice',
     author: 'Dr. Radha Krishnan (Agronomy Consultant)',
     readTime: '5 min read',
-    image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=600&q=80',
+    image: '/images/post_paddy_india.png',
     createdAt: '2026-05-18T10:00:00Z',
     tags: ['Paddy', 'Biofertilizers', 'Cauvery Delta', 'SRI']
   },
@@ -394,7 +394,7 @@ export const SEED_POSTS: BlogPost[] = [
     category: 'Soil Health',
     author: 'Rajesh Kumar (Organic Farmer)',
     readTime: '4 min read',
-    image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=600&q=80',
+    image: '/images/post_vermicompost.png',
     createdAt: '2026-05-25T11:00:00Z',
     tags: ['Vermicompost', 'Soil Enrichment', 'Organic', 'Manures']
   },
@@ -407,7 +407,7 @@ export const SEED_POSTS: BlogPost[] = [
     category: 'Farm Tech',
     author: 'Anita Devendra (Agribusiness Engineer)',
     readTime: '6 min read',
-    image: 'https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?auto=format&fit=crop&w=600&q=80',
+    image: '/images/post_drip_automation.png',
     createdAt: '2026-06-01T09:00:00Z',
     tags: ['Drip Systems', 'IoT Sensors', 'Automation', 'Conservation']
   }
