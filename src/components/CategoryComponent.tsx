@@ -577,61 +577,58 @@ export default function CategoryComponent({
               {filteredItems.map((p) => (
                 <div
                   key={p.id}
-                  className="bg-white border border-slate-200/60 rounded-xl overflow-hidden hover:shadow-xl hover:border-[#1B6B3A] transition flex flex-col justify-between"
+                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-emerald-900/5 hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between group"
                 >
-                  <div className="cursor-pointer" onClick={() => handleProductCardClick(p)}>
-                    <div className="relative h-44 bg-slate-50">
-                      <img src={p.images?.[0] || '/catalog/nursery-essentials/Pots.png'} alt={p.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} />
+                  <div className="cursor-pointer relative" onClick={() => handleProductCardClick(p)}>
+                    <div className="relative h-48 bg-slate-50 overflow-hidden">
+                      <img src={p.images?.[0] || '/catalog/nursery-essentials/Pots.png'} alt={p.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} />
+                      
+                      {/* Dark overlay on hover with Quick View text */}
+                      <div className="absolute inset-0 bg-slate-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span className="bg-white text-emerald-900 text-[11px] font-black uppercase tracking-widest px-4 py-2 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                          Quick View
+                        </span>
+                      </div>
+
                       {p.isIgoOwn && (
-                        <span className="absolute top-2 left-2 bg-[#1B6B3A] text-white text-[9px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-widest border border-emerald-600">
+                        <span className="absolute top-3 left-3 bg-[#1B6B3A] text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-widest shadow-sm z-10">
                           IGO Brand
                         </span>
                       )}
                       {p.stock === 0 ? (
-                      <span className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
-                        <span className="bg-slate-800 text-white text-[10px] font-black px-2.5 py-1 rounded-full">OUT OF STOCK</span>
-                      </span>
-                    ) : p.stock < 20 ? (
-                      <span className="absolute bottom-2 left-2 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded animate-pulse z-10">
-                        Only {p.stock} left
-                      </span>
-                    ) : null}
-                    {p.discount > 0 && (
-                        <span className="absolute top-2 right-2 bg-[#D94F3D] text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                        <span className="absolute inset-0 bg-white/80 backdrop-blur-[2px] flex items-center justify-center z-10">
+                          <span className="bg-slate-900 text-white text-[10px] font-black px-3 py-1.5 rounded-lg shadow-sm">OUT OF STOCK</span>
+                        </span>
+                      ) : p.stock < 20 ? (
+                        <span className="absolute bottom-3 left-3 bg-red-500 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm animate-pulse z-10">
+                          Only {p.stock} left
+                        </span>
+                      ) : null}
+                      {p.discount > 0 && (
+                        <span className="absolute top-3 right-3 bg-[#E8A020] text-emerald-950 text-[10px] font-black px-2 py-1 rounded-md shadow-sm z-10">
                           {p.discount}% OFF
                         </span>
                       )}
                     </div>
-
-                    <div className="p-4 flex-1">
-                      <div className="text-[10px] uppercase text-[#E8A020] font-black tracking-widest leading-none">
-                        {p.brand}
-                      </div>
-                      <h4 className="font-display font-bold text-slate-800 text-sm line-clamp-2 mt-1 min-h-[40px]">
-                        {p.name}
-                      </h4>
-                      <p className="text-[11px] text-slate-400 mt-1 uppercase font-semibold">
-                        {p.subcategory}
-                      </p>
-
-                      <div className="flex items-center gap-1 mt-3">
-                        <div className="flex text-yellow-400 text-xs">★ ★ ★ ★ ★</div>
-                        <span className="text-[10px] text-slate-400">({p.reviewCount})</span>
-                      </div>
-                    </div>
                   </div>
 
-                  <div className="px-4 pb-4 pt-2 border-t border-slate-50 flex items-center justify-between gap-2 mt-auto select-none">
-                    <div className="flex flex-col">
-                      <div>
-                        {p.mrp > p.price && (
-                          <div className="text-xs text-slate-400 line-through leading-none">₹{p.mrp}</div>
-                        )}
-                        <div className="font-display font-black text-slate-900 text-base leading-tight">₹{p.price}</div>
+                  <div className="p-4 flex-1 flex flex-col">
+                    <div className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1 line-clamp-1">{p.brand}</div>
+                    <h5 className="font-display font-black text-slate-800 text-[14px] leading-snug line-clamp-2 group-hover:text-[#1B6B3A] transition-colors cursor-pointer" onClick={() => handleProductCardClick(p)}>
+                      {p.name}
+                    </h5>
+                    
+                    <div className="flex items-center gap-1.5 mt-2">
+                      <div className="flex text-yellow-400 text-[10px]">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <span key={i}>{i < Math.floor(p.rating) ? '★' : '☆'}</span>
+                        ))}
                       </div>
-                      <label className="flex items-center gap-1 mt-1 cursor-pointer">
-                        <input 
-                          type="checkbox" 
+                      <span className="text-[10px] font-bold text-slate-400">({p.reviewCount})</span>
+                    </div>
+
+                    <div className="mt-auto pt-4 flex items-center justify-between">
+                      <div>
                           checked={!!compareList.find(x => x.id === p.id)}
                           onChange={() => toggleCompare(p)}
                           className="rounded text-[#1B6B3A] focus:ring-[#1B6B3A] h-3 w-3 border-slate-300"

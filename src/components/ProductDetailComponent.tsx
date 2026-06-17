@@ -233,33 +233,38 @@ export default function ProductDetailComponent({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white p-6 sm:p-10 rounded-xl border border-slate-200">
         
         {/* Gallery column */}
-        <div className="space-y-4">
-          <div className="h-[360px] sm:h-[450px] bg-slate-50 border border-slate-100 rounded-xl overflow-hidden relative shadow-inner">
-            <img src={activeImage} alt={product.name} className="w-full h-full object-cover" />
+        <div className="space-y-4 lg:sticky lg:top-24 h-fit">
+          <div className="h-[360px] sm:h-[480px] bg-[#F7F9F4] border border-slate-100 rounded-2xl overflow-hidden relative shadow-sm group">
+            <img src={activeImage} alt={product.name} className="w-full h-full object-contain mix-blend-multiply p-4 transition-transform duration-500 group-hover:scale-105" />
             
             {product.isIgoOwn && (
-              <span className="absolute top-4 left-4 bg-[#1B6B3A] text-white text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-widest border border-emerald-600">
+              <span className="absolute top-4 left-4 bg-[#1B6B3A] text-white text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-widest border border-emerald-600 shadow-sm">
                 IGO BRAND
+              </span>
+            )}
+            
+            {/* Discount Badge on Gallery */}
+            {product.mrp > product.price && (
+              <span className="absolute top-4 right-4 bg-[#D94F3D] text-white text-[11px] font-black uppercase px-3 py-1 rounded-full shadow-sm">
+                {product.discount}% OFF
               </span>
             )}
           </div>
 
           {/* Thumbnails (Supports up to 5 elements) */}
-          <div className="flex gap-3">
-            {/* Always seed 4 identical images with different filters or Unsplash backups if none available */}
+          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
             {Array.from({ length: 4 }).map((_, idx) => {
-              // Cycle through secondary images if available, else repeat the main
               const imgUrl = product.images?.[idx] || product.images?.[0] || '/catalog/nursery-essentials/Pots.png';
               const isActive = activeImage === imgUrl;
               return (
                 <div
                   key={idx}
                   onClick={() => setActiveImage(imgUrl)}
-                  className={`h-16 w-16 bg-slate-50 rounded-lg overflow-hidden border-2 cursor-pointer transition select-none ${
-                    isActive ? 'border-[#1B6B3A] scale-105' : 'border-slate-100 hover:border-slate-300'
+                  className={`h-20 w-20 bg-[#F7F9F4] rounded-xl overflow-hidden border-2 cursor-pointer transition-all duration-300 select-none flex-shrink-0 ${
+                    isActive ? 'border-[#1B6B3A] shadow-md ring-2 ring-emerald-50' : 'border-slate-100 hover:border-slate-300 opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <img src={imgUrl} alt={`Thumbnail ${idx}`} className="h-full w-full object-cover" />
+                  <img src={imgUrl} alt={`Thumbnail ${idx}`} className="h-full w-full object-cover mix-blend-multiply" />
                 </div>
               );
             })}
@@ -413,24 +418,24 @@ export default function ProductDetailComponent({
               ))}
             </div>
 
-            {/* Stepper + Action CTA tools */}
-            <div className="flex items-center gap-4 flex-wrap pt-4">
+            {/* Stepper + Action CTA tools (Sticky on mobile) */}
+            <div className="fixed sm:relative bottom-0 left-0 right-0 sm:bottom-auto sm:left-auto sm:right-auto bg-white sm:bg-transparent p-4 sm:p-0 border-t border-slate-200 sm:border-0 z-50 sm:z-auto flex items-center gap-3 sm:gap-4 flex-wrap sm:pt-4 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] sm:shadow-none">
               {/* Stepper counter */}
-              <div className="flex items-center border border-slate-300 rounded-lg overflow-hidden shrink-0 select-none bg-slate-50">
+              <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden shrink-0 select-none bg-slate-50 h-12 shadow-sm">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2.5 hover:bg-slate-100 active:bg-slate-200 text-slate-600 transition h-full inline-flex items-center"
+                  className="px-4 hover:bg-slate-200 active:bg-slate-300 text-slate-600 transition h-full inline-flex items-center"
                 >
-                  <Minus className="h-3.5 w-3.5" />
+                  <Minus className="h-4 w-4" />
                 </button>
-                <span className="font-display font-bold text-sm px-4 text-slate-800 min-w-[24px] text-center">
+                <span className="font-display font-black text-sm px-2 text-slate-900 min-w-[32px] text-center">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="p-2.5 hover:bg-slate-100 active:bg-slate-200 text-slate-600 transition h-full inline-flex items-center"
+                  className="px-4 hover:bg-slate-200 active:bg-slate-300 text-slate-600 transition h-full inline-flex items-center"
                 >
-                  <Plus className="h-3.5 w-3.5" />
+                  <Plus className="h-4 w-4" />
                 </button>
               </div>
 
@@ -439,24 +444,27 @@ export default function ProductDetailComponent({
                 onClick={() => {
                   addToCart(cartProduct, quantity);
                 }}
-                className="bg-[#1B6B3A] hover:bg-emerald-950 text-white font-extrabold text-xs px-6 py-3 rounded-lg flex items-center justify-center gap-2 flex-1 min-w-[140px] shadow transition transform active:scale-95 hover:scale-[1.02] select-none cursor-pointer"
+                className="bg-[#1B6B3A] hover:bg-emerald-900 text-white font-black text-sm px-6 py-0 h-12 rounded-xl flex items-center justify-center gap-2 flex-1 min-w-[140px] shadow-lg shadow-emerald-900/20 transition transform active:scale-95 hover:translate-y-[-2px] select-none cursor-pointer"
               >
-                <ShoppingCart className="h-4 w-4" />
+                <ShoppingCart className="h-5 w-5" />
                 <span>{t.addToCart}</span>
               </button>
 
               {/* Wishlist Heart toggle */}
               <button
                 onClick={() => toggleWishlist(product.id)}
-                className={`p-3 border rounded-lg transition transform active:scale-90 hover:scale-110 shrink-0 cursor-pointer ${
+                className={`h-12 w-12 flex items-center justify-center border rounded-xl transition transform active:scale-90 hover:scale-105 shrink-0 cursor-pointer shadow-sm ${
                   isLiked 
                     ? 'border-[#D94F3D] bg-red-50 text-[#D94F3D]' 
-                    : 'border-slate-300 text-slate-400 hover:text-[#D94F3D] hover:border-[#D94F3D]'
+                    : 'border-slate-200 text-slate-400 hover:text-[#D94F3D] hover:border-[#D94F3D] bg-white'
                 }`}
               >
-                <Heart className={`h-4.5 w-4.5 transition-transform duration-300 ${isLiked ? 'fill-current scale-110' : ''}`} />
+                <Heart className={`h-5 w-5 transition-transform duration-300 ${isLiked ? 'fill-current scale-110' : ''}`} />
               </button>
             </div>
+            
+            {/* Spacer for mobile sticky bar */}
+            <div className="h-20 sm:hidden"></div>
           </div>
 
           {/* Green WhatsApp direct messaging CTA block */}
@@ -528,19 +536,19 @@ export default function ProductDetailComponent({
       )}
 
       {/* Description tabs, instructions, reviews list */}
-      <section className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 mt-12 space-y-6">
+      <section className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 mt-12 space-y-8 shadow-sm">
         {/* Tabs picker bar */}
-        <div className="flex border-b border-slate-100 flex-wrap">
+        <div className="flex flex-wrap gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
           {(['Overview', 'Usage', 'Composition', 'Reviews', 'Video'] as const).map((tab) => {
             const isActive = activeTab === tab;
             return (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 sm:px-6 py-3 font-display font-extrabold text-xs sm:text-sm border-b-2 transition ${
+                className={`px-5 sm:px-6 py-2.5 font-display font-extrabold text-xs sm:text-sm rounded-lg transition-all duration-300 ${
                   isActive 
-                    ? 'border-[#1B6B3A] text-[#1B6B3A]' 
-                    : 'border-transparent text-slate-400 hover:text-slate-600'
+                    ? 'bg-white text-[#1B6B3A] shadow-sm ring-1 ring-slate-200/50 transform scale-[1.02]' 
+                    : 'text-slate-500 hover:text-slate-800 hover:bg-slate-200/50'
                 }`}
               >
                 {tab === 'Overview' && 'Product Overview'}
