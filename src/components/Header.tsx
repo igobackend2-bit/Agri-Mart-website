@@ -203,7 +203,7 @@ export default function Header({
           </button>
 
           {/* Autocomplete Search Bar */}
-          <div ref={searchRef} className="hidden md:block relative w-56 lg:w-72 shrink-0">
+          <div ref={searchRef} className="hidden md:block relative flex-1 max-w-2xl mx-4 sm:mx-8">
             <form onSubmit={handleSearchSubmit} className="relative">
               <input
                 type="text"
@@ -393,60 +393,7 @@ export default function Header({
         </form>
       </div>
 
-      {/* Desktop Sub-Navigation Bar */}
-      <div className="hidden md:block bg-slate-900 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-slate-300 select-none">
-          <div className="flex gap-5 items-center py-2.5">
 
-
-
-            {/* Custom Interactive Module Pages */}
-            <span 
-              onClick={() => setCurrentPage('farm-loans')}
-              className="hover:text-emerald-400 text-teal-300 font-bold normal-case cursor-pointer transition py-0.5 flex items-center gap-1"
-            >
-              <span>%</span>
-              <span>{lang === 'ta' ? 'விவசாய கடன்கள்' : 'Farm Loans'}</span>
-            </span>
-            <span 
-              onClick={() => setCurrentPage('academy')}
-              className="hover:text-emerald-400 text-teal-300 font-bold normal-case cursor-pointer transition py-0.5 flex items-center gap-1"
-            >
-              <span>🎓</span>
-              <span>IGO Academy</span>
-            </span>
-            <span 
-              onClick={() => setCurrentPage('services')}
-              className="hover:text-[#E8A020] text-amber-200 font-bold normal-case cursor-pointer transition py-0.5 flex items-center gap-1"
-            >
-              <span>★</span>
-              <span>Expert Services</span>
-            </span>
-            <span 
-              onClick={() => setCurrentPage('blog')}
-              className="hover:text-white cursor-pointer transition normal-case font-medium py-0.5"
-            >
-              Advices Blog
-            </span>
-          </div>
-
-          <div className="flex gap-4 items-center font-mono text-[10px] normal-case text-slate-400 py-2.5">
-            <span
-              onClick={() => setCurrentPage('about')}
-              className="hover:text-white cursor-pointer transition"
-            >
-              About IGO
-            </span>
-            <span>•</span>
-            <span
-              onClick={() => setCurrentPage('contact')}
-              className="hover:text-white cursor-pointer transition"
-            >
-              Contact Support
-            </span>
-          </div>
-        </div>
-      </div>
 
       {/* Global page navigation — shown on EVERY page */}
       <nav className="bg-white border-b border-slate-100 shadow-sm select-none">
