@@ -629,22 +629,22 @@ export default function CategoryComponent({
 
                     <div className="mt-auto pt-4 flex items-center justify-between">
                       <div>
-                          checked={!!compareList.find(x => x.id === p.id)}
-                          onChange={() => toggleCompare(p)}
-                          className="rounded text-[#1B6B3A] focus:ring-[#1B6B3A] h-3 w-3 border-slate-300"
-                        />
-                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Compare</span>
-                      </label>
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="font-display font-black text-lg text-slate-900">₹{p.price.toLocaleString('en-IN')}</span>
+                          {p.mrp > p.price && (
+                            <span className="text-[11px] text-slate-400 line-through">₹{p.mrp.toLocaleString('en-IN')}</span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <button
+                        className="bg-[#1B6B3A] hover:bg-emerald-950 text-white text-xs font-bold px-3 py-2 rounded-lg transition transform active:scale-95 hover:scale-105 shrink-0 cursor-pointer"
+                        onClick={(e) => { e.stopPropagation(); addToCart(p); }}
+                        title="Add to Cart"
+                      >
+                        + {t.addToCart}
+                      </button>
                     </div>
-
-                    <button
-                      onClick={() => {
-                        addToCart(p);
-                      }}
-                      className="bg-[#1B6B3A] hover:bg-emerald-950 text-white text-xs font-bold px-3 py-2 rounded-lg transition transform active:scale-95 hover:scale-105 shrink-0 cursor-pointer"
-                    >
-                      + {t.addToCart}
-                    </button>
                   </div>
                 </div>
               ))}
