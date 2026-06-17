@@ -496,7 +496,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9F4] text-slate-800 font-sans flex flex-col justify-between overflow-x-hidden w-full relative">
+    <div className="min-h-screen bg-[#F7F9F4] text-slate-800 font-sans flex flex-col justify-between overflow-x-clip w-full relative">
       {authGuardVisible && (
         <AuthGuardPopup 
           onLogin={() => {

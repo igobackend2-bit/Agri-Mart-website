@@ -28,15 +28,13 @@ export async function requestOtp(phone: string): Promise<{ mode: 'sms' | 'demo';
         return { mode: 'sms' };
       }
     }
-  } catch { /* backend unreachable — fall back to demo */ }
+  } catch {
+    throw new Error('Network error — could not reach the OTP service. Please check your connection and try again.');
+  }
 
-  // Demo fallback (no SMS): generate + show the code on screen.
-  const code = String(Math.floor(100000 + Math.random() * 900000));
-  try {
-    sessionStorage.setItem('igo_otp_' + phone, code);
-    sessionStorage.removeItem('igo_otp_token_' + phone);
-  } catch { /* ignore */ }
-  return { mode: 'demo', demoCode: code };
+  // Real SMS only — NO demo fallback. If the provider didn't confirm delivery,
+  // surface an error so the customer can retry (we never show a code on screen).
+  throw new Error('Could not send the OTP right now. Please try again in a moment.');
 }
 
 /** Verify an entered OTP. */
