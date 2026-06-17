@@ -159,6 +159,7 @@ export default function CategoryComponent({
         'forestry': ['forestry'],
         'lab-testing': ['lab & testing'],
         'agricultural-services': ['agricultural services'],
+        'nursery-tools': ['nursery tools'],
         // Extra slugs from HomeComponent sticky nav + potential Header categories
         'bioproducts': ['organic & bio inputs', 'bio fertilizer', 'bioproducts', 'bio-stimulants', 'organic bio-boosters', 'bioproducts', 'bio inputs', 'natural farming'],
         'agri-tools': ['farm tools & implements', 'hand tools', 'garden tools', 'tools & accessories', 'agri tools', 'precision tools & equipments'],
@@ -266,6 +267,7 @@ export default function CategoryComponent({
       { emoji: '🪴', label: 'Indoor Plants', slug: 'indoor-plants', bg: 'from-teal-50 to-teal-100' },
       { emoji: '🌳', label: 'Outdoor Plants', slug: 'outdoor-plants-trees', bg: 'from-green-50 to-green-100' },
       { emoji: '🔧', label: 'Precision Tools & Equipments', slug: 'precision-tools-equipments', bg: 'from-slate-50 to-slate-200' },
+      { emoji: '🪴', label: 'Nursery Tools', slug: 'nursery-tools', bg: 'from-lime-50 to-teal-100' },
     ];
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -380,6 +382,7 @@ export default function CategoryComponent({
                 { label: '🪴 Indoor Plants', slug: 'indoor-plants' },
                 { label: '🌳 Outdoor Plants', slug: 'outdoor-plants-trees' },
                 { label: '🔧 Tools & Equipments', slug: 'precision-tools-equipments' },
+                { label: '🪴 Nursery Tools', slug: 'nursery-tools' },
               ] as const).map((c) => (
                 <button
                   key={c.label}
