@@ -55,10 +55,20 @@ export default function Footer({ setCurrentPage, setSelectedCategory }: FooterPr
               Need expert agri advice? Talk to our farming specialists — free consultation!
             </p>
           </div>
-          <a href="tel:+917397785803"
-            className="bg-[#E8A020] text-emerald-950 font-black text-xs px-5 py-2.5 rounded-lg hover:bg-amber-400 transition whitespace-nowrap flex items-center gap-2 shrink-0">
-            <Phone className="h-3.5 w-3.5" /> Call +91 73977 85803
-          </a>
+          <div className="flex flex-wrap gap-2 justify-center sm:justify-end">
+            <a href="tel:+917397789805"
+              className="bg-[#E8A020] text-emerald-950 font-black text-xs px-4 py-2 rounded-lg hover:bg-amber-400 transition whitespace-nowrap flex items-center gap-2 shrink-0">
+              <Phone className="h-3.5 w-3.5" /> +91 73977 89805
+            </a>
+            <a href="tel:+917397789804"
+              className="bg-[#E8A020] text-emerald-950 font-black text-xs px-4 py-2 rounded-lg hover:bg-amber-400 transition whitespace-nowrap flex items-center gap-2 shrink-0">
+              <Phone className="h-3.5 w-3.5" /> +91 73977 89804
+            </a>
+            <a href="tel:+917397789803"
+              className="bg-[#E8A020] text-emerald-950 font-black text-xs px-4 py-2 rounded-lg hover:bg-amber-400 transition whitespace-nowrap flex items-center gap-2 shrink-0">
+              <Phone className="h-3.5 w-3.5" /> +91 73977 89803
+            </a>
+          </div>
         </div>
       </div>
 
