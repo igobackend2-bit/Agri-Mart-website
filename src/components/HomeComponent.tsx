@@ -568,7 +568,13 @@ export default function HomeComponent({
       {/* Page nav is now global in Header.tsx (shown on every page). */}
 
       {/* ── HERO BAND (Zepto/Blinkit-style q-commerce) ────────────────── */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#0B3D22] via-[#15522F] to-[#1B6B3A]">
+      <div className="relative overflow-hidden bg-[#0B3D22]">
+        <img
+          src="/images/home_hero_bg.png"
+          alt="Modern Agricultural Farm"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/80 via-emerald-900/60 to-emerald-950/90" />
         <div className="absolute -top-24 -right-24 h-80 w-80 bg-lime-400/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-28 -left-20 h-96 w-96 bg-emerald-300/10 rounded-full blur-3xl" />
 
