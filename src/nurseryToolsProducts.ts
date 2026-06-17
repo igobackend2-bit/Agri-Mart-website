@@ -3438,4 +3438,1617 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
       "All Crops"
     ]
   }
+,
+  {
+    "id": "nt-new-1781695055436-0",
+    "name": "16L SINGLE PUMP SPRAYER",
+    "displayName": "16L SINGLE PUMP SPRAYER",
+    "slug": "16l-single-pump-sprayer-nt-new-1781695055436-0",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/16L SINGLE PUMP SPRAYER.jpg"
+    ],
+    "description": "16L SINGLE PUMP SPRAYER - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-1",
+    "name": "18L DOUBLE PUMP SPRAYER",
+    "displayName": "18L DOUBLE PUMP SPRAYER",
+    "slug": "18l-double-pump-sprayer-nt-new-1781695055436-1",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/18L DOUBLE PUMP SPRAYER.jpg"
+    ],
+    "description": "18L DOUBLE PUMP SPRAYER - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-2",
+    "name": "4 way Fogger, Threaded type",
+    "displayName": "4 way Fogger, Threaded type",
+    "slug": "4-way-fogger-threaded-type-nt-new-1781695055436-2",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/4 way Fogger, Threaded type.jpeg"
+    ],
+    "description": "4 way Fogger, Threaded type - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-3",
+    "name": "4 way Fogger",
+    "displayName": "4 way Fogger",
+    "slug": "4-way-fogger-nt-new-1781695055436-3",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/4 way Fogger.jpeg"
+    ],
+    "description": "4 way Fogger - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-4",
+    "name": "AGRICULTURE POLYWIRE",
+    "displayName": "AGRICULTURE POLYWIRE",
+    "slug": "agriculture-polywire-nt-new-1781695055436-4",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/AGRICULTURE POLYWIRE.jpeg"
+    ],
+    "description": "AGRICULTURE POLYWIRE - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-5",
+    "name": "Air Circulation Fan 500 mm",
+    "displayName": "Air Circulation Fan 500 mm",
+    "slug": "air-circulation-fan-500-mm-nt-new-1781695055436-5",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Air Circulation Fan 500 mm.jpeg"
+    ],
+    "description": "Air Circulation Fan 500 mm - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-6",
+    "name": "ALUMINIUM PROFILE",
+    "displayName": "ALUMINIUM PROFILE",
+    "slug": "aluminium-profile-nt-new-1781695055436-6",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/ALUMINIUM PROFILE.jpeg"
+    ],
+    "description": "ALUMINIUM PROFILE - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-7",
+    "name": "Calcium Nitrate 1 Kg",
+    "displayName": "Calcium Nitrate 1 Kg",
+    "slug": "calcium-nitrate-1-kg-nt-new-1781695055436-7",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Calcium Nitrate 1 Kg.jpeg"
+    ],
+    "description": "Calcium Nitrate 1 Kg - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-8",
+    "name": "Cluster clamp",
+    "displayName": "Cluster clamp",
+    "slug": "cluster-clamp-nt-new-1781695055436-8",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Cluster clamp.png"
+    ],
+    "description": "Cluster clamp - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-9",
+    "name": "COOLING PAD FRAME UPVC 150 mm",
+    "displayName": "COOLING PAD FRAME UPVC 150 mm",
+    "slug": "cooling-pad-frame-upvc-150-mm-nt-new-1781695055436-9",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/COOLING PAD FRAME UPVC 150 mm.jpg"
+    ],
+    "description": "COOLING PAD FRAME UPVC 150 mm - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-10",
+    "name": "COOLING PAD FRAMEAluminum 100 mm",
+    "displayName": "COOLING PAD FRAMEAluminum 100 mm",
+    "slug": "cooling-pad-framealuminum-100-mm-nt-new-1781695055436-10",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/COOLING PAD FRAMEAluminum 100 mm.jpeg"
+    ],
+    "description": "COOLING PAD FRAMEAluminum 100 mm - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-11",
+    "name": "CROP NET 135 Sq mtr",
+    "displayName": "CROP NET 135 Sq mtr",
+    "slug": "crop-net-135-sq-mtr-nt-new-1781695055436-11",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/CROP NET 135 Sq mtr.jpeg"
+    ],
+    "description": "CROP NET 135 Sq mtr - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-12",
+    "name": "Dutch Bucket System 20 Planter",
+    "displayName": "Dutch Bucket System 20 Planter",
+    "slug": "dutch-bucket-system-20-planter-nt-new-1781695055436-12",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Dutch Bucket System 20 Planter.jpg"
+    ],
+    "description": "Dutch Bucket System 20 Planter - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-13",
+    "name": "Ec calibration liquid- 500 ml",
+    "displayName": "Ec calibration liquid- 500 ml",
+    "slug": "ec-calibration-liquid-500-ml-nt-new-1781695055436-13",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Ec calibration liquid- 500 ml.jpeg"
+    ],
+    "description": "Ec calibration liquid- 500 ml - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-14",
+    "name": "Ec calibration liquid- Sache",
+    "displayName": "Ec calibration liquid- Sache",
+    "slug": "ec-calibration-liquid-sache-nt-new-1781695055436-14",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Ec calibration liquid- Sache.jpeg"
+    ],
+    "description": "Ec calibration liquid- Sache - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-15",
+    "name": "Ec Meter Brand-Hanna HI98318",
+    "displayName": "Ec Meter Brand-Hanna HI98318",
+    "slug": "ec-meter-brand-hanna-hi98318-nt-new-1781695055436-15",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Ec Meter Brand-Hanna HI98318.jpeg"
+    ],
+    "description": "Ec Meter Brand-Hanna HI98318 - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-16",
+    "name": "Ec Meter Brand-HM Com 80",
+    "displayName": "Ec Meter Brand-HM Com 80",
+    "slug": "ec-meter-brand-hm-com-80-nt-new-1781695055436-16",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Ec Meter Brand-HM Com 80.jpeg"
+    ],
+    "description": "Ec Meter Brand-HM Com 80 - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-17",
+    "name": "EVAPORATIVE COOLING PAD 100 mm",
+    "displayName": "EVAPORATIVE COOLING PAD 100 mm",
+    "slug": "evaporative-cooling-pad-100-mm-nt-new-1781695055436-17",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/EVAPORATIVE COOLING PAD 100 mm.jpeg"
+    ],
+    "description": "EVAPORATIVE COOLING PAD 100 mm - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-18",
+    "name": "EVAPORATIVE COOLING PAD 150 mm",
+    "displayName": "EVAPORATIVE COOLING PAD 150 mm",
+    "slug": "evaporative-cooling-pad-150-mm-nt-new-1781695055436-18",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/EVAPORATIVE COOLING PAD 150 mm.jpeg"
+    ],
+    "description": "EVAPORATIVE COOLING PAD 150 mm - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-19",
+    "name": "Exhaust Fan 24 inch",
+    "displayName": "Exhaust Fan 24 inch",
+    "slug": "exhaust-fan-24-inch-nt-new-1781695055436-19",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Exhaust Fan 24 inch.jpeg"
+    ],
+    "description": "Exhaust Fan 24 inch - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-20",
+    "name": "Flat Bed Hydroponic System 200 Planter",
+    "displayName": "Flat Bed Hydroponic System 200 Planter",
+    "slug": "flat-bed-hydroponic-system-200-planter-nt-new-1781695055436-20",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Flat Bed Hydroponic System 200 Planter.jpeg"
+    ],
+    "description": "Flat Bed Hydroponic System 200 Planter - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055436-21",
+    "name": "Flat Bed Hydroponic System 30 Planter",
+    "displayName": "Flat Bed Hydroponic System 30 Planter",
+    "slug": "flat-bed-hydroponic-system-30-planter-nt-new-1781695055436-21",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Flat Bed Hydroponic System 30 Planter.jpeg"
+    ],
+    "description": "Flat Bed Hydroponic System 30 Planter - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-22",
+    "name": "Full spectrun NX 4 Spectrum 1 Feet",
+    "displayName": "Full spectrun NX 4 Spectrum 1 Feet",
+    "slug": "full-spectrun-nx-4-spectrum-1-feet-nt-new-1781695055437-22",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Full spectrun NX 4 Spectrum 1 Feet.jpeg"
+    ],
+    "description": "Full spectrun NX 4 Spectrum 1 Feet - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-23",
+    "name": "GHGL R Full spectrun NX 4B Spectrum Round",
+    "displayName": "GHGL R Full spectrun NX 4B Spectrum Round",
+    "slug": "ghgl-r-full-spectrun-nx-4b-spectrum-round-nt-new-1781695055437-23",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/GHGL R Full spectrun NX 4B Spectrum Round.webp"
+    ],
+    "description": "GHGL R Full spectrun NX 4B Spectrum Round - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-24",
+    "name": "GHGL S Full spectrun NX 4B Spectrum Rectangular",
+    "displayName": "GHGL S Full spectrun NX 4B Spectrum Rectangular",
+    "slug": "ghgl-s-full-spectrun-nx-4b-spectrum-rectangular-nt-new-1781695055437-24",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/GHGL S Full spectrun NX 4B Spectrum Rectangular.jpg"
+    ],
+    "description": "GHGL S Full spectrun NX 4B Spectrum Rectangular - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-25",
+    "name": "Grafting clip",
+    "displayName": "Grafting clip",
+    "slug": "grafting-clip-nt-new-1781695055437-25",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Grafting clip.jpeg"
+    ],
+    "description": "Grafting clip - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-26",
+    "name": "Green Pet 20 Planter",
+    "displayName": "Green Pet 20 Planter",
+    "slug": "green-pet-20-planter-nt-new-1781695055437-26",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Green Pet 20 Planter.jpeg"
+    ],
+    "description": "Green Pet 20 Planter - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-27",
+    "name": "Grow Tower 48 Planter",
+    "displayName": "Grow Tower 48 Planter",
+    "slug": "grow-tower-48-planter-nt-new-1781695055437-27",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Grow Tower 48 Planter.jpg"
+    ],
+    "description": "Grow Tower 48 Planter - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-28",
+    "name": "Hand operated Drill bit 12 mm",
+    "displayName": "Hand operated Drill bit 12 mm",
+    "slug": "hand-operated-drill-bit-12-mm-nt-new-1781695055437-28",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Hand operated Drill bit 12 mm.jpeg"
+    ],
+    "description": "Hand operated Drill bit 12 mm - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-29",
+    "name": "Hand operated Drill bit 19 mm",
+    "displayName": "Hand operated Drill bit 19 mm",
+    "slug": "hand-operated-drill-bit-19-mm-nt-new-1781695055437-29",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Hand operated Drill bit 19 mm.jpeg"
+    ],
+    "description": "Hand operated Drill bit 19 mm - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-30",
+    "name": "Higrow Strawberry 25Kg",
+    "displayName": "Higrow Strawberry 25Kg",
+    "slug": "higrow-strawberry-25kg-nt-new-1781695055437-30",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Higrow Strawberry 25Kg.jpeg"
+    ],
+    "description": "Higrow Strawberry 25Kg - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-31",
+    "name": "HiGrow Super 25 Kg",
+    "displayName": "HiGrow Super 25 Kg",
+    "slug": "higrow-super-25-kg-nt-new-1781695055437-31",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/HiGrow Super 25 Kg.jpeg"
+    ],
+    "description": "HiGrow Super 25 Kg - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-32",
+    "name": "INSECT NET",
+    "displayName": "INSECT NET",
+    "slug": "insect-net-nt-new-1781695055437-32",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/INSECT NET.jpg"
+    ],
+    "description": "INSECT NET - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-33",
+    "name": "Magnesium Sulphate 25 Kg",
+    "displayName": "Magnesium Sulphate 25 Kg",
+    "slug": "magnesium-sulphate-25-kg-nt-new-1781695055437-33",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Magnesium Sulphate 25 Kg.jpeg"
+    ],
+    "description": "Magnesium Sulphate 25 Kg - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-34",
+    "name": "Micro nutrient 100GM",
+    "displayName": "Micro nutrient 100GM",
+    "slug": "micro-nutrient-100gm-nt-new-1781695055437-34",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Micro nutrient 100GM.jpeg"
+    ],
+    "description": "Micro nutrient 100GM - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-35",
+    "name": "MICROGREEN SYSTEM 12 TRAY",
+    "displayName": "MICROGREEN SYSTEM 12 TRAY",
+    "slug": "microgreen-system-12-tray-nt-new-1781695055437-35",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/MICROGREEN SYSTEM 12 TRAY.jpeg"
+    ],
+    "description": "MICROGREEN SYSTEM 12 TRAY - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-36",
+    "name": "MICROGREEN SYSTEM 20 TRAY",
+    "displayName": "MICROGREEN SYSTEM 20 TRAY",
+    "slug": "microgreen-system-20-tray-nt-new-1781695055437-36",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/MICROGREEN SYSTEM 20 TRAY.jpeg"
+    ],
+    "description": "MICROGREEN SYSTEM 20 TRAY - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-37",
+    "name": "MICROGREEN SYSTEM 9 TRAY",
+    "displayName": "MICROGREEN SYSTEM 9 TRAY",
+    "slug": "microgreen-system-9-tray-nt-new-1781695055437-37",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/MICROGREEN SYSTEM 9 TRAY.jpeg"
+    ],
+    "description": "MICROGREEN SYSTEM 9 TRAY - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-38",
+    "name": "Mini Digital Tap Timer",
+    "displayName": "Mini Digital Tap Timer",
+    "slug": "mini-digital-tap-timer-nt-new-1781695055437-38",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Mini Digital Tap Timer.jpeg"
+    ],
+    "description": "Mini Digital Tap Timer - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-39",
+    "name": "Misting Nozzle threaded",
+    "displayName": "Misting Nozzle threaded",
+    "slug": "misting-nozzle-threaded-nt-new-1781695055437-39",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Misting Nozzle threaded.jpeg"
+    ],
+    "description": "Misting Nozzle threaded - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-40",
+    "name": "Misting Nozzle",
+    "displayName": "Misting Nozzle",
+    "slug": "misting-nozzle-nt-new-1781695055437-40",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Misting Nozzle.jpeg"
+    ],
+    "description": "Misting Nozzle - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-41",
+    "name": "Multi spectrun NX 1.1 Spectrum 2 Feet",
+    "displayName": "Multi spectrun NX 1.1 Spectrum 2 Feet",
+    "slug": "multi-spectrun-nx-1-1-spectrum-2-feet-nt-new-1781695055437-41",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Multi spectrun NX 1.1 Spectrum 2 Feet.jpeg"
+    ],
+    "description": "Multi spectrun NX 1.1 Spectrum 2 Feet - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-42",
+    "name": "NPK 20-20-20 1kg",
+    "displayName": "NPK 20-20-20 1kg",
+    "slug": "npk-20-20-20-1kg-nt-new-1781695055437-42",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/NPK 20-20-20 1kg.jpeg"
+    ],
+    "description": "NPK 20-20-20 1kg - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-43",
+    "name": "NPK 4-18-38 25 Kg",
+    "displayName": "NPK 4-18-38 25 Kg",
+    "slug": "npk-4-18-38-25-kg-nt-new-1781695055437-43",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/NPK 4-18-38 25 Kg.jpeg"
+    ],
+    "description": "NPK 4-18-38 25 Kg - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-44",
+    "name": "NPK 8-15-36 1KG",
+    "displayName": "NPK 8-15-36 1KG",
+    "slug": "npk-8-15-36-1kg-nt-new-1781695055437-44",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/NPK 8-15-36 1KG.jpeg"
+    ],
+    "description": "NPK 8-15-36 1KG - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-45",
+    "name": "Ph 7.01 calibration liquid- 500 ml",
+    "displayName": "Ph 7.01 calibration liquid- 500 ml",
+    "slug": "ph-7-01-calibration-liquid-500-ml-nt-new-1781695055437-45",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Ph 7.01 calibration liquid- 500 ml.jpeg"
+    ],
+    "description": "Ph 7.01 calibration liquid- 500 ml - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-46",
+    "name": "pH calibration liquid- sachet",
+    "displayName": "pH calibration liquid- sachet",
+    "slug": "ph-calibration-liquid-sachet-nt-new-1781695055437-46",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/pH calibration liquid- sachet.jpeg"
+    ],
+    "description": "pH calibration liquid- sachet - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-47",
+    "name": "ph Meter Brand - HM digital ph-80",
+    "displayName": "ph Meter Brand - HM digital ph-80",
+    "slug": "ph-meter-brand-hm-digital-ph-80-nt-new-1781695055437-47",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/ph Meter Brand - HM digital ph-80.jpeg"
+    ],
+    "description": "ph Meter Brand - HM digital ph-80 - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-48",
+    "name": "pH Test liquid 125 ml",
+    "displayName": "pH Test liquid 125 ml",
+    "slug": "ph-test-liquid-125-ml-nt-new-1781695055437-48",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/pH Test liquid 125 ml.jpeg"
+    ],
+    "description": "pH Test liquid 125 ml - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-49",
+    "name": "PLASTIC COATED SPRING",
+    "displayName": "PLASTIC COATED SPRING",
+    "slug": "plastic-coated-spring-nt-new-1781695055437-49",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/PLASTIC COATED SPRING.jpeg"
+    ],
+    "description": "PLASTIC COATED SPRING - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-50",
+    "name": "Plastic H hook",
+    "displayName": "Plastic H hook",
+    "slug": "plastic-h-hook-nt-new-1781695055437-50",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Plastic H hook.jpeg"
+    ],
+    "description": "Plastic H hook - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-51",
+    "name": "Plastic J hook",
+    "displayName": "Plastic J hook",
+    "slug": "plastic-j-hook-nt-new-1781695055437-51",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Plastic J hook.jpeg"
+    ],
+    "description": "Plastic J hook - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-52",
+    "name": "SHADE NET",
+    "displayName": "SHADE NET",
+    "slug": "shade-net-nt-new-1781695055437-52",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/SHADE NET.jpeg"
+    ],
+    "description": "SHADE NET - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-53",
+    "name": "Silicon",
+    "displayName": "Silicon",
+    "slug": "silicon-nt-new-1781695055437-53",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Silicon.jpeg"
+    ],
+    "description": "Silicon - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-54",
+    "name": "Take up pusher",
+    "displayName": "Take up pusher",
+    "slug": "take-up-pusher-nt-new-1781695055437-54",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Take up pusher.jpeg"
+    ],
+    "description": "Take up pusher - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-55",
+    "name": "Teflon thread tape",
+    "displayName": "Teflon thread tape",
+    "slug": "teflon-thread-tape-nt-new-1781695055437-55",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Teflon thread tape.jpeg"
+    ],
+    "description": "Teflon thread tape - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-56",
+    "name": "Timer Switch",
+    "displayName": "Timer Switch",
+    "slug": "timer-switch-nt-new-1781695055437-56",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Timer Switch.jpg"
+    ],
+    "description": "Timer Switch - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-57",
+    "name": "Tomato clips",
+    "displayName": "Tomato clips",
+    "slug": "tomato-clips-nt-new-1781695055437-57",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Tomato clips.jpeg"
+    ],
+    "description": "Tomato clips - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-58",
+    "name": "Tomatoe GI hook",
+    "displayName": "Tomatoe GI hook",
+    "slug": "tomatoe-gi-hook-nt-new-1781695055437-58",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Tomatoe GI hook.jpeg"
+    ],
+    "description": "Tomatoe GI hook - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-59",
+    "name": "Twine rope 2.1 KG",
+    "displayName": "Twine rope 2.1 KG",
+    "slug": "twine-rope-2-1-kg-nt-new-1781695055437-59",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/Twine rope 2.1 KG.jpg"
+    ],
+    "description": "Twine rope 2.1 KG - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-60",
+    "name": "UPVC Solvent",
+    "displayName": "UPVC Solvent",
+    "slug": "upvc-solvent-nt-new-1781695055437-60",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/UPVC Solvent.jpeg"
+    ],
+    "description": "UPVC Solvent - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  },
+  {
+    "id": "nt-new-1781695055437-61",
+    "name": "WEED MAT",
+    "displayName": "WEED MAT",
+    "slug": "weed-mat-nt-new-1781695055437-61",
+    "brand": "IGO Hydroponics",
+    "category": "Nursery Tools",
+    "subcategory": "Miscellaneous",
+    "price": 100,
+    "mrp": 120,
+    "discount": 16,
+    "stock": 50,
+    "images": [
+      "/catalog/nursery tools/WEED MAT.jpeg"
+    ],
+    "description": "WEED MAT - high-grade farm equipment.",
+    "composition": "Standard material",
+    "usage": "Use as directed",
+    "rating": 4.5,
+    "reviewCount": 10,
+    "isIgoOwn": true,
+    "unit": "1 Unit",
+    "crops": [
+      "All Crops"
+    ]
+  }
 ];

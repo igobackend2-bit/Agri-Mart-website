@@ -173,24 +173,18 @@ export default function Header({
           
           {/* Logo / Title */}
           <div 
-            className="flex items-center gap-2 cursor-pointer select-none shrink-0"
+            className="flex items-center cursor-pointer select-none shrink-0"
             onClick={() => {
               setCurrentPage('home');
               setSelectedCategory(null);
               setSearchQuery('');
             }}
           >
-            <div className="h-10 w-10 bg-[#1B6B3A] text-white rounded-lg flex items-center justify-center font-bold text-xl tracking-tight shadow-sm border border-[#248F4E]">
-              I
-            </div>
-            <div>
-              <h1 id="logo-title" className="font-display font-extrabold text-[#1B6B3A] text-base sm:text-lg tracking-wider leading-none">
-                IGO AGRI MARKET
-              </h1>
-              <p className="text-[9px] font-medium text-[#E8A020] tracking-widest uppercase mt-0.5">
-                Chengalpattu & Chennai H.Q.
-              </p>
-            </div>
+            <img 
+              src="/images/logo.jpg" 
+              alt="IGO AGRIMART Logo" 
+              className="h-12 sm:h-14 object-contain"
+            />
           </div>
 
           {/* Deliver-to location chip (Swiggy/Zepto-style) */}

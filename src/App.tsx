@@ -526,7 +526,7 @@ export default function App() {
           setUserProfile={setUserProfile}
         />
         )}
-        {currentPage !== 'admin' && currentPage !== 'auth' && <TrustBar />}
+
 
         {isInventoryLoading ? (
           <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
