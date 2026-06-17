@@ -63,6 +63,7 @@ export default function Header({
   const [suggestions, setSuggestions] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [listening, setListening] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -229,9 +230,12 @@ export default function Header({
                   const recognition = new SpeechRecognition();
                   recognition.lang = lang === 'en' ? 'en-IN' : 'ta-IN';
                   recognition.interimResults = false;
+                  recognition.onstart = () => setListening(true);
+                  recognition.onend = () => setListening(false);
                   recognition.start();
                   recognition.onresult = (event: any) => {
                     const transcript = String(event.results[0][0].transcript || '').replace(/\.$/, '').trim();
+                    setListening(false);
                     if (!transcript) return;
                     // Fill the box, show suggestions, AND open the results page.
                     handleSearchChange(transcript);
@@ -239,13 +243,14 @@ export default function Header({
                     setCurrentPage('category');
                   };
                   recognition.onerror = (e: any) => {
+                    setListening(false);
                     if (e?.error === 'not-allowed' || e?.error === 'service-not-allowed') {
                       alert('Please allow microphone access in your browser to use voice search.');
                     }
                   };
                 }}
-                className="absolute right-10 top-2.5 text-slate-400 hover:text-[#1B6B3A] transition"
-                title="Voice Search"
+                className={'absolute right-10 top-2.5 transition ' + (listening ? 'text-red-500 animate-pulse scale-110' : 'text-slate-400 hover:text-[#1B6B3A]')}
+                title={listening ? 'Listening… speak now' : 'Voice Search'}
               >
                 <Mic className="h-4.5 w-4.5" />
               </button>
@@ -253,6 +258,17 @@ export default function Header({
                 <Search className="h-4.5 w-4.5" />
               </button>
             </form>
+
+            {/* Listening indicator — shows the mic is actively capturing */}
+            {listening && (
+              <div className="absolute left-0 right-0 mt-1 flex items-center justify-center gap-2 bg-red-50 border border-red-200 rounded-lg py-1.5 z-50 shadow-sm">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
+                </span>
+                <span className="text-[11px] font-bold text-red-600">Listening… speak now</span>
+              </div>
+            )}
 
             {/* Suggestions Dropdown */}
             {showSearchSuggestions && suggestions.length > 0 && (

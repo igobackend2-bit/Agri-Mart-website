@@ -268,8 +268,14 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
   };
 
   return (
-    <div className="min-h-screen flex items-stretch bg-[#161616]">
-      <div className="w-full grid lg:grid-cols-2 overflow-hidden">
+    <div className="min-h-screen relative flex items-stretch bg-[#0B3D22]">
+      <img
+        src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&q=85&fit=crop"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-emerald-950/55 to-black/70" />
+      <div className="relative w-full grid lg:grid-cols-2 overflow-hidden">
 
         {/* ── Left: brand panel ── */}
         <div className="relative hidden lg:block">
@@ -321,7 +327,7 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
         </div>
 
         {/* ── Right: form panel ── */}
-        <div className="relative p-8 sm:p-12 lg:px-16 bg-[#1d1d1d] flex flex-col justify-center min-h-screen">
+        <div className="relative p-8 sm:p-12 lg:px-16 bg-white/10 backdrop-blur-2xl border-l border-white/15 flex flex-col justify-center min-h-screen">
           <button
             onClick={() => (phase === 'phone' ? setCurrentPage('home') : resetFlow())}
             className="absolute top-5 left-5 sm:top-7 sm:left-7 h-9 w-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 hover:text-[#EA5B2A] hover:border-[#EA5B2A] transition"
