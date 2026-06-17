@@ -283,7 +283,8 @@ export default function AdminComponent({ lang, products, setProducts, categories
 
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newProduct.name.trim() || !newProduct.subcategory.trim()) { alert('Name and subcategory are required.'); return; }
+    if (!newProduct.name.trim()) { alert('Product name is required.'); return; }
+    const subcategory = newProduct.subcategory.trim() || newProduct.category;
 
     // Editing an existing product
     if (editingProductId) {
@@ -291,7 +292,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
       if (existing) {
         const updated: Product = {
           ...existing,
-          name: newProduct.name, category: newProduct.category, subcategory: newProduct.subcategory,
+          name: newProduct.name, category: newProduct.category, subcategory,
           brand: newProduct.brand, price: Number(newProduct.price), mrp: Number(newProduct.mrp),
           discount: Number(newProduct.discount) || Math.round(((newProduct.mrp - newProduct.price) / newProduct.mrp) * 100),
           images: [newProduct.images], description: newProduct.description || existing.description,
@@ -315,7 +316,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
     const created: Product = {
       id: 'prod-' + Math.random().toString(36).substring(2, 9),
       slug: newProduct.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      name: newProduct.name, category: newProduct.category, subcategory: newProduct.subcategory,
+      name: newProduct.name, category: newProduct.category, subcategory,
       brand: newProduct.brand, price: Number(newProduct.price), mrp: Number(newProduct.mrp),
       discount: Number(newProduct.discount) || Math.round(((newProduct.mrp - newProduct.price) / newProduct.mrp) * 100),
       images: [newProduct.images], description: newProduct.description || 'Premium quality agricultural input.',
@@ -803,8 +804,8 @@ export default function AdminComponent({ lang, products, setProducts, categories
                 </div>
                 <div>
                   <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Subcategory</label>
-                  <input type="text" required value={newProduct.subcategory} onChange={e => setNewProduct({...newProduct, subcategory: e.target.value})}
-                    placeholder="e.g. Hybrid Tomato" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
+                  <input type="text" value={newProduct.subcategory} onChange={e => setNewProduct({...newProduct, subcategory: e.target.value})}
+                    placeholder="Optional — defaults to category" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
                 </div>
                 <div>
                   <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Brand</label>
@@ -1414,15 +1415,20 @@ export default function AdminComponent({ lang, products, setProducts, categories
                   ) : (
                     <>
                       <div className="flex gap-2">
-                        <input type="text" id="override-product-id" placeholder="Paste Product ID (SKU) to add..."
-                          className="flex-1 bg-white border border-slate-200 rounded-lg p-2 text-xs font-mono outline-none focus:border-[#1B6B3A]" />
+                        <input type="text" id="override-product-id" placeholder="Type product NAME or SKU to add…"
+                          className="flex-1 bg-white border border-slate-200 rounded-lg p-2 text-xs outline-none focus:border-[#1B6B3A]" />
                         <button onClick={() => {
                           const input = document.getElementById('override-product-id') as HTMLInputElement;
-                          const pid = input.value.trim();
-                          if (!pid) return;
-                          if (!products.find(p => p.id === pid)) { alert('Product ID not found in catalog.'); return; }
+                          const q = input.value.trim();
+                          if (!q) return;
+                          // Match by exact ID, SKU prefix (as shown in Products tab), or product name.
+                          const match = products.find(p => p.id === q)
+                            || products.find(p => p.id.toLowerCase().startsWith(q.toLowerCase()))
+                            || products.find(p => p.name.toLowerCase().includes(q.toLowerCase()));
+                          if (!match) { alert(`No product found for "${q}". Type the product name, or its SKU from the Products tab.`); return; }
+                          const pid = match.id;
                           const current = homeOverrides[activeOverrideSection] || [];
-                          if (current.includes(pid)) return;
+                          if (current.includes(pid)) { input.value = ''; return; }
                           const updated = { ...homeOverrides, [activeOverrideSection]: [...current, pid] };
                           setHomeOverrides(updated);
                           saveHomeOverrides(updated);
