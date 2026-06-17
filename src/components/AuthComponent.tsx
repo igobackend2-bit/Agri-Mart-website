@@ -32,8 +32,8 @@ type Phase = 'phone' | 'otp' | 'profile' | 'email_login';
 
 export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthComponentProps) {
   const [tab, setTab] = useState<'login' | 'join'>('login');
-  const [loginMethod, setLoginMethod] = useState<'phone' | 'email'>('phone');
-  const [phase, setPhase] = useState<Phase>('phone');
+  const [loginMethod, setLoginMethod] = useState<'phone' | 'email'>('email');
+  const [phase, setPhase] = useState<Phase>('email_login');
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [generatedOtp, setGeneratedOtp] = useState('');
@@ -350,7 +350,19 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
               {(['login', 'join'] as const).map(k => (
                 <button
                   key={k}
-                  onClick={() => { setTab(k); resetFlow(); setPhone(''); }}
+                  onClick={() => { 
+                    setTab(k); 
+                    setPhone('');
+                    setError('');
+                    setInfo('');
+                    if (k === 'login') {
+                      setLoginMethod('email');
+                      setPhase('email_login');
+                    } else {
+                      setLoginMethod('phone');
+                      setPhase('phone');
+                    }
+                  }}
                   className={`flex-1 py-2.5 text-xs font-black tracking-wider uppercase rounded-xl transition ${
                     tab === k ? 'bg-white text-[#1B6B3A] shadow-md' : 'text-slate-300 hover:text-white'
                   }`}
@@ -362,7 +374,7 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
           )}
 
           {/* Method toggler */}
-          {(phase === 'phone' || phase === 'email_login') && (
+          {(phase === 'phone' || phase === 'email_login') && tab !== 'login' && (
             <div className="flex gap-6 mb-8 justify-center">
               <button 
                 onClick={() => { setLoginMethod('phone'); setPhase('phone'); }} 
@@ -437,7 +449,14 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
                 </div>
               </div>
               <div>
-                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Password</label>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Password</label>
+                  {tab === 'login' && (
+                    <button type="button" onClick={() => alert("Password reset instructions have been sent to your email address.")} className="text-[10px] font-bold text-[#EA5B2A] hover:underline">
+                      Forgot Password?
+                    </button>
+                  )}
+                </div>
                 <div className="relative flex items-center">
                   <input
                     type="password"
