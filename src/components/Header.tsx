@@ -208,7 +208,7 @@ export default function Header({
           </button>
 
           {/* Autocomplete Search Bar */}
-          <div ref={searchRef} className="hidden md:block relative flex-1 max-w-sm">
+          <div ref={searchRef} className="hidden md:block relative w-56 lg:w-72 shrink-0">
             <form onSubmit={handleSearchSubmit} className="relative">
               <input
                 type="text"
