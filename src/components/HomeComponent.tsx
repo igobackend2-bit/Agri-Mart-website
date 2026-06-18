@@ -369,28 +369,28 @@ export default function HomeComponent({
 
   const DEFAULT_HERO_SLIDES = [
     {
-      img: '/images/hero_1_new.png',
+      img: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070&auto=format&fit=crop',
       badge: 'UPTO 40% OFF',
       title: lang === 'en' ? 'Everything Your Farm Needs. Delivered Fast.' : 'உங்கள் பண்ணைக்கு தேவையான அனைத்தும். வேகமாக டெலிவரி.',
       sub: lang === 'en' ? 'Certified seeds, fertilizers, crop protection & equipment — 835+ products, same-day dispatch from regional hubs' : '835+ விவசாயப் பொருட்கள் · அதே நாள் அனுப்புதல் · சான்றளிக்கப்பட்ட தரம்',
       btn: 'Shop Best Sellers', btnAction: 'seeds-saplings', color: 'from-emerald-950/85 via-emerald-900/50 to-transparent'
     },
     {
-      img: '/images/hero_2_new.png',
+      img: 'https://images.unsplash.com/photo-1592982537447-6f2a6a0c5c10?q=80&w=2070&auto=format&fit=crop',
       badge: 'GOVT SUBSIDY UPTO 90%',
       title: lang === 'en' ? 'Smart Drip & Sprinkler Irrigation' : 'சொட்டு நீர்ப்பாசன கருவிகள்',
       sub: lang === 'en' ? 'Up to 90% govt subsidy support · kits for every farm size · free installation guidance from our experts' : 'அரசு மானியம் · அனைத்து பண்ணை அளவுகளும் · இலவச நிறுவல் வழிகாட்டுதல்',
       btn: 'Explore Irrigation', btnAction: 'irrigation-systems', color: 'from-cyan-950/85 via-cyan-900/50 to-transparent'
     },
     {
-      img: '/images/hero_3_new.png',
+      img: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2032&auto=format&fit=crop',
       badge: 'UPTO 30% OFF',
       title: lang === 'en' ? 'Grow Naturally. Earn Premium Prices.' : 'இயற்கையாக வளர்க்கவும். உயர்ந்த விலை பெறவும்.',
       sub: lang === 'en' ? 'Vermicompost, neem oil, Trichoderma, bio-stimulants & pheromone traps — the complete organic toolkit' : 'மண்புழு உரம் · வேப்ப எண்ணெய் · உயிரியல் உரங்கள் · முழுமையான இயற்கை தொகுப்பு',
       btn: 'Shop Organic Range', btnAction: 'organic-natural-farming', color: 'from-green-950/85 via-green-900/50 to-transparent'
     },
     {
-      img: '/images/hero_1_new.png',
+      img: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?q=80&w=2070&auto=format&fit=crop',
       badge: 'UPTO 25% OFF',
       title: lang === 'en' ? 'Professional Farm Tools & Machinery' : 'விவசாய கருவிகள் & இயந்திரங்கள்',
       sub: lang === 'en' ? 'Power weeders, seed drills, battery sprayers & precision hand tools — built for Indian field conditions' : 'யந்திர களை கருவிகள் · விதை பயிர்கருவிகள் · பேட்டரி தெளிப்பான்கள்',

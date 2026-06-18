@@ -325,7 +325,7 @@ export default function CategoryComponent({
       <div className="relative bg-emerald-950 text-white rounded-xl mb-8 p-6 sm:p-10 overflow-hidden min-h-[140px] sm:min-h-[180px] flex items-center shadow-md">
         <div className="absolute inset-0 z-0 opacity-15">
           <img
-            src="/images/hero_3_new.png"
+            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2032&auto=format&fit=crop"
             alt="Mountains fields background"
             className="w-full h-full object-cover"
           />
