@@ -44,10 +44,19 @@ export async function syncWithSupabase() {
 function read<T>(k: string, fb: T): T {
   try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : fb; } catch { return fb; }
 }
-function write(k: string, v: any) { 
-  localStorage.setItem(k, JSON.stringify(v)); 
-  // Fire and forget sync
-  supabase.from('igo_kv_store').upsert({ key: k, value: v }).catch(err => console.error('Supabase error', err));
+function write(k: string, v: any) {
+  localStorage.setItem(k, JSON.stringify(v));
+  // Fire and forget sync. The Supabase query builder is a "thenable" (has .then)
+  // but has NO .catch — calling .catch on it throws synchronously and would crash
+  // whatever called write() (e.g. opening the Inbox tab). Wrap in Promise.resolve
+  // to get a real promise, and guard with try/catch so sync never breaks the UI.
+  try {
+    Promise.resolve(supabase.from('igo_kv_store').upsert({ key: k, value: v }))
+      .then((res: any) => { if (res && res.error) console.error('Supabase error', res.error); })
+      .catch((err) => console.error('Supabase error', err));
+  } catch (err) {
+    console.error('Supabase write error', err);
+  }
 }
 function emitCatalogChanged() { try { window.dispatchEvent(new Event(CATALOG_CHANGED_EVENT)); } catch { } }
 
