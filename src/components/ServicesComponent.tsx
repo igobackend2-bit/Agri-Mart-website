@@ -146,6 +146,54 @@ export default function ServicesComponent({
           </button>
         </div>
 
+        {/* ── Our Flagship Farming Projects ─────────────────────── */}
+        <div className="mt-12">
+          <h3 className="font-display font-black text-slate-900 text-xl sm:text-2xl tracking-tight">Our Flagship Farming Projects</h3>
+          <p className="text-sm text-slate-500 mt-1">Turnkey, bankable agri-ventures engineered, built and managed by the IGO Group.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+            {[
+              { t: 'Polyhouse & Greenhouse', d: 'Climate-controlled protected cultivation — GI structures, shade nets, drip & fogger systems for year-round high-value crops.', img: '/images/live_trial_field_india.png' },
+              { t: 'Hydroponics & Vertical Farms', d: 'Soil-less NFT / DWC towers and grow systems for clean, high-yield vegetable and leafy-green production.', img: '/catalog/nursery tools/Flat Bed Hydroponic System 200 Planter.jpeg' },
+              { t: 'Goat & Livestock Farming', d: 'Modern goat, dairy and poultry units with health monitoring, feeding and shed engineering.', img: '/images/agri_farm_bg.png' },
+              { t: 'Aquaculture & Fisheries', d: 'Integrated fish & shrimp farms with biofloc tanks, aeration and cold-chain export readiness.', img: '/catalog/nursery tools/Fish Tank 3500 lt.jpeg' },
+              { t: 'Precision & Smart Farming', d: 'Sensor-driven irrigation, drone spraying and data-led agronomy for higher yield at lower cost.', img: '/images/post_drip_automation.png' },
+              { t: 'Cold Storage & Processing', d: 'Post-harvest cold rooms, warehouses and processing units to cut wastage and boost farm-gate value.', img: '/images/live_trial_field_main.png' },
+            ].map((p) => (
+              <div key={p.t} className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#1B6B3A] hover:shadow-md transition">
+                <img src={p.img} alt={p.t} className="w-full h-36 object-cover" onError={(e) => { (e.target as HTMLImageElement).src = '/images/agri_farm_bg.png'; }} />
+                <div className="p-5">
+                  <div className="font-display font-black text-[#1B6B3A] text-base">{p.t}</div>
+                  <p className="text-xs text-slate-600 mt-2 leading-relaxed">{p.d}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Why IGO Agritech is the best ─────────────────────── */}
+        <div className="mt-10 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+          <h3 className="font-display font-black text-slate-900 text-xl sm:text-2xl tracking-tight">Why Choose IGO Agritech</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+            {[
+              { t: 'In-house Engineering', d: 'Design, structures and automation built by our own agri-engineering team.' },
+              { t: 'Govt Subsidy Linkage', d: 'Direct PM-KUSUM, NHB & NABARD subsidy facilitation — up to 90% coverage.' },
+              { t: '26-Vertical Ecosystem', d: 'Land, finance, build, inputs and market access under one IGO Group roof.' },
+              { t: 'Quality-Checked', d: 'Every project sponsored and quality-audited by IGO Group, Chennai HQ.' },
+            ].map((w) => (
+              <div key={w.t} className="bg-[#F7F9F4] border border-slate-100 rounded-xl p-4">
+                <div className="font-black text-slate-800 text-sm">{w.t}</div>
+                <div className="text-xs text-slate-500 mt-1.5 leading-relaxed">{w.d}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6">
+            <button onClick={() => setCurrentPage('contact')}
+              className="bg-[#1B6B3A] hover:bg-[#15532d] text-white font-black text-xs px-6 py-3 rounded-xl transition">
+              Talk to an Agronomist
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   );

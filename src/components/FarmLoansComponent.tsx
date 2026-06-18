@@ -475,6 +475,84 @@ export default function FarmLoansComponent({
           )}
         </div>
 
+        {/* ── Loan Schemes We Cover ─────────────────────────────── */}
+        <div className="mt-10 bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
+          <h3 className="font-display font-black text-slate-900 text-xl sm:text-2xl tracking-tight">Loan Schemes We Cover</h3>
+          <p className="text-sm text-slate-500 mt-1">End-to-end support — paperwork, bank coordination and legal compliance — for every major scheme.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-5">
+            {[
+              { k: 'KCC', d: 'Kisan Credit Card' },
+              { k: 'PMEGP', d: 'PM Employment Gen.' },
+              { k: 'MSME', d: 'Micro & Small Enterprise' },
+              { k: 'AIF', d: 'Agri Infrastructure Fund' },
+              { k: 'NABARD', d: 'Infrastructure Grants' },
+            ].map((s) => (
+              <div key={s.k} className="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-center">
+                <div className="font-black text-[#1B6B3A] text-sm">{s.k}</div>
+                <div className="text-[10px] text-slate-500 mt-0.5">{s.d}</div>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+            {[
+              { v: 'Rs.50 Lakh', l: 'Max loan amount' },
+              { v: '7.5%', l: 'Fixed APR (from)' },
+              { v: '72 hrs', l: 'Approval speed' },
+              { v: '18+', l: 'Bank partners' },
+            ].map((x) => (
+              <div key={x.l} className="border border-slate-200 rounded-xl p-3 text-center">
+                <div className="font-black text-slate-900 text-lg">{x.v}</div>
+                <div className="text-[10px] font-bold uppercase tracking-wide text-slate-400 mt-0.5">{x.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Government Subsidies ─────────────────────────────── */}
+        <div className="mt-6 bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
+          <h3 className="font-display font-black text-slate-900 text-xl sm:text-2xl tracking-tight">Government Subsidies We Maximize</h3>
+          <p className="text-sm text-slate-500 mt-1">We stack central + state schemes to cover up to 90% of your project cost.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
+            {[
+              { t: 'PM-KUSUM Solar', d: 'Up to 90% subsidized solar pumps & farm power. Site assessment, design, approval and install handled.', img: '/images/live_trial_field_india.png' },
+              { t: 'NHB Horticulture', d: 'National Horticulture Board grants for polyhouse, orchards and protected cultivation.', img: '/images/hero_3_new.png' },
+              { t: 'NABARD Infrastructure', d: 'Capital subsidy for cold storage, warehouses and farm infrastructure projects.', img: '/images/agri_farm_bg.png' },
+            ].map((s) => (
+              <div key={s.t} className="bg-white border border-slate-100 rounded-xl overflow-hidden">
+                <img src={s.img} alt={s.t} className="w-full h-28 object-cover" onError={(e) => { (e.target as HTMLImageElement).src = '/images/agri_farm_bg.png'; }} />
+                <div className="p-4">
+                  <div className="font-black text-[#1B6B3A] text-sm">{s.t}</div>
+                  <div className="text-xs text-slate-600 mt-1.5 leading-relaxed">{s.d}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── How We Help (end to end) ─────────────────────────────── */}
+        <div className="mt-6 bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
+          <h3 className="font-display font-black text-slate-900 text-xl sm:text-2xl tracking-tight">How We Help — End to End</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+            {[
+              { t: 'Loan Facilitation', d: 'Paperwork, bank coordination and legal compliance for KCC, PMEGP, AIF & NABARD.' },
+              { t: 'Subsidy Maximization', d: 'Optimal central + state scheme stacking for the highest coverage.' },
+              { t: 'DPR Preparation', d: 'Bankable Detailed Project Reports to NABARD / Ministry standards.' },
+              { t: 'Project Management', d: 'Site selection, design, build supervision through to first harvest.' },
+            ].map((s) => (
+              <div key={s.t} className="border border-slate-200 rounded-xl p-4 hover:border-[#1B6B3A] transition">
+                <div className="font-black text-slate-800 text-sm">{s.t}</div>
+                <div className="text-xs text-slate-500 mt-1.5 leading-relaxed">{s.d}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6">
+            <button onClick={() => document.getElementById('loan-eligibility-form')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-[#1B6B3A] hover:bg-[#15532d] text-white font-black text-xs px-6 py-3 rounded-xl transition">
+              Apply for a Loan / Subsidy
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   );
