@@ -97,18 +97,21 @@ export default function Footer({ setCurrentPage, setSelectedCategory }: FooterPr
                 <Phone className="h-4 w-4 text-emerald-500 shrink-0" />
                 <a href="tel:+917397785803" className="hover:text-white transition">+91 73977 85803</a>
               </div>
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-emerald-500 shrink-0" />
-                <a href="mailto:igobackend3@gmail.com" className="hover:text-white transition">igobackend3@gmail.com</a>
+              <div className="flex items-start gap-2">
+                <Mail className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                <div className="flex flex-col gap-1">
+                  <a href="mailto:bankingbackend.indiagreen@gmail.com" className="hover:text-white transition">bankingbackend.indiagreen@gmail.com</a>
+                  <a href="mailto:bd2@igogroups.com" className="hover:text-white transition">bd2@igogroups.com</a>
+                </div>
               </div>
             </div>
             {/* Social Links */}
             <div className="flex items-center gap-3 mt-5">
-              <a href="https://www.instagram.com/the_farmers_factory/" target="_blank" rel="noreferrer"
+              <a href="https://www.instagram.com/igoagrimart/" target="_blank" rel="noreferrer"
                 className="h-9 w-9 bg-white/10 hover:bg-[#E1306C] rounded-lg flex items-center justify-center transition">
                 <Instagram className="h-4 w-4" />
               </a>
-              <a href="https://www.facebook.com/profile.php?id=100068904620757" target="_blank" rel="noreferrer"
+              <a href="https://www.facebook.com/profile.php?id=61590856913241" target="_blank" rel="noreferrer"
                 className="h-9 w-9 bg-white/10 hover:bg-[#1877F2] rounded-lg flex items-center justify-center transition">
                 <Facebook className="h-4 w-4" />
               </a>
