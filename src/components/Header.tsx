@@ -65,6 +65,8 @@ export default function Header({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [listening, setListening] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
+  const transcriptRef = useRef<string>('');
 
   useEffect(() => {
     // Listen to Firebase Auth state
@@ -223,18 +225,32 @@ export default function Header({
                   }
                   const recognition = new SpeechRecognition();
                   recognition.lang = lang === 'en' ? 'en-IN' : 'ta-IN';
-                  recognition.interimResults = false;
+                  // Keep listening until the user presses Stop (don't cut off on a pause).
+                  recognition.continuous = true;
+                  recognition.interimResults = true;
+                  transcriptRef.current = '';
                   recognition.onstart = () => setListening(true);
-                  recognition.onend = () => setListening(false);
-                  recognition.start();
                   recognition.onresult = (event: any) => {
-                    const transcript = String(event.results[0][0].transcript || '').replace(/\.$/, '').trim();
+                    let finalT = '';
+                    let interim = '';
+                    for (let i = 0; i < event.results.length; i++) {
+                      const t = event.results[i][0].transcript;
+                      if (event.results[i].isFinal) finalT += t + ' ';
+                      else interim += t;
+                    }
+                    transcriptRef.current = finalT.trim();
+                    const combined = (finalT + interim).replace(/\s+/g, ' ').trim();
+                    if (combined) handleSearchChange(combined);
+                  };
+                  recognition.onend = () => {
                     setListening(false);
-                    if (!transcript) return;
-                    // Fill the box, show suggestions, AND open the results page.
-                    handleSearchChange(transcript);
-                    setShowSearchSuggestions(false);
-                    setCurrentPage('category');
+                    recognitionRef.current = null;
+                    const q = transcriptRef.current.replace(/\.$/, '').trim();
+                    if (q) {
+                      handleSearchChange(q);
+                      setShowSearchSuggestions(false);
+                      setCurrentPage('category');
+                    }
                   };
                   recognition.onerror = (e: any) => {
                     setListening(false);
@@ -242,6 +258,8 @@ export default function Header({
                       alert('Please allow microphone access in your browser to use voice search.');
                     }
                   };
+                  recognitionRef.current = recognition;
+                  recognition.start();
                 }}
                 className={'absolute right-10 top-2.5 transition ' + (listening ? 'text-red-500 animate-pulse scale-110' : 'text-slate-400 hover:text-[#1B6B3A]')}
                 title={listening ? 'Listening… speak now' : 'Voice Search'}
@@ -262,13 +280,24 @@ export default function Header({
                   <Mic className="h-12 w-12 text-red-600 relative z-10 animate-bounce" />
                 </div>
                 <h2 className="text-3xl sm:text-5xl font-display font-black text-white mb-2 tracking-wide text-center px-4">Listening...</h2>
-                <p className="text-red-200 font-medium text-lg sm:text-xl text-center px-4">Speak the product name you are looking for</p>
-                <button 
-                  onClick={() => setListening(false)}
-                  className="mt-10 px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition font-bold tracking-wide"
-                >
-                  Cancel
-                </button>
+                <p className="text-red-200 font-medium text-lg sm:text-xl text-center px-4">Speak the product name, then press Stop</p>
+                {searchQuery.trim() && (
+                  <p className="mt-4 text-white font-black text-xl sm:text-2xl text-center px-4 max-w-2xl">"{searchQuery}"</p>
+                )}
+                <div className="mt-10 flex items-center gap-3">
+                  <button
+                    onClick={() => { try { recognitionRef.current?.stop(); } catch { setListening(false); } }}
+                    className="px-7 py-3 bg-[#1B6B3A] hover:bg-emerald-800 text-white rounded-full transition font-black tracking-wide flex items-center gap-2 shadow-lg"
+                  >
+                    <Search className="h-4 w-4" /> Stop &amp; Search
+                  </button>
+                  <button
+                    onClick={() => { transcriptRef.current = ''; try { recognitionRef.current?.abort(); } catch { /* ignore */ } setListening(false); }}
+                    className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition font-bold tracking-wide"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             )}
 

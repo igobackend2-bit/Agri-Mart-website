@@ -7,7 +7,10 @@ import {
   ArrowLeft,
   Truck,
   FileText,
-  ChevronRight
+  ChevronRight,
+  ShieldCheck,
+  Lock,
+  BadgeCheck
 } from 'lucide-react';
 import { CartItem, Address, Order, OrderItem } from '../types';
 import { db, auth } from '../firebase';
@@ -56,9 +59,19 @@ export default function CheckoutComponent({
     setDetectingLoc(true);
     try {
       const loc = await detectLocation();
-      setFormData(f => ({ ...f, city: loc.city || f.city, pincode: loc.pincode || f.pincode }));
+      setFormData(f => ({
+        ...f,
+        city: loc.city || f.city,
+        pincode: loc.pincode || f.pincode,
+        state: loc.state || f.state,
+        // Pre-fill the street line with the detected area only if it's still empty.
+        address1: f.address1 || (loc.area ? `${loc.area}` : f.address1),
+      }));
+      if (!loc.pincode) {
+        alert(`Detected: ${loc.city}${loc.state ? ', ' + loc.state : ''}. We couldn't read your 6-digit pincode automatically — please type it in.`);
+      }
     } catch (e: any) {
-      alert(e?.message || 'Could not detect location. Please allow location access.');
+      alert(e?.message || 'Could not detect location. Please allow location access and try again.');
     } finally {
       setDetectingLoc(false);
     }
@@ -239,8 +252,9 @@ export default function CheckoutComponent({
   }
 
   return (
+    <div className="min-h-screen bg-gradient-to-b from-[#F7F9F4] via-white to-emerald-50/30">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      
+
       {/* Return Page Link Row */}
       <button
         onClick={() => setCurrentPage('cart')}
@@ -250,13 +264,16 @@ export default function CheckoutComponent({
         <span>Return to Cart</span>
       </button>
 
-      <div className="flex justify-between items-end border-b border-slate-200 pb-3 mb-8">
+      <div className="flex items-center gap-3.5 mb-7">
+        <div className="h-12 w-12 rounded-2xl bg-[#1B6B3A] text-white flex items-center justify-center shadow-lg shadow-emerald-900/20 shrink-0">
+          <ShieldCheck className="h-6 w-6" />
+        </div>
         <div>
-          <h2 id="checkout-title" className="font-display font-extrabold text-[#1B6B3A] text-2xl tracking-tight">
-            Checkout Order Terminal
+          <h2 id="checkout-title" className="font-display font-black text-slate-900 text-2xl sm:text-3xl tracking-tight">
+            Secure Checkout
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
-            Everything on one page — fill in, then place your order
+          <p className="text-xs text-slate-500 mt-0.5 font-medium flex items-center gap-1.5">
+            <Lock className="h-3 w-3 text-[#1B6B3A]" /> Encrypted &amp; safe — complete everything on one page and place your order.
           </p>
         </div>
       </div>
@@ -594,9 +611,23 @@ export default function CheckoutComponent({
               )}
             </div>
 
-            <div className="flex justify-between items-baseline pt-2 border-t border-slate-100">
-              <span className="text-xs font-extrabold text-slate-800">Final Total Amount:</span>
-              <span className="font-display font-black text-lg text-[#1B6B3A]">₹{finalTotal}</span>
+            <div className="flex justify-between items-center mt-2 bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-3">
+              <span className="text-xs font-black text-slate-700 uppercase tracking-wide">Total Payable</span>
+              <span className="font-display font-black text-2xl text-[#1B6B3A]">₹{finalTotal.toLocaleString('en-IN')}</span>
+            </div>
+
+            {/* Trust strip */}
+            <div className="grid grid-cols-3 gap-2 pt-1">
+              {[
+                { icon: ShieldCheck, t: 'Secure' },
+                { icon: BadgeCheck, t: 'Genuine' },
+                { icon: Truck, t: 'Fast Delivery' },
+              ].map((b, i) => (
+                <div key={i} className="flex flex-col items-center gap-1 bg-slate-50 border border-slate-100 rounded-lg py-2">
+                  <b.icon className="h-4 w-4 text-[#1B6B3A]" />
+                  <span className="text-[9px] font-black text-slate-500 uppercase tracking-wide">{b.t}</span>
+                </div>
+              ))}
             </div>
 
             {isCodPartialAdvanceRequired && (
@@ -615,6 +646,7 @@ export default function CheckoutComponent({
         </div>
 
       </div>
+    </div>
     </div>
   );
 }

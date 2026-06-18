@@ -119,6 +119,14 @@ export default function AdminComponent({ lang, products, setProducts, categories
     saveSiteImages(siteImages);
     alert('Site images saved. They now apply across the website.');
   };
+  // Read a chosen image file from the computer as a base64 data URL.
+  const readImageFile = (file: File | undefined, onLoad: (dataUrl: string) => void) => {
+    if (!file) return;
+    if (file.size > 2_000_000) { alert('Please choose an image under 2 MB.'); return; }
+    const reader = new FileReader();
+    reader.onloadend = () => onLoad(reader.result as string);
+    reader.readAsDataURL(file);
+  };
 
   // Category Manager — edit each homepage category's label + tile image
   const [categoryMeta, setCategoryMetaState] = useState<CategoryMeta>(() => getCategoryMeta());
@@ -1256,6 +1264,10 @@ export default function AdminComponent({ lang, products, setProducts, categories
                     placeholder="https://…  or  /images/your-image.png"
                     className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]"
                   />
+                  <label className="shrink-0 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-lg">
+                    Upload
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageFile(e.target.files?.[0], (url) => setSiteImagesState({ ...siteImages, [slot.key]: url }))} />
+                  </label>
                   {(siteImages[slot.key] || '').trim() && (
                     <img src={siteImages[slot.key]} alt="" className="h-12 w-20 object-cover rounded-md border border-slate-200" />
                   )}
@@ -1284,6 +1296,10 @@ export default function AdminComponent({ lang, products, setProducts, categories
                 <input type="text" value={newCatImage} onChange={(e) => setNewCatImage(e.target.value)}
                   placeholder="Tile image URL or /images/cat.png (optional)"
                   className="flex-1 bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                <label className="shrink-0 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-lg">
+                  Upload
+                  <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageFile(e.target.files?.[0], (url) => setNewCatImage(url))} />
+                </label>
                 <button onClick={addCustomCategory} className="bg-[#1B6B3A] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-emerald-950 transition shrink-0">Add Category</button>
               </div>
               {customCats.length > 0 && (
@@ -1318,6 +1334,10 @@ export default function AdminComponent({ lang, products, setProducts, categories
                       placeholder="Image URL or /images/cat.png"
                       className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-[#1B6B3A]"
                     />
+                    <label className="shrink-0 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-2.5 py-1.5 rounded-lg">
+                      Upload
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageFile(e.target.files?.[0], (url) => setCatField(c.name, 'image', url))} />
+                    </label>
                     {(m.image || '').trim() && <img src={m.image} alt="" className="h-9 w-9 object-cover rounded-full border border-slate-200" />}
                     <label className="flex items-center gap-1 text-[10px] font-bold text-slate-500 shrink-0">
                       <input type="checkbox" checked={!!m.hidden} onChange={(e) => setCatField(c.name, 'hidden', e.target.checked)} /> Hide

@@ -256,11 +256,11 @@ export function playAdminAlertSound(): void {
 }
 
 // ── Location detection (browser geolocation + free reverse geocoding) ───────
-export interface DetectedLocation { city: string; district?: string; pincode?: string; }
+export interface DetectedLocation { city: string; district?: string; pincode?: string; state?: string; area?: string; }
 
 export function detectLocation(): Promise<DetectedLocation> {
   return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) { reject(new Error('Geolocation not supported')); return; }
+    if (!navigator.geolocation) { reject(new Error('Geolocation is not supported by this browser.')); return; }
     navigator.geolocation.getCurrentPosition(async pos => {
       try {
         const { latitude, longitude } = pos.coords;
@@ -268,15 +268,30 @@ export function detectLocation(): Promise<DetectedLocation> {
           `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
         );
         const j = await res.json();
+        // Dig through localityInfo for a postcode if the top-level one is missing.
+        let pincode: string | undefined = j.postcode || undefined;
+        const admin = (j.localityInfo && j.localityInfo.administrative) || [];
+        if (!pincode) {
+          const pc = [...admin, ...((j.localityInfo && j.localityInfo.informative) || [])]
+            .map((a: any) => a && a.name)
+            .find((n: any) => typeof n === 'string' && /^\d{6}$/.test(n.trim()));
+          if (pc) pincode = pc.trim();
+        }
         const loc: DetectedLocation = {
           city: j.city || j.locality || j.principalSubdivision || 'Your area',
-          district: j.principalSubdivision || undefined,
-          pincode: j.postcode || undefined,
+          district: j.localityInfo?.administrative?.find((a: any) => a.adminLevel === 5 || a.adminLevel === 6)?.name || j.principalSubdivision || undefined,
+          state: j.principalSubdivision || undefined,
+          area: j.locality || j.city || undefined,
+          pincode,
         };
         localStorage.setItem('igo_cx_location', JSON.stringify(loc));
         resolve(loc);
-      } catch { reject(new Error('Could not resolve address')); }
-    }, () => reject(new Error('Location permission denied')), { timeout: 10000 });
+      } catch { reject(new Error('Could not look up your address. Please enter it manually.')); }
+    }, (err) => {
+      reject(new Error(err && err.code === 1
+        ? 'Location permission was blocked. Allow location access in your browser and try again.'
+        : 'Could not get your location. Please enter your address manually.'));
+    }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 });
   });
 }
 

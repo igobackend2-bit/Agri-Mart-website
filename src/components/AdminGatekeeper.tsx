@@ -49,7 +49,7 @@ export default function AdminGatekeeper(props: AdminGatekeeperProps) {
 
   return (
     <div className="min-h-screen relative flex items-stretch bg-[#0B3D22]">
-      <img src={siteImage('login_bg', 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070&auto=format&fit=crop')} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      <img src={siteImage('admin_login_bg', '/images/admin_login_bg.png')} alt="" className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/45" />
 
       <div className="relative w-full grid lg:grid-cols-2">
