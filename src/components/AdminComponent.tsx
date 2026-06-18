@@ -28,7 +28,8 @@ import {
   changeAdminPassword,
   getHomeOverrides, saveHomeOverrides, HomeOverrides,
   getComplexOverrides, saveComplexOverrides, ComplexOverrides,
-  getSiteImages, saveSiteImages, SiteImages
+  getSiteImages, saveSiteImages, SiteImages,
+  getCategoryMeta, saveCategoryMeta, CategoryMeta
 } from '../siteConfig';
 
 interface AdminComponentProps {
@@ -116,6 +117,16 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const saveSiteImagesHandler = () => {
     saveSiteImages(siteImages);
     alert('Site images saved. They now apply across the website.');
+  };
+
+  // Category Manager — edit each homepage category's label + tile image
+  const [categoryMeta, setCategoryMetaState] = useState<CategoryMeta>(() => getCategoryMeta());
+  const saveCategoryMetaHandler = () => {
+    saveCategoryMeta(categoryMeta);
+    alert('Categories saved. Labels and images now apply on the homepage.');
+  };
+  const setCatField = (name: string, field: 'label' | 'image' | 'hidden', value: any) => {
+    setCategoryMetaState({ ...categoryMeta, [name]: { ...(categoryMeta[name] || {}), [field]: value } });
   };
 
   // Site notification
@@ -1227,6 +1238,45 @@ export default function AdminComponent({ lang, products, setProducts, categories
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Category Manager — rename categories, change their tile image, or hide them */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">🗂️ Category Manager</h4>
+              <button onClick={saveCategoryMetaHandler} className="text-xs font-bold bg-[#1B6B3A] text-white px-4 py-1.5 rounded-lg hover:bg-emerald-950 transition">
+                Save Categories
+              </button>
+            </div>
+            <p className="text-[11px] text-slate-400 mb-4">Rename a category, replace its homepage tile image (URL or /images/ path), or hide it. Leave blank to keep the default.</p>
+            <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
+              {categories.map((c) => {
+                const m = categoryMeta[c.name] || {};
+                return (
+                  <div key={c.id} className="flex flex-col sm:flex-row gap-2 sm:items-center border-b border-slate-100 pb-3">
+                    <div className="sm:w-40 shrink-0 text-xs font-black text-slate-700 truncate">{c.name}</div>
+                    <input
+                      type="text"
+                      value={m.label || ''}
+                      onChange={(e) => setCatField(c.name, 'label', e.target.value)}
+                      placeholder="New label (optional)"
+                      className="sm:w-44 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-[#1B6B3A]"
+                    />
+                    <input
+                      type="text"
+                      value={m.image || ''}
+                      onChange={(e) => setCatField(c.name, 'image', e.target.value)}
+                      placeholder="Image URL or /images/cat.png"
+                      className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-[#1B6B3A]"
+                    />
+                    {(m.image || '').trim() && <img src={m.image} alt="" className="h-9 w-9 object-cover rounded-full border border-slate-200" />}
+                    <label className="flex items-center gap-1 text-[10px] font-bold text-slate-500 shrink-0">
+                      <input type="checkbox" checked={!!m.hidden} onChange={(e) => setCatField(c.name, 'hidden', e.target.checked)} /> Hide
+                    </label>
+                  </div>
+                );
+              })}
             </div>
           </div>
 

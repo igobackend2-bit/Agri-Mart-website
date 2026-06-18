@@ -45,7 +45,7 @@ import {
 import { Product, Category, Brand } from '../types';
 import { SEED_CATEGORIES, SEED_BRANDS, CROP_KITS, SUBSIDY_INFO, SEED_POSTS } from '../seedData';
 import { translations, LanguageDict } from '../translation';
-import { getBanners, getHomeOverrides, getComplexOverrides } from '../siteConfig';
+import { getBanners, getHomeOverrides, getComplexOverrides, getCategoryMeta } from '../siteConfig';
 import { detectLocation, getSavedLocation } from '../storeData';
 import { FarmStories, LiveTrialFields, IgoEcosystemCarousel } from './HomeAdaptedFeatures';
 
@@ -347,12 +347,15 @@ export default function HomeComponent({
     'Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers',
     'Indoor Plants', 'Outdoor Plants & Trees',
   ];
+  const catMeta = getCategoryMeta();
   const ALL_CATS: [string, { text: string; images: string[] }][] = CAT_ORDER
-    .filter((name) => products.some((p) => p.category === name))
+    .filter((name) => products.some((p) => p.category === name) && !catMeta[name]?.hidden)
     .map((name) => {
       const rep = products.find((p) => p.category === name && p.images && p.images[0]);
       const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      return [slug, { text: name, images: rep ? [rep.images[0]] : [] }];
+      const meta = catMeta[name] || {};
+      const img = (meta.image && meta.image.trim()) ? meta.image : (rep ? rep.images[0] : '');
+      return [slug, { text: meta.label?.trim() || name, images: img ? [img] : [] }];
     });
 
   const DEFAULT_HERO_SLIDES = [
@@ -616,42 +619,7 @@ export default function HomeComponent({
           </div>
         ))}
         
-        {/* Swiggy-style location + search combo bar inside Hero */}
-        <div className="absolute bottom-6 left-0 right-0 z-20 px-4 sm:px-8">
-          <form
-            onSubmit={(e) => { e.preventDefault(); if (searchQuery.trim()) { setSelectedCategory(null); setCurrentPage('category'); } }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="flex items-stretch bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-2 gap-2 border border-white/20">
-              <button
-                type="button"
-                onClick={handleHeroDetectLoc}
-                className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 rounded-xl hover:bg-slate-100 transition border-r border-slate-200 shrink-0 max-w-[120px] sm:max-w-[190px]"
-                title="Detect my location"
-              >
-                <MapPin className="h-4 w-4 text-[#1B6B3A] shrink-0" />
-                <span className="text-xs font-bold text-slate-800 truncate">
-                  {locBusy ? 'Detecting...' : cxLoc ? cxLoc.city : 'Set location'}
-                </span>
-                <ChevronRight className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-              </button>
-              <div className="flex items-center flex-1 min-w-0">
-                <Search className="h-5 w-5 text-slate-400 ml-2 shrink-0" />
-                <input
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder='Search for "seeds", "drip kit", "neem oil"'
-                  className="flex-1 bg-transparent px-3 py-2 text-sm sm:text-base text-slate-900 outline-none min-w-0 font-medium"
-                />
-              </div>
-              <button type="submit"
-                className="bg-[#1B6B3A] hover:bg-emerald-950 text-white font-black text-sm px-6 sm:px-8 rounded-xl transition shrink-0">
-                Search
-              </button>
-            </div>
-          </form>
-        </div>
+        {/* Hero search removed — customers use the search bar in the header. */}
 
         {/* Slider Controls */}
         <div className="absolute bottom-28 left-6 sm:left-8 z-20 flex gap-2">
@@ -842,27 +810,7 @@ export default function HomeComponent({
         </div>
       </section>
 
-      {/* ── TOP AGRI BRANDS (Instamart-style brand picker) ───────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-6">
-        <SectionHeader
-          title="Popular Agri Brands"
-          sub="Trusted farm brands for seeds, crop care and organic inputs."
-          onViewAll={() => { setSelectedCategory(null); setCurrentPage('category'); }}
-        />
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {popularBrands.map((brand) => (
-            <button
-              key={brand.id || brand.name}
-              onClick={() => handleBrandPillClick(brand.name)}
-              className="rounded-2xl border border-slate-200 p-4 text-left hover:border-[#1B6B3A] hover:bg-emerald-50 transition"
-            >
-              <div className="text-[11px] uppercase text-slate-500 tracking-[0.15em] font-bold">Brand</div>
-              <div className="mt-2 font-display font-black text-slate-900 text-sm leading-tight">{brand.name}</div>
-              <div className="mt-2 text-[11px] text-slate-500">Shop quality agronomy essentials</div>
-            </button>
-          ))}
-        </div>
-      </section>
+      {/* Popular Agri Brands section removed per request. */}
 
       {/* ── SEEDS SECTION ────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 mb-6">

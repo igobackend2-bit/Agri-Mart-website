@@ -73,6 +73,7 @@ const KEYS = {
   homeOverrides: 'igo_home_overrides',
   siteImages: 'igo_site_images',
   pageContent: 'igo_page_content',
+  categoryMeta: 'igo_category_meta',
   adminPwdHash: 'igo_admin_pwd_hash',
   adminSession: 'igo_admin_session',
 } as const;
@@ -196,6 +197,15 @@ export function saveSiteImages(images: SiteImages): void {
 export function siteImage(key: string, fallback: string): string {
   const v = getSiteImages()[key];
   return v && v.trim() ? v : fallback;
+}
+
+// ── Category manager (admin edits each category's label + tile image) ────────
+export type CategoryMeta = Record<string, { label?: string; image?: string; hidden?: boolean }>;
+export function getCategoryMeta(): CategoryMeta {
+  return readJSON<CategoryMeta>(KEYS.categoryMeta, {});
+}
+export function saveCategoryMeta(meta: CategoryMeta): void {
+  writeWithSync(KEYS.categoryMeta, meta);
 }
 
 // ── Editable page text content (admin "Pages" editor) ────────────────────────
