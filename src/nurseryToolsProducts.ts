@@ -19,7 +19,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 29,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/16mm Barbed Elbow.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/65mgd3_16mm_Barbed_Elbow.jpeg"
     ],
     "description": "16 mm Barbed Elbow — Tube connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -45,7 +45,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 33,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/16mm Barbed Joiner.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/wxek6s_16mm_Barbed_Joiner.jpeg"
     ],
     "description": "16 mm Barbed Joiner — Tube connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -71,7 +71,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 25,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/16mm Barbed Tee.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qrygqr_16mm_Barbed_Tee.jpeg"
     ],
     "description": "16 mm Barbed Tee — Tube connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -97,7 +97,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 40,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/16mm End Cap.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yy4fda_16mm_End_Cap.jpeg"
     ],
     "description": "16 mm End Cap — Tube connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -123,7 +123,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 33,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/2 Way branch adapter.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/t7iio9_2_Way_branch_adapter.jpeg"
     ],
     "description": "2 Way Branch Adapter — Micro tube adapter. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -149,7 +149,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/3 Cinder 2-4 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6meinz_3_Cinder_2-4_mm.jpeg"
     ],
     "description": "Cinder 2-4 mm — Growing media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Washed byproduct of burnt coal.",
@@ -175,7 +175,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/4 Way Elbow.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/zvqi6x_4_Way_Elbow.jpeg"
     ],
     "description": "4 Way Elbow 1 inch — Connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -201,7 +201,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/5 Cocopith Disc Plain 100 mm.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2cscln_5_Cocopith_Disc_Plain_100_mm.webp"
     ],
     "description": "Cocopith Disc Plain 100 mm — Seed starter / grow media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Cocopith.",
@@ -227,7 +227,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/8 INCH Gutter.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/5b967p_8_INCH_Gutter.jpeg"
     ],
     "description": "8 Inch Gutter — Grow channel. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -253,7 +253,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Air Stone 2inch.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/142nky_Air_Stone_2inch.jpeg"
     ],
     "description": "Air Stone 2 Inch — Aeration. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Silica.",
@@ -279,7 +279,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Air Stone 4inch.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3uc8c8_Air_Stone_4inch.jpeg"
     ],
     "description": "Air Stone 4 Inch — Aeration. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Silica.",
@@ -305,7 +305,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Air Tube.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xbxwdl_Air_Tube.jpeg"
     ],
     "description": "Air Tube 100 Mtr — Aeration tube. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Silicone.",
@@ -331,7 +331,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Air pump ACO serie.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/0lqbnk_Air_pump_ACO_serie.jpg"
     ],
     "description": "Air Pump ACO Series — Aeration. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "ABS.",
@@ -357,7 +357,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Air pump HQB series.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ybsw0f_Air_pump_HQB_series.jpg"
     ],
     "description": "Air Pump HQB Series — Aeration. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "ABS.",
@@ -383,7 +383,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Air pump smal.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/idz0pp_Air_pump_smal.jpg"
     ],
     "description": "Air Pump Small — Aeration. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "ABS.",
@@ -409,7 +409,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Air release vlave.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ihzb2o_Air_release_vlave.webp"
     ],
     "description": "Air Release Valve — Air release. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Plastic.",
@@ -435,7 +435,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 40,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Arrow Dripper.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/y39yim_Arrow_Dripper.png"
     ],
     "description": "Arrow Dripper — Dripper. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -461,7 +461,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B10.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8woz6f_B10.jpeg"
     ],
     "description": "LECA / Hydrotons Clay Balls Small 2-3 mm — Growing media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded Clay.",
@@ -487,7 +487,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B11.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/d5n0uf_B11.jpeg"
     ],
     "description": "Crushed LECA 2-3 mm — Growing media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded Clay.",
@@ -513,7 +513,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B12.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/svucsk_B12.jpeg"
     ],
     "description": "Clay Balls 12-18 mm — Growing media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded Clay.",
@@ -539,7 +539,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B13.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kg2xz1_B13.jpeg"
     ],
     "description": "Pumice Stone 20-50 mm — Grow media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded amorphous volcanic material.",
@@ -565,7 +565,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B14.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/in772x_B14.jpeg"
     ],
     "description": "Pumice Stone 8-12 mm — Grow media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded amorphous volcanic material.",
@@ -591,7 +591,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B16.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/fygrla_B16.jpeg"
     ],
     "description": "Pumice Stone 2-4 mm — Grow media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded amorphous volcanic material.",
@@ -617,7 +617,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B17.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2uafan_B17.jpg"
     ],
     "description": "Pumice Stone 1-2 mm — Grow media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded amorphous volcanic material.",
@@ -643,7 +643,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B18.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/etn9nl_B18.jpeg"
     ],
     "description": "Exfoliated Vermiculite 2-4 mm — Grow media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Exfoliated vermiculite.",
@@ -669,7 +669,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B2.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tref8e_B2.jpg"
     ],
     "description": "Cocopith Slab 100x15x12 cm — Grow media for cherry tomatoes & bell peppers. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "70% cocopeat / 30% cocochips.",
@@ -695,7 +695,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B20.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/csp3l9_B20.jpeg"
     ],
     "description": "Perlite 0.5-4 mm — Agriculture / horticulture growing media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded amorphous volcanic material.",
@@ -721,7 +721,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B21.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/zeduhs_B21.jpg"
     ],
     "description": "Perlite 1-7 mm — Agriculture / horticulture growing media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded amorphous volcanic material.",
@@ -747,7 +747,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B3.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hkuxfw_B3.jpeg"
     ],
     "description": "Cocopith Slab 100x18x15 cm — Grow media for regular tomatoes. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "70% cocopeat / 30% cocochips.",
@@ -773,7 +773,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B4.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/m5wd4s_B4.jpeg"
     ],
     "description": "Cocopith Slab 100x20x11 cm — Grow media for strawberry. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "70% cocopeat / 30% cocochips.",
@@ -799,7 +799,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B5.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ksx90g_B5.jpeg"
     ],
     "description": "Coir Sheet (Microgreen) — Microgreen sheet. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Coir fibre.",
@@ -825,7 +825,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B6.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6qk6l0_B6.jpeg"
     ],
     "description": "Microgreen Sheet SHT620 — Microgreen sheet. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Fenollic Foam.",
@@ -851,7 +851,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B7.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ifqrnu_B7.jpeg"
     ],
     "description": "LECA / Hydrotons Clay Balls Medium 8-15 mm — Growing media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded Clay.",
@@ -877,7 +877,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/B8.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/7p11v1_B8.jpeg"
     ],
     "description": "LECA / Hydrotons Clay Balls Small 2-8 mm — Growing media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded Clay.",
@@ -903,7 +903,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Balcony Planter.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/io6cs0_Balcony_Planter.jpg"
     ],
     "description": "Balcony Planter — Media-based grow bag. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Felt fabric.",
@@ -929,7 +929,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Barbed adapter.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6j2rjg_Barbed_adapter.jpeg"
     ],
     "description": "Barbed Adapter 1/2 inch — Tube connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Plastic.",
@@ -955,7 +955,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 50,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Brabed Coupling 4mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6og3z1_Brabed_Coupling_4mm.jpeg"
     ],
     "description": "Barbed Coupling 4 mm — Tube connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Plastic.",
@@ -981,7 +981,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Cinder 2-8 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tdglsg_Cinder_2-8_mm.jpeg"
     ],
     "description": "Cinder 2-8 mm — Growing media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Washed byproduct of burnt coal.",
@@ -1007,7 +1007,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Cocopith Block 5 KG-LOW EC.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/fj75du_Cocopith_Block_5_KG-LOW_EC.jpeg"
     ],
     "description": "Cocopith Block 5 KG - Low EC — Seed starter / grow media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Cocopith.",
@@ -1033,7 +1033,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Cocopith Loose.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3y6uma_Cocopith_Loose.jpeg"
     ],
     "description": "Cocopith Loose — Grow media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Cocopith.",
@@ -1059,7 +1059,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Cocopith disc 30 mm.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hnsimm_Cocopith_disc_30_mm.webp"
     ],
     "description": "Cocopith Disc 30 mm — Seed starter / seed germination. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Cocopith.",
@@ -1085,7 +1085,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Cocopith disc 40mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/nwqfwl_Cocopith_disc_40mm.jpeg"
     ],
     "description": "Cocopith Disc 40 mm — Seed starter / seed germination. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Cocopith.",
@@ -1111,7 +1111,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Cocopith disc 50 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ca44r3_Cocopith_disc_50_mm.jpeg"
     ],
     "description": "Cocopith Disc 50 mm — Seed starter / seed germination. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Cocopith.",
@@ -1137,7 +1137,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Coir Pots 6 Inch.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hmb2ts_Coir_Pots_6_Inch.jpeg"
     ],
     "description": "Coir Pots 6 Inch — Grow pots. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Coir fibre.",
@@ -1163,7 +1163,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Cone Hanger 9 Inch.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/svo1uh_Cone_Hanger_9_Inch.jpg"
     ],
     "description": "Cone Hanger 9 Inch — Grow pots. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Coir fibre.",
@@ -1189,7 +1189,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 33,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Connector Tee 4mm.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/aus47o_Connector_Tee_4mm.jpg"
     ],
     "description": "Connector Tee 4 mm — Tube connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Plastic.",
@@ -1215,7 +1215,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/DISC Hanger 8 Inch.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/k4qrk4_DISC_Hanger_8_Inch.jpg"
     ],
     "description": "DISC Hanger 8 Inch — Grow pots. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Coir fibre.",
@@ -1241,7 +1241,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/DWC Tray  Medium 4 x 2 feet depth 90 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6ysfox_DWC_Tray__Medium_4_x_2_feet_depth_90_mm.jpeg"
     ],
     "description": "DWC Tray Medium 4x2 feet depth 90 mm — Deep water culture / nursery tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HIPS.",
@@ -1267,7 +1267,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/DWC Tray  small 650x650x70 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/zvwuxp_DWC_Tray__small_650x650x70_mm.jpeg"
     ],
     "description": "DWC Tray Small 650x650x70 mm — Deep water culture / nursery tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HIPS.",
@@ -1293,7 +1293,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/DWC Tray Large 8 x 4 feet depth 100 mm.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/j904fr_DWC_Tray_Large_8_x_4_feet_depth_100_mm.jpg"
     ],
     "description": "DWC Tray Large 8x4 feet depth 100 mm — Deep water culture / nursery tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HIPS.",
@@ -1319,7 +1319,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 25,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Drip peg.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/586mrm_Drip_peg.jpg"
     ],
     "description": "Drip Peg — Dripper. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -1345,7 +1345,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Dutch Bucke.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ecv32n_Dutch_Bucke.jpeg"
     ],
     "description": "Dutch Bucket — Grow tub. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "PPCP.",
@@ -1371,7 +1371,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Dutch Bucket Lid.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yn8p2i_Dutch_Bucket_Lid.webp"
     ],
     "description": "Dutch Bucket Lid — Lid without hole. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HIPS.",
@@ -1397,7 +1397,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/EPS Raft.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/z2bqp0_EPS_Raft.jpeg"
     ],
     "description": "EPS Raft — Grow bed. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Expanded Poly Styrene (EPS).",
@@ -1423,7 +1423,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/End Cap 2 inch.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/fpl2jp_End_Cap_2_inch.jpeg"
     ],
     "description": "End Cap 2 Inch — NFT channel closed end cap. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -1449,7 +1449,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/End cap 2 inch spout.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4v5p6n_End_cap_2_inch_spout.jpeg"
     ],
     "description": "End Cap 2 Inch with Spout — NFT channel end cap with spout. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -1475,7 +1475,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/End cap 3.5 Inch.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/dam6t2_End_cap_3.5_Inch.jpeg"
     ],
     "description": "End Cap 3.5 Inch — NFT channel closed end cap. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -1501,7 +1501,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/End cap 3.5 inch with spout.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/70bn4j_End_cap_3.5_inch_with_spout.jpeg"
     ],
     "description": "End Cap 3.5 Inch with Spout — NFT channel end cap with spout. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -1527,7 +1527,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/F49.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/43aqla_F49.jpeg"
     ],
     "description": "Threaded Tee 3/4 inch — Connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -1553,7 +1553,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/F51.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xdztxj_F51.jpeg"
     ],
     "description": "Cross Tee 1/2 inch — Connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -1579,7 +1579,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/F55.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xs36e2_F55.jpeg"
     ],
     "description": "3 Way Elbow 1 inch — Connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -1605,7 +1605,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/FTH Bushing.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/eja0fq_FTH_Bushing.jpeg"
     ],
     "description": "FTH Bushing — ST valve connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Nylon.",
@@ -1631,7 +1631,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Fabric grow bag 10x10 cm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/wnnmoj_Fabric_grow_bag_10x10_cm.jpeg"
     ],
     "description": "Fabric Grow Bag 10x10 cm — Media-based grow bag. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Felt fabric.",
@@ -1657,7 +1657,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Fabric grow bag 20x20 cm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/eevmk3_Fabric_grow_bag_20x20_cm.jpeg"
     ],
     "description": "Fabric Grow Bag 20x20 cm — Media-based grow bag. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Felt fabric.",
@@ -1683,7 +1683,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Fabric grow bag 45x45 cm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/7o1g1f_Fabric_grow_bag_45x45_cm.jpeg"
     ],
     "description": "Fabric Grow Bag 45x45 cm — Media-based grow bag. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Felt fabric.",
@@ -1709,7 +1709,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Filter Bag 6x8 inches.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/d665ip_Filter_Bag_6x8_inches.jpeg"
     ],
     "description": "Filter Bag 6x8 inches — Filtration. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Nylon.",
@@ -1735,7 +1735,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Filter Bag 9x12 inches.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/h35m7e_Filter_Bag_9x12_inches.jpeg"
     ],
     "description": "Filter Bag 9x12 inches — Filtration. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Nylon.",
@@ -1761,7 +1761,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Fish Tank 3500 lt.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/byr7jb_Fish_Tank_3500_lt.jpeg"
     ],
     "description": "Fish Tank 3500 Ltr — Aquaponic / biofloc fish tank. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "PVC 550 GSM.",
@@ -1787,7 +1787,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Foam Sheet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/0dpfhy_Foam_Sheet.jpg"
     ],
     "description": "Foam Sheet — Seed starter / seed germination. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "PU Foam.",
@@ -1813,7 +1813,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Fodder Tray Big.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/euybxx_Fodder_Tray_Big.jpeg"
     ],
     "description": "Fodder Tray Big — Fodder tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Poly Propylene.",
@@ -1839,7 +1839,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Fodder Tray small.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ph9ixa_Fodder_Tray_small.jpeg"
     ],
     "description": "Fodder Tray Small — Fodder tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Poly Propylene.",
@@ -1865,7 +1865,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 33,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Grommet 16 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/9i1n6x_Grommet_16_mm.jpeg"
     ],
     "description": "Grommet 16 mm — Connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Rubber.",
@@ -1891,7 +1891,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 29,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Grommet 7 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/876jlc_Grommet_7_mm.jpeg"
     ],
     "description": "Grommet 7 mm — Connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Natural Rubber.",
@@ -1917,7 +1917,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Grow Bag 40x24x24 cm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/dl4q73_Grow_Bag_40x24x24_cm.jpeg"
     ],
     "description": "Grow Bag 40x24x24 cm — Media-based grow support bag. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "LLDP.",
@@ -1943,7 +1943,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Grow Tent 2x2x5 feet.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/362ytf_Grow_Tent_2x2x5_feet.jpeg"
     ],
     "description": "Grow Tent 2x2x5 feet — Indoor grow tent. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Ballistic nylon blackout fabric.",
@@ -1969,7 +1969,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Grow Tent 2x3x5 feet.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4oayol_Grow_Tent_2x3x5_feet.jpeg"
     ],
     "description": "Grow Tent 2x3x5 feet — Indoor grow tent. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Ballistic nylon blackout fabric.",
@@ -1995,7 +1995,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Hydroponic Tray.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/33pf6d_Hydroponic_Tray.jpeg"
     ],
     "description": "Hydroponic Tray 18x12x3 — Grow media support tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Poly Propylene.",
@@ -2021,7 +2021,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/HydroponicTray.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vlzugv_HydroponicTray.jpeg"
     ],
     "description": "Hydroponic Tray 24x16x3 — Grow media support tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "PPCP.",
@@ -2047,7 +2047,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Inlet connector.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/lb42dx_Inlet_connector.jpeg"
     ],
     "description": "Inlet Connector — Nutrient input fitting. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -2073,7 +2073,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/LOFT Tank 110 LTR.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tmlgkr_LOFT_Tank_110_LTR.webp"
     ],
     "description": "LOFT Tank 110 LTR — Nutrient / water storage. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE / LLDPE.",
@@ -2099,7 +2099,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Lateral Valve 16 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/igo9iu_Lateral_Valve_16_mm.jpeg"
     ],
     "description": "Lateral Valve 16 mm Barbed — Flow control. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Plastic.",
@@ -2125,7 +2125,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/MBBR  Black.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/c8o7at_MBBR__Black.jpeg"
     ],
     "description": "MBBR Black — Bacterial grow media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "PP plastic.",
@@ -2151,7 +2151,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/MBBR White.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bwwj02_MBBR_White.jpeg"
     ],
     "description": "MBBR White — Bacterial grow media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Virgin PP plastic.",
@@ -2177,7 +2177,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 50,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Micro tube end plug 4mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/a3mfh4_Micro_tube_end_plug_4mm.jpeg"
     ],
     "description": "Micro Tube End Plug 4 mm — Tube closer. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -2203,7 +2203,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Micro tubes 2.5 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1fz8hv_Micro_tubes_2.5_mm.jpeg"
     ],
     "description": "Micro Tubes 2.5 mm (100 Mtr) — Inlet tubes. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "PVC.",
@@ -2229,7 +2229,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Micro tubes 3x5 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ncx5ky_Micro_tubes_3x5_mm.jpeg"
     ],
     "description": "Micro Tubes 3x5 mm (50 Mtr) — Inlet tubes. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -2255,7 +2255,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Micro tubes 4x7mm BLACK.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jas6ev_Micro_tubes_4x7mm_BLACK.jpeg"
     ],
     "description": "Micro Tubes 4x7 mm Black (100 Mtr) — Inlet tubes. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "PVC.",
@@ -2281,7 +2281,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Microgreen Tray Set 300(L) X 250(B) X 40(D) mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/73qswn_Microgreen_Tray_Set_300_L__X_250_B__X_40_D__mm.jpeg"
     ],
     "description": "Microgreen Tray Set 300x250x40 mm — Microgreens tray without holes. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Virgin Poly Propylene.",
@@ -2307,7 +2307,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Microgreen Tray with hole 600(L) X 300(B) X 30(D) mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/47zbcl_Microgreen_Tray_with_hole_600_L__X_300_B__X_30_D__mm.jpeg"
     ],
     "description": "Microgreen Tray with Hole 600x300x30 mm — Microgreens tray with holes. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Poly Propylene.",
@@ -2333,7 +2333,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Microgreen Tray without hole 600(L) X 300(B) X 30(D) mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/efzry4_Microgreen_Tray_without_hole_600_L__X_300_B__X_30_D__mm.jpeg"
     ],
     "description": "Microgreen Tray without Hole 600x300x30 mm — Microgreens tray without holes. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Poly Propylene.",
@@ -2359,7 +2359,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Microgreen Tray.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/d0yqbs_Microgreen_Tray.jpeg"
     ],
     "description": "Microgreen Tray with Holes 350x530x50 mm — Microgreen / germination tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HIPS.",
@@ -2385,7 +2385,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/NFTCHANNEL 3.5 inch.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2ygwhb_NFTCHANNEL_3.5_inch.jpeg"
     ],
     "description": "NFT Channel 3.5 Inch — Grow channel. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -2411,7 +2411,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Natural Coir Fibre Loose.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/r3b7ve_Natural_Coir_Fibre_Loose.jpeg"
     ],
     "description": "Natural Coir Fibre Loose — Grow media / potting mix. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Coir fibre.",
@@ -2437,7 +2437,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 17,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Net Pots- 10 CM.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8lhrgp_Net_Pots-_10_CM.jpeg"
     ],
     "description": "Net Pots 10 CM — Support cup. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "100% Virgin PP.",
@@ -2463,7 +2463,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 40,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Net Pots- 2 Inch Premium.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/czr0g7_Net_Pots-_2_Inch_Premium.jpeg"
     ],
     "description": "Net Pots 2 Inch Premium — Support cup. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Virgin PP plastic.",
@@ -2489,7 +2489,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 50,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Net Pots- 2 Inch Regular.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/186ank_Net_Pots-_2_Inch_Regular.jpeg"
     ],
     "description": "Net Pots 2 Inch Regular — Support cup. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "RP plastic.",
@@ -2515,7 +2515,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Non Return Valve.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/eglmvg_Non_Return_Valve.jpeg"
     ],
     "description": "Non Return Valve — Prevents return flow. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Glass.",
@@ -2541,7 +2541,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Nursery Grow Bag.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/dtidfa_Nursery_Grow_Bag.jpeg"
     ],
     "description": "Nursery Grow Bag — Grow bag. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "LLDP.",
@@ -2567,7 +2567,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Nursery Net pot 2 Inch.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/b7it70_Nursery_Net_pot_2_Inch.jpg"
     ],
     "description": "Nursery Net Pot 2 Inch — Nursery net pot. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "RP plastic.",
@@ -2593,7 +2593,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Oasis Block 436.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/o4674x_Oasis_Block_436.jpeg"
     ],
     "description": "Oasis Block 436 — Plug support. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Fenollic Foam.",
@@ -2619,7 +2619,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Oasis Cube SHT 603.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jpy88j_Oasis_Cube_SHT_603.jpeg"
     ],
     "description": "Oasis Cube SHT 603 — Seed starter / seed germination. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Fenollic Foam.",
@@ -2645,7 +2645,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Oasis Cube SHT 604.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/om6k2b_Oasis_Cube_SHT_604.webp"
     ],
     "description": "Oasis Cube SHT 604 — Seed starter / seed germination. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Fenollic Foam.",
@@ -2671,7 +2671,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Oasis Cube SHT6276.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3kgat4_Oasis_Cube_SHT6276.jpeg"
     ],
     "description": "Oasis Cube SHT 6276 — Seed starter / seed germination. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Fenollic Foam.",
@@ -2697,7 +2697,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 29,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Online dripper.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/63k7nt_Online_dripper.jpeg"
     ],
     "description": "Online Dripper — Dripper. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -2723,7 +2723,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Open top drums 10 Kg- 10 LTRS.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/22biol_Open_top_drums_10_Kg-_10_LTRS.jpeg"
     ],
     "description": "Open Top Drum 10 Kg / 10 LTR — Storage tank. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -2749,7 +2749,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Open top drums 25 kg-30 LTR.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1mtiex_Open_top_drums_25_kg-30_LTR.jpeg"
     ],
     "description": "Open Top Drum 25 Kg / 30 LTR — Storage tank. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -2775,7 +2775,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Open top drums 50 kg -60 LTR.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3oezzb_Open_top_drums_50_kg_-60_LTR.jpeg"
     ],
     "description": "Open Top Drum 50 Kg / 60 LTR — Storage tank. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -2801,7 +2801,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Paddy Tray 600(L) X 300(B) X 30(D) mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/l2nx2b_Paddy_Tray_600_L__X_300_B__X_30_D__mm.jpeg"
     ],
     "description": "Paddy Tray 600x300x30 mm — Grow media support tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Poly Propylene.",
@@ -2827,7 +2827,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Pale Bucket 20 LTR.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/a19mmq_Pale_Bucket_20_LTR.jpeg"
     ],
     "description": "Pale Bucket 20 LTR — Nutrient / water storage. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Poly Propylene.",
@@ -2853,7 +2853,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Peat Moss.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ejwuhn_Peat_Moss.jpeg"
     ],
     "description": "Peat Moss — Grow media, water retention & air porosity. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Mill-harvested peat.",
@@ -2879,7 +2879,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Rectangular Reservoir with untility LID 35 LTR.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/zf0kfs_Rectangular_Reservoir_with_untility_LID_35_LTR.jpg"
     ],
     "description": "Rectangular Reservoir with Utility Lid 35 LTR — Nutrient / water storage. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "PPCP.",
@@ -2905,7 +2905,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Red Lava Rock.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/djt5wq_Red_Lava_Rock.jpeg"
     ],
     "description": "Red Lava Rock — Biological growing media. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Amorphous volcanic material.",
@@ -2931,7 +2931,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Round Chemical Tank 50 LTR.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/24mfpv_Round_Chemical_Tank_50_LTR.jpeg"
     ],
     "description": "Round Chemical Tank 50 LTR — Nutrient / water storage. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE / LLDPE.",
@@ -2957,7 +2957,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/ST connector.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/9ckkpc_ST_connector.jpeg"
     ],
     "description": "ST Connector — Adapter. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "PVC.",
@@ -2983,7 +2983,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/ST valve.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/adwr6w_ST_valve.jpeg"
     ],
     "description": "ST Valve — Flow control. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "PVC.",
@@ -3009,7 +3009,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Screen Filter mesh.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/d7ruow_Screen_Filter_mesh.jpeg"
     ],
     "description": "Screen Filter Mesh — Irrigation line filter. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Plastic.",
@@ -3035,7 +3035,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Screen Filter.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4o2c5l_Screen_Filter.jpeg"
     ],
     "description": "Screen Filter — Irrigation line filter. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Plastic.",
@@ -3061,7 +3061,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Seedling Tray 102 Cavity Tray.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kichg4_Seedling_Tray_102_Cavity_Tray.jpeg"
     ],
     "description": "Seedling Tray 102 Cavity — Seedling tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HIPS.",
@@ -3087,7 +3087,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Seedling Tray 40 Cavity Tray.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8o41j7_Seedling_Tray_40_Cavity_Tray.jpeg"
     ],
     "description": "Seedling Tray 40 Cavity — Seedling tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HIPS.",
@@ -3113,7 +3113,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Square Reservoir with Lid 40LTR.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/54zw33_Square_Reservoir_with_Lid_40LTR.jpeg"
     ],
     "description": "Square Reservoir with Lid 40 LTR — Nutrient / water storage. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Poly Propylene.",
@@ -3139,7 +3139,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Submersible pump HQB Series.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/rllexe_Submersible_pump_HQB_Series.jpeg"
     ],
     "description": "Submersible Pump HQB Series — Water circulation. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "ABS.",
@@ -3165,7 +3165,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Submersible pump JQP series 1000 LPH.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/52536d_Submersible_pump_JQP_series_1000_LPH.jpeg"
     ],
     "description": "Submersible Pump JQP Series 1000 LPH — Water circulation. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "ABS.",
@@ -3191,7 +3191,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Submersible pump JQP series 1500 LPH.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hiolep_Submersible_pump_JQP_series_1500_LPH.jpeg"
     ],
     "description": "Submersible Pump JQP Series 1500 LPH — Water circulation. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "ABS.",
@@ -3217,7 +3217,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Submersible pump JQP series 2500 LPH.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yhz7d8_Submersible_pump_JQP_series_2500_LPH.webp"
     ],
     "description": "Submersible Pump JQP Series 2500 LPH — Water circulation. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "ABS.",
@@ -3243,7 +3243,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Threaded Elbow.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/k46a4r_Threaded_Elbow.jpeg"
     ],
     "description": "Threaded Elbow 1/2 inch — Connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -3269,7 +3269,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Threaded Lateral Valve 16 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/apd4u8_Threaded_Lateral_Valve_16_mm.jpeg"
     ],
     "description": "Threaded Lateral Valve 16 mm — Flow control. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Plastic.",
@@ -3295,7 +3295,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Threaded Tee.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/z8uz6a_Threaded_Tee.jpeg"
     ],
     "description": "Threaded Tee 1/2 inch — Connector. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "uPVC.",
@@ -3321,7 +3321,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Tower Section 4 planter.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/wipfkw_Tower_Section_4_planter.jpg"
     ],
     "description": "Tower Section - 4 Planter — Aeroponic / hydroponic tower section. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Poly Propylene.",
@@ -3347,7 +3347,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Tray with & without hole 600(L) X 300(B) X 35(D) mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hgvm5p_Tray_with___without_hole_600_L__X_300_B__X_35_D__mm.jpeg"
     ],
     "description": "Tray with & without Hole 600x300x35 mm — Microgreens tray. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Poly Propylene.",
@@ -3373,7 +3373,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/Trough 20 x 100 x 20 CM.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/f8fbfx_Trough_20_x_100_x_20_CM.jpg"
     ],
     "description": "Trough 20 x 100 x 20 cm — Grow bed. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "HDPE.",
@@ -3399,7 +3399,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/XPS Raft 20 mmm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/w0h2rx_XPS_Raft_20_mmm.jpeg"
     ],
     "description": "XPS Raft 20 mm — Grow bed. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Extruded Poly Styrene (XPS).",
@@ -3425,7 +3425,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 120,
     "images": [
-      "/catalog/nursery tools/XPS Raft 50 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/v8dccl_XPS_Raft_50_mm.jpeg"
     ],
     "description": "XPS Raft 50 mm — Grow bed. Hydroponic & nursery-grade material for modern farming setups.",
     "composition": "Extruded Poly Styrene (XPS).",
@@ -3452,7 +3452,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/16L SINGLE PUMP SPRAYER.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/zsnfwo_16L_SINGLE_PUMP_SPRAYER.jpg"
     ],
     "description": "16L SINGLE PUMP SPRAYER - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3478,7 +3478,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/18L DOUBLE PUMP SPRAYER.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1u3rop_18L_DOUBLE_PUMP_SPRAYER.jpg"
     ],
     "description": "18L DOUBLE PUMP SPRAYER - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3504,7 +3504,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/4 way Fogger, Threaded type.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/7rgta9_4_way_Fogger__Threaded_type.jpeg"
     ],
     "description": "4 way Fogger, Threaded type - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3530,7 +3530,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/4 way Fogger.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/gfzp2t_4_way_Fogger.jpeg"
     ],
     "description": "4 way Fogger - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3556,7 +3556,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/AGRICULTURE POLYWIRE.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ighygj_AGRICULTURE_POLYWIRE.jpeg"
     ],
     "description": "AGRICULTURE POLYWIRE - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3582,7 +3582,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Air Circulation Fan 500 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yj5mmd_Air_Circulation_Fan_500_mm.jpeg"
     ],
     "description": "Air Circulation Fan 500 mm - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3608,7 +3608,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/ALUMINIUM PROFILE.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/rf9cjp_ALUMINIUM_PROFILE.jpeg"
     ],
     "description": "ALUMINIUM PROFILE - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3634,7 +3634,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Calcium Nitrate 1 Kg.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/nhshg3_Calcium_Nitrate_1_Kg.jpeg"
     ],
     "description": "Calcium Nitrate 1 Kg - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3660,7 +3660,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Cluster clamp.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/b3baj6_Cluster_clamp.png"
     ],
     "description": "Cluster clamp - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3686,7 +3686,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/COOLING PAD FRAME UPVC 150 mm.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/y3g5hh_COOLING_PAD_FRAME_UPVC_150_mm.jpg"
     ],
     "description": "COOLING PAD FRAME UPVC 150 mm - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3712,7 +3712,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/COOLING PAD FRAMEAluminum 100 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pjz3d1_COOLING_PAD_FRAMEAluminum_100_mm.jpeg"
     ],
     "description": "COOLING PAD FRAMEAluminum 100 mm - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3738,7 +3738,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/CROP NET 135 Sq mtr.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/v2xvpi_CROP_NET_135_Sq_mtr.jpeg"
     ],
     "description": "CROP NET 135 Sq mtr - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3764,7 +3764,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Dutch Bucket System 20 Planter.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/937hnh_Dutch_Bucket_System_20_Planter.jpg"
     ],
     "description": "Dutch Bucket System 20 Planter - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3790,7 +3790,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Ec calibration liquid- 500 ml.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vyccel_Ec_calibration_liquid-_500_ml.jpeg"
     ],
     "description": "Ec calibration liquid- 500 ml - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3816,7 +3816,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Ec calibration liquid- Sache.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xc3ibl_Ec_calibration_liquid-_Sache.jpeg"
     ],
     "description": "Ec calibration liquid- Sache - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3842,7 +3842,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Ec Meter Brand-Hanna HI98318.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qidnze_Ec_Meter_Brand-Hanna_HI98318.jpeg"
     ],
     "description": "Ec Meter Brand-Hanna HI98318 - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3868,7 +3868,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Ec Meter Brand-HM Com 80.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/db41qs_Ec_Meter_Brand-HM_Com_80.jpeg"
     ],
     "description": "Ec Meter Brand-HM Com 80 - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3894,7 +3894,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/EVAPORATIVE COOLING PAD 100 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/n0hh82_EVAPORATIVE_COOLING_PAD_100_mm.jpeg"
     ],
     "description": "EVAPORATIVE COOLING PAD 100 mm - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3920,7 +3920,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/EVAPORATIVE COOLING PAD 150 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6yf0xc_EVAPORATIVE_COOLING_PAD_150_mm.jpeg"
     ],
     "description": "EVAPORATIVE COOLING PAD 150 mm - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3946,7 +3946,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Exhaust Fan 24 inch.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/9lu7ov_Exhaust_Fan_24_inch.jpeg"
     ],
     "description": "Exhaust Fan 24 inch - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3972,7 +3972,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Flat Bed Hydroponic System 200 Planter.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ux7eli_Flat_Bed_Hydroponic_System_200_Planter.jpeg"
     ],
     "description": "Flat Bed Hydroponic System 200 Planter - high-grade farm equipment.",
     "composition": "Standard material",
@@ -3998,7 +3998,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Flat Bed Hydroponic System 30 Planter.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/j945cm_Flat_Bed_Hydroponic_System_30_Planter.jpeg"
     ],
     "description": "Flat Bed Hydroponic System 30 Planter - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4024,7 +4024,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Full spectrun NX 4 Spectrum 1 Feet.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/dx38sn_Full_spectrun_NX_4_Spectrum_1_Feet.jpeg"
     ],
     "description": "Full spectrun NX 4 Spectrum 1 Feet - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4050,7 +4050,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/GHGL R Full spectrun NX 4B Spectrum Round.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/0o6gy1_GHGL_R_Full_spectrun_NX_4B_Spectrum_Round.webp"
     ],
     "description": "GHGL R Full spectrun NX 4B Spectrum Round - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4076,7 +4076,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/GHGL S Full spectrun NX 4B Spectrum Rectangular.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/0gh4rg_GHGL_S_Full_spectrun_NX_4B_Spectrum_Rectangular.jpg"
     ],
     "description": "GHGL S Full spectrun NX 4B Spectrum Rectangular - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4102,7 +4102,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Grafting clip.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/quseq7_Grafting_clip.jpeg"
     ],
     "description": "Grafting clip - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4128,7 +4128,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Green Pet 20 Planter.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xqqrhm_Green_Pet_20_Planter.jpeg"
     ],
     "description": "Green Pet 20 Planter - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4154,7 +4154,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Grow Tower 48 Planter.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/em4zxn_Grow_Tower_48_Planter.jpg"
     ],
     "description": "Grow Tower 48 Planter - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4180,7 +4180,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Hand operated Drill bit 12 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/re44c1_Hand_operated_Drill_bit_12_mm.jpeg"
     ],
     "description": "Hand operated Drill bit 12 mm - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4206,7 +4206,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Hand operated Drill bit 19 mm.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/5y6261_Hand_operated_Drill_bit_19_mm.jpeg"
     ],
     "description": "Hand operated Drill bit 19 mm - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4232,7 +4232,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Higrow Strawberry 25Kg.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/plbzm0_Higrow_Strawberry_25Kg.jpeg"
     ],
     "description": "Higrow Strawberry 25Kg - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4258,7 +4258,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/HiGrow Super 25 Kg.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tzhrdu_HiGrow_Super_25_Kg.jpeg"
     ],
     "description": "HiGrow Super 25 Kg - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4284,7 +4284,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/INSECT NET.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/u2re12_INSECT_NET.jpg"
     ],
     "description": "INSECT NET - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4310,7 +4310,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Magnesium Sulphate 25 Kg.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/as25ns_Magnesium_Sulphate_25_Kg.jpeg"
     ],
     "description": "Magnesium Sulphate 25 Kg - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4336,7 +4336,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Micro nutrient 100GM.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/uqray7_Micro_nutrient_100GM.jpeg"
     ],
     "description": "Micro nutrient 100GM - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4362,7 +4362,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/MICROGREEN SYSTEM 12 TRAY.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/eihy09_MICROGREEN_SYSTEM_12_TRAY.jpeg"
     ],
     "description": "MICROGREEN SYSTEM 12 TRAY - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4388,7 +4388,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/MICROGREEN SYSTEM 20 TRAY.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ii0p0w_MICROGREEN_SYSTEM_20_TRAY.jpeg"
     ],
     "description": "MICROGREEN SYSTEM 20 TRAY - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4414,7 +4414,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/MICROGREEN SYSTEM 9 TRAY.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tz0cuw_MICROGREEN_SYSTEM_9_TRAY.jpeg"
     ],
     "description": "MICROGREEN SYSTEM 9 TRAY - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4440,7 +4440,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Mini Digital Tap Timer.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pm3dyl_Mini_Digital_Tap_Timer.jpeg"
     ],
     "description": "Mini Digital Tap Timer - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4466,7 +4466,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Misting Nozzle threaded.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6eje52_Misting_Nozzle_threaded.jpeg"
     ],
     "description": "Misting Nozzle threaded - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4492,7 +4492,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Misting Nozzle.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/av52wr_Misting_Nozzle.jpeg"
     ],
     "description": "Misting Nozzle - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4518,7 +4518,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Multi spectrun NX 1.1 Spectrum 2 Feet.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/n9xpzn_Multi_spectrun_NX_1.1_Spectrum_2_Feet.jpeg"
     ],
     "description": "Multi spectrun NX 1.1 Spectrum 2 Feet - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4544,7 +4544,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/NPK 20-20-20 1kg.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/mwx7z5_NPK_20-20-20_1kg.jpeg"
     ],
     "description": "NPK 20-20-20 1kg - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4570,7 +4570,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/NPK 4-18-38 25 Kg.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/gkx42n_NPK_4-18-38_25_Kg.jpeg"
     ],
     "description": "NPK 4-18-38 25 Kg - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4596,7 +4596,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/NPK 8-15-36 1KG.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/wolcib_NPK_8-15-36_1KG.jpeg"
     ],
     "description": "NPK 8-15-36 1KG - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4622,7 +4622,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Ph 7.01 calibration liquid- 500 ml.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/51my4x_Ph_7.01_calibration_liquid-_500_ml.jpeg"
     ],
     "description": "Ph 7.01 calibration liquid- 500 ml - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4648,7 +4648,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/pH calibration liquid- sachet.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hc3ox2_pH_calibration_liquid-_sachet.jpeg"
     ],
     "description": "pH calibration liquid- sachet - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4674,7 +4674,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/ph Meter Brand - HM digital ph-80.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/u4nf6c_ph_Meter_Brand_-_HM_digital_ph-80.jpeg"
     ],
     "description": "ph Meter Brand - HM digital ph-80 - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4700,7 +4700,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/pH Test liquid 125 ml.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1581l4_pH_Test_liquid_125_ml.jpeg"
     ],
     "description": "pH Test liquid 125 ml - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4726,7 +4726,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/PLASTIC COATED SPRING.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8wk75d_PLASTIC_COATED_SPRING.jpeg"
     ],
     "description": "PLASTIC COATED SPRING - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4752,7 +4752,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Plastic H hook.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qrztlt_Plastic_H_hook.jpeg"
     ],
     "description": "Plastic H hook - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4778,7 +4778,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Plastic J hook.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/slprtm_Plastic_J_hook.jpeg"
     ],
     "description": "Plastic J hook - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4804,7 +4804,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/SHADE NET.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qgepz4_SHADE_NET.jpeg"
     ],
     "description": "SHADE NET - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4830,7 +4830,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Silicon.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/re1szn_Silicon.jpeg"
     ],
     "description": "Silicon - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4856,7 +4856,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Take up pusher.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/31wk67_Take_up_pusher.jpeg"
     ],
     "description": "Take up pusher - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4882,7 +4882,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Teflon thread tape.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/grzpzo_Teflon_thread_tape.jpeg"
     ],
     "description": "Teflon thread tape - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4908,7 +4908,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Timer Switch.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/av5rd7_Timer_Switch.jpg"
     ],
     "description": "Timer Switch - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4934,7 +4934,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Tomato clips.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/cckz18_Tomato_clips.jpeg"
     ],
     "description": "Tomato clips - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4960,7 +4960,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Tomatoe GI hook.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2dpnp3_Tomatoe_GI_hook.jpeg"
     ],
     "description": "Tomatoe GI hook - high-grade farm equipment.",
     "composition": "Standard material",
@@ -4986,7 +4986,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/Twine rope 2.1 KG.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/nr5u5q_Twine_rope_2.1_KG.jpg"
     ],
     "description": "Twine rope 2.1 KG - high-grade farm equipment.",
     "composition": "Standard material",
@@ -5012,7 +5012,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/UPVC Solvent.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/57eyq6_UPVC_Solvent.jpeg"
     ],
     "description": "UPVC Solvent - high-grade farm equipment.",
     "composition": "Standard material",
@@ -5038,7 +5038,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 50,
     "images": [
-      "/catalog/nursery tools/WEED MAT.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/46o4r2_WEED_MAT.jpeg"
     ],
     "description": "WEED MAT - high-grade farm equipment.",
     "composition": "Standard material",

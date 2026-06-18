@@ -21,7 +21,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 222,
     "images": [
-      "/catalog/farmer-factory-vegetables/AshGourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2nlmme_AshGourd.jfif"
     ],
     "description": "Ash Gourd — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -47,7 +47,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 13,
     "stock": 207,
     "images": [
-      "/catalog/farmer-factory-vegetables/Avarakkai.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3o86bx_Avarakkai.jfif"
     ],
     "description": "Avarakkai (Broad Beans) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -73,7 +73,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 64,
     "images": [
-      "/catalog/farmer-factory-vegetables/BabyCorn.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/gan37f_BabyCorn.jfif"
     ],
     "description": "Baby Corn — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -99,7 +99,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 237,
     "images": [
-      "/catalog/farmer-factory-vegetables/BabyPotato.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/glief9_BabyPotato.jfif"
     ],
     "description": "Baby Potato — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -125,7 +125,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 51,
     "images": [
-      "/catalog/farmer-factory-vegetables/BajiChilli.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yhs54v_BajiChilli.jfif"
     ],
     "description": "Bajji Chilli — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -151,7 +151,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 43,
     "images": [
-      "/catalog/farmer-factory-vegetables/BananaFlower.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3pz1co_BananaFlower.jfif"
     ],
     "description": "Banana Flower — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -177,7 +177,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 296,
     "images": [
-      "/catalog/farmer-factory-vegetables/BananaStem.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/md9i5x_BananaStem.jfif"
     ],
     "description": "Banana Stem — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -203,7 +203,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 112,
     "images": [
-      "/catalog/farmer-factory-vegetables/Beans.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qjnjcn_Beans.jfif"
     ],
     "description": "Beans — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -229,7 +229,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 69,
     "images": [
-      "/catalog/farmer-factory-vegetables/BottleGourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/mlp64n_BottleGourd.jfif"
     ],
     "description": "Bottle Gourd — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -255,7 +255,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 125,
     "images": [
-      "/catalog/farmer-factory-vegetables/Brinjal.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/oqcj6g_Brinjal.jfif"
     ],
     "description": "Brinjal — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -281,7 +281,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 10,
     "stock": 258,
     "images": [
-      "/catalog/farmer-factory-vegetables/BrinjalEggplant.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kxu8tx_BrinjalEggplant.jfif"
     ],
     "description": "Brinjal (Eggplant) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -307,7 +307,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 17,
     "stock": 112,
     "images": [
-      "/catalog/farmer-factory-vegetables/BrinjalVari.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/0rw4tj_BrinjalVari.jfif"
     ],
     "description": "Vari Brinjal — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -333,7 +333,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 288,
     "images": [
-      "/catalog/farmer-factory-vegetables/Broccoli.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/leya4o_Broccoli.jfif"
     ],
     "description": "Broccoli — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -359,7 +359,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 57,
     "images": [
-      "/catalog/farmer-factory-vegetables/ButtonMushrooms.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hgmt9n_ButtonMushrooms.jfif"
     ],
     "description": "Button Mushrooms — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -385,7 +385,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 10,
     "stock": 97,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cabbage.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6dytb1_Cabbage.jfif"
     ],
     "description": "Cabbage — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -411,7 +411,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 59,
     "images": [
-      "/catalog/farmer-factory-vegetables/CapsicumGreen.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/rb3axf_CapsicumGreen.jfif"
     ],
     "description": "Green Capsicum — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -437,7 +437,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 180,
     "images": [
-      "/catalog/farmer-factory-vegetables/CapsicumRed.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ugmn0m_CapsicumRed.jfif"
     ],
     "description": "Red Capsicum — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -463,7 +463,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 253,
     "images": [
-      "/catalog/farmer-factory-vegetables/CapsicumYellow.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/r8ez2m_CapsicumYellow.jfif"
     ],
     "description": "Yellow Capsicum — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -489,7 +489,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 53,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cauliflower.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ouvl77_Cauliflower.jfif"
     ],
     "description": "Cauliflower — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -515,7 +515,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 248,
     "images": [
-      "/catalog/farmer-factory-vegetables/ChowChow.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/9nshm9_ChowChow.jfif"
     ],
     "description": "Chow Chow — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -541,7 +541,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 17,
     "stock": 256,
     "images": [
-      "/catalog/farmer-factory-vegetables/ClusterBeans.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/gvugtd_ClusterBeans.jfif"
     ],
     "description": "Cluster Beans — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -567,7 +567,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 131,
     "images": [
-      "/catalog/farmer-factory-vegetables/Coconut.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3pl2w9_Coconut.jfif"
     ],
     "description": "Tender Coconut — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -593,7 +593,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 220,
     "images": [
-      "/catalog/farmer-factory-vegetables/CorianderLeaves.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/znqs0c_CorianderLeaves.jfif"
     ],
     "description": "Coriander Leaves — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -619,7 +619,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 225,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cucumber.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/t20000_Cucumber.jfif"
     ],
     "description": "Cucumber — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -645,7 +645,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 162,
     "images": [
-      "/catalog/farmer-factory-vegetables/CurryLeaves.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/l4csrg_CurryLeaves.jfif"
     ],
     "description": "Curry Leaves — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -671,7 +671,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 138,
     "images": [
-      "/catalog/farmer-factory-vegetables/Garlic.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ms3n1q_Garlic.jfif"
     ],
     "description": "Garlic — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -697,7 +697,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 139,
     "images": [
-      "/catalog/farmer-factory-vegetables/Ginger.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xssg86_Ginger.jfif"
     ],
     "description": "Ginger — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -723,7 +723,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 164,
     "images": [
-      "/catalog/farmer-factory-vegetables/GreenPeas.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ps88qp_GreenPeas.jfif"
     ],
     "description": "Green Peas — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -749,7 +749,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 183,
     "images": [
-      "/catalog/farmer-factory-vegetables/Greenchili.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/upf94z_Greenchili.jfif"
     ],
     "description": "Green Chilli — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -775,7 +775,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 13,
     "stock": 47,
     "images": [
-      "/catalog/farmer-factory-vegetables/Karunaikizhangu.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bsfh1t_Karunaikizhangu.jfif"
     ],
     "description": "Karunai Kizhangu (Yam) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -801,7 +801,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 220,
     "images": [
-      "/catalog/farmer-factory-vegetables/Kovaikkai.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/awx3h1_Kovaikkai.jfif"
     ],
     "description": "Kovaikkai (Ivy Gourd) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -827,7 +827,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 225,
     "images": [
-      "/catalog/farmer-factory-vegetables/LadiesFinger.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vb82n9_LadiesFinger.jfif"
     ],
     "description": "Ladies Finger (Okra) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -853,7 +853,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-vegetables/MaravalliKilangu.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8oi78j_MaravalliKilangu.jfif"
     ],
     "description": "Maravalli Kizhangu (Tapioca) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -879,7 +879,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 97,
     "images": [
-      "/catalog/farmer-factory-vegetables/MintLeaves.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ay9vnd_MintLeaves.jfif"
     ],
     "description": "Mint Leaves — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -905,7 +905,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 126,
     "images": [
-      "/catalog/farmer-factory-vegetables/MixedSprouts.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/cxa75g_MixedSprouts.jfif"
     ],
     "description": "Mixed Sprouts — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -931,7 +931,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 197,
     "images": [
-      "/catalog/farmer-factory-vegetables/MoongGreenSprouts.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/u7y215_MoongGreenSprouts.jfif"
     ],
     "description": "Moong Green Sprouts — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -957,7 +957,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 269,
     "images": [
-      "/catalog/farmer-factory-vegetables/OnionNasik.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/aixyws_OnionNasik.jfif"
     ],
     "description": "Nasik Onion — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -983,7 +983,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-vegetables/Onionred.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2w5dja_Onionred.jfif"
     ],
     "description": "Red Onion — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1009,7 +1009,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 10,
     "stock": 265,
     "images": [
-      "/catalog/farmer-factory-vegetables/PumpkinYellow.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/n1j97i_PumpkinYellow.jfif"
     ],
     "description": "Pumpkin Yellow — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1035,7 +1035,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 290,
     "images": [
-      "/catalog/farmer-factory-vegetables/PurpleCabbage.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/dfofxr_PurpleCabbage.jfif"
     ],
     "description": "Purple Cabbage — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1061,7 +1061,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 290,
     "images": [
-      "/catalog/farmer-factory-vegetables/Radish.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pm71no_Radish.jfif"
     ],
     "description": "Radish — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1087,7 +1087,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 153,
     "images": [
-      "/catalog/farmer-factory-vegetables/RawBanana.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/82vwcy_RawBanana.jfif"
     ],
     "description": "Raw Banana — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1113,7 +1113,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 134,
     "images": [
-      "/catalog/farmer-factory-vegetables/RawMango.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/drkyzr_RawMango.jfif"
     ],
     "description": "Raw Mango — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1139,7 +1139,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 17,
     "stock": 134,
     "images": [
-      "/catalog/farmer-factory-vegetables/Ridgegourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8ghl5p_Ridgegourd.jfif"
     ],
     "description": "Ridge Gourd — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1165,7 +1165,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 142,
     "images": [
-      "/catalog/farmer-factory-vegetables/Seppankizhangu.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/iw9hqd_Seppankizhangu.jfif"
     ],
     "description": "Seppan Kizhangu (Colocasia) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1191,7 +1191,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 285,
     "images": [
-      "/catalog/farmer-factory-vegetables/SnakeGourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kwu2vl_SnakeGourd.jfif"
     ],
     "description": "Snake Gourd — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1217,7 +1217,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 163,
     "images": [
-      "/catalog/farmer-factory-vegetables/SpringOnion.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6qok6l_SpringOnion.jfif"
     ],
     "description": "Spring Onion — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1243,7 +1243,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 196,
     "images": [
-      "/catalog/farmer-factory-vegetables/TomatoBangalore.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vrv182_TomatoBangalore.jfif"
     ],
     "description": "Bangalore Tomato — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1269,7 +1269,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 206,
     "images": [
-      "/catalog/farmer-factory-vegetables/TomatoCountry.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/elddvw_TomatoCountry.jfif"
     ],
     "description": "Country Tomato — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1295,7 +1295,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 192,
     "images": [
-      "/catalog/farmer-factory-vegetables/ZucchiniGreen.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/nnpeec_ZucchiniGreen.jfif"
     ],
     "description": "Green Zucchini — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1321,7 +1321,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 265,
     "images": [
-      "/catalog/farmer-factory-vegetables/ZucchiniYellow.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4pnodo_ZucchiniYellow.jfif"
     ],
     "description": "Yellow Zucchini — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1347,7 +1347,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 81,
     "images": [
-      "/catalog/farmer-factory-vegetables/beetroot.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/lrp7p9_beetroot.jfif"
     ],
     "description": "Beetroot — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1373,7 +1373,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 10,
     "stock": 264,
     "images": [
-      "/catalog/farmer-factory-vegetables/bitter-gourd.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ncgltq_bitter-gourd.jpg"
     ],
     "description": "Bitter Gourd — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1399,7 +1399,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 64,
     "images": [
-      "/catalog/farmer-factory-vegetables/drumstick.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/d55gto_drumstick.jpg"
     ],
     "description": "Drumstick — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1425,7 +1425,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-vegetables/lemon.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tn95ac_lemon.jfif"
     ],
     "description": "Lemon — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1451,7 +1451,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 258,
     "images": [
-      "/catalog/farmer-factory-vegetables/nookal.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kvyby0_nookal.webp"
     ],
     "description": "Nookal (Kohlrabi) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1477,7 +1477,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 262,
     "images": [
-      "/catalog/farmer-factory-vegetables/onionbig.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/51x3i0_onionbig.jfif"
     ],
     "description": "Big Onion — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1503,7 +1503,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 13,
     "stock": 87,
     "images": [
-      "/catalog/farmer-factory-vegetables/ooty-carrot.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qg7211_ooty-carrot.jpg"
     ],
     "description": "Ooty Carrot — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1529,7 +1529,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 289,
     "images": [
-      "/catalog/farmer-factory-vegetables/potato.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ctxh08_potato.jfif"
     ],
     "description": "Potato — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1555,7 +1555,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 119,
     "images": [
-      "/catalog/farmer-factory-vegetables/sweetcorn.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/r28vs3_sweetcorn.jfif"
     ],
     "description": "Sweet Corn — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1581,7 +1581,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 169,
     "images": [
-      "/catalog/farmer-factory-vegetables/sweetpotato.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/60hllo_sweetpotato.jfif"
     ],
     "description": "Sweet Potato — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1607,7 +1607,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 17,
     "stock": 298,
     "images": [
-      "/catalog/farmer-factory-fruits/BananaElakki.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bwi1ze_BananaElakki.jfif"
     ],
     "description": "Elakki Banana — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1630,7 +1630,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 201,
     "images": [
-      "/catalog/farmer-factory-fruits/BananaKarpooravalli.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vzbr5l_BananaKarpooravalli.jfif"
     ],
     "description": "Karpooravalli Banana — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1653,7 +1653,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 284,
     "images": [
-      "/catalog/farmer-factory-fruits/BananaNendhiram.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1ckcqk_BananaNendhiram.jfif"
     ],
     "description": "Nendhiram Banana — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1676,7 +1676,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 97,
     "images": [
-      "/catalog/farmer-factory-fruits/BananaPoovan.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vsfy9s_BananaPoovan.jfif"
     ],
     "description": "Poovan Banana — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1699,7 +1699,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 22,
     "images": [
-      "/catalog/farmer-factory-fruits/Grapes_Fruit.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/c10nps_Grapes_Fruit.png"
     ],
     "description": "Fresh Grapes — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1722,7 +1722,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 81,
     "images": [
-      "/catalog/farmer-factory-fruits/GuavaWhite.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/nquggf_GuavaWhite.jfif"
     ],
     "description": "White Guava — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1745,7 +1745,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 13,
     "stock": 267,
     "images": [
-      "/catalog/farmer-factory-fruits/Jackfruit.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1nd8z0_Jackfruit.png"
     ],
     "description": "Jackfruit — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1768,7 +1768,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 117,
     "images": [
-      "/catalog/farmer-factory-fruits/MangoBanganapalli.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/aj4g2b_MangoBanganapalli.jfif"
     ],
     "description": "Banganapalli Mango — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1791,7 +1791,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 34,
     "images": [
-      "/catalog/farmer-factory-fruits/MuskMelon.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vjmrpg_MuskMelon.jfif"
     ],
     "description": "Musk Melon — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1814,7 +1814,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 278,
     "images": [
-      "/catalog/farmer-factory-fruits/Pomegranate.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4p3lua_Pomegranate.jfif"
     ],
     "description": "Pomegranate — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1837,7 +1837,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 280,
     "images": [
-      "/catalog/farmer-factory-fruits/Sapota.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/du0n0f_Sapota.jfif"
     ],
     "description": "Sapota (Chiku) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1860,7 +1860,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 287,
     "images": [
-      "/catalog/farmer-factory-fruits/SenthooraMango.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/14du97_SenthooraMango.webp"
     ],
     "description": "Senthoora Mango — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1883,7 +1883,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 123,
     "images": [
-      "/catalog/farmer-factory-fruits/Strawberry.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/wtcw4u_Strawberry.jfif"
     ],
     "description": "Strawberry — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1906,7 +1906,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 246,
     "images": [
-      "/catalog/farmer-factory-fruits/SweetLime.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/txi5v4_SweetLime.jfif"
     ],
     "description": "Sweet Lime (Mosambi) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1929,7 +1929,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-fruits/WatermelonKiran.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/oxg6jc_WatermelonKiran.jfif"
     ],
     "description": "Kiran Watermelon — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1952,7 +1952,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 99,
     "images": [
-      "/catalog/farmer-factory-fruits/WatermelonStrips.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/z59adw_WatermelonStrips.jfif"
     ],
     "description": "Striped Watermelon — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1975,7 +1975,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 149,
     "images": [
-      "/catalog/farmer-factory-fruits/amla.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vnjj89_amla.jfif"
     ],
     "description": "Amla (Gooseberry) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -1998,7 +1998,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 68,
     "images": [
-      "/catalog/farmer-factory-fruits/apple.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kluzo2_apple.jfif"
     ],
     "description": "Apple — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2021,7 +2021,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 134,
     "images": [
-      "/catalog/farmer-factory-fruits/droganfruit.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/h4vttx_droganfruit.jfif"
     ],
     "description": "Dragon Fruit — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2044,7 +2044,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 235,
     "images": [
-      "/catalog/farmer-factory-fruits/kiwi.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6viy4q_kiwi.jfif"
     ],
     "description": "Kiwi — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2067,7 +2067,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 10,
     "stock": 29,
     "images": [
-      "/catalog/farmer-factory-fruits/orange.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yhvmd3_orange.jfif"
     ],
     "description": "Orange — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2090,7 +2090,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 11,
     "stock": 216,
     "images": [
-      "/catalog/farmer-factory-fruits/papaya.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jpht0a_papaya.jfif"
     ],
     "description": "Papaya — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2113,7 +2113,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 52,
     "images": [
-      "/catalog/farmer-factory-fruits/pineapple.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/zmlc3s_pineapple.jfif"
     ],
     "description": "Pineapple — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2136,7 +2136,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 73,
     "images": [
-      "/catalog/farmer-factory-fruits/redbanana.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/h9n8lv_redbanana.jfif"
     ],
     "description": "Red Banana — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2159,7 +2159,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 112,
     "images": [
-      "/catalog/farmer-factory-valluvam/BarnyardMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6u1j53_BarnyardMillet.jpg"
     ],
     "description": "Barnyard Millet — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2182,7 +2182,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 152,
     "images": [
-      "/catalog/farmer-factory-valluvam/BrowntopMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pkxknk_BrowntopMillet.jpg"
     ],
     "description": "Browntop Millet — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2205,7 +2205,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 187,
     "images": [
-      "/catalog/farmer-factory-valluvam/Cardamom.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qynvy6_Cardamom.jpg"
     ],
     "description": "Cardamom — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2228,7 +2228,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 57,
     "images": [
-      "/catalog/farmer-factory-valluvam/CashewNutsWhole.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/n1bs1u_CashewNutsWhole.jpg"
     ],
     "description": "Whole Cashew Nuts — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2251,7 +2251,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 62,
     "images": [
-      "/catalog/farmer-factory-valluvam/CashewSplit.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/mifx6z_CashewSplit.jpg"
     ],
     "description": "Split Cashews — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2274,7 +2274,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 82,
     "images": [
-      "/catalog/farmer-factory-valluvam/Cinnamon.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/z3tgfq_Cinnamon.jpg"
     ],
     "description": "Cinnamon — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2297,7 +2297,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 157,
     "images": [
-      "/catalog/farmer-factory-valluvam/CucumberSeeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pzknwb_CucumberSeeds.jpg"
     ],
     "description": "Cucumber Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2320,7 +2320,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 10,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-valluvam/DryGrapesBlack.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/c7va8c_DryGrapesBlack.jpg"
     ],
     "description": "Dry Grapes (Black) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2343,7 +2343,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 179,
     "images": [
-      "/catalog/farmer-factory-valluvam/FennelSeeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/344i5g_FennelSeeds.jpg"
     ],
     "description": "Fennel Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2366,7 +2366,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 17,
     "stock": 276,
     "images": [
-      "/catalog/farmer-factory-valluvam/FoxtailMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/j0plin_FoxtailMillet.jpg"
     ],
     "description": "Foxtail Millet — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2389,7 +2389,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 148,
     "images": [
-      "/catalog/farmer-factory-valluvam/Ghee250.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/iienqe_Ghee250.jpg"
     ],
     "description": "Cow Ghee 250ml — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2412,7 +2412,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 13,
     "stock": 117,
     "images": [
-      "/catalog/farmer-factory-valluvam/LittleMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ixuklk_LittleMillet.jpg"
     ],
     "description": "Little Millet — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2435,7 +2435,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 241,
     "images": [
-      "/catalog/farmer-factory-valluvam/Methi.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/nqvgug_Methi.jpg"
     ],
     "description": "Fenugreek (Methi) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2458,7 +2458,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 177,
     "images": [
-      "/catalog/farmer-factory-valluvam/MustardSeeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/p56aub_MustardSeeds.jpg"
     ],
     "description": "Mustard Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2481,7 +2481,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 91,
     "images": [
-      "/catalog/farmer-factory-valluvam/PadamPisin.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/fx9g1c_PadamPisin.jpg"
     ],
     "description": "Padam Pisin — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2504,7 +2504,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 27,
     "images": [
-      "/catalog/farmer-factory-valluvam/PearlMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ptz1mj_PearlMillet.jpg"
     ],
     "description": "Pearl Millet — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2527,7 +2527,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 48,
     "images": [
-      "/catalog/farmer-factory-valluvam/PepperBlack.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tgc1qj_PepperBlack.jpg"
     ],
     "description": "Black Pepper — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2550,7 +2550,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 164,
     "images": [
-      "/catalog/farmer-factory-valluvam/PumpkinSeeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/rh2qvo_PumpkinSeeds.jpg"
     ],
     "description": "Pumpkin Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2596,7 +2596,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 188,
     "images": [
-      "/catalog/farmer-factory-valluvam/bayleaves.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/11be3v_bayleaves.jpg"
     ],
     "description": "Bay Leaves — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2665,7 +2665,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 22,
     "images": [
-      "/catalog/farmer-factory-valluvam/chiaseeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/87i36t_chiaseeds.jpg"
     ],
     "description": "Chia Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2688,7 +2688,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 41,
     "images": [
-      "/catalog/farmer-factory-valluvam/clove.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pfbhfv_clove.jpg"
     ],
     "description": "Cloves — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2711,7 +2711,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 11,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-valluvam/coconut-1L.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/i4sws4_coconut-1L.jpg"
     ],
     "description": "Cold-Pressed Coconut Oil (1L) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2734,7 +2734,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 11,
     "stock": 219,
     "images": [
-      "/catalog/farmer-factory-valluvam/coconutoil250.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/k1syfe_coconutoil250.jpg"
     ],
     "description": "Cold-Pressed Coconut Oil (250ml) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2757,7 +2757,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 94,
     "images": [
-      "/catalog/farmer-factory-valluvam/date.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qqjg2u_date.jpg"
     ],
     "description": "Dates — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2780,7 +2780,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 11,
     "stock": 278,
     "images": [
-      "/catalog/farmer-factory-valluvam/drygrapesgreen.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/9mc2ze_drygrapesgreen.jpg"
     ],
     "description": "Dry Grapes (Green) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2803,7 +2803,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 28,
     "images": [
-      "/catalog/farmer-factory-valluvam/drykiwi.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2w1jab_drykiwi.jpg"
     ],
     "description": "Dry Kiwi — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2826,7 +2826,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 41,
     "images": [
-      "/catalog/farmer-factory-valluvam/fig.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/j99m9y_fig.jpg"
     ],
     "description": "Dry Figs — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2849,7 +2849,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 251,
     "images": [
-      "/catalog/farmer-factory-valluvam/flaxseeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/gway5m_flaxseeds.jpg"
     ],
     "description": "Flax Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2872,7 +2872,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 145,
     "images": [
-      "/catalog/farmer-factory-valluvam/foxtail-thinai.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/mrb82o_foxtail-thinai.jpg"
     ],
     "description": "Foxtail Millet (Thinai) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2895,7 +2895,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 277,
     "images": [
-      "/catalog/farmer-factory-valluvam/ground-1L.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/anbfrn_ground-1L.jpg"
     ],
     "description": "Cold-Pressed Groundnut Oil (1L) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2918,7 +2918,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 262,
     "images": [
-      "/catalog/farmer-factory-valluvam/groundnutoil250.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bni2io_groundnutoil250.jpg"
     ],
     "description": "Cold-Pressed Groundnut Oil (250ml) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2941,7 +2941,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 125,
     "images": [
-      "/catalog/farmer-factory-valluvam/honey.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/e5upyr_honey.jpeg"
     ],
     "description": "Raw Forest Honey — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2964,7 +2964,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 215,
     "images": [
-      "/catalog/farmer-factory-valluvam/honeyamla.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hghpxy_honeyamla.jpg"
     ],
     "description": "Amla Infused Honey — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -2987,7 +2987,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 121,
     "images": [
-      "/catalog/farmer-factory-valluvam/jeera.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/frg0qc_jeera.jpg"
     ],
     "description": "Cumin (Jeera) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3010,7 +3010,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 175,
     "images": [
-      "/catalog/farmer-factory-valluvam/kodo-varagu.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/fb9co1_kodo-varagu.jpg"
     ],
     "description": "Kodo Millet (Varagu) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3033,7 +3033,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 268,
     "images": [
-      "/catalog/farmer-factory-valluvam/palm-jaggery.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/g537pf_palm-jaggery.jpeg"
     ],
     "description": "Palm Jaggery (Karupatti) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3079,7 +3079,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 258,
     "images": [
-      "/catalog/farmer-factory-valluvam/pista.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jgu30l_pista.jpg"
     ],
     "description": "Pistachios — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3102,7 +3102,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-valluvam/sesame-1L.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/t9iy37_sesame-1L.jpg"
     ],
     "description": "Cold-Pressed Sesame Oil (1L) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3125,7 +3125,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 279,
     "images": [
-      "/catalog/farmer-factory-valluvam/sesame500.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/k21myh_sesame500.jpg"
     ],
     "description": "Cold-Pressed Sesame Oil (500ml) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3148,7 +3148,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 127,
     "images": [
-      "/catalog/farmer-factory-valluvam/staranise.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/r9xvut_staranise.jpg"
     ],
     "description": "Star Anise — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3171,7 +3171,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 10,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-valluvam/sunflowerseeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8qhdq4_sunflowerseeds.jpg"
     ],
     "description": "Sunflower Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3194,7 +3194,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 17,
     "stock": 77,
     "images": [
-      "/catalog/farmer-factory-valluvam/walnut.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ajk5ye_walnut.jpg"
     ],
     "description": "Walnuts — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3217,7 +3217,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 221,
     "images": [
-      "/catalog/nursery-indoor/AglaonemaHybridLipstickwithWhitePot.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/r4jqgw_AglaonemaHybridLipstickwithWhitePot.webp"
     ],
     "description": "Aglaonema Lipstick (with Pot) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3240,7 +3240,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 10,
     "stock": 174,
     "images": [
-      "/catalog/nursery-indoor/Aloe.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/59h1c1_Aloe.webp"
     ],
     "description": "Aloe Vera — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3263,7 +3263,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 189,
     "images": [
-      "/catalog/nursery-indoor/Anthurium.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/cghgwt_Anthurium.jpg"
     ],
     "description": "Anthurium — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3286,7 +3286,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 120,
     "images": [
-      "/catalog/nursery-indoor/Areca_Palm.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/lnc65p_Areca_Palm.webp"
     ],
     "description": "Areca Palm — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3309,7 +3309,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 221,
     "images": [
-      "/catalog/nursery-indoor/Bunny.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tufkzz_Bunny.jpg"
     ],
     "description": "Bunny Ear Cactus — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3332,7 +3332,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 160,
     "images": [
-      "/catalog/nursery-indoor/Calathea.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/9cw4y2_Calathea.webp"
     ],
     "description": "Calathea — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3355,7 +3355,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 166,
     "images": [
-      "/catalog/nursery-indoor/Chinese_Evergreen.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/h7h8w8_Chinese_Evergreen.jpg"
     ],
     "description": "Chinese Evergreen — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3378,7 +3378,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 281,
     "images": [
-      "/catalog/nursery-indoor/Echeveria.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vevqtm_Echeveria.jpg"
     ],
     "description": "Echeveria — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3401,7 +3401,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 34,
     "images": [
-      "/catalog/nursery-indoor/Fairy.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2wxqbt_Fairy.jpg"
     ],
     "description": "Fairy Castle Cactus — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3424,7 +3424,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 124,
     "images": [
-      "/catalog/nursery-indoor/Ferns.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jstisz_Ferns.webp"
     ],
     "description": "Ferns — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3447,7 +3447,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 166,
     "images": [
-      "/catalog/nursery-indoor/Fiddle.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tqmuvn_Fiddle.webp"
     ],
     "description": "Fiddle Fig — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3493,7 +3493,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 10,
     "stock": 153,
     "images": [
-      "/catalog/nursery-indoor/Jade.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bry6u1_Jade.jpg"
     ],
     "description": "Jade — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3516,7 +3516,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 221,
     "images": [
-      "/catalog/nursery-indoor/Kalanchoe.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/7x2ncs_Kalanchoe.webp"
     ],
     "description": "Kalanchoe — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3539,7 +3539,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 274,
     "images": [
-      "/catalog/nursery-indoor/Money_Plant.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qve9mx_Money_Plant.jpg"
     ],
     "description": "Money Plant — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3562,7 +3562,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 5,
     "stock": 238,
     "images": [
-      "/catalog/nursery-indoor/Moon.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6iaowo_Moon.webp"
     ],
     "description": "Moon Cactus — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3585,7 +3585,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 66,
     "images": [
-      "/catalog/nursery-indoor/Peace_Lily.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/om7vuq_Peace_Lily.webp"
     ],
     "description": "Peace Lily — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3608,7 +3608,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 30,
     "images": [
-      "/catalog/nursery-indoor/Philodendron.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bf6gzu_Philodendron.webp"
     ],
     "description": "Philodendron — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3631,7 +3631,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 127,
     "images": [
-      "/catalog/nursery-indoor/Snake_Plant.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/y27ssz_Snake_Plant.webp"
     ],
     "description": "Snake Plant — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3654,7 +3654,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 204,
     "images": [
-      "/catalog/nursery-indoor/Spider_Plant.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/gph4re_Spider_Plant.jpg"
     ],
     "description": "Spider Plant — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3677,7 +3677,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 11,
     "stock": 67,
     "images": [
-      "/catalog/nursery-indoor/String.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/z65sox_String.webp"
     ],
     "description": "String of Pearls — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3700,7 +3700,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 241,
     "images": [
-      "/catalog/nursery-indoor/ZZplant.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8y0hjo_ZZplant.jpg"
     ],
     "description": "ZZ Plant — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3723,7 +3723,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 262,
     "images": [
-      "/catalog/nursery-indoor/aglaonema.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/0kstul_aglaonema.webp"
     ],
     "description": "Aglaonema — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3746,7 +3746,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 259,
     "images": [
-      "/catalog/nursery-indoor/bamboo-palm.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3b9k3n_bamboo-palm.webp"
     ],
     "description": "Bamboo Palm — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3769,7 +3769,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 287,
     "images": [
-      "/catalog/nursery-indoor/golden.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6g5qkx_golden.webp"
     ],
     "description": "Golden Pothos — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3792,7 +3792,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 63,
     "images": [
-      "/catalog/nursery-indoor/monstera.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pfxdod_monstera.png"
     ],
     "description": "Monstera — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3815,7 +3815,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 39,
     "images": [
-      "/catalog/nursery-outdoor/AONAL.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/v7conf_AONAL.jpg"
     ],
     "description": "Aonal Plant — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3838,7 +3838,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 11,
     "stock": 243,
     "images": [
-      "/catalog/nursery-outdoor/ARJUN.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2d8ift_ARJUN.jpg"
     ],
     "description": "Arjun Tree — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3861,7 +3861,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 118,
     "images": [
-      "/catalog/nursery-outdoor/Adenium.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xxcqbt_Adenium.jpg"
     ],
     "description": "Adenium — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3884,7 +3884,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 174,
     "images": [
-      "/catalog/nursery-outdoor/BANYAN.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ilvju1_BANYAN.jfif"
     ],
     "description": "Banyan Tree — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3907,7 +3907,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 11,
     "stock": 263,
     "images": [
-      "/catalog/nursery-outdoor/BOTTLE-PALM.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4efzpb_BOTTLE-PALM.webp"
     ],
     "description": "Bottle Palm — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3930,7 +3930,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 177,
     "images": [
-      "/catalog/nursery-outdoor/BOUGAINVILLA.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hktxnk_BOUGAINVILLA.webp"
     ],
     "description": "Bougainvillea — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3953,7 +3953,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 235,
     "images": [
-      "/catalog/nursery-outdoor/BOXWOOD.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/rfytpw_BOXWOOD.webp"
     ],
     "description": "Boxwood — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3976,7 +3976,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 272,
     "images": [
-      "/catalog/nursery-outdoor/Begonia.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3pgnsq_Begonia.jfif"
     ],
     "description": "Begonia — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -3999,7 +3999,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 121,
     "images": [
-      "/catalog/nursery-outdoor/Bottlebrush.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/90dazs_Bottlebrush.jpg"
     ],
     "description": "Bottle Brush — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4022,7 +4022,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 122,
     "images": [
-      "/catalog/nursery-outdoor/Bougainvillea.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/cu7o3y_Bougainvillea.webp"
     ],
     "description": "Bougainvillea — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4045,7 +4045,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 155,
     "images": [
-      "/catalog/nursery-outdoor/CLUSTER_FIG.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yipfv5_CLUSTER_FIG.jpg"
     ],
     "description": "Cluster Fig — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4068,7 +4068,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 6,
     "stock": 115,
     "images": [
-      "/catalog/nursery-outdoor/Chrysanthemum.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vubux1_Chrysanthemum.jpg"
     ],
     "description": "Chrysanthemum — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4091,7 +4091,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 7,
     "stock": 94,
     "images": [
-      "/catalog/nursery-outdoor/DATE_PALM.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/217egd_DATE_PALM.jpg"
     ],
     "description": "Date Palm — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4114,7 +4114,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 92,
     "images": [
-      "/catalog/nursery-outdoor/DURANTA_GOLDEN.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/dsbnf9_DURANTA_GOLDEN.webp"
     ],
     "description": "Golden Duranta — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4137,7 +4137,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 180,
     "images": [
-      "/catalog/nursery-outdoor/DURANTA_GREEN.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/snmype_DURANTA_GREEN.jpg"
     ],
     "description": "Green Duranta — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4160,7 +4160,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 17,
     "stock": 288,
     "images": [
-      "/catalog/nursery-outdoor/Dahlia.avif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/rxpifq_Dahlia.avif"
     ],
     "description": "Dahlia — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4183,7 +4183,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 11,
     "stock": 211,
     "images": [
-      "/catalog/nursery-outdoor/ELEPHANT.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ghnd4j_ELEPHANT.webp"
     ],
     "description": "Elephant Ear Plant — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4206,7 +4206,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 163,
     "images": [
-      "/catalog/nursery-outdoor/EUCALYPTUS.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jz2fip_EUCALYPTUS.jfif"
     ],
     "description": "Eucalyptus — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4229,7 +4229,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 13,
     "stock": 214,
     "images": [
-      "/catalog/nursery-outdoor/Geranium.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3s42rq_Geranium.jpg"
     ],
     "description": "Geranium — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4252,7 +4252,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 64,
     "images": [
-      "/catalog/nursery-outdoor/Hibiscus.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vrelmj_Hibiscus.webp"
     ],
     "description": "Hibiscus — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4275,7 +4275,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 118,
     "images": [
-      "/catalog/nursery-outdoor/JAMUN.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ujrigf_JAMUN.jpg"
     ],
     "description": "Jamun Tree — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4298,7 +4298,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 146,
     "images": [
-      "/catalog/nursery-outdoor/JUNIPER.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kzz37y_JUNIPER.webp"
     ],
     "description": "Juniper — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4321,7 +4321,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 257,
     "images": [
-      "/catalog/nursery-outdoor/LANTANA.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/5if58c_LANTANA.webp"
     ],
     "description": "Lantana — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4344,7 +4344,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 193,
     "images": [
-      "/catalog/nursery-outdoor/LEMON.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3szdq3_LEMON.webp"
     ],
     "description": "Lemon Tree — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4367,7 +4367,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 182,
     "images": [
-      "/catalog/nursery-outdoor/LILYTURF.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/zoqavm_LILYTURF.webp"
     ],
     "description": "Lilyturf — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4390,7 +4390,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 10,
     "stock": 53,
     "images": [
-      "/catalog/nursery-outdoor/LUNGWORT.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/y8fnau_LUNGWORT.webp"
     ],
     "description": "Lungwort — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4413,7 +4413,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 14,
     "stock": 217,
     "images": [
-      "/catalog/nursery-outdoor/Lantana.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/akuu44_Lantana.jpg"
     ],
     "description": "Lantana — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4436,7 +4436,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 274,
     "images": [
-      "/catalog/nursery-outdoor/MOHOGANY.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/b5p6qe_MOHOGANY.jfif"
     ],
     "description": "Mahogany Tree — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4459,7 +4459,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 140,
     "images": [
-      "/catalog/nursery-outdoor/Magnolia.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ykfhtd_Magnolia.webp"
     ],
     "description": "Magnolia — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4482,7 +4482,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 60,
     "images": [
-      "/catalog/nursery-outdoor/Mango_Plant.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/g79rvj_Mango_Plant.png"
     ],
     "description": "Mango Sapling — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4505,7 +4505,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 37,
     "images": [
-      "/catalog/nursery-outdoor/NEEM.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hf0q6t_NEEM.jfif"
     ],
     "description": "Neem Tree — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4528,7 +4528,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 73,
     "images": [
-      "/catalog/nursery-outdoor/NEW_ZEALAND.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1shg9q_NEW_ZEALAND.webp"
     ],
     "description": "New Zealand Flax — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4551,7 +4551,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 235,
     "images": [
-      "/catalog/nursery-outdoor/Nerium.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/h0vvj6_Nerium.jpg"
     ],
     "description": "Nerium — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4574,7 +4574,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 233,
     "images": [
-      "/catalog/nursery-outdoor/OLEANDER.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/mefy6m_OLEANDER.webp"
     ],
     "description": "Oleander — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4597,7 +4597,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 82,
     "images": [
-      "/catalog/nursery-outdoor/Paneer.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/61q5eg_Paneer.webp"
     ],
     "description": "Paneer Rose — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4620,7 +4620,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 17,
     "stock": 210,
     "images": [
-      "/catalog/nursery-outdoor/Papaya_Plant.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yawpyg_Papaya_Plant.png"
     ],
     "description": "Papaya Sapling — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4643,7 +4643,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 145,
     "images": [
-      "/catalog/nursery-outdoor/Plumeria.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/0o1lpv_Plumeria.webp"
     ],
     "description": "Plumeria — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4666,7 +4666,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 222,
     "images": [
-      "/catalog/nursery-outdoor/Portulaca.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/eyf2y0_Portulaca.webp"
     ],
     "description": "Portulaca — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4689,7 +4689,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 13,
     "stock": 71,
     "images": [
-      "/catalog/nursery-outdoor/RAIN.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/in8ev0_RAIN.jfif"
     ],
     "description": "Rain Tree — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4735,7 +4735,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 117,
     "images": [
-      "/catalog/nursery-outdoor/RED_PALM.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/5h3mpd_RED_PALM.webp"
     ],
     "description": "Red Palm — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4758,7 +4758,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 210,
     "images": [
-      "/catalog/nursery-outdoor/ROYAL_PALM.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6dvmoq_ROYAL_PALM.jpg"
     ],
     "description": "Royal Palm — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4781,7 +4781,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 23,
     "images": [
-      "/catalog/nursery-outdoor/Rangoon.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/da05nj_Rangoon.jpg"
     ],
     "description": "Rangoon Creeper — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4804,7 +4804,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 208,
     "images": [
-      "/catalog/nursery-outdoor/SANDALWOOD_RED.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ty054g_SANDALWOOD_RED.webp"
     ],
     "description": "Red Sandalwood — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4827,7 +4827,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 5,
     "stock": 124,
     "images": [
-      "/catalog/nursery-outdoor/SANDALWOOD_WHITE.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/h3whky_SANDALWOOD_WHITE.webp"
     ],
     "description": "White Sandalwood — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4850,7 +4850,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 114,
     "images": [
-      "/catalog/nursery-outdoor/SONG_OF_INDIA.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jz6noi_SONG_OF_INDIA.jfif"
     ],
     "description": "Song of India — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4873,7 +4873,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 300,
     "images": [
-      "/catalog/nursery-outdoor/TAMARIND.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/5e9s89_TAMARIND.jfif"
     ],
     "description": "Tamarind Tree — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4896,7 +4896,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 9,
     "stock": 99,
     "images": [
-      "/catalog/nursery-outdoor/TEAK.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4capfn_TEAK.jfif"
     ],
     "description": "Teak Tree — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4919,7 +4919,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 229,
     "images": [
-      "/catalog/nursery-outdoor/Tabernaemontana.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vo232m_Tabernaemontana.jpg"
     ],
     "description": "Tabernaemontana — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4942,7 +4942,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 179,
     "images": [
-      "/catalog/nursery-outdoor/Tecoma.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/mo73s1_Tecoma.webp"
     ],
     "description": "Tecoma — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4965,7 +4965,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 206,
     "images": [
-      "/catalog/nursery-outdoor/Thunbergia.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6uz1ip_Thunbergia.jpg"
     ],
     "description": "Thunbergia — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -4988,7 +4988,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 242,
     "images": [
-      "/catalog/nursery-outdoor/Vernonia.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/j8jwng_Vernonia.jpg"
     ],
     "description": "Vernonia — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5011,7 +5011,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 8,
     "stock": 206,
     "images": [
-      "/catalog/nursery-outdoor/Zamioculcas.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yvtvzc_Zamioculcas.jpeg"
     ],
     "description": "Zamioculcas (ZZ) — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5034,7 +5034,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 92,
     "images": [
-      "/catalog/nursery-outdoor/foxtail_palm.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ldkve6_foxtail_palm.webp"
     ],
     "description": "Foxtail Palm — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5057,7 +5057,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 209,
     "images": [
-      "/catalog/nursery-outdoor/ixora.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pzly26_ixora.jfif"
     ],
     "description": "Ixora — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5080,7 +5080,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 286,
     "images": [
-      "/catalog/nursery-outdoor/traveller_palm.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3t1ofl_traveller_palm.webp"
     ],
     "description": "Traveller Palm — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5103,7 +5103,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 174,
     "images": [
-      "/catalog/nursery-outdoor/vinca.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/27wf44_vinca.jpg"
     ],
     "description": "Vinca — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5152,7 +5152,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 227,
     "images": [
-      "/catalog/crop-care/Vegetables/Brinjal.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jm9me5_Brinjal.webp"
     ],
     "description": "Brinjal Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5178,7 +5178,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 19,
     "stock": 41,
     "images": [
-      "/catalog/crop-care/Vegetables/Chilli_Seeds.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/wfldit_Chilli_Seeds.png"
     ],
     "description": "Chilli Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5204,7 +5204,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 96,
     "images": [
-      "/catalog/crop-care/Vegetables/Cucumber.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4i05ac_Cucumber.webp"
     ],
     "description": "Cucumber Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5230,7 +5230,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 22,
     "stock": 39,
     "images": [
-      "/catalog/crop-care/Vegetables/Ladiesfinger.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/e42whv_Ladiesfinger.webp"
     ],
     "description": "Ladies Finger (Okra) Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5256,7 +5256,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 15,
     "stock": 176,
     "images": [
-      "/catalog/crop-care/Vegetables/Pumpkin.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ena0od_Pumpkin.webp"
     ],
     "description": "Pumpkin Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5282,7 +5282,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 16,
     "stock": 208,
     "images": [
-      "/catalog/crop-care/Vegetables/Tomato_Seeds.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/61mfpb_Tomato_Seeds.png"
     ],
     "description": "Tomato Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5515,7 +5515,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 265,
     "images": [
-      "/catalog/crop-care/Flowers/Calendula.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bxrhgg_Calendula.webp"
     ],
     "description": "Calendula Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5538,7 +5538,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 38,
     "images": [
-      "/catalog/crop-care/Flowers/Dianthus.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/v5ixzy_Dianthus.webp"
     ],
     "description": "Dianthus Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5561,7 +5561,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 187,
     "images": [
-      "/catalog/crop-care/Flowers/JAsmine.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8ean4o_JAsmine.webp"
     ],
     "description": "Jasmine Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -5584,7 +5584,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 21,
     "stock": 44,
     "images": [
-      "/catalog/crop-care/Flowers/Sunflower.webp"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xfq2pg_Sunflower.webp"
     ],
     "description": "Sunflower Seeds — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -6067,7 +6067,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 17,
     "stock": 46,
     "images": [
-      "/catalog/crop-care/liquid/NPK-12-61-00.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/js10tq_NPK-12-61-00.png"
     ],
     "description": "NPK 12 61 00 — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -6228,7 +6228,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 12,
     "stock": 94,
     "images": [
-      "/catalog/crop-care/powder/DAP.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/k9172k_DAP.jpeg"
     ],
     "description": "DAP — fresh, quality-checked, sourced directly from trusted farms and brands.",
     "composition": "As per pack / natural produce.",
@@ -6367,7 +6367,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Aggregate.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jlf615_Aggregate.jpg"
   ],
   "description": "Aggregate — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6393,7 +6393,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Air Release Valve.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/a28wcj_Air_Release_Valve.jpg"
   ],
   "description": "Air Release Valve — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6419,7 +6419,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Arch Bottom Pipe.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/sxriks_Arch_Bottom_Pipe.jpg"
   ],
   "description": "Arch Bottom Pipe — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6445,7 +6445,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Arch Pipe (5.5 & 4.5).jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/cchl3e_Arch_Pipe__5.5___4.5_.jpg"
   ],
   "description": "Arch Pipe (5.5 & 4.5) — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6471,7 +6471,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Arch Support Pipe.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ffps3l_Arch_Support_Pipe.jpg"
   ],
   "description": "Arch Support Pipe — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6497,7 +6497,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/calcuam pouder.jpeg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/evldol_calcuam_pouder.jpeg"
   ],
   "description": "calcuam pouder — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6523,7 +6523,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Cement.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/878xzm_Cement.jpg"
   ],
   "description": "Cement — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6549,7 +6549,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Column Pipe.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/lxj9uc_Column_Pipe.jpg"
   ],
   "description": "Column Pipe — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6575,7 +6575,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Compound Pipe.webp"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/a2uhka_Compound_Pipe.webp"
   ],
   "description": "Compound Pipe — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6601,7 +6601,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Disc Filter.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/5o4wky_Disc_Filter.jpg"
   ],
   "description": "Disc Filter — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6627,7 +6627,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/End Stop (16 mm).png"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xtzqhy_End_Stop__16_mm_.png"
   ],
   "description": "End Stop (16 mm) — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6653,7 +6653,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Foundation Pipe.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/gx014a_Foundation_Pipe.jpg"
   ],
   "description": "Foundation Pipe — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6679,7 +6679,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Grommet (16 mm).avif"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qj8pcf_Grommet__16_mm_.avif"
   ],
   "description": "Grommet (16 mm) — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6705,7 +6705,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Hockey Pipe.jpeg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/w5u49n_Hockey_Pipe.jpeg"
   ],
   "description": "Hockey Pipe — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6731,7 +6731,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Inline Lateral (16 mm).webp"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/epojad_Inline_Lateral__16_mm_.webp"
   ],
   "description": "Inline Lateral (16 mm) — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6757,7 +6757,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Jain Fogger.png"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/7na4by_Jain_Fogger.png"
   ],
   "description": "Jain Fogger — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6783,7 +6783,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Mini Valve (16 mm).jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/rjqye1_Mini_Valve__16_mm_.jpg"
   ],
   "description": "Mini Valve (16 mm) — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6809,7 +6809,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Plain Lateral (16 mm).webp"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hd5sq6_Plain_Lateral__16_mm_.webp"
   ],
   "description": "Plain Lateral (16 mm) — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6835,7 +6835,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Pressure Gauge.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6r0541_Pressure_Gauge.jpg"
   ],
   "description": "Pressure Gauge — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6861,7 +6861,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Purline Pipe.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/27qilu_Purline_Pipe.jpg"
   ],
   "description": "Purline Pipe — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6887,7 +6887,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/PVC Elbow (16 mm).jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/lax1r9_PVC_Elbow__16_mm_.jpg"
   ],
   "description": "PVC Elbow (16 mm) — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6913,7 +6913,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/PVC Elbow (2'').jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/uskgoe_PVC_Elbow__2___.jpg"
   ],
   "description": "PVC Elbow (2'') — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6939,7 +6939,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/PVC Joiner (16 mm).jpeg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bfrqio_PVC_Joiner__16_mm_.jpeg"
   ],
   "description": "PVC Joiner (16 mm) — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6965,7 +6965,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/PVC Pipe (2'').jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3n1egh_PVC_Pipe__2___.jpg"
   ],
   "description": "PVC Pipe (2'') — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -6991,7 +6991,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/rope.jpeg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ozmp7k_rope.jpeg"
   ],
   "description": "rope — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -7017,7 +7017,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Sand Filter.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/brfsy6_Sand_Filter.jpg"
   ],
   "description": "Sand Filter — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -7043,7 +7043,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Screen Filter.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8nl98g_Screen_Filter.jpg"
   ],
   "description": "Screen Filter — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -7069,7 +7069,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Shade Net.jpg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/wuz8ar_Shade_Net.jpg"
   ],
   "description": "Shade Net — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -7095,7 +7095,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Silica Sand Bag.jpeg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/byie6v_Silica_Sand_Bag.jpeg"
   ],
   "description": "Silica Sand Bag — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -7121,7 +7121,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Take Off (16 mm).webp"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/iur1e8_Take_Off__16_mm_.webp"
   ],
   "description": "Take Off (16 mm) — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -7147,7 +7147,7 @@ export const CATALOG_PRODUCTS: Product[] = [
   "discount": 16,
   "stock": 50,
   "images": [
-    "/catalog/tools/Venturi.jpeg"
+    "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/f3l9bq_Venturi.jpeg"
   ],
   "description": "Venturi — high-grade farm automation and precision equipment.",
   "composition": "Standard farm-grade material.",
@@ -7175,7 +7175,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/4mm feeder tubes; pressure-compensated emitters.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yxm1kr_4mm_feeder_tubes__pressure-compensated_emitters.jpg"
     ],
     "description": "4mm feeder tubes; pressure-compensated emitters — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7199,7 +7199,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Animal Figurines  1.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/r1os36_Animal_Figurines__1.jpg"
     ],
     "description": "Animal Figurines  1 — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7223,7 +7223,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Animal Figurines 2.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/mfi4hc_Animal_Figurines_2.jpg"
     ],
     "description": "Animal Figurines 2 — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7247,7 +7247,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Animal Figurines 3.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/42t48w_Animal_Figurines_3.jpg"
     ],
     "description": "Animal Figurines 3 — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7271,7 +7271,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Anti-WEED Mat.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/cdfiv5_Anti-WEED_Mat.jpg"
     ],
     "description": "Anti-WEED Mat — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7295,7 +7295,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Bamboo Stakes.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/uktf7k_Bamboo_Stakes.jpg"
     ],
     "description": "Bamboo Stakes — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7319,7 +7319,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Birdbaths & Feeders.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/lp4umf_Birdbaths___Feeders.jpg"
     ],
     "description": "Birdbaths & Feeders — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7343,7 +7343,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Braided Cotton Jute; multiple knot designs.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/5lchld_Braided_Cotton_Jute__multiple_knot_designs.jpeg"
     ],
     "description": "Braided Cotton Jute; multiple knot designs — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7367,7 +7367,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Coir Twine.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ugdao8_Coir_Twine.jpg"
     ],
     "description": "Coir Twine — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7391,7 +7391,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Compost Bin (Indoor).jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/00yo09_Compost_Bin__Indoor_.jpg"
     ],
     "description": "Compost Bin (Indoor) — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7415,7 +7415,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Compressed coconut fiber; biodegradable.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pesfux_Compressed_coconut_fiber__biodegradable.jpg"
     ],
     "description": "Compressed coconut fiber; biodegradable — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7439,7 +7439,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Conical metal frame with coir moss liner..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ktdm0g_Conical_metal_frame_with_coir_moss_liner..jpg"
     ],
     "description": "Conical metal frame with coir moss liner. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7463,7 +7463,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Construction Grit.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hv2enw_Construction_Grit.jpg"
     ],
     "description": "Construction Grit — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7487,7 +7487,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Crushed Brick.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/e5dtw6_Crushed_Brick.jpg"
     ],
     "description": "Crushed Brick — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7511,7 +7511,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Crushed Gravel.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/9hd796_Crushed_Gravel.jpg"
     ],
     "description": "Crushed Gravel — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7535,7 +7535,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Double-walled with an internal water reservoir..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pn5qis_Double-walled_with_an_internal_water_reservoir..jpg"
     ],
     "description": "Double-walled with an internal water reservoir. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7559,7 +7559,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Drain Guards.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/nk7nbj_Drain_Guards.jpg"
     ],
     "description": "Drain Guards — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7583,7 +7583,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Drainage Mats.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/gja7f5_Drainage_Mats.jpg"
     ],
     "description": "Drainage Mats — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7607,7 +7607,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Expandable Willow or Powder-coated Metal mesh..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2vy9wk_Expandable_Willow_or_Powder-coated_Metal_mesh..jpg"
     ],
     "description": "Expandable Willow or Powder-coated Metal mesh. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7631,7 +7631,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Fairy Garden Sets.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/z6x37o_Fairy_Garden_Sets.jpg"
     ],
     "description": "Fairy Garden Sets — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7655,7 +7655,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Fiber Reinforced Plastic, UV-stabilized..jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/74ifx8_Fiber_Reinforced_Plastic__UV-stabilized..jpeg"
     ],
     "description": "Fiber Reinforced Plastic, UV-stabilized. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7679,7 +7679,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Fine Nylon Fiberglass mesh; White Green..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/j1ul6r_Fine_Nylon_Fiberglass_mesh__White_Green..jpg"
     ],
     "description": "Fine Nylon Fiberglass mesh; White Green. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7703,7 +7703,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Food-grade PVC ABS; Vertical NFT system..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3pmigl_Food-grade_PVC_ABS__Vertical_NFT_system..jpg"
     ],
     "description": "Food-grade PVC ABS; Vertical NFT system. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7727,7 +7727,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Galvanized Iron (GI) or PVC Coated mesh..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/7ald6d_Galvanized_Iron__GI__or_PVC_Coated_mesh..jpg"
     ],
     "description": "Galvanized Iron (GI) or PVC Coated mesh. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7751,7 +7751,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Garden Archway.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qcwuke_Garden_Archway.jpg"
     ],
     "description": "Garden Archway — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7775,7 +7775,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Garden Border Fence.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/g55029_Garden_Border_Fence.jpg"
     ],
     "description": "Garden Border Fence — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7799,7 +7799,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Garden Gnomes.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/9h9pjv_Garden_Gnomes.jpg"
     ],
     "description": "Garden Gnomes — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7823,7 +7823,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Garden Hose.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/w6wlrs_Garden_Hose.jpg"
     ],
     "description": "Garden Hose — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7847,7 +7847,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Garden Mirrors.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/hxi0pq_Garden_Mirrors.jpg"
     ],
     "description": "Garden Mirrors — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7871,7 +7871,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/GI or Stainless Steel; Powder Coated..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/9jnoi4_GI_or_Stainless_Steel__Powder_Coated..jpg"
     ],
     "description": "GI or Stainless Steel; Powder Coated. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7895,7 +7895,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/GI Steel with 4-point barbs; 12-14 Gauge..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jabwnx_GI_Steel_with_4-point_barbs__12-14_Gauge..jpg"
     ],
     "description": "GI Steel with 4-point barbs; 12-14 Gauge. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7919,7 +7919,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/GI Steel with 4-point barbs; 12-14 Gaugee.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/9qbhzf_GI_Steel_with_4-point_barbs__12-14_Gaugee.jpg"
     ],
     "description": "GI Steel with 4-point barbs; 12-14 Gaugee — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7943,7 +7943,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/GI wire frame with molded coconut fiber liner..jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/fevhlo_GI_wire_frame_with_molded_coconut_fiber_liner..jpeg"
     ],
     "description": "GI wire frame with molded coconut fiber liner. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7967,7 +7967,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/GI Wire Mesh.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2g1kjh_GI_Wire_Mesh.jpg"
     ],
     "description": "GI Wire Mesh — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -7991,7 +7991,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Glass Gazing Balls.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xort24_Glass_Gazing_Balls.jpg"
     ],
     "description": "Glass Gazing Balls — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8015,7 +8015,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Glass Reinforced Concrete; Industrial finish..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/52onlu_Glass_Reinforced_Concrete__Industrial_finish..jpg"
     ],
     "description": "Glass Reinforced Concrete; Industrial finish. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8039,7 +8039,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Glow Stones.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pkv0y5_Glow_Stones.jpg"
     ],
     "description": "Glow Stones — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8063,7 +8063,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/HDPE Monofilament; UV-stabilized; 15-25mm mesh..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/5eszw9_HDPE_Monofilament__UV-stabilized__15-25mm_mesh..jpg"
     ],
     "description": "HDPE Monofilament; UV-stabilized; 15-25mm mesh. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8087,7 +8087,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/High-fired stoneware, double-glazed.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/wjow6p_High-fired_stoneware__double-glazed.jpg"
     ],
     "description": "High-fired stoneware, double-glazed — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8111,7 +8111,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/High-grade baked clay Plain Painted.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/i14932_High-grade_baked_clay_Plain_Painted.jpg"
     ],
     "description": "High-grade baked clay Plain Painted — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8135,7 +8135,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/High-tenacity Nylon; 0.5mm-2mm thickness..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/cef4e7_High-tenacity_Nylon__0.5mm-2mm_thickness..jpg"
     ],
     "description": "High-tenacity Nylon; 0.5mm-2mm thickness. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8159,7 +8159,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Hose Nozzle.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/wvmvzq_Hose_Nozzle.jpg"
     ],
     "description": "Hose Nozzle — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8183,7 +8183,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Hose Reel System.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/5e7ueu_Hose_Reel_System.jpg"
     ],
     "description": "Hose Reel System — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8207,7 +8207,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Lava Rocks.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jk7ck0_Lava_Rocks.jpg"
     ],
     "description": "Lava Rocks — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8231,7 +8231,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Microgreen Trays.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/i1brqw_Microgreen_Trays.jpg"
     ],
     "description": "Microgreen Trays — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8255,7 +8255,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Moroccan Lanterns.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8pbr1g_Moroccan_Lanterns.jpg"
     ],
     "description": "Moroccan Lanterns — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8279,7 +8279,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Multi-tier Powder-coated GI; 2 or 3 steps.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/cr1ns4_Multi-tier_Powder-coated_GI__2_or_3_steps.jpg"
     ],
     "description": "Multi-tier Powder-coated GI; 2 or 3 steps — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8303,7 +8303,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Non-toxic breathable Geo-textile felt.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/xcyes2_Non-toxic_breathable_Geo-textile_felt.jpg"
     ],
     "description": "Non-toxic breathable Geo-textile felt — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8327,7 +8327,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Nylon Support Net.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/emceja_Nylon_Support_Net.jpg"
     ],
     "description": "Nylon Support Net — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8351,7 +8351,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Oscillating Sprinkler.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/74b575_Oscillating_Sprinkler.jpg"
     ],
     "description": "Oscillating Sprinkler — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8375,7 +8375,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Plant ID Tags.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/wila0x_Plant_ID_Tags.jpg"
     ],
     "description": "Plant ID Tags — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8399,7 +8399,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Plastic Ties.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6cp8oy_Plastic_Ties.jpg"
     ],
     "description": "Plastic Ties — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8423,7 +8423,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Polished Onyx.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/arwo4c_Polished_Onyx.jpg"
     ],
     "description": "Polished Onyx — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8447,7 +8447,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Pot Stands.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tncxxh_Pot_Stands.jpg"
     ],
     "description": "Pot Stands — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8471,7 +8471,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/PVC Bamboo core wrapped in high-grade Coir.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/mjpr5m_PVC_Bamboo_core_wrapped_in_high-grade_Coir.jpg"
     ],
     "description": "PVC Bamboo core wrapped in high-grade Coir — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8495,7 +8495,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Rain Butt Barrel.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tgvpg3_Rain_Butt_Barrel.jpg"
     ],
     "description": "Rain Butt Barrel — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8519,7 +8519,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Raised Bed Edging.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/w9eusa_Raised_Bed_Edging.jpg"
     ],
     "description": "Raised Bed Edging — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8543,7 +8543,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/River Stones.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/e9qm0e_River_Stones.jpg"
     ],
     "description": "River Stones — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8567,7 +8567,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Sandstone Chips.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/fch6r9_Sandstone_Chips.jpg"
     ],
     "description": "Sandstone Chips — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8591,7 +8591,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Shade Net.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/r5f3h8_Shade_Net.jpg"
     ],
     "description": "Shade Net — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8615,7 +8615,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Solar Stake Lights.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/95g2cg_Solar_Stake_Lights.jpg"
     ],
     "description": "Solar Stake Lights — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8639,7 +8639,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Solid heavy-gauge iron; powder-coated (Antique).jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/dv54l5_Solid_heavy-gauge_iron__powder-coated__Antique_.jpeg"
     ],
     "description": "Solid heavy-gauge iron; powder-coated (Antique) — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8663,7 +8663,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Spherical wire mesh for flower ball effect..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/sblhcu_Spherical_wire_mesh_for_flower_ball_effect..jpg"
     ],
     "description": "Spherical wire mesh for flower ball effect. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8687,7 +8687,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Stackable Herb Planter.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/x0r9ho_Stackable_Herb_Planter.jpg"
     ],
     "description": "Stackable Herb Planter — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8711,7 +8711,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Stone Pagodas.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/fxpf2f_Stone_Pagodas.jpg"
     ],
     "description": "Stone Pagodas — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8735,7 +8735,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Terracotta Chips.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/a8bdjj_Terracotta_Chips.jpg"
     ],
     "description": "Terracotta Chips — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8759,7 +8759,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Treated Pine or Teak wood; Internal liner..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/li2e01_Treated_Pine_or_Teak_wood__Internal_liner..jpg"
     ],
     "description": "Treated Pine or Teak wood; Internal liner. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8783,7 +8783,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/UV-stabilized HDPE; 200-400 GSM.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/dscqh1_UV-stabilized_HDPE__200-400_GSM.jpg"
     ],
     "description": "UV-stabilized HDPE; 200-400 GSM — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8807,7 +8807,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/UV-stabilized HDPE; 200-400 GSM1.avif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/sbnywx_UV-stabilized_HDPE__200-400_GSM1.avif"
     ],
     "description": "UV-stabilized HDPE; 200-400 GSM1 — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8831,7 +8831,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/UV-stabilized PVC; Decorative patterns..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/chb2yf_UV-stabilized_PVC__Decorative_patterns..jpg"
     ],
     "description": "UV-stabilized PVC; Decorative patterns. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8855,7 +8855,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/UV-stabilized Recycled PP; interlocking lugs..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ob2lys_UV-stabilized_Recycled_PP__interlocking_lugs..jpg"
     ],
     "description": "UV-stabilized Recycled PP; interlocking lugs. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8879,7 +8879,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/UV-stabilized Resin; 3-point plastic metal chains..jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/7iclj2_UV-stabilized_Resin__3-point_plastic_metal_chains..jpg"
     ],
     "description": "UV-stabilized Resin; 3-point plastic metal chains. — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8903,7 +8903,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Virgin Polypropylene; Wicking reservoir.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/i7yz9r_Virgin_Polypropylene__Wicking_reservoir.jpg"
     ],
     "description": "Virgin Polypropylene; Wicking reservoir — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8927,7 +8927,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Wall Art Plaques.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/22j7aj_Wall_Art_Plaques.jpg"
     ],
     "description": "Wall Art Plaques — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8951,7 +8951,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Water Fountains.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/iu103m_Water_Fountains.jpg"
     ],
     "description": "Water Fountains — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8975,7 +8975,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Watering Can.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kqxxuh_Watering_Can.jpg"
     ],
     "description": "Watering Can — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -8999,7 +8999,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Wheelbarrow.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jeq8o9_Wheelbarrow.jpg"
     ],
     "description": "Wheelbarrow — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -9023,7 +9023,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/White Marble Pebbles.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1hysp6_White_Marble_Pebbles.jpg"
     ],
     "description": "White Marble Pebbles — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -9047,7 +9047,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Wind Chimes.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8kegjo_Wind_Chimes.jpg"
     ],
     "description": "Wind Chimes — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -9071,7 +9071,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Windowsill Troughs.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ejcggb_Windowsill_Troughs.jpg"
     ],
     "description": "Windowsill Troughs — high quality, durable, and reliable.",
     "composition": "Standard material.",
@@ -9095,7 +9095,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "discount": 20,
     "stock": 100,
     "images": [
-      "/catalog/Images/Zen Buddha Statues.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/umeg42_Zen_Buddha_Statues.jpg"
     ],
     "description": "Zen Buddha Statues — high quality, durable, and reliable.",
     "composition": "Standard material.",

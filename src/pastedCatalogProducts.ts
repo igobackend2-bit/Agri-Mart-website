@@ -251,7 +251,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-valluvam/FoxtailMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/j0plin_FoxtailMillet.jpg"
     ],
     "description": "Millet Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Millet Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -292,7 +292,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-valluvam/PearlMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ptz1mj_PearlMillet.jpg"
     ],
     "description": "Ragi Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Ragi Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -333,7 +333,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-valluvam/PearlMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ptz1mj_PearlMillet.jpg"
     ],
     "description": "Bajra Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Bajra Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -415,7 +415,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/drumstick.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/d55gto_drumstick.jpg"
     ],
     "description": "Cotton Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cotton Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -497,7 +497,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-vegetables/PurpleCabbage.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/dfofxr_PurpleCabbage.jfif"
     ],
     "description": "Soybean Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Soybean Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -538,7 +538,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-vegetables/Karunaikizhangu.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bsfh1t_Karunaikizhangu.jfif"
     ],
     "description": "Sunflower Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Sunflower Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -579,7 +579,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 89,
     "images": [
-      "/catalog/farmer-factory-valluvam/MustardSeeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/p56aub_MustardSeeds.jpg"
     ],
     "description": "Mustard Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Mustard Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -620,7 +620,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-fruits/BananaNendhiram.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1ckcqk_BananaNendhiram.jfif"
     ],
     "description": "Sesame Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Sesame Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -661,7 +661,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-vegetables/SpringOnion.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6qok6l_SpringOnion.jfif"
     ],
     "description": "Castor Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Castor Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -702,7 +702,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cabbage.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6dytb1_Cabbage.jfif"
     ],
     "description": "Vegetable Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Vegetable Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -743,7 +743,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-vegetables/TomatoCountry.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/elddvw_TomatoCountry.jfif"
     ],
     "description": "Tomato Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Tomato Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -784,7 +784,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-vegetables/Greenchili.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/upf94z_Greenchili.jfif"
     ],
     "description": "Chilli Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Chilli Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -825,7 +825,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/Brinjal.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/oqcj6g_Brinjal.jfif"
     ],
     "description": "Brinjal Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Brinjal Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -866,7 +866,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-vegetables/LadiesFinger.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vb82n9_LadiesFinger.jfif"
     ],
     "description": "Okra Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Okra Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -907,7 +907,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cabbage.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6dytb1_Cabbage.jfif"
     ],
     "description": "Cabbage Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cabbage Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -948,7 +948,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cauliflower.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ouvl77_Cauliflower.jfif"
     ],
     "description": "Cauliflower Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cauliflower Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -989,7 +989,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 89,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cucumber.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/t20000_Cucumber.jfif"
     ],
     "description": "Cucumber Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cucumber Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1030,7 +1030,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-vegetables/PumpkinYellow.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/n1j97i_PumpkinYellow.jfif"
     ],
     "description": "Pumpkin Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Pumpkin Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1071,7 +1071,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-vegetables/BottleGourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/mlp64n_BottleGourd.jfif"
     ],
     "description": "Bottle Gourd Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Bottle Gourd Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1113,7 +1113,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-vegetables/bitter-gourd.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ncgltq_bitter-gourd.jpg"
     ],
     "description": "Bitter Gourd Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Bitter Gourd Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1155,7 +1155,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-fruits/WatermelonKiran.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/oxg6jc_WatermelonKiran.jfif"
     ],
     "description": "Watermelon Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Watermelon Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1196,7 +1196,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-fruits/MuskMelon.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vjmrpg_MuskMelon.jfif"
     ],
     "description": "Muskmelon Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Muskmelon Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1237,7 +1237,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/Onionred.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2w5dja_Onionred.jfif"
     ],
     "description": "Onion Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Onion Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1278,7 +1278,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-vegetables/ooty-carrot.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qg7211_ooty-carrot.jpg"
     ],
     "description": "Carrot Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Carrot Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1319,7 +1319,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-vegetables/Radish.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pm71no_Radish.jfif"
     ],
     "description": "Radish Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Radish Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1360,7 +1360,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-vegetables/Beans.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qjnjcn_Beans.jfif"
     ],
     "description": "Beans Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Beans Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1401,7 +1401,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 89,
     "images": [
-      "/catalog/farmer-factory-vegetables/GreenPeas.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ps88qp_GreenPeas.jfif"
     ],
     "description": "Peas Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Peas Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1442,7 +1442,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-vegetables/sweetpotato.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/60hllo_sweetpotato.jfif"
     ],
     "description": "Fruit Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Fruit Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1483,7 +1483,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-vegetables/BananaFlower.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3pz1co_BananaFlower.jfif"
     ],
     "description": "Flower Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Flower Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1524,7 +1524,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-vegetables/Seppankizhangu.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/iw9hqd_Seppankizhangu.jfif"
     ],
     "description": "Hybrid Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Hybrid Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1565,7 +1565,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-fruits/droganfruit.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/h4vttx_droganfruit.jfif"
     ],
     "description": "Organic Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Organic Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1606,7 +1606,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-vegetables/CurryLeaves.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/l4csrg_CurryLeaves.jfif"
     ],
     "description": "Fodder Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Fodder Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1647,7 +1647,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/CorianderLeaves.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/znqs0c_CorianderLeaves.jfif"
     ],
     "description": "Grass Seeds is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Grass Seeds supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1688,7 +1688,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-vegetables/Kovaikkai.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/awx3h1_Kovaikkai.jfif"
     ],
     "description": "Fruit Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Fruit Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1729,7 +1729,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-fruits/MangoBanganapalli.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/aj4g2b_MangoBanganapalli.jfif"
     ],
     "description": "Mango Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Mango Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1770,7 +1770,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-fruits/BananaPoovan.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vsfy9s_BananaPoovan.jfif"
     ],
     "description": "Banana Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Banana Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1811,7 +1811,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 89,
     "images": [
-      "/catalog/farmer-factory-fruits/GuavaWhite.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/nquggf_GuavaWhite.jfif"
     ],
     "description": "Guava Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Guava Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1852,7 +1852,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-fruits/papaya.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jpht0a_papaya.jfif"
     ],
     "description": "Papaya Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Papaya Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1893,7 +1893,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-fruits/Pomegranate.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4p3lua_Pomegranate.jfif"
     ],
     "description": "Pomegranate Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Pomegranate Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1934,7 +1934,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-vegetables/Coconut.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3pl2w9_Coconut.jfif"
     ],
     "description": "Coconut Saplings is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Coconut Saplings supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -1975,7 +1975,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-fruits/BananaKarpooravalli.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vzbr5l_BananaKarpooravalli.jfif"
     ],
     "description": "Arecanut Saplings is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Arecanut Saplings supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2016,7 +2016,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-vegetables/AshGourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2nlmme_AshGourd.jfif"
     ],
     "description": "Tea Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Tea Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2057,7 +2057,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/Brinjal.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/oqcj6g_Brinjal.jfif"
     ],
     "description": "Coffee Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Coffee Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2098,7 +2098,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-vegetables/BananaStem.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/md9i5x_BananaStem.jfif"
     ],
     "description": "Rubber Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Rubber Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2139,7 +2139,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-fruits/MuskMelon.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vjmrpg_MuskMelon.jfif"
     ],
     "description": "Cocoa Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cocoa Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2180,7 +2180,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-vegetables/BananaFlower.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/3pz1co_BananaFlower.jfif"
     ],
     "description": "Flower Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Flower Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2262,7 +2262,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-vegetables/SnakeGourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kwu2vl_SnakeGourd.jfif"
     ],
     "description": "Jasmine Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Jasmine Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2303,7 +2303,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-vegetables/PumpkinYellow.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/n1j97i_PumpkinYellow.jfif"
     ],
     "description": "Marigold Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Marigold Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2344,7 +2344,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-vegetables/BabyCorn.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/gan37f_BabyCorn.jfif"
     ],
     "description": "Orchid Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Orchid Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2385,7 +2385,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-vegetables/Karunaikizhangu.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bsfh1t_Karunaikizhangu.jfif"
     ],
     "description": "Medicinal Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Medicinal Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2426,7 +2426,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-vegetables/Brinjal.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/oqcj6g_Brinjal.jfif"
     ],
     "description": "Herbal Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Herbal Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2467,7 +2467,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/AshGourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2nlmme_AshGourd.jfif"
     ],
     "description": "Aloe Vera Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Aloe Vera Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2509,7 +2509,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-vegetables/Ridgegourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8ghl5p_Ridgegourd.jfif"
     ],
     "description": "Tulsi Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Tulsi Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2550,7 +2550,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-vegetables/BajiChilli.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yhs54v_BajiChilli.jfif"
     ],
     "description": "Neem Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Neem Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2591,7 +2591,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-vegetables/sweetpotato.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/60hllo_sweetpotato.jfif"
     ],
     "description": "Forestry Saplings is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Forestry Saplings supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2632,7 +2632,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 89,
     "images": [
-      "/catalog/farmer-factory-vegetables/Kovaikkai.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/awx3h1_Kovaikkai.jfif"
     ],
     "description": "Teak Saplings is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Teak Saplings supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2673,7 +2673,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cucumber.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/t20000_Cucumber.jfif"
     ],
     "description": "Bamboo Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Bamboo Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2714,7 +2714,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-vegetables/PumpkinYellow.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/n1j97i_PumpkinYellow.jfif"
     ],
     "description": "Sandalwood Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Sandalwood Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2755,7 +2755,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-vegetables/CapsicumRed.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ugmn0m_CapsicumRed.jfif"
     ],
     "description": "Eucalyptus Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Eucalyptus Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2796,7 +2796,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-fruits/MuskMelon.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vjmrpg_MuskMelon.jfif"
     ],
     "description": "Ornamental Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Ornamental Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2837,7 +2837,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-fruits/papaya.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jpht0a_papaya.jfif"
     ],
     "description": "Indoor Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Indoor Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -2918,7 +2918,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/crop-care/powder/DAP.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/k9172k_DAP.jpeg"
     ],
     "description": "Dap is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Dap supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -6131,7 +6131,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/potato.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ctxh08_potato.jfif"
     ],
     "description": "Potato Diggers is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Potato Diggers supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -10093,7 +10093,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-valluvam/honey.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/e5upyr_honey.jpeg"
     ],
     "description": "Honey Extractors is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Honey Extractors supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -10134,7 +10134,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-valluvam/honey.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/e5upyr_honey.jpeg"
     ],
     "description": "Honey Filters is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Honey Filters supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -12875,7 +12875,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-valluvam/FoxtailMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/j0plin_FoxtailMillet.jpg"
     ],
     "description": "Millets is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Millets supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -12915,7 +12915,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-valluvam/PearlMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ptz1mj_PearlMillet.jpg"
     ],
     "description": "Ragi is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Ragi supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -12955,7 +12955,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-valluvam/PearlMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ptz1mj_PearlMillet.jpg"
     ],
     "description": "Bajra is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Bajra supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13035,7 +13035,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-fruits/Pomegranate.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4p3lua_Pomegranate.jfif"
     ],
     "description": "Cotton is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cotton supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13075,7 +13075,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/MaravalliKilangu.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8oi78j_MaravalliKilangu.jfif"
     ],
     "description": "Sugarcane is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Sugarcane supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13155,7 +13155,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-vegetables/MoongGreenSprouts.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/u7y215_MoongGreenSprouts.jfif"
     ],
     "description": "Soybean is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Soybean supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13195,7 +13195,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-valluvam/MustardSeeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/p56aub_MustardSeeds.jpg"
     ],
     "description": "Mustard is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Mustard supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13235,7 +13235,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 89,
     "images": [
-      "/catalog/farmer-factory-fruits/kiwi.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6viy4q_kiwi.jfif"
     ],
     "description": "Sesame is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Sesame supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13275,7 +13275,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-fruits/apple.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kluzo2_apple.jfif"
     ],
     "description": "Sunflower is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Sunflower supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13315,7 +13315,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-fruits/SweetLime.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/txi5v4_SweetLime.jfif"
     ],
     "description": "Turmeric is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Turmeric supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13355,7 +13355,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-vegetables/Greenchili.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/upf94z_Greenchili.jfif"
     ],
     "description": "Chilli is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Chilli supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13395,7 +13395,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-valluvam/PepperBlack.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/tgc1qj_PepperBlack.jpg"
     ],
     "description": "Pepper is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Pepper supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13435,7 +13435,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-valluvam/Cardamom.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qynvy6_Cardamom.jpg"
     ],
     "description": "Cardamom is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cardamom supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13475,7 +13475,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-valluvam/clove.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pfbhfv_clove.jpg"
     ],
     "description": "Clove is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Clove supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13515,7 +13515,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-vegetables/CorianderLeaves.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/znqs0c_CorianderLeaves.jfif"
     ],
     "description": "Coriander is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Coriander supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13555,7 +13555,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-valluvam/jeera.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/frg0qc_jeera.jpg"
     ],
     "description": "Cumin is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cumin supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13595,7 +13595,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-valluvam/Methi.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/nqvgug_Methi.jpg"
     ],
     "description": "Fenugreek is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Fenugreek supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13635,7 +13635,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 89,
     "images": [
-      "/catalog/farmer-factory-vegetables/Beans.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qjnjcn_Beans.jfif"
     ],
     "description": "Coffee Beans is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Coffee Beans supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13676,7 +13676,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-vegetables/CorianderLeaves.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/znqs0c_CorianderLeaves.jfif"
     ],
     "description": "Tea Leaves is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Tea Leaves supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13717,7 +13717,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-vegetables/onionbig.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/51x3i0_onionbig.jfif"
     ],
     "description": "Copra is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Copra supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13757,7 +13757,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-fruits/MangoBanganapalli.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/aj4g2b_MangoBanganapalli.jfif"
     ],
     "description": "Mango is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Mango supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13797,7 +13797,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-fruits/BananaPoovan.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vsfy9s_BananaPoovan.jfif"
     ],
     "description": "Banana is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Banana supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13837,7 +13837,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-fruits/apple.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kluzo2_apple.jfif"
     ],
     "description": "Apple is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Apple supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13877,7 +13877,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-fruits/orange.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/yhvmd3_orange.jfif"
     ],
     "description": "Orange is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Orange supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13917,7 +13917,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-fruits/papaya.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/jpht0a_papaya.jfif"
     ],
     "description": "Papaya is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Papaya supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13957,7 +13957,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-fruits/GuavaWhite.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/nquggf_GuavaWhite.jfif"
     ],
     "description": "Guava is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Guava supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -13997,7 +13997,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-fruits/Pomegranate.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/4p3lua_Pomegranate.jfif"
     ],
     "description": "Pomegranate is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Pomegranate supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14037,7 +14037,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 89,
     "images": [
-      "/catalog/farmer-factory-fruits/Grapes_Fruit.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/c10nps_Grapes_Fruit.png"
     ],
     "description": "Grapes is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Grapes supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14077,7 +14077,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-fruits/pineapple.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/zmlc3s_pineapple.jfif"
     ],
     "description": "Pineapple is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Pineapple supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14117,7 +14117,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-fruits/WatermelonKiran.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/oxg6jc_WatermelonKiran.jfif"
     ],
     "description": "Watermelon is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Watermelon supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14157,7 +14157,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-fruits/MuskMelon.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vjmrpg_MuskMelon.jfif"
     ],
     "description": "Muskmelon is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Muskmelon supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14197,7 +14197,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-fruits/Sapota.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/du0n0f_Sapota.jfif"
     ],
     "description": "Sapota is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Sapota supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14237,7 +14237,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-fruits/Jackfruit.png"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1nd8z0_Jackfruit.png"
     ],
     "description": "Jackfruit is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Jackfruit supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14277,7 +14277,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/TomatoCountry.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/elddvw_TomatoCountry.jfif"
     ],
     "description": "Tomato is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Tomato supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14317,7 +14317,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-vegetables/Onionred.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/2w5dja_Onionred.jfif"
     ],
     "description": "Onion is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Onion supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14357,7 +14357,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-vegetables/potato.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ctxh08_potato.jfif"
     ],
     "description": "Potato is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Potato supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14397,7 +14397,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-vegetables/Brinjal.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/oqcj6g_Brinjal.jfif"
     ],
     "description": "Brinjal is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Brinjal supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14437,7 +14437,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 89,
     "images": [
-      "/catalog/farmer-factory-vegetables/Greenchili.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/upf94z_Greenchili.jfif"
     ],
     "description": "Chilli is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Chilli supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14477,7 +14477,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-vegetables/LadiesFinger.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/vb82n9_LadiesFinger.jfif"
     ],
     "description": "Okra is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Okra supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14517,7 +14517,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cabbage.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/6dytb1_Cabbage.jfif"
     ],
     "description": "Cabbage is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cabbage supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14557,7 +14557,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cauliflower.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ouvl77_Cauliflower.jfif"
     ],
     "description": "Cauliflower is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cauliflower supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14597,7 +14597,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-vegetables/ooty-carrot.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qg7211_ooty-carrot.jpg"
     ],
     "description": "Carrot is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Carrot supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14637,7 +14637,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-vegetables/Radish.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pm71no_Radish.jfif"
     ],
     "description": "Radish is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Radish supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14677,7 +14677,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/Beans.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qjnjcn_Beans.jfif"
     ],
     "description": "Beans is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Beans supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14717,7 +14717,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-vegetables/GreenPeas.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ps88qp_GreenPeas.jfif"
     ],
     "description": "Peas is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Peas supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14757,7 +14757,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-vegetables/BottleGourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/mlp64n_BottleGourd.jfif"
     ],
     "description": "Bottle Gourd is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Bottle Gourd supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14798,7 +14798,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-vegetables/bitter-gourd.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/ncgltq_bitter-gourd.jpg"
     ],
     "description": "Bitter Gourd is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Bitter Gourd supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14839,7 +14839,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 89,
     "images": [
-      "/catalog/farmer-factory-vegetables/PumpkinYellow.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/n1j97i_PumpkinYellow.jfif"
     ],
     "description": "Pumpkin is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Pumpkin supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14879,7 +14879,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-vegetables/Cucumber.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/t20000_Cucumber.jfif"
     ],
     "description": "Cucumber is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cucumber supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14919,7 +14919,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-vegetables/RawMango.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/drkyzr_RawMango.jfif"
     ],
     "description": "Toor Dal is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Toor Dal supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -14960,7 +14960,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-vegetables/MaravalliKilangu.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/8oi78j_MaravalliKilangu.jfif"
     ],
     "description": "Urad Dal is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Urad Dal supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15001,7 +15001,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-vegetables/MoongGreenSprouts.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/u7y215_MoongGreenSprouts.jfif"
     ],
     "description": "Moong Dal is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Moong Dal supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15042,7 +15042,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-fruits/BananaNendhiram.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/1ckcqk_BananaNendhiram.jfif"
     ],
     "description": "Chana Dal is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Chana Dal supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15083,7 +15083,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-vegetables/SnakeGourd.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/kwu2vl_SnakeGourd.jfif"
     ],
     "description": "Masoor Dal is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Masoor Dal supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15124,7 +15124,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-vegetables/CorianderLeaves.jfif"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/znqs0c_CorianderLeaves.jfif"
     ],
     "description": "Cowpea is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cowpea supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15287,7 +15287,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 102,
     "images": [
-      "/catalog/farmer-factory-valluvam/MustardSeeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/p56aub_MustardSeeds.jpg"
     ],
     "description": "Cold Pressed Oil is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Cold Pressed Oil supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15329,7 +15329,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 115,
     "images": [
-      "/catalog/farmer-factory-valluvam/groundnutoil250.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/bni2io_groundnutoil250.jpg"
     ],
     "description": "Groundnut Oil is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Groundnut Oil supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15370,7 +15370,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 128,
     "images": [
-      "/catalog/farmer-factory-valluvam/sesame-1L.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/t9iy37_sesame-1L.jpg"
     ],
     "description": "Sesame Oil is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Sesame Oil supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15411,7 +15411,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 141,
     "images": [
-      "/catalog/farmer-factory-valluvam/MustardSeeds.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/p56aub_MustardSeeds.jpg"
     ],
     "description": "Mustard Oil is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Mustard Oil supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15452,7 +15452,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 154,
     "images": [
-      "/catalog/farmer-factory-valluvam/honey.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/e5upyr_honey.jpeg"
     ],
     "description": "Honey is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Honey supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15492,7 +15492,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 167,
     "images": [
-      "/catalog/farmer-factory-valluvam/palm-jaggery.jpeg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/g537pf_palm-jaggery.jpeg"
     ],
     "description": "Jaggery is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Jaggery supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15532,7 +15532,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 50,
     "images": [
-      "/catalog/farmer-factory-valluvam/date.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/qqjg2u_date.jpg"
     ],
     "description": "Pickles is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Pickles supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15572,7 +15572,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 63,
     "images": [
-      "/catalog/farmer-factory-valluvam/BrowntopMillet.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/pkxknk_BrowntopMillet.jpg"
     ],
     "description": "Spice Powders is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Spice Powders supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
@@ -15613,7 +15613,7 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     "discount": 18,
     "stock": 76,
     "images": [
-      "/catalog/farmer-factory-valluvam/DryGrapesBlack.jpg"
+      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/c7va8c_DryGrapesBlack.jpg"
     ],
     "description": "Dry Fruits is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
     "composition": "Dry Fruits supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
