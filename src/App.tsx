@@ -361,7 +361,10 @@ export default function App() {
       '/catalog/nursery tools',
     ];
     return applyCatalogOverlay(SEED_PRODUCTS)
-      .filter((p) => p.images && p.images[0] && ALLOWED.some((f) => p.images[0].startsWith(f)))
+      // Keep products whose image is a hosted URL (Supabase/web) OR a real local
+      // catalog folder. (Previously only local folders were allowed, which hid
+      // every product whose image moved to Supabase storage.)
+      .filter((p) => p.images && p.images[0] && (/^https?:\/\//.test(p.images[0]) || ALLOWED.some((f) => p.images[0].startsWith(f))))
       .map((p) => {
         const name = strip(p.name) || p.name;
         return {

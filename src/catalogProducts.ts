@@ -9105,5 +9105,6 @@ export const CATALOG_PRODUCTS: Product[] = [
     "isIgoOwn": false,
     "unit": "1 Pc",
     "crops": ["All Crops"]
-  }
+  },
+  ...NURSERY_TOOLS_PRODUCTS
 ];

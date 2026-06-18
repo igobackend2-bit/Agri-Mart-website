@@ -104,6 +104,7 @@ export interface Order {
   deliveryAddress: Address;
   createdAt: any; // Firestore timestamp or UTC string
   phone: string;
+  deliverySlot?: string; // chosen delivery slot (e.g. "Tomorrow, 6–9 AM")
 }
 
 export interface Review {

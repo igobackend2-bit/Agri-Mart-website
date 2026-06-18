@@ -67,9 +67,8 @@ export default function CheckoutComponent({
         // Pre-fill the street line with the detected area only if it's still empty.
         address1: f.address1 || (loc.area ? `${loc.area}` : f.address1),
       }));
-      if (!loc.pincode) {
-        alert(`Detected: ${loc.city}${loc.state ? ', ' + loc.state : ''}. We couldn't read your 6-digit pincode automatically — please type it in.`);
-      }
+      // City/State/area filled silently. If pincode couldn't be read, the field
+      // simply stays empty for the customer to type — no error popup.
     } catch (e: any) {
       alert(e?.message || 'Could not detect location. Please allow location access and try again.');
     } finally {
@@ -82,6 +81,7 @@ export default function CheckoutComponent({
   const [deliverySlot, setDeliverySlot] = useState<string>(DELIVERY_SLOTS[3]);
   const [isPlacing, setIsPlacing] = useState(false);
   const [orderIdCreated, setOrderIdCreated] = useState<string | null>(null);
+  const [placedOrderState, setPlacedOrderState] = useState<Order | null>(null);
 
   // Calculations (delivery/GST controlled from Admin -> Settings)
   const siteSettings = getSettings();
@@ -163,12 +163,14 @@ export default function CheckoutComponent({
       status: 'Placed',
       deliveryAddress: checkAddr,
       createdAt: new Date().toISOString(),
-      phone: formData.phone
+      phone: formData.phone,
+      deliverySlot,
     };
 
     const finalizeOrder = () => {
       // Show success immediately — any side-effect below is best-effort only.
       setOrderIdCreated(nextId);
+      setPlacedOrderState(placedOrder);
       setCart([]);
       setCouponDiscount(0);
       try { saveLocalOrder(placedOrder); } catch { /* ignore */ }
@@ -191,31 +193,56 @@ export default function CheckoutComponent({
       try { earnWalletCoins(finalTotal * 0.02); } catch { /* ignore */ }
     };
 
-    // Save to Supabase (best-effort, with a timeout so the button can never hang)
-    // then ALWAYS finalize so the order is placed for the customer.
-    try {
-      await Promise.race([
-        placeOrder(placedOrder),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000)),
-      ]);
-    } catch { /* offline / RLS / timeout — order still placed locally */ }
+    // Finalize FIRST (synchronously, within the click) so the success screen and
+    // the order-placed sound fire while the browser still allows audio. Then save
+    // to Supabase in the background — the order is already placed locally.
     finalizeOrder();
     setIsPlacing(false);
+    try { placeOrder(placedOrder).catch(() => { /* offline/RLS — saved locally */ }); } catch { /* ignore */ }
   };
 
   if (orderIdCreated) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-6">
-        <div className="text-6xl animate-bounce">🎉</div>
-        <div className="inline-flex h-14 w-14 bg-emerald-50 text-emerald-700 rounded-full items-center justify-center border border-emerald-100 mb-2">
-          <CheckCircle className="h-8 w-8" />
+      <div className="max-w-2xl mx-auto px-4 py-12 space-y-5">
+        <div className="text-center space-y-3">
+          <img src="/images/logo.jpg" alt="IGO Agri Mart" className="h-14 w-14 rounded-xl object-cover mx-auto shadow" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+          <div className="inline-flex h-14 w-14 bg-emerald-50 text-emerald-700 rounded-full items-center justify-center border border-emerald-100 mx-auto">
+            <CheckCircle className="h-8 w-8" />
+          </div>
+          <h2 className="font-display font-black text-slate-900 text-2xl sm:text-3xl tracking-tight">
+            Order Placed Successfully!
+          </h2>
+          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+            Your order ID is <strong className="text-[#1B6B3A] font-black">{orderIdCreated}</strong>. We'll pack and dispatch your items shortly — track it anytime in My Dashboard.
+          </p>
         </div>
-        <h2 className="font-display font-black text-slate-800 text-2xl tracking-tight">
-          Agri-Order Placed Successfully!
-        </h2>
-        <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
-          Your order ID is <strong className="text-slate-900 font-bold">{orderIdCreated}</strong>. Our warehouse logistics coordinators at Kovalan Street Chennai will pack and ship your seeds and fertilizers within 12 hours.
-        </p>
+
+        {/* Ordered products + slot summary */}
+        {placedOrderState && (
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm text-left">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <span className="font-black text-slate-800 text-sm">Order Summary</span>
+              <span className="text-[11px] font-bold text-[#1B6B3A] bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">{placedOrderState.deliverySlot || 'Standard'}</span>
+            </div>
+            <div className="divide-y divide-slate-100">
+              {placedOrderState.items.map((it, i) => (
+                <div key={i} className="flex items-center gap-3 py-2.5">
+                  <img src={it.image} alt="" className="h-10 w-10 rounded-lg object-cover border" onError={(e) => { (e.target as HTMLImageElement).src = '/images/logo.jpg'; }} />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs font-bold text-slate-800 truncate">{it.name}</div>
+                    <div className="text-[10px] text-slate-400">Qty {it.quantity} x Rs.{it.price}</div>
+                  </div>
+                  <div className="text-xs font-black text-slate-700">Rs.{(it.price * it.quantity).toLocaleString('en-IN')}</div>
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+              <span className="text-xs font-black text-slate-700">Total Paid</span>
+              <span className="font-display font-black text-lg text-[#1B6B3A]">Rs.{placedOrderState.totalAmount.toLocaleString('en-IN')}</span>
+            </div>
+            <div className="text-[10px] text-slate-400 mt-2 text-center">Payment: {placedOrderState.paymentMethod} · Delivery slot: {placedOrderState.deliverySlot || 'Standard'}</div>
+          </div>
+        )}
 
         {isCodPartialAdvanceRequired && (
           <div className="bg-[#fff9eb] border border-dashed border-[#ffe09e] text-amber-950 p-4 rounded-xl text-left max-w-md mx-auto space-y-2">

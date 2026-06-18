@@ -304,6 +304,15 @@ export function detectLocation(): Promise<DetectedLocation> {
             .find((n: any) => typeof n === 'string' && /^\d{6}$/.test(n.trim()));
           if (pc) pincode = pc.trim();
         }
+        // Fallback: OpenStreetMap (Nominatim) reliably returns Indian postcodes.
+        if (!pincode) {
+          try {
+            const r2 = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`);
+            const j2 = await r2.json();
+            const pc2 = j2 && j2.address && j2.address.postcode;
+            if (typeof pc2 === 'string' && /\d{6}/.test(pc2)) pincode = (pc2.match(/\d{6}/) || [pc2])[0];
+          } catch { /* ignore — pincode stays empty */ }
+        }
         const loc: DetectedLocation = {
           city: j.city || j.locality || j.principalSubdivision || 'Your area',
           district: j.localityInfo?.administrative?.find((a: any) => a.adminLevel === 5 || a.adminLevel === 6)?.name || j.principalSubdivision || undefined,
