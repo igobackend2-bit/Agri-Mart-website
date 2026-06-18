@@ -360,7 +360,7 @@ export default function App() {
       '/catalog/tools',
       '/catalog/nursery tools',
     ];
-    return applyCatalogOverlay(SEED_PRODUCTS)
+    const built = applyCatalogOverlay(SEED_PRODUCTS)
       // Keep products whose image is a hosted URL (Supabase/web) OR a real local
       // catalog folder. (Previously only local folders were allowed, which hid
       // every product whose image moved to Supabase storage.)
@@ -375,6 +375,14 @@ export default function App() {
           isIgoOwn: false,
         };
       });
+    // De-duplicate: show each product only once (same name + category = duplicate).
+    const seen = new Set<string>();
+    return built.filter((p) => {
+      const key = (p.name || '').toLowerCase().trim() + '|' + (p.category || '').toLowerCase().trim();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   };
 
   const loadInventory = () => {

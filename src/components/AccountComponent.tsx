@@ -19,7 +19,7 @@ import { db, auth } from '../firebase';
 import { Product, Order, UserProfile, Address } from '../types';
 import { fetchUserOrders, cancelUserOrder, fetchUserProfile } from '../dbHelper';
 import { currentUid, clearSession } from '../session';
-import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, InboxMessage, getWalletCoins, mergeOrdersByStatus } from '../storeData';
+import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, deleteInboxMessage, InboxMessage, getWalletCoins, mergeOrdersByStatus } from '../storeData';
 import { Inbox as InboxIcon, Mail, Home, Store, ShoppingCart } from 'lucide-react';
 
 interface AccountComponentProps {
@@ -205,6 +205,22 @@ export default function AccountComponent({
       setOrders(orders.map(o => o.id === orderId ? { ...o, status: 'Cancelled' } : o));
     }
   };
+
+  const handleDeleteMsg = (id: string) => {
+    deleteInboxMessage(id);
+    setInboxMsgs(getInbox(userProfile?.email));
+  };
+
+  // Order-status line for the notification list.
+  const orderStatusLine = (s: string): string => ({
+    Placed: 'We received your order and will confirm it shortly.',
+    Confirmed: 'Your order is confirmed and being prepared.',
+    Packed: 'Your order is packed and ready to ship.',
+    Shipped: 'Your order has shipped — on its way!',
+    Dispatched: 'Your order has been dispatched — on its way!',
+    Delivered: 'Your order has been delivered. Thank you!',
+    Cancelled: 'Your order was cancelled. Any prepayment will be refunded.',
+  } as Record<string, string>)[s] || ('Your order status is now ' + s + '.');
 
   const handleLogout = async () => {
     try { await signOut(auth); } catch { /* local session — ignore */ }
@@ -547,27 +563,52 @@ export default function AccountComponent({
 
           {/* WISHLIST VIEW TAB */}
           {/* INBOX VIEW TAB */}
-          {activeTab === 'Inbox' && (
+          {activeTab === 'Inbox' && (() => {
+            // Full notification list = live order-status updates + saved messages.
+            const orderNotifs = orders.map((o) => ({
+              id: 'ord-' + o.id,
+              title: 'Order ' + o.id + ' — ' + o.status,
+              body: orderStatusLine(o.status),
+              createdAt: typeof o.createdAt === 'string' ? o.createdAt : new Date().toISOString(),
+              orderId: o.id,
+              canDelete: false,
+            }));
+            const msgNotifs = inboxMsgs.map((m) => ({
+              id: m.id, title: m.title, body: m.body, createdAt: m.createdAt, orderId: m.orderId, canDelete: true,
+            }));
+            const allNotifs = [...orderNotifs, ...msgNotifs].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            return (
             <div className="space-y-5">
-              <div className="border-b border-slate-100 pb-3">
-                <h3 className="font-display font-extrabold text-slate-900 text-lg">Profile Inbox</h3>
-                <p className="text-xs text-slate-400 mt-0.5">Order updates and messages from the IGO Agri Mart team</p>
+              <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <div>
+                  <h3 className="font-display font-extrabold text-slate-900 text-lg">Notifications &amp; Inbox</h3>
+                  <p className="text-xs text-slate-400 mt-0.5">Order updates and messages from the IGO Agri Mart team</p>
+                </div>
+                <span className="text-[11px] font-black text-[#1B6B3A] bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full">{allNotifs.length}</span>
               </div>
-              {inboxMsgs.length === 0 ? (
+              {allNotifs.length === 0 ? (
                 <div className="py-16 text-center">
                   <Mail className="h-12 w-12 text-slate-200 mx-auto mb-3" />
-                  <p className="text-sm font-bold text-slate-400">No messages yet</p>
+                  <p className="text-sm font-bold text-slate-400">No notifications yet</p>
                   <p className="text-[11px] text-slate-400 mt-1">Order confirmations and updates from our team will appear here.</p>
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {inboxMsgs.map(m => (
-                    <div key={m.id} className={'border rounded-2xl p-4 ' + (m.read ? 'bg-white border-slate-200' : 'bg-emerald-50/60 border-emerald-200')}>
+                  {allNotifs.map(m => (
+                    <div key={m.id} className="border border-slate-200 bg-white rounded-2xl p-4">
                       <div className="flex items-start justify-between gap-3">
                         <h4 className="font-extrabold text-slate-800 text-sm">{m.title}</h4>
-                        <span className="text-[10px] text-slate-400 whitespace-nowrap shrink-0">
-                          {new Date(m.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })} · {new Date(m.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
-                        </span>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="text-[10px] text-slate-400 whitespace-nowrap">
+                            {new Date(m.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+                          </span>
+                          {m.canDelete && (
+                            <button onClick={() => handleDeleteMsg(m.id)} title="Delete notification"
+                              className="h-6 w-6 rounded-full flex items-center justify-center text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition">
+                              <X className="h-3.5 w-3.5" />
+                            </button>
+                          )}
+                        </div>
                       </div>
                       <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{m.body}</p>
                       {m.orderId && <span className="inline-block mt-2 bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded font-mono">{m.orderId}</span>}
@@ -576,7 +617,8 @@ export default function AccountComponent({
                 </div>
               )}
             </div>
-          )}
+            );
+          })()}
 
           {/* WISHLIST VIEW TAB */}
           {activeTab === 'Wishlist' && (

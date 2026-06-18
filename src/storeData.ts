@@ -202,6 +202,11 @@ export function unreadInboxCount(email?: string | null): number {
   return getInbox(email).filter(m => !m.read).length;
 }
 
+/** Delete a single inbox message by id (customer removed it). */
+export function deleteInboxMessage(id: string): void {
+  write(K_INBOX, read<InboxMessage[]>(K_INBOX, []).filter(m => m.id !== id));
+}
+
 // ── IGO Coins wallet (demo loyalty — earn on orders, redeem at checkout) ─────
 // Real loyalty/ledger should move to the backend (Supabase) later; this is a
 // per-device demo store so the feature is visible and testable now.
