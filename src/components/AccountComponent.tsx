@@ -409,6 +409,40 @@ export default function AccountComponent({
                 </span>
               </div>
 
+              {/* Account summary stats */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { label: 'Total Orders', value: orders.length, icon: ShoppingBag, color: 'text-[#1B6B3A] bg-emerald-50 border-emerald-100' },
+                  { label: 'Delivered', value: orders.filter(o => o.status === 'Delivered').length, icon: InboxIcon, color: 'text-blue-700 bg-blue-50 border-blue-100' },
+                  { label: 'IGO Coins', value: getWalletCoins(), icon: Heart, color: 'text-amber-700 bg-amber-50 border-amber-100' },
+                  { label: 'Wishlist', value: wishlistProducts.length, icon: Heart, color: 'text-rose-700 bg-rose-50 border-rose-100' },
+                ].map((s) => {
+                  const Ic = s.icon;
+                  return (
+                    <div key={s.label} className={'rounded-xl border p-3 ' + s.color}>
+                      <Ic className="h-4 w-4 mb-1.5 opacity-80" />
+                      <div className="text-lg font-display font-black leading-none">{s.value.toLocaleString('en-IN')}</div>
+                      <div className="text-[10px] font-bold uppercase tracking-wide opacity-70 mt-1">{s.label}</div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Quick actions */}
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: 'Track Orders', onClick: () => setActiveTab('Orders') },
+                  { label: 'My Wishlist', onClick: () => setActiveTab('Wishlist') },
+                  { label: 'Saved Addresses', onClick: () => setActiveTab('Addresses') },
+                  { label: 'Continue Shopping', onClick: () => setCurrentPage('category') },
+                ].map((a) => (
+                  <button key={a.label} onClick={a.onClick}
+                    className="text-[11px] font-bold text-[#1B6B3A] bg-white border border-emerald-200 hover:bg-emerald-50 px-3.5 py-2 rounded-lg transition">
+                    {a.label}
+                  </button>
+                ))}
+              </div>
+
               {isLoadingOrders ? (
                 <div className="py-20 text-center text-slate-400 text-xs font-bold leading-normal animate-pulse">
                   {t.loadingOrders}
@@ -780,39 +814,7 @@ export default function AccountComponent({
                 <p className="text-xs text-slate-400 mt-1">{t.profileSub}</p>
               </div>
 
-              {/* Account summary stats */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {[
-                  { label: 'Total Orders', value: orders.length, icon: ShoppingBag, color: 'text-[#1B6B3A] bg-emerald-50 border-emerald-100' },
-                  { label: 'Delivered', value: orders.filter(o => o.status === 'Delivered').length, icon: InboxIcon, color: 'text-blue-700 bg-blue-50 border-blue-100' },
-                  { label: 'IGO Coins', value: getWalletCoins(), icon: Heart, color: 'text-amber-700 bg-amber-50 border-amber-100' },
-                  { label: 'Wishlist', value: wishlistProducts.length, icon: Heart, color: 'text-rose-700 bg-rose-50 border-rose-100' },
-                ].map((s) => {
-                  const Ic = s.icon;
-                  return (
-                    <div key={s.label} className={'rounded-xl border p-3 ' + s.color}>
-                      <Ic className="h-4 w-4 mb-1.5 opacity-80" />
-                      <div className="text-lg font-display font-black leading-none">{s.value.toLocaleString('en-IN')}</div>
-                      <div className="text-[10px] font-bold uppercase tracking-wide opacity-70 mt-1">{s.label}</div>
-                    </div>
-                  );
-                })}
-              </div>
 
-              {/* Quick actions */}
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { label: 'Track Orders', onClick: () => setActiveTab('Orders') },
-                  { label: 'My Wishlist', onClick: () => setActiveTab('Wishlist') },
-                  { label: 'Saved Addresses', onClick: () => setActiveTab('Addresses') },
-                  { label: 'Continue Shopping', onClick: () => setCurrentPage('category') },
-                ].map((a) => (
-                  <button key={a.label} onClick={a.onClick}
-                    className="text-[11px] font-bold text-[#1B6B3A] bg-white border border-emerald-200 hover:bg-emerald-50 px-3.5 py-2 rounded-lg transition">
-                    {a.label}
-                  </button>
-                ))}
-              </div>
 
               <div className="space-y-4 max-w-md">
                 <div className="space-y-1">
