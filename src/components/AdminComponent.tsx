@@ -74,6 +74,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
   const [orderSearchQuery, setOrderSearchQuery] = useState('');
+  const [slotFilter, setSlotFilter] = useState<string>('All');
   const [productSearchQuery, setProductSearchQuery] = useState('');
   const [customers, setCustomers] = useState<any[]>([]);
   const [custSearch, setCustSearch] = useState('');
@@ -489,11 +490,15 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const lowStockProducts = products.filter(p => p.stock > 0 && p.stock < 20);
   const outOfStockProducts = products.filter(p => p.stock === 0);
 
-  const filteredOrders = orders.filter(o =>
-    o.id.toLowerCase().includes(orderSearchQuery.toLowerCase()) ||
-    (o.phone || '').toLowerCase().includes(orderSearchQuery.toLowerCase()) ||
-    (o.deliveryAddress?.name || '').toLowerCase().includes(orderSearchQuery.toLowerCase())
-  );
+  const filteredOrders = orders.filter(o => {
+    const q = orderSearchQuery.toLowerCase();
+    const matchesSearch = !q ||
+      o.id.toLowerCase().includes(q) ||
+      (o.phone || '').toLowerCase().includes(q) ||
+      (o.deliveryAddress?.name || '').toLowerCase().includes(q);
+    const matchesSlot = slotFilter === 'All' || (o.deliverySlot || 'Standard (2–4 days)') === slotFilter;
+    return matchesSearch && matchesSlot;
+  });
   const filteredProducts = products.filter(p =>
     p.name.toLowerCase().includes(productSearchQuery.toLowerCase()) ||
     p.brand.toLowerCase().includes(productSearchQuery.toLowerCase()) ||
@@ -712,18 +717,30 @@ export default function AdminComponent({ lang, products, setProducts, categories
               </span>
             ))}
           </div>
-          {/* Orders by delivery slot */}
+          {/* Orders by delivery slot — click a slot to filter the table below */}
           <div className="flex gap-2 flex-wrap items-center">
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 mr-1">By delivery slot:</span>
-            {Object.entries(orders.reduce((acc: Record<string, number>, o) => {
-              const k = o.deliverySlot || 'Standard';
-              acc[k] = (acc[k] || 0) + 1;
-              return acc;
-            }, {})).map(([slot, count]) => (
-              <span key={slot} className="px-3 py-1 rounded-full text-xs font-bold border border-emerald-200 bg-emerald-50 text-[#1B6B3A]">
-                {slot}: {count}
-              </span>
-            ))}
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 mr-1">Filter by delivery slot:</span>
+            {(() => {
+              const counts = orders.reduce((acc: Record<string, number>, o) => {
+                const k = o.deliverySlot || 'Standard (2–4 days)';
+                acc[k] = (acc[k] || 0) + 1;
+                return acc;
+              }, {} as Record<string, number>);
+              const chips = [['All', orders.length] as [string, number], ...Object.entries(counts)];
+              return chips.map(([slot, count]) => {
+                const active = slotFilter === slot;
+                return (
+                  <button
+                    key={slot}
+                    onClick={() => setSlotFilter(slot)}
+                    className={'px-3 py-1 rounded-full text-xs font-bold border transition ' +
+                      (active ? 'bg-[#1B6B3A] text-white border-[#1B6B3A]' : 'border-emerald-200 bg-emerald-50 text-[#1B6B3A] hover:border-emerald-300')}
+                  >
+                    {slot}: {count}
+                  </button>
+                );
+              });
+            })()}
             {orders.length === 0 && <span className="text-xs text-slate-400">No orders yet.</span>}
           </div>
           {isLoadingOrders ? (
@@ -748,16 +765,16 @@ export default function AdminComponent({ lang, products, setProducts, categories
                           <div className="text-[10px] text-slate-400">{o.deliveryAddress?.email || o.deliveryAddress?.city}</div>
                         </button>
                       </td>
-                      <td className="p-3 max-w-[160px]">
-                        {o.items?.slice(0, 2).map((it, i) => (
-                          <div key={i} className="text-[10px] text-slate-500 truncate">{it.name} x{it.quantity}</div>
+                      <td className="p-3 min-w-[160px] max-w-[240px] align-top">
+                        {o.items?.map((it, i) => (
+                          <div key={i} className="text-[11px] text-slate-600 leading-snug">• {it.name} <span className="text-slate-400">x{it.quantity}</span></div>
                         ))}
-                        {(o.items?.length || 0) > 2 && <div className="text-[10px] text-slate-400">+{o.items!.length - 2} more</div>}
+                        {(!o.items || o.items.length === 0) && <span className="text-[10px] text-slate-400 italic">No items</span>}
                       </td>
-                      <td className="p-3 font-bold text-[#1B6B3A]">Rs.{o.totalAmount}</td>
+                      <td className="p-3 font-bold text-[#1B6B3A] whitespace-nowrap align-top">Rs.{o.totalAmount}</td>
                       <td className="p-3 text-[10px] text-slate-500">{o.paymentMethod || 'COD'}</td>
-                      <td className="p-3">
-                        <span className="inline-block text-[10px] font-bold text-[#1B6B3A] bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-full whitespace-nowrap">{o.deliverySlot || 'Standard (2–4 days)'}</span>
+                      <td className="p-3 align-top">
+                        <span className="inline-block text-[10px] font-bold text-[#1B6B3A] bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-lg leading-tight">{o.deliverySlot || 'Standard (2–4 days)'}</span>
                       </td>
                       <td className="p-3">
                         <select value={o.status} onChange={e => handleStatusChange(o.id, e.target.value as Order['status'])}
