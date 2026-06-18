@@ -14,6 +14,7 @@ import {
 } from '../dbHelper';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import { supabase } from '../lib/supabase';
 import { VisitorLead, LeadStatus, LeadSource, fetchAllLeads, setLeadStatus, removeLead, downloadLeadsCsv } from '../leads';
 import {
   persistProductUpsert, persistProductDelete, persistStockSet, refillAllStocks,
@@ -123,33 +124,29 @@ export default function AdminComponent({ lang, products, setProducts, categories
   };
   // Read ANY image from the computer and auto-resize/compress it so it's small
   // enough to store — no size limit on the original file.
-  const readImageFile = (file: File | undefined, onLoad: (dataUrl: string) => void) => {
+  const readImageFile = async (file: File | undefined, onLoad: (url: string) => void) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) { alert('Please choose an image file.'); return; }
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result as string;
-      const img = new Image();
-      img.onload = () => {
-        const MAX = 900; // longest side, px
-        let { width, height } = img;
-        if (width > MAX || height > MAX) {
-          const scale = Math.min(MAX / width, MAX / height);
-          width = Math.round(width * scale);
-          height = Math.round(height * scale);
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = width; canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) { onLoad(dataUrl); return; }
-        ctx.drawImage(img, 0, 0, width, height);
-        try { onLoad(canvas.toDataURL('image/jpeg', 0.82)); }
-        catch { onLoad(dataUrl); }
-      };
-      img.onerror = () => onLoad(dataUrl);
-      img.src = dataUrl;
-    };
-    reader.readAsDataURL(file);
+    
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+      const filePath = `products/${fileName}`;
+
+      const { error } = await supabase.storage.from('Images').upload(filePath, file, { upsert: false });
+      
+      if (error) {
+        console.error('Upload Error:', error);
+        alert('Failed to upload image. Please check Supabase policies.');
+        return;
+      }
+      
+      const { data: { publicUrl } } = supabase.storage.from('Images').getPublicUrl(filePath);
+      onLoad(publicUrl);
+    } catch (err) {
+      console.error(err);
+      alert('Network or Supabase Error during upload.');
+    }
   };
 
   // Category Manager — edit each homepage category's label + tile image
@@ -714,6 +711,20 @@ export default function AdminComponent({ lang, products, setProducts, categories
                 {s}: {orders.filter(o => o.status === s).length}
               </span>
             ))}
+          </div>
+          {/* Orders by delivery slot */}
+          <div className="flex gap-2 flex-wrap items-center">
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 mr-1">By delivery slot:</span>
+            {Object.entries(orders.reduce((acc: Record<string, number>, o) => {
+              const k = o.deliverySlot || 'Standard';
+              acc[k] = (acc[k] || 0) + 1;
+              return acc;
+            }, {})).map(([slot, count]) => (
+              <span key={slot} className="px-3 py-1 rounded-full text-xs font-bold border border-emerald-200 bg-emerald-50 text-[#1B6B3A]">
+                {slot}: {count}
+              </span>
+            ))}
+            {orders.length === 0 && <span className="text-xs text-slate-400">No orders yet.</span>}
           </div>
           {isLoadingOrders ? (
             <div className="py-12 text-center text-xs text-slate-400">Loading orders...</div>
@@ -1798,6 +1809,8 @@ export default function AdminComponent({ lang, products, setProducts, categories
                         {[viewOrder.deliveryAddress?.addressLine1, viewOrder.deliveryAddress?.addressLine2, viewOrder.deliveryAddress?.city, viewOrder.deliveryAddress?.state].filter(Boolean).join(', ')}
                       </span>
                     </div>
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Payment Method</span><span className="font-black text-slate-800">{viewOrder.paymentMethod || 'COD'}</span></div>
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Delivery Slot</span><span className="font-black text-[#1B6B3A]">{viewOrder.deliverySlot || 'Standard (2–4 days)'}</span></div>
                   </div>
                   <div className="grid grid-cols-3 gap-3 mt-4">
                     {[
