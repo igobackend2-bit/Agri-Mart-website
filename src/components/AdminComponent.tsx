@@ -17,7 +17,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { VisitorLead, LeadStatus, LeadSource, fetchAllLeads, setLeadStatus, removeLead, downloadLeadsCsv } from '../leads';
 import {
   persistProductUpsert, persistProductDelete, persistStockSet, refillAllStocks,
-  getLocalOrders, updateLocalOrderStatus, saveLocalOrder, sendInboxMessage, playAdminAlertSound, mergeOrdersByStatus
+  getLocalOrders, updateLocalOrderStatus, saveLocalOrder, sendInboxMessage, playAdminAlertSound, playLowStockSound, playOutOfStockSound, mergeOrdersByStatus
 } from '../storeData';
 import {
   getSettings, saveSettings as persistSettings,
@@ -241,12 +241,14 @@ export default function AdminComponent({ lang, products, setProducts, categories
 
   useEffect(() => { loadOrders(); loadLeads(); }, []);
 
-  // Audible low-stock alert (once per admin session)
+  // Audible stock alert (once per admin session): urgent siren for OUT of stock,
+  // gentle warning for LOW stock.
   useEffect(() => {
-    const lowOrOut = products.filter(p => p.stock < 20).length;
-    if (lowOrOut > 0 && !sessionStorage.getItem('igo_admin_stock_alerted')) {
+    const out = products.filter(p => p.stock === 0).length;
+    const low = products.filter(p => p.stock > 0 && p.stock < 20).length;
+    if ((out > 0 || low > 0) && !sessionStorage.getItem('igo_admin_stock_alerted')) {
       sessionStorage.setItem('igo_admin_stock_alerted', '1');
-      playAdminAlertSound();
+      if (out > 0) playOutOfStockSound(); else playLowStockSound();
     }
   }, [products]);
   useEffect(() => {

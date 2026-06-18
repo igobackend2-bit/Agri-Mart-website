@@ -225,10 +225,11 @@ export function redeemWalletCoins(max: number): number {
 }
 
 // ── Sounds (WebAudio, no asset files needed) ─────────────────────────────────
-function tone(ctx: AudioContext, freq: number, start: number, dur: number, vol = 0.18) {
+// Louder default volume + a punchier waveform so the sounds carry across a room.
+function tone(ctx: AudioContext, freq: number, start: number, dur: number, vol = 0.6) {
   const o = ctx.createOscillator();
   const g = ctx.createGain();
-  o.type = 'sine'; o.frequency.value = freq;
+  o.type = 'triangle'; o.frequency.value = freq;
   g.gain.setValueAtTime(0, ctx.currentTime + start);
   g.gain.linearRampToValueAtTime(vol, ctx.currentTime + start + 0.02);
   g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
@@ -236,22 +237,48 @@ function tone(ctx: AudioContext, freq: number, start: number, dur: number, vol =
   o.start(ctx.currentTime + start); o.stop(ctx.currentTime + start + dur + 0.05);
 }
 
-/** Happy rising chime — played when the customer places an order. */
+/** Happy rising chime (LOUD) — played when the customer places an order. */
 export function playOrderSuccessSound(): void {
   try {
     const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    tone(ctx, 523.25, 0, 0.18);     // C5
-    tone(ctx, 659.25, 0.14, 0.18);  // E5
-    tone(ctx, 783.99, 0.28, 0.30);  // G5
+    if (ctx.state === 'suspended') { try { ctx.resume(); } catch { /* ignore */ } }
+    tone(ctx, 523.25, 0, 0.22, 0.7);     // C5
+    tone(ctx, 659.25, 0.16, 0.22, 0.7);  // E5
+    tone(ctx, 783.99, 0.32, 0.32, 0.75); // G5
+    tone(ctx, 1046.5, 0.5, 0.45, 0.65);  // C6 flourish
   } catch { /* audio unavailable */ }
 }
 
-/** Urgent double-beep — played in admin when stock is low / out. */
+/** Generic admin alert (kept for compatibility) — LOUD triple-beep. */
 export function playAdminAlertSound(): void {
   try {
     const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    tone(ctx, 880, 0, 0.12, 0.15);
-    tone(ctx, 880, 0.2, 0.12, 0.15);
+    if (ctx.state === 'suspended') { try { ctx.resume(); } catch { /* ignore */ } }
+    tone(ctx, 988, 0, 0.16, 0.8);
+    tone(ctx, 988, 0.22, 0.16, 0.8);
+    tone(ctx, 988, 0.44, 0.22, 0.8);
+  } catch { /* audio unavailable */ }
+}
+
+/** LOW STOCK — gentle warning: two soft mid-tone beeps. */
+export function playLowStockSound(): void {
+  try {
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    if (ctx.state === 'suspended') { try { ctx.resume(); } catch { /* ignore */ } }
+    tone(ctx, 587.33, 0, 0.2, 0.6);   // D5
+    tone(ctx, 587.33, 0.26, 0.22, 0.6);
+  } catch { /* audio unavailable */ }
+}
+
+/** OUT OF STOCK — urgent siren: loud alternating high/low, four sweeps. */
+export function playOutOfStockSound(): void {
+  try {
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    if (ctx.state === 'suspended') { try { ctx.resume(); } catch { /* ignore */ } }
+    tone(ctx, 1108.73, 0, 0.16, 0.9);    // high
+    tone(ctx, 740, 0.18, 0.16, 0.9);     // low
+    tone(ctx, 1108.73, 0.36, 0.16, 0.9); // high
+    tone(ctx, 740, 0.54, 0.28, 0.9);     // low (long)
   } catch { /* audio unavailable */ }
 }
 

@@ -56,7 +56,7 @@ export default function AdminGatekeeper(props: AdminGatekeeperProps) {
         {/* Left: brand hero */}
         <div className="relative hidden lg:flex flex-col justify-between p-12">
           <div className="flex items-center gap-3">
-            <div className="h-11 w-11 bg-white rounded-xl flex items-center justify-center font-black text-xl text-[#1B6B3A] shadow-lg">I</div>
+            <img src="/images/logo.jpg" alt="IGO Agri Mart" className="h-11 w-11 rounded-xl object-cover shadow-lg bg-white" />
             <div>
               <p className="text-white font-black tracking-wide leading-none">IGO AGRI MART</p>
               <p className="text-[9px] text-emerald-200 font-bold tracking-widest uppercase mt-1">Admin Control Panel</p>

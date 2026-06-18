@@ -51,8 +51,27 @@ export default function ContactComponent({
     }
 
     setLoading(true);
-    // Save enquiry so it appears in Admin -> Visitor Leads
+    // 1) Save enquiry so it always appears in Admin -> Visitor Leads.
     captureLead({ source: 'Contact Form', name, phone, subject, message });
+    // 2) Email it to igobackend2@gmail.com via Web3Forms (free relay). Set the
+    //    access key in Vercel env as VITE_WEB3FORMS_KEY (registered to that email).
+    const WEB3FORMS_KEY = (import.meta as any).env?.VITE_WEB3FORMS_KEY || '';
+    if (WEB3FORMS_KEY) {
+      try {
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: 'IGO Agri Mart enquiry: ' + (subject || 'New message'),
+            from_name: 'IGO Agri Mart Website',
+            name, phone, message,
+            // Routed to igobackend2@gmail.com (the email the access key is registered to).
+            body: `Name: ${name}\nPhone: ${phone}\nSubject: ${subject}\n\n${message}`,
+          }),
+        }).catch(() => { /* lead is already saved in admin */ });
+      } catch { /* ignore */ }
+    }
     setTimeout(() => {
       setLoading(false);
       setIsSent(true);
