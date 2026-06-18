@@ -542,6 +542,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
   };
 
   return (
+    <div className="min-h-screen w-full bg-gradient-to-br from-emerald-50 via-[#F7F9F4] to-amber-50/40">
     <div className="max-w-7xl mx-auto px-4 py-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 bg-gradient-to-r from-[#0B3D22] to-[#1B6B3A] rounded-2xl px-5 py-4 shadow-lg shadow-emerald-900/20">
         <div className="flex items-center gap-3.5">
@@ -1811,6 +1812,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
           </div>
         );
       })()}
+    </div>
     </div>
   );
 }

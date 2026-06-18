@@ -110,17 +110,22 @@ export default function CartComponent({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       
-      <div className="flex justify-between items-end border-b border-slate-200 pb-3 mb-8">
-        <div>
-          <h2 id="cart-title" className="font-display font-extrabold text-[#1B6B3A] text-2xl tracking-tight">
-            Farming Shopping Cart
-          </h2>
-          <p className="text-xs text-slate-400 mt-1">
-            Build your order containing authentic Chennai conglomerate agritechs
-          </p>
+      <div className="flex flex-wrap justify-between items-center gap-3 mb-8">
+        <div className="flex items-center gap-3.5">
+          <div className="h-12 w-12 rounded-2xl bg-[#1B6B3A] text-white flex items-center justify-center shadow-lg shadow-emerald-900/20 shrink-0">
+            <ShoppingBag className="h-6 w-6" />
+          </div>
+          <div>
+            <h2 id="cart-title" className="font-display font-black text-slate-900 text-2xl sm:text-3xl tracking-tight">
+              Your Cart
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5 font-medium">
+              Review your items, then proceed to a quick, secure checkout.
+            </p>
+          </div>
         </div>
-        <span className="text-xs text-slate-400 font-bold uppercase tracking-widest pl-3">
-          {cart.length} Articles
+        <span className="text-[11px] font-black text-[#1B6B3A] bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-full uppercase tracking-widest">
+          {cart.length} {cart.length === 1 ? 'item' : 'items'}
         </span>
       </div>
 
