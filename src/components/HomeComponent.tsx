@@ -45,7 +45,7 @@ import {
 import { Product, Category, Brand } from '../types';
 import { SEED_CATEGORIES, SEED_BRANDS, CROP_KITS, SUBSIDY_INFO, SEED_POSTS } from '../seedData';
 import { translations, LanguageDict } from '../translation';
-import { getBanners, getHomeOverrides, getComplexOverrides, getCategoryMeta } from '../siteConfig';
+import { getBanners, getHomeOverrides, getComplexOverrides, getCategoryMeta, getCustomCategories } from '../siteConfig';
 import { detectLocation, getSavedLocation } from '../storeData';
 import { FarmStories, LiveTrialFields, IgoEcosystemCarousel } from './HomeAdaptedFeatures';
 
@@ -348,7 +348,7 @@ export default function HomeComponent({
     'Indoor Plants', 'Outdoor Plants & Trees',
   ];
   const catMeta = getCategoryMeta();
-  const ALL_CATS: [string, { text: string; images: string[] }][] = CAT_ORDER
+  const baseCats: [string, { text: string; images: string[] }][] = CAT_ORDER
     .filter((name) => products.some((p) => p.category === name) && !catMeta[name]?.hidden)
     .map((name) => {
       const rep = products.find((p) => p.category === name && p.images && p.images[0]);
@@ -357,6 +357,15 @@ export default function HomeComponent({
       const img = (meta.image && meta.image.trim()) ? meta.image : (rep ? rep.images[0] : '');
       return [slug, { text: meta.label?.trim() || name, images: img ? [img] : [] }];
     });
+  // Admin-created custom categories show on the rail even before they have products.
+  const customCats: [string, { text: string; images: string[] }][] = getCustomCategories()
+    .filter((c) => !CAT_ORDER.includes(c.name) && !catMeta[c.name]?.hidden)
+    .map((c) => {
+      const rep = products.find((p) => p.category === c.name && p.images && p.images[0]);
+      const img = (c.image && c.image.trim()) ? c.image : (rep ? rep.images[0] : 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=240&q=75&fit=crop');
+      return [c.slug, { text: c.name, images: [img] }];
+    });
+  const ALL_CATS: [string, { text: string; images: string[] }][] = [...baseCats, ...customCats];
 
   const DEFAULT_HERO_SLIDES = [
     {

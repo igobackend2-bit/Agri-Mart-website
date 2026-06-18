@@ -74,6 +74,7 @@ const KEYS = {
   siteImages: 'igo_site_images',
   pageContent: 'igo_page_content',
   categoryMeta: 'igo_category_meta',
+  customCategories: 'igo_custom_categories',
   adminPwdHash: 'igo_admin_pwd_hash',
   adminSession: 'igo_admin_session',
 } as const;
@@ -197,6 +198,16 @@ export function saveSiteImages(images: SiteImages): void {
 export function siteImage(key: string, fallback: string): string {
   const v = getSiteImages()[key];
   return v && v.trim() ? v : fallback;
+}
+
+// ── Custom categories (admin adds brand-new categories) ─────────────────────
+export interface CustomCategory { name: string; slug: string; image?: string; }
+export function getCustomCategories(): CustomCategory[] {
+  const list = readJSON<CustomCategory[]>(KEYS.customCategories, []);
+  return Array.isArray(list) ? list.filter((c) => c && c.name) : [];
+}
+export function saveCustomCategories(list: CustomCategory[]): void {
+  writeWithSync(KEYS.customCategories, list);
 }
 
 // ── Category manager (admin edits each category's label + tile image) ────────

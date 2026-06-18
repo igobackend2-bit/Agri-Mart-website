@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { auth } from './firebase';
 import { isSignedIn, currentUid } from './session';
 import { fetchProducts, fetchUserProfile, saveUserProfile } from './dbHelper';
-import { getNotification } from './siteConfig';
+import { getNotification, getCustomCategories } from './siteConfig';
 import { applyCatalogOverlay, CATALOG_CHANGED_EVENT, syncWithSupabase } from './storeData';
 import { Product, CartItem, UserProfile, Service } from './types';
 import { SEED_CATEGORIES, SEED_BRANDS, SEED_PRODUCTS } from './seedData';
@@ -495,6 +495,18 @@ export default function App() {
     setPageKey(k => k + 1);
   };
 
+  // Merge admin-created custom categories into the app-wide category list, so
+  // they appear in the storefront nav AND the admin product-form dropdown.
+  const mergedCategories = [
+    ...SEED_CATEGORIES,
+    ...getCustomCategories()
+      .filter((c) => !SEED_CATEGORIES.some((s) => s.name === c.name))
+      .map((c) => ({
+        id: c.slug, name: c.name, slug: c.slug, icon: 'Leaf',
+        productCount: products.filter((p) => p.category === c.name).length,
+      })),
+  ];
+
   return (
     <div className="min-h-screen bg-[#F7F9F4] text-slate-800 font-sans flex flex-col justify-between overflow-x-clip w-full relative">
       {authGuardVisible && (
@@ -542,7 +554,7 @@ export default function App() {
               <HomeComponent
                 lang={lang}
                 products={products}
-                categories={SEED_CATEGORIES}
+                categories={mergedCategories}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
                 setCurrentPage={navigateTo}
@@ -556,7 +568,7 @@ export default function App() {
               <CategoryComponent
                 lang={lang}
                 products={products}
-                categories={SEED_CATEGORIES}
+                categories={mergedCategories}
                 brands={SEED_BRANDS}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
@@ -629,7 +641,7 @@ export default function App() {
                 lang={lang}
                 products={products}
                 setProducts={setProducts}
-                categories={SEED_CATEGORIES}
+                categories={mergedCategories}
                 brands={SEED_BRANDS}
                 setCurrentPage={navigateTo}
               />

@@ -103,6 +103,12 @@ export default function CheckoutComponent({
 
   const handlePlaceOrderSubmit = async () => {
     if (cart.length === 0) { alert('Your cart is empty.'); return; }
+    // Single-page checkout — validate the address here (no step wizard).
+    if (!formData.name.trim() || !formData.phone.trim() || !formData.address1.trim() || !formData.city.trim() || !formData.pincode.trim()) {
+      alert('Please fill your delivery address: name, phone, address, city and pincode.');
+      return;
+    }
+    if (formData.pincode.length !== 6) { alert('Pincode must be exactly 6 digits.'); return; }
     // Ensure a session so the order links to a customer id — but never block the
     // order: if somehow not signed in, start a local session and continue.
     if (!isSignedIn()) { try { markSignedIn(); } catch { /* ignore */ } }
@@ -250,7 +256,7 @@ export default function CheckoutComponent({
             Checkout Order Terminal
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Complete your order in 4 easy steps
+            Everything on one page — fill in, then place your order
           </p>
         </div>
       </div>
@@ -260,22 +266,10 @@ export default function CheckoutComponent({
         {/* Left column Content */}
         <div className="lg:col-span-2 space-y-6">
 
-          {/* Stepper Header */}
-          <div className="flex items-center justify-between mb-6 px-2">
-            {['Address', 'Delivery', 'Payment', 'Review'].map((s, i) => (
-              <div key={s} className="flex items-center gap-2">
-                <div className={`w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold border-2 ${step > i + 1 ? 'bg-[#1B6B3A] border-[#1B6B3A] text-white' : step === i + 1 ? 'border-[#1B6B3A] text-[#1B6B3A]' : 'border-slate-300 text-slate-400'}`}>
-                  {step > i + 1 ? <CheckCircle className="h-4 w-4" /> : i + 1}
-                </div>
-                <span className={`text-xs font-bold hidden sm:block ${step >= i + 1 ? 'text-[#1B6B3A]' : 'text-slate-400'}`}>{s}</span>
-                {i < 3 && <div className="w-8 sm:w-16 h-px bg-slate-300 mx-1"></div>}
-              </div>
-            ))}
-          </div>
+          {/* Single-page checkout — all sections shown at once */}
+          <div className="bg-white border border-slate-200 p-6 sm:p-10 rounded-xl space-y-8">
 
-          <div className="bg-white border border-slate-200 p-6 sm:p-10 rounded-xl space-y-6">
-            
-            {step === 1 && (
+            {(
               <div className="space-y-6 animate-fade-in">
                 <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100">
                   <MapPin className="h-5 w-5" />
@@ -411,17 +405,10 @@ export default function CheckoutComponent({
                   </div>
                 </div>
                 
-                <button
-                  type="button"
-                  onClick={handleNextStep}
-                  className="w-full bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-xs py-3.5 rounded-lg text-center flex items-center justify-center gap-1.5 shadow-lg relative cursor-pointer"
-                >
-                  Proceed to Delivery Options <ChevronRight className="w-4 h-4" />
-                </button>
               </div>
             )}
 
-            {step === 2 && (
+            {(
               <div className="space-y-6 animate-fade-in">
                 <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-4">
                   <Truck className="h-5 w-5" />
@@ -444,18 +431,10 @@ export default function CheckoutComponent({
                 </div>
                 <p className="text-[10px] text-slate-400 font-medium mb-2">Fresh produce ships next-day; inputs &amp; tools ship standard.</p>
                 
-                <div className="flex gap-3 pt-4">
-                  <button type="button" onClick={() => setStep(1)} className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-3.5 rounded-lg text-center cursor-pointer">
-                    Back
-                  </button>
-                  <button type="button" onClick={() => setStep(3)} className="flex-1 bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-xs py-3.5 rounded-lg text-center flex items-center justify-center gap-1.5 cursor-pointer">
-                    Proceed to Payment <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
             )}
 
-            {step === 3 && (
+            {(
               <div className="space-y-6 animate-fade-in">
                 <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-5">
                   <CreditCard className="h-5 w-5" />
@@ -537,18 +516,10 @@ export default function CheckoutComponent({
                   </div>
                 )}
                 
-                <div className="flex gap-3 pt-4">
-                  <button type="button" onClick={() => setStep(2)} className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-3.5 rounded-lg text-center cursor-pointer">
-                    Back
-                  </button>
-                  <button type="button" onClick={() => setStep(4)} className="flex-1 bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-xs py-3.5 rounded-lg text-center flex items-center justify-center gap-1.5 cursor-pointer">
-                    Review Order <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
             )}
 
-            {step === 4 && (
+            {(
               <div className="space-y-6 animate-fade-in">
                 <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-4">
                   <FileText className="h-5 w-5" />
@@ -558,7 +529,6 @@ export default function CheckoutComponent({
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
                   <div className="flex justify-between items-center pb-2 border-b border-slate-200">
                     <span className="text-xs text-slate-500 font-bold">Shipping Address:</span>
-                    <button onClick={() => setStep(1)} className="text-xs text-[#1B6B3A] font-bold underline">Edit</button>
                   </div>
                   <p className="text-xs font-bold text-slate-800">{formData.name}, {formData.phone}</p>
                   <p className="text-[11px] text-slate-600">{formData.address1}, {formData.city}, {formData.state} - {formData.pincode}</p>
@@ -567,25 +537,19 @@ export default function CheckoutComponent({
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
                   <div className="flex justify-between items-center pb-2 border-b border-slate-200">
                     <span className="text-xs text-slate-500 font-bold">Delivery & Payment:</span>
-                    <button onClick={() => setStep(2)} className="text-xs text-[#1B6B3A] font-bold underline">Edit</button>
                   </div>
                   <p className="text-xs font-bold text-slate-800">Method: {paymentMethod}</p>
                   <p className="text-[11px] text-slate-600">Slot: {deliverySlot}</p>
                 </div>
 
-                <div className="flex gap-3 pt-4">
-                  <button type="button" onClick={() => setStep(3)} className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-3.5 rounded-lg text-center cursor-pointer">
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handlePlaceOrderSubmit}
-                    disabled={isPlacing || cart.length === 0}
-                    className="flex-1 bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-xs py-3.5 rounded-lg text-center flex items-center justify-center gap-1.5 shadow-lg relative cursor-pointer"
-                  >
-                    {isPlacing ? 'Placing Order to Warehouse...' : 'CONFIRM AND PLACE ORDER'}
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={handlePlaceOrderSubmit}
+                  disabled={isPlacing || cart.length === 0}
+                  className="w-full bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-sm py-4 rounded-xl text-center flex items-center justify-center gap-1.5 shadow-lg relative cursor-pointer disabled:opacity-60"
+                >
+                  {isPlacing ? 'Placing Order to Warehouse…' : '✅ Confirm & Place Order'}
+                </button>
               </div>
             )}
           </div>

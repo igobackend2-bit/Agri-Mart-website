@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Shield, Lock, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import AdminComponent from './AdminComponent';
 import { Product, Category, Brand } from '../types';
-import { verifyAdminPassword, isAdminSessionActive, startAdminSession, endAdminSession } from '../siteConfig';
+import { verifyAdminPassword, isAdminSessionActive, startAdminSession, endAdminSession, siteImage } from '../siteConfig';
 
 interface AdminGatekeeperProps {
   lang: 'en' | 'ta';
@@ -48,72 +48,90 @@ export default function AdminGatekeeper(props: AdminGatekeeperProps) {
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center p-4 bg-slate-900 relative">
-      <div className="absolute inset-0 bg-[url('/images/hero_2_new.png')] bg-cover bg-center opacity-10"></div>
+    <div className="min-h-screen relative flex items-stretch bg-[#0B3D22]">
+      <img src={siteImage('login_bg', '/images/hero_1_new.png')} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/45" />
 
-      <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
-        <button
-          onClick={() => props.setCurrentPage('home')}
-          className="absolute top-4 left-4 text-emerald-100 hover:text-white transition z-20"
-          aria-label="Back to store"
-        >
-          <ArrowLeft className="h-5 w-5 text-slate-400 hover:text-slate-600" />
-        </button>
-
-        <div className="p-8">
-          <div className="w-16 h-16 bg-slate-50 rounded-2xl mx-auto flex items-center justify-center mb-6 shadow-sm border border-slate-100">
-            <Shield className="h-8 w-8 text-[#1B6B3A]" />
-          </div>
-
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-black text-slate-800 tracking-tight">IGO AgriMart</h2>
-            <p className="text-[#1B6B3A] text-sm font-bold tracking-widest uppercase mt-1">Admin Login</p>
-          </div>
-
-          <form onSubmit={handleLogin} className="space-y-5">
+      <div className="relative w-full grid lg:grid-cols-2">
+        {/* Left: brand hero */}
+        <div className="relative hidden lg:flex flex-col justify-between p-12">
+          <div className="flex items-center gap-3">
+            <div className="h-11 w-11 bg-white rounded-xl flex items-center justify-center font-black text-xl text-[#1B6B3A] shadow-lg">I</div>
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">
-                Admin Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={e => { setPassword(e.target.value); setError(false); }}
-                  placeholder="Enter admin password"
-                  autoFocus
-                  className={`w-full bg-slate-50 border ${error ? 'border-red-400 focus:ring-red-400' : 'border-slate-200 focus:ring-[#1B6B3A]'} text-slate-800 rounded-xl py-3 pl-12 pr-11 focus:outline-none focus:border-[#1B6B3A] focus:ring-1 transition font-medium`}
-                  required
-                />
-                <Lock className="absolute left-4 top-3.5 h-4 w-4 text-slate-400" />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(s => !s)}
-                  className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-              {error && <p className="text-xs text-red-500 mt-2 font-bold">Incorrect password. Please try again.</p>}
+              <p className="text-white font-black tracking-wide leading-none">IGO AGRI MART</p>
+              <p className="text-[9px] text-emerald-200 font-bold tracking-widest uppercase mt-1">Admin Control Panel</p>
             </div>
-
-            <button
-              type="submit"
-              disabled={checking}
-              className="w-full bg-[#1B6B3A] hover:bg-emerald-900 disabled:opacity-60 text-white font-black text-sm uppercase tracking-widest py-3.5 rounded-xl transition flex items-center justify-center gap-2"
-            >
-              <span>{checking ? 'Verifying...' : 'Access Dashboard'}</span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </form>
+          </div>
+          <div>
+            <h2 className="font-display text-white font-black text-5xl xl:text-6xl leading-[1.05] tracking-tight">
+              Admin<br />Control<br /><span className="text-lime-300">Panel</span>
+            </h2>
+            <p className="text-emerald-100/90 text-sm mt-5 max-w-xs leading-relaxed">
+              Manage products, orders, content and images — the full IGO Agri Mart storefront from one place.
+            </p>
+          </div>
+          <p className="text-[10px] text-emerald-200/70 font-medium flex items-center gap-1.5">
+            <Lock className="h-3 w-3" /> Authorized personnel only
+          </p>
         </div>
 
-        <div className="bg-slate-50 p-4 border-t border-slate-100 text-center">
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-1.5">
-            <Lock className="h-3 w-3" /> Secure Access
-          </p>
-          <p className="text-[9px] text-slate-400 mt-1">Authorized Personnel Only</p>
+        {/* Right: glass login form */}
+        <div className="relative p-8 sm:p-12 lg:px-16 flex flex-col justify-center min-h-screen">
+          <button
+            onClick={() => props.setCurrentPage('home')}
+            className="absolute top-6 left-6 h-9 w-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition"
+            aria-label="Back to store"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+
+          <div className="max-w-md w-full mx-auto">
+            <div className="flex items-center gap-2 mb-2">
+              <Shield className="h-7 w-7 text-lime-300" />
+              <h2 className="font-display font-black text-white text-4xl tracking-tight">Admin Sign in</h2>
+            </div>
+            <p className="text-slate-300 text-sm mb-7 font-medium">Enter your admin password to open the dashboard.</p>
+
+            <form onSubmit={handleLogin} className="space-y-5">
+              <div>
+                <label className="block text-[10px] font-black text-slate-200 uppercase tracking-widest mb-2">Admin Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={e => { setPassword(e.target.value); setError(false); }}
+                    placeholder="Enter admin password"
+                    autoFocus
+                    className={`w-full bg-white border-2 ${error ? 'border-red-400' : 'border-transparent'} text-slate-800 rounded-2xl py-3.5 pl-12 pr-11 focus:outline-none focus:border-[#EA5B2A] transition font-bold text-sm`}
+                    required
+                  />
+                  <Lock className="absolute left-4 top-4 h-4 w-4 text-slate-400" />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(s => !s)}
+                    className="absolute right-4 top-4 text-slate-400 hover:text-slate-600"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+                {error && <p className="text-xs text-red-300 mt-2 font-bold">Incorrect password. Please try again.</p>}
+              </div>
+
+              <button
+                type="submit"
+                disabled={checking}
+                className="w-full bg-[#EA5B2A] hover:bg-[#cf4a1f] disabled:opacity-60 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl transition flex items-center justify-center gap-2 shadow-lg"
+              >
+                <span>{checking ? 'Verifying...' : 'Access Dashboard'}</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </form>
+
+            <p className="flex items-center justify-center gap-1.5 mt-6 text-[10px] text-slate-300 font-bold">
+              <Lock className="h-3 w-3 text-lime-300" /> Secure access - Authorized personnel only
+            </p>
+          </div>
         </div>
       </div>
     </div>

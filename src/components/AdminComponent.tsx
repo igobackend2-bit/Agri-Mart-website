@@ -29,7 +29,8 @@ import {
   getHomeOverrides, saveHomeOverrides, HomeOverrides,
   getComplexOverrides, saveComplexOverrides, ComplexOverrides,
   getSiteImages, saveSiteImages, SiteImages,
-  getCategoryMeta, saveCategoryMeta, CategoryMeta
+  getCategoryMeta, saveCategoryMeta, CategoryMeta,
+  getCustomCategories, saveCustomCategories, CustomCategory
 } from '../siteConfig';
 
 interface AdminComponentProps {
@@ -127,6 +128,28 @@ export default function AdminComponent({ lang, products, setProducts, categories
   };
   const setCatField = (name: string, field: 'label' | 'image' | 'hidden', value: any) => {
     setCategoryMetaState({ ...categoryMeta, [name]: { ...(categoryMeta[name] || {}), [field]: value } });
+  };
+  // Add brand-new categories
+  const [customCats, setCustomCats] = useState<CustomCategory[]>(() => getCustomCategories());
+  const [newCatName, setNewCatName] = useState('');
+  const [newCatImage, setNewCatImage] = useState('');
+  const addCustomCategory = () => {
+    const name = newCatName.trim();
+    if (!name) { alert('Enter a category name.'); return; }
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    if (customCats.some((c) => c.name.toLowerCase() === name.toLowerCase()) || categories.some((c) => c.name.toLowerCase() === name.toLowerCase())) {
+      alert('That category already exists.'); return;
+    }
+    const next = [...customCats, { name, slug, image: newCatImage.trim() }];
+    setCustomCats(next);
+    saveCustomCategories(next);
+    setNewCatName(''); setNewCatImage('');
+    alert(`Category "${name}" added. It now appears on the homepage and in the product form. Add products to it from the Products tab.`);
+  };
+  const removeCustomCategory = (slug: string) => {
+    const next = customCats.filter((c) => c.slug !== slug);
+    setCustomCats(next);
+    saveCustomCategories(next);
   };
 
   // Site notification
@@ -1250,6 +1273,31 @@ export default function AdminComponent({ lang, products, setProducts, categories
               </button>
             </div>
             <p className="text-[11px] text-slate-400 mb-4">Rename a category, replace its homepage tile image (URL or /images/ path), or hide it. Leave blank to keep the default.</p>
+
+            {/* Add a brand-new category */}
+            <div className="bg-emerald-50/60 border border-emerald-200 rounded-lg p-3 mb-4">
+              <div className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest mb-2">➕ Add New Category</div>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input type="text" value={newCatName} onChange={(e) => setNewCatName(e.target.value)}
+                  placeholder="Category name (e.g. Animal Husbandry)"
+                  className="sm:w-56 bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                <input type="text" value={newCatImage} onChange={(e) => setNewCatImage(e.target.value)}
+                  placeholder="Tile image URL or /images/cat.png (optional)"
+                  className="flex-1 bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                <button onClick={addCustomCategory} className="bg-[#1B6B3A] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-emerald-950 transition shrink-0">Add Category</button>
+              </div>
+              {customCats.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {customCats.map((c) => (
+                    <span key={c.slug} className="inline-flex items-center gap-1.5 bg-white border border-emerald-200 text-[#1B6B3A] text-[11px] font-bold pl-2.5 pr-1.5 py-1 rounded-full">
+                      {c.name}
+                      <button onClick={() => removeCustomCategory(c.slug)} className="h-4 w-4 flex items-center justify-center rounded-full hover:bg-rose-100 text-rose-500" aria-label={`Remove ${c.name}`}>×</button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
               {categories.map((c) => {
                 const m = categoryMeta[c.name] || {};
