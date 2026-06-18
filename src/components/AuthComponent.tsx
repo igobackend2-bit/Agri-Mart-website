@@ -291,7 +291,7 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
 
             <div>
               <h2 className="font-display text-white font-black text-5xl xl:text-6xl leading-[1.05] tracking-tight">
-                Cultivating<br />Tomorrow's<br />Harvest<br /><span className="text-lime-400">Today.</span>
+                Your One-Stop<br />Destination for<br /><span className="text-lime-400">Farming Essentials</span>
               </h2>
               <p className="text-emerald-50/90 text-sm mt-5 max-w-sm leading-relaxed font-medium">
                 Join India's most trusted agricultural marketplace. Access certified seeds, high-yield fertilizers, precision tools, and expert farming guidance all in one place.
@@ -312,11 +312,12 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
             </div>
 
             <div className="flex items-center gap-4">
-              {[Facebook, Twitter, Instagram, Youtube].map((Ic, i) => (
-                <a key={i} href="#" onClick={(e) => e.preventDefault()} className="h-9 w-9 rounded-full bg-white/10 hover:bg-lime-300 hover:text-emerald-950 border border-white/20 flex items-center justify-center text-white transition">
-                  <Ic className="h-4 w-4" />
-                </a>
-              ))}
+              <a href="https://www.facebook.com/profile.php?id=61590856913241" target="_blank" rel="noreferrer" className="h-9 w-9 rounded-full bg-white/10 hover:bg-lime-300 hover:text-emerald-950 border border-white/20 flex items-center justify-center text-white transition">
+                <Facebook className="h-4 w-4" />
+              </a>
+              <a href="https://www.instagram.com/igoagrimart/" target="_blank" rel="noreferrer" className="h-9 w-9 rounded-full bg-white/10 hover:bg-lime-300 hover:text-emerald-950 border border-white/20 flex items-center justify-center text-white transition">
+                <Instagram className="h-4 w-4" />
+              </a>
             </div>
           </div>
         </div>
@@ -553,15 +554,6 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
               >
                 <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
                 <span>{busy ? 'Connecting...' : 'Google Account'}</span>
-              </button>
-
-              {/* Developer test login — no OTP. Remove before production. */}
-              <button
-                onClick={handleDevLogin}
-                disabled={busy}
-                className="w-full mt-3 bg-slate-900/80 hover:bg-slate-900 border border-slate-700 text-white font-black text-xs py-3 rounded-2xl transition flex items-center justify-center gap-2 disabled:opacity-60 backdrop-blur-md"
-              >
-                <span>⚡ Developer Test Login (skip OTP)</span>
               </button>
             </>
           )}
