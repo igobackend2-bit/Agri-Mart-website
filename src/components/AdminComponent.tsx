@@ -119,12 +119,34 @@ export default function AdminComponent({ lang, products, setProducts, categories
     saveSiteImages(siteImages);
     alert('Site images saved. They now apply across the website.');
   };
-  // Read a chosen image file from the computer as a base64 data URL.
+  // Read ANY image from the computer and auto-resize/compress it so it's small
+  // enough to store — no size limit on the original file.
   const readImageFile = (file: File | undefined, onLoad: (dataUrl: string) => void) => {
     if (!file) return;
-    if (file.size > 2_000_000) { alert('Please choose an image under 2 MB.'); return; }
+    if (!file.type.startsWith('image/')) { alert('Please choose an image file.'); return; }
     const reader = new FileReader();
-    reader.onloadend = () => onLoad(reader.result as string);
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 900; // longest side, px
+        let { width, height } = img;
+        if (width > MAX || height > MAX) {
+          const scale = Math.min(MAX / width, MAX / height);
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { onLoad(dataUrl); return; }
+        ctx.drawImage(img, 0, 0, width, height);
+        try { onLoad(canvas.toDataURL('image/jpeg', 0.82)); }
+        catch { onLoad(dataUrl); }
+      };
+      img.onerror = () => onLoad(dataUrl);
+      img.src = dataUrl;
+    };
     reader.readAsDataURL(file);
   };
 
@@ -521,37 +543,40 @@ export default function AdminComponent({ lang, products, setProducts, categories
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="font-extrabold text-xl text-[#1B6B3A] flex items-center gap-2">
-            <Shield className="h-5 w-5" /> IGO Agri Mart - Admin Control Panel
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">{products.length} products - {orders.length} orders total</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 bg-gradient-to-r from-[#0B3D22] to-[#1B6B3A] rounded-2xl px-5 py-4 shadow-lg shadow-emerald-900/20">
+        <div className="flex items-center gap-3.5">
+          <div className="h-11 w-11 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center shrink-0">
+            <Shield className="h-6 w-6 text-lime-300" />
+          </div>
+          <div>
+            <h2 className="font-display font-black text-white text-lg sm:text-xl leading-none tracking-tight">Admin Control Panel</h2>
+            <p className="text-[11px] text-emerald-100/80 mt-1.5 font-medium">{products.length} products &middot; {orders.length} orders total</p>
+          </div>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           {setCurrentPage && (
-            <button onClick={() => setCurrentPage('home')} className="flex items-center gap-1.5 text-xs text-[#1B6B3A] hover:bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg font-bold">
+            <button onClick={() => setCurrentPage('home')} className="flex items-center gap-1.5 text-xs text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 rounded-lg font-bold transition">
               <Store className="h-3.5 w-3.5" /> View Store
             </button>
           )}
-          <button onClick={() => { loadOrders(); loadLeads(); }} className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-[#1B6B3A] border border-slate-200 px-3 py-1.5 rounded-lg">
+          <button onClick={() => { loadOrders(); loadLeads(); }} className="flex items-center gap-1.5 text-xs text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 rounded-lg font-bold transition">
             <RefreshCw className="h-3.5 w-3.5" /> Refresh
           </button>
           {onLogout && (
-            <button onClick={onLogout} className="flex items-center gap-1.5 text-xs text-red-600 hover:bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg font-bold">
+            <button onClick={onLogout} className="flex items-center gap-1.5 text-xs text-white bg-rose-500/90 hover:bg-rose-500 px-3.5 py-2 rounded-lg font-bold transition shadow-sm">
               <LogOut className="h-3.5 w-3.5" /> Logout
             </button>
           )}
         </div>
       </div>
 
-      <div className="flex gap-1 flex-wrap bg-slate-50 border border-slate-200 rounded-xl p-1.5 mb-6">
+      <div className="flex gap-1.5 flex-wrap bg-white border border-slate-200 rounded-2xl p-2 mb-6 shadow-sm">
         {TAB_CONFIG.map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition whitespace-nowrap ${
-              activeTab === tab.id ? 'bg-white shadow text-[#1B6B3A] border border-slate-200' : 'text-slate-500 hover:text-slate-800 hover:bg-white/60'
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
+              activeTab === tab.id ? 'bg-[#1B6B3A] text-white shadow-md shadow-emerald-900/20' : 'text-slate-500 hover:text-[#1B6B3A] hover:bg-emerald-50'
             }`}>
-            <tab.icon className={`h-3.5 w-3.5 ${activeTab === tab.id ? tab.color : ''}`} />
+            <tab.icon className={`h-3.5 w-3.5 ${activeTab === tab.id ? 'text-white' : ''}`} />
             {tab.label}
             {tab.id === 'Orders' && pendingOrders > 0 && (
               <span className="bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">{pendingOrders}</span>

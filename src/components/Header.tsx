@@ -67,6 +67,7 @@ export default function Header({
   const searchRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const transcriptRef = useRef<string>('');
+  const manualStopRef = useRef<boolean>(false);
 
   useEffect(() => {
     // Listen to Firebase Auth state
@@ -229,6 +230,7 @@ export default function Header({
                   recognition.continuous = true;
                   recognition.interimResults = true;
                   transcriptRef.current = '';
+                  manualStopRef.current = false;
                   recognition.onstart = () => setListening(true);
                   recognition.onresult = (event: any) => {
                     let finalT = '';
@@ -240,23 +242,31 @@ export default function Header({
                     }
                     transcriptRef.current = finalT.trim();
                     const combined = (finalT + interim).replace(/\s+/g, ' ').trim();
-                    if (combined) handleSearchChange(combined);
+                    // Fill the search text only — don't open the suggestions dropdown while listening.
+                    if (combined) { setSearchQuery(combined); setShowSearchSuggestions(false); }
                   };
                   recognition.onend = () => {
+                    // Auto-ended on a silence pause but the user hasn't pressed Stop →
+                    // restart so it keeps listening. Only finish on a manual Stop/Cancel.
+                    if (!manualStopRef.current) {
+                      try { recognition.start(); return; } catch { /* fall through to finish */ }
+                    }
                     setListening(false);
                     recognitionRef.current = null;
                     const q = transcriptRef.current.replace(/\.$/, '').trim();
                     if (q) {
-                      handleSearchChange(q);
+                      setSearchQuery(q);
                       setShowSearchSuggestions(false);
                       setCurrentPage('category');
                     }
                   };
                   recognition.onerror = (e: any) => {
-                    setListening(false);
                     if (e?.error === 'not-allowed' || e?.error === 'service-not-allowed') {
+                      manualStopRef.current = true;
+                      setListening(false);
                       alert('Please allow microphone access in your browser to use voice search.');
                     }
+                    // 'no-speech' / 'aborted' / 'network' fall through to onend, which restarts.
                   };
                   recognitionRef.current = recognition;
                   recognition.start();
@@ -286,13 +296,13 @@ export default function Header({
                 )}
                 <div className="mt-10 flex items-center gap-3">
                   <button
-                    onClick={() => { try { recognitionRef.current?.stop(); } catch { setListening(false); } }}
+                    onClick={() => { manualStopRef.current = true; try { recognitionRef.current?.stop(); } catch { setListening(false); } }}
                     className="px-7 py-3 bg-[#1B6B3A] hover:bg-emerald-800 text-white rounded-full transition font-black tracking-wide flex items-center gap-2 shadow-lg"
                   >
                     <Search className="h-4 w-4" /> Stop &amp; Search
                   </button>
                   <button
-                    onClick={() => { transcriptRef.current = ''; try { recognitionRef.current?.abort(); } catch { /* ignore */ } setListening(false); }}
+                    onClick={() => { manualStopRef.current = true; transcriptRef.current = ''; try { recognitionRef.current?.abort(); } catch { /* ignore */ } setListening(false); }}
                     className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition font-bold tracking-wide"
                   >
                     Cancel
