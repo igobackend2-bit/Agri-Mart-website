@@ -124,8 +124,27 @@ export default function FarmLoansComponent({
       return;
     }
 
-    // Save application so it appears in Admin -> Visitor Leads
+    // 1) Save application so it appears in Admin -> Visitor Leads.
     captureLead({ source: 'Farm Loan', name, phone, subject: 'Loan pre-qualification request' });
+    // 2) Email the loan request to the farm-loans team via Web3Forms.
+    //    Set VITE_WEB3FORMS_LOAN_KEY (registered to the loan email, e.g. info@igoloans.in)
+    //    in Vercel; falls back to the shared VITE_WEB3FORMS_KEY if not set.
+    const KEY = (import.meta as any).env?.VITE_WEB3FORMS_LOAN_KEY || (import.meta as any).env?.VITE_WEB3FORMS_KEY || '';
+    if (KEY) {
+      try {
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: KEY,
+            subject: 'IGO Farm Loan request: ' + targetScheme.name,
+            from_name: 'IGO Agri Mart - Farm Loans',
+            name, phone,
+            message: `Farm loan pre-qualification request\n\nName: ${name}\nMobile: ${phone}\nScheme: ${targetScheme.name}\nLand holding: ${landAcres} acres\nAnnual agri income: Rs.${annualIncome.toLocaleString('en-IN')}`,
+          }),
+        }).catch(() => { /* lead is already saved in admin */ });
+      } catch { /* ignore */ }
+    }
     setIsSubmitted(true);
   };
 

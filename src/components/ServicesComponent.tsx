@@ -159,13 +159,15 @@ export default function ServicesComponent({
               { t: 'Precision & Smart Farming', d: 'Sensor-driven irrigation, drone spraying and data-led agronomy for higher yield at lower cost.', img: '/images/post_drip_automation.png' },
               { t: 'Cold Storage & Processing', d: 'Post-harvest cold rooms, warehouses and processing units to cut wastage and boost farm-gate value.', img: '/images/live_trial_field_main.png' },
             ].map((p) => (
-              <div key={p.t} className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#1B6B3A] hover:shadow-md transition">
+              <button key={p.t} type="button" onClick={() => setCurrentPage('contact')}
+                className="text-left bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#1B6B3A] hover:shadow-md transition cursor-pointer">
                 <img src={p.img} alt={p.t} className="w-full h-36 object-cover" onError={(e) => { (e.target as HTMLImageElement).src = '/images/agri_farm_bg.png'; }} />
                 <div className="p-5">
                   <div className="font-display font-black text-[#1B6B3A] text-base">{p.t}</div>
                   <p className="text-xs text-slate-600 mt-2 leading-relaxed">{p.d}</p>
+                  <span className="inline-block mt-3 text-xs font-black text-[#1B6B3A]">Enquire about this project →</span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
