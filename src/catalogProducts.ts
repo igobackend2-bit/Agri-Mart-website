@@ -8975,7 +8975,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 471,
     "discount": Math.round(((471 - 263) / 471) * 100),
     "stock": 38,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_qx3pbe_Agathi_Keerai.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_qx3pbe_Agathi_Keerai.jpeg"],
     "isNew": true,
     "description": "High-quality Agathi Keerai from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -8991,7 +8991,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 394,
     "discount": Math.round(((394 - 374) / 394) * 100),
     "stock": 52,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_0na0z2_Amaranthus__Red_.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_0na0z2_Amaranthus__Red_.jpeg"],
     "isNew": true,
     "description": "High-quality Amaranthus (Red) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9007,7 +9007,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 526,
     "discount": Math.round(((526 - 328) / 526) * 100),
     "stock": 50,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_z65wi1_Ammonium_Molybdate.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_z65wi1_Ammonium_Molybdate.jpg"],
     "isNew": true,
     "description": "High-quality Ammonium Molybdate from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9023,7 +9023,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 467,
     "discount": Math.round(((467 - 295) / 467) * 100),
     "stock": 80,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_7h6zty_Asparagus.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_7h6zty_Asparagus.jpg"],
     "isNew": true,
     "description": "High-quality Asparagus from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9039,7 +9039,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 594,
     "discount": Math.round(((594 - 393) / 594) * 100),
     "stock": 90,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_6ogqd4_Avocado_plant.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_6ogqd4_Avocado_plant.jpg"],
     "isNew": true,
     "description": "High-quality Avocado plant from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9055,7 +9055,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 582,
     "discount": Math.round(((582 - 381) / 582) * 100),
     "stock": 81,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_g8xp31_Basil__Genovese_.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_g8xp31_Basil__Genovese_.jpeg"],
     "isNew": true,
     "description": "High-quality Basil (Genovese) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9071,7 +9071,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 337,
     "discount": Math.round(((337 - 212) / 337) * 100),
     "stock": 24,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_472pah_Beauveria_Bassiana.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_472pah_Beauveria_Bassiana.jpeg"],
     "isNew": true,
     "description": "High-quality Beauveria Bassiana from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9087,7 +9087,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 558,
     "discount": Math.round(((558 - 495) / 558) * 100),
     "stock": 33,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_eqbvsa_Bermuda_Grass.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_eqbvsa_Bermuda_Grass.jpg"],
     "isNew": true,
     "description": "High-quality Bermuda Grass from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9103,7 +9103,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 548,
     "discount": Math.round(((548 - 351) / 548) * 100),
     "stock": 79,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_yw7rud_Beta_Vine.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_yw7rud_Beta_Vine.jpeg"],
     "isNew": true,
     "description": "High-quality Beta Vine from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9119,7 +9119,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 468,
     "discount": Math.round(((468 - 392) / 468) * 100),
     "stock": 97,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_bmd8mm_Biozyme.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_bmd8mm_Biozyme.jpeg"],
     "isNew": true,
     "description": "High-quality Biozyme from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9135,7 +9135,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 650,
     "discount": Math.round(((650 - 525) / 650) * 100),
     "stock": 11,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_o3x5pn_Blueberry.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_o3x5pn_Blueberry.jpg"],
     "isNew": true,
     "description": "High-quality Blueberry from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9151,7 +9151,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 257,
     "discount": Math.round(((257 - 179) / 257) * 100),
     "stock": 51,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_s4awd3_Bone_Meal_Bone_Powder.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_s4awd3_Bone_Meal_Bone_Powder.jpg"],
     "isNew": true,
     "description": "High-quality Bone Meal Bone Powder from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9167,7 +9167,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 281,
     "discount": Math.round(((281 - 210) / 281) * 100),
     "stock": 32,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_1enbe2_BOPP_Transit_Sleeves.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_1enbe2_BOPP_Transit_Sleeves.jpg"],
     "isNew": true,
     "description": "High-quality BOPP Transit Sleeves from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9183,7 +9183,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 419,
     "discount": Math.round(((419 - 278) / 419) * 100),
     "stock": 89,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_36sb9s_Broccoli_seeds.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_36sb9s_Broccoli_seeds.jpg"],
     "isNew": true,
     "description": "High-quality Broccoli seeds from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9199,7 +9199,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 510,
     "discount": Math.round(((510 - 473) / 510) * 100),
     "stock": 47,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_7iwagd_Brussels_Sprouts.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_7iwagd_Brussels_Sprouts.jpg"],
     "isNew": true,
     "description": "High-quality Brussels Sprouts from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9215,7 +9215,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 163,
     "discount": Math.round(((163 - 139) / 163) * 100),
     "stock": 55,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_jdipj8_Buffalo_Grass.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_jdipj8_Buffalo_Grass.jpeg"],
     "isNew": true,
     "description": "High-quality Buffalo Grass from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9231,7 +9231,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 231,
     "discount": Math.round(((231 - 52) / 231) * 100),
     "stock": 39,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_maf0t0_Carrots__Hybrid_.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_maf0t0_Carrots__Hybrid_.jpeg"],
     "isNew": true,
     "description": "High-quality Carrots (Hybrid) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9247,7 +9247,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 337,
     "discount": Math.round(((337 - 152) / 337) * 100),
     "stock": 53,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_dj9mtu_Castor_Cake.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_dj9mtu_Castor_Cake.jpeg"],
     "isNew": true,
     "description": "High-quality Castor Cake from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9263,7 +9263,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 248,
     "discount": Math.round(((248 - 57) / 248) * 100),
     "stock": 21,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_nmgpki_Celery.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_nmgpki_Celery.jpeg"],
     "isNew": true,
     "description": "High-quality Celery from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9279,7 +9279,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 709,
     "discount": Math.round(((709 - 508) / 709) * 100),
     "stock": 43,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_00nh6h_Cocopeat_Low_EC_Washed__6_kg_block.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_00nh6h_Cocopeat_Low_EC_Washed__6_kg_block.jpg"],
     "isNew": true,
     "description": "High-quality Cocopeat Low EC Washed, 6 kg block from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9295,7 +9295,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 641,
     "discount": Math.round(((641 - 500) / 641) * 100),
     "stock": 15,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_teq3e0_Cowpea__Lobia_.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_teq3e0_Cowpea__Lobia_.jpg"],
     "isNew": true,
     "description": "High-quality Cowpea (Lobia) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9311,7 +9311,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 475,
     "discount": Math.round(((475 - 338) / 475) * 100),
     "stock": 94,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_gset9d_Curry_Leaves_plant.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_gset9d_Curry_Leaves_plant.jpg"],
     "isNew": true,
     "description": "High-quality Curry Leaves plant from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9327,7 +9327,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 457,
     "discount": Math.round(((457 - 255) / 457) * 100),
     "stock": 50,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_5hlepp_Dragon_Fruit_plant.webp",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_5hlepp_Dragon_Fruit_plant.webp"],
     "isNew": true,
     "description": "High-quality Dragon Fruit plant from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9343,7 +9343,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 133,
     "discount": Math.round(((133 - 112) / 133) * 100),
     "stock": 42,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_cs48io_Epsom_Salt.webp",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_cs48io_Epsom_Salt.webp"],
     "isNew": true,
     "description": "High-quality Epsom Salt from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9359,7 +9359,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 184,
     "discount": Math.round(((184 - 145) / 184) * 100),
     "stock": 62,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_8tqzjs_Fish_Amino_Acid.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_8tqzjs_Fish_Amino_Acid.jpeg"],
     "isNew": true,
     "description": "High-quality Fish Amino Acid from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9375,7 +9375,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 506,
     "discount": Math.round(((506 - 479) / 506) * 100),
     "stock": 61,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_6z561d_French_Beans.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_6z561d_French_Beans.jpg"],
     "isNew": true,
     "description": "High-quality French Beans from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9391,7 +9391,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 663,
     "discount": Math.round(((663 - 517) / 663) * 100),
     "stock": 88,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_jhq37d_Jamun_Fruit_plant.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_jhq37d_Jamun_Fruit_plant.jpg"],
     "isNew": true,
     "description": "High-quality Jamun Fruit plant from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9407,7 +9407,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 588,
     "discount": Math.round(((588 - 542) / 588) * 100),
     "stock": 16,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_q680u5_Jeevamrut_Amrut_Pani.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_q680u5_Jeevamrut_Amrut_Pani.jpeg"],
     "isNew": true,
     "description": "High-quality Jeevamrut Amrut Pani from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9423,7 +9423,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 412,
     "discount": Math.round(((412 - 229) / 412) * 100),
     "stock": 47,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ej7mge_Kale.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ej7mge_Kale.jpeg"],
     "isNew": true,
     "description": "High-quality Kale from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9439,7 +9439,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 580,
     "discount": Math.round(((580 - 498) / 580) * 100),
     "stock": 43,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_41x2ep_Kanthari.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_41x2ep_Kanthari.jpg"],
     "isNew": true,
     "description": "High-quality Kanthari from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9455,7 +9455,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 551,
     "discount": Math.round(((551 - 418) / 551) * 100),
     "stock": 74,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_2x4ra9_Karanja_Oil.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_2x4ra9_Karanja_Oil.jpeg"],
     "isNew": true,
     "description": "High-quality Karanja Oil from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9471,7 +9471,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 215,
     "discount": Math.round(((215 - 95) / 215) * 100),
     "stock": 35,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_83ce9x_Lablab_Field_Beans.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_83ce9x_Lablab_Field_Beans.jpeg"],
     "isNew": true,
     "description": "High-quality Lablab Field Beans from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9487,7 +9487,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 706,
     "discount": Math.round(((706 - 530) / 706) * 100),
     "stock": 104,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_otagmx_Laser-Cut_Wooden_Tags.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_otagmx_Laser-Cut_Wooden_Tags.jpg"],
     "isNew": true,
     "description": "High-quality Laser-Cut Wooden Tags from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9503,7 +9503,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 146,
     "discount": Math.round(((146 - 105) / 146) * 100),
     "stock": 18,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_g4r7y7_Lettuce.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_g4r7y7_Lettuce.jpeg"],
     "isNew": true,
     "description": "High-quality Lettuce from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9519,7 +9519,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 590,
     "discount": Math.round(((590 - 446) / 590) * 100),
     "stock": 78,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_u9ijtx_Message_Card_Holders.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_u9ijtx_Message_Card_Holders.jpg"],
     "isNew": true,
     "description": "High-quality Message Card Holders from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9535,7 +9535,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 238,
     "discount": Math.round(((238 - 115) / 238) * 100),
     "stock": 30,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_grjsp0_Metarhizium_Anisopliae_powder.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_grjsp0_Metarhizium_Anisopliae_powder.jpeg"],
     "isNew": true,
     "description": "High-quality Metarhizium Anisopliae powder from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9551,7 +9551,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 687,
     "discount": Math.round(((687 - 524) / 687) * 100),
     "stock": 105,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_qloja2_Metarhizium_Anisopliae.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_qloja2_Metarhizium_Anisopliae.jpeg"],
     "isNew": true,
     "description": "High-quality Metarhizium Anisopliae from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9567,7 +9567,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 473,
     "discount": Math.round(((473 - 254) / 473) * 100),
     "stock": 33,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_3y7wye_Mexican_Carpet.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_3y7wye_Mexican_Carpet.jpg"],
     "isNew": true,
     "description": "High-quality Mexican Carpet from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9583,7 +9583,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 118,
     "discount": Math.round(((118 - 70) / 118) * 100),
     "stock": 58,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_4jiztj_Mulberry_plant.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_4jiztj_Mulberry_plant.jpg"],
     "isNew": true,
     "description": "High-quality Mulberry plant from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9599,7 +9599,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 480,
     "discount": Math.round(((480 - 325) / 480) * 100),
     "stock": 27,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_hj3wqj_Murungai.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_hj3wqj_Murungai.jpeg"],
     "isNew": true,
     "description": "High-quality Murungai from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9615,7 +9615,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 369,
     "discount": Math.round(((369 - 278) / 369) * 100),
     "stock": 42,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_tz7fde_Muskmelon.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_tz7fde_Muskmelon.jpeg"],
     "isNew": true,
     "description": "High-quality Muskmelon from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9631,7 +9631,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 564,
     "discount": Math.round(((564 - 451) / 564) * 100),
     "stock": 25,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_hijmdl_Mustard_Cake.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_hijmdl_Mustard_Cake.jpeg"],
     "isNew": true,
     "description": "High-quality Mustard Cake from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9647,7 +9647,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 386,
     "discount": Math.round(((386 - 223) / 386) * 100),
     "stock": 47,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_1ceqmq_Nativo__250g_.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_1ceqmq_Nativo__250g_.jpg"],
     "isNew": true,
     "description": "High-quality Nativo (250g) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9663,7 +9663,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 426,
     "discount": Math.round(((426 - 397) / 426) * 100),
     "stock": 40,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_gjf8vi_Neem_Cake_Powder.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_gjf8vi_Neem_Cake_Powder.jpg"],
     "isNew": true,
     "description": "High-quality Neem Cake Powder from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9679,7 +9679,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 481,
     "discount": Math.round(((481 - 278) / 481) * 100),
     "stock": 26,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_kcygjq_Neem_Oil.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_kcygjq_Neem_Oil.jpg"],
     "isNew": true,
     "description": "High-quality Neem Oil from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9695,7 +9695,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 294,
     "discount": Math.round(((294 - 104) / 294) * 100),
     "stock": 16,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_s4a4a8_Okra_Lady_s_Finger.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_s4a4a8_Okra_Lady_s_Finger.jpeg"],
     "isNew": true,
     "description": "High-quality Okra Lady's Finger from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9711,7 +9711,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 172,
     "discount": Math.round(((172 - 121) / 172) * 100),
     "stock": 59,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_5s139c_Orange_plant.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_5s139c_Orange_plant.jpg"],
     "isNew": true,
     "description": "High-quality Orange plant from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9727,7 +9727,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 650,
     "discount": Math.round(((650 - 447) / 650) * 100),
     "stock": 99,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_70d664_Oregano.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_70d664_Oregano.jpeg"],
     "isNew": true,
     "description": "High-quality Oregano from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9743,7 +9743,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 613,
     "discount": Math.round(((613 - 405) / 613) * 100),
     "stock": 51,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_9y3xbc_Paecilomyces_Lilacinus.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_9y3xbc_Paecilomyces_Lilacinus.jpeg"],
     "isNew": true,
     "description": "High-quality Paecilomyces Lilacinus from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9759,7 +9759,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 462,
     "discount": Math.round(((462 - 303) / 462) * 100),
     "stock": 65,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_p1zl0n_Pak_Choi.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_p1zl0n_Pak_Choi.jpg"],
     "isNew": true,
     "description": "High-quality Pak Choi from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9775,7 +9775,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 712,
     "discount": Math.round(((712 - 498) / 712) * 100),
     "stock": 16,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_vef1jf_Pakchoi.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_vef1jf_Pakchoi.jpeg"],
     "isNew": true,
     "description": "High-quality Pakchoi from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9791,7 +9791,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 722,
     "discount": Math.round(((722 - 525) / 722) * 100),
     "stock": 67,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_3g8xlq_Palak_-_Spinach.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_3g8xlq_Palak_-_Spinach.jpeg"],
     "isNew": true,
     "description": "High-quality Palak - Spinach from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9807,7 +9807,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 187,
     "discount": Math.round(((187 - 134) / 187) * 100),
     "stock": 99,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_re00sy_Papaya__Hybrid_.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_re00sy_Papaya__Hybrid_.jpeg"],
     "isNew": true,
     "description": "High-quality Papaya (Hybrid) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9823,7 +9823,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 312,
     "discount": Math.round(((312 - 246) / 312) * 100),
     "stock": 34,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_m0o5xo_Parsley.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_m0o5xo_Parsley.jpg"],
     "isNew": true,
     "description": "High-quality Parsley from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9839,7 +9839,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 303,
     "discount": Math.round(((303 - 148) / 303) * 100),
     "stock": 100,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ybrqcm_Peas_Microgreen.webp",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ybrqcm_Peas_Microgreen.webp"],
     "isNew": true,
     "description": "High-quality Peas Microgreen from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9855,7 +9855,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 455,
     "discount": Math.round(((455 - 421) / 455) * 100),
     "stock": 55,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_exm89x_Perlite_Horticultural_grade__3__6_mm.webp",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_exm89x_Perlite_Horticultural_grade__3__6_mm.webp"],
     "isNew": true,
     "description": "High-quality Perlite Horticultural grade, 3, 6 mm from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9871,7 +9871,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 557,
     "discount": Math.round(((557 - 348) / 557) * 100),
     "stock": 100,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_3y3zy6_Pruning_Shears.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_3y3zy6_Pruning_Shears.jpg"],
     "isNew": true,
     "description": "High-quality Pruning Shears from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9887,7 +9887,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 441,
     "discount": Math.round(((441 - 388) / 441) * 100),
     "stock": 48,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_f8to4h_Pseudomonas_Fluorescens.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_f8to4h_Pseudomonas_Fluorescens.jpeg"],
     "isNew": true,
     "description": "High-quality Pseudomonas Fluorescens from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9903,7 +9903,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 747,
     "discount": Math.round(((747 - 541) / 747) * 100),
     "stock": 92,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_sp1f4l_Radish__White-Red_.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_sp1f4l_Radish__White-Red_.jpeg"],
     "isNew": true,
     "description": "High-quality Radish (White-Red) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9919,7 +9919,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 183,
     "discount": Math.round(((183 - 63) / 183) * 100),
     "stock": 73,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_v5ywzo_Radish_Purple_seeds.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_v5ywzo_Radish_Purple_seeds.jpeg"],
     "isNew": true,
     "description": "High-quality Radish Purple seeds from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9935,7 +9935,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 628,
     "discount": Math.round(((628 - 422) / 628) * 100),
     "stock": 29,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_0vrdnk_Red_Amaranthus.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_0vrdnk_Red_Amaranthus.jpeg"],
     "isNew": true,
     "description": "High-quality Red Amaranthus from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9951,7 +9951,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 315,
     "discount": Math.round(((315 - 98) / 315) * 100),
     "stock": 100,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_gny73j_Red_Soil.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_gny73j_Red_Soil.jpg"],
     "isNew": true,
     "description": "High-quality Red Soil from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9967,7 +9967,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 208,
     "discount": Math.round(((208 - 141) / 208) * 100),
     "stock": 77,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_9dz0w7_Rexoline_Zinc_12_.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_9dz0w7_Rexoline_Zinc_12_.jpeg"],
     "isNew": true,
     "description": "High-quality Rexoline Zinc 12% from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9983,7 +9983,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 494,
     "discount": Math.round(((494 - 449) / 494) * 100),
     "stock": 42,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_z75zsp_Ribbons___Twines.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_z75zsp_Ribbons___Twines.jpg"],
     "isNew": true,
     "description": "High-quality Ribbons & Twines from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -9999,7 +9999,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 187,
     "discount": Math.round(((187 - 160) / 187) * 100),
     "stock": 85,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_x0l9rr_Small_Onion__Shallots_.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_x0l9rr_Small_Onion__Shallots_.jpeg"],
     "isNew": true,
     "description": "High-quality Small Onion (Shallots) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10015,7 +10015,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 194,
     "discount": Math.round(((194 - 147) / 194) * 100),
     "stock": 100,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_8maocy_Spinach__Amaranthus_.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_8maocy_Spinach__Amaranthus_.jpeg"],
     "isNew": true,
     "description": "High-quality Spinach (Amaranthus) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10031,7 +10031,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 284,
     "discount": Math.round(((284 - 66) / 284) * 100),
     "stock": 82,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ywxfbt_Spinach_Seeds.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ywxfbt_Spinach_Seeds.jpeg"],
     "isNew": true,
     "description": "High-quality Spinach Seeds from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10047,7 +10047,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 391,
     "discount": Math.round(((391 - 362) / 391) * 100),
     "stock": 32,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_1z57ga_St._Augustine.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_1z57ga_St._Augustine.jpg"],
     "isNew": true,
     "description": "High-quality St. Augustine from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10063,7 +10063,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 281,
     "discount": Math.round(((281 - 261) / 281) * 100),
     "stock": 10,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_tz97yd_Steamed_Bone_Meal.webp",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_tz97yd_Steamed_Bone_Meal.webp"],
     "isNew": true,
     "description": "High-quality Steamed Bone Meal from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10079,7 +10079,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 510,
     "discount": Math.round(((510 - 381) / 510) * 100),
     "stock": 38,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ubn9rj_Sunflower__seeds.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ubn9rj_Sunflower__seeds.jpeg"],
     "isNew": true,
     "description": "High-quality Sunflower  seeds from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10095,7 +10095,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 250,
     "discount": Math.round(((250 - 77) / 250) * 100),
     "stock": 89,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_4n6yro_Swiss_Chard.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_4n6yro_Swiss_Chard.jpg"],
     "isNew": true,
     "description": "High-quality Swiss Chard from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10111,7 +10111,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 327,
     "discount": Math.round(((327 - 249) / 327) * 100),
     "stock": 22,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ofylzr_Thakkali.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ofylzr_Thakkali.jpeg"],
     "isNew": true,
     "description": "High-quality Thakkali from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10127,7 +10127,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 236,
     "discount": Math.round(((236 - 118) / 236) * 100),
     "stock": 18,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_2sdymu_Trichoderma_Viride.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_2sdymu_Trichoderma_Viride.jpeg"],
     "isNew": true,
     "description": "High-quality Trichoderma Viride from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10143,7 +10143,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 372,
     "discount": Math.round(((372 - 324) / 372) * 100),
     "stock": 10,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_3lfha3_Velvet_Finish_Sleeves_Flocked_PVC_or_soft-touch_paper..jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_3lfha3_Velvet_Finish_Sleeves_Flocked_PVC_or_soft-touch_paper..jpg"],
     "isNew": true,
     "description": "High-quality Velvet Finish Sleeves Flocked PVC or soft-touch paper. from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10159,7 +10159,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 484,
     "discount": Math.round(((484 - 401) / 484) * 100),
     "stock": 24,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_b1bd91_Velvet_Finish_Sleeves.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_b1bd91_Velvet_Finish_Sleeves.jpg"],
     "isNew": true,
     "description": "High-quality Velvet Finish Sleeves from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10175,7 +10175,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 538,
     "discount": Math.round(((538 - 503) / 538) * 100),
     "stock": 48,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_cikbtt_Vermicompost.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_cikbtt_Vermicompost.jpg"],
     "isNew": true,
     "description": "High-quality Vermicompost from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10191,7 +10191,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 283,
     "discount": Math.round(((283 - 113) / 283) * 100),
     "stock": 60,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_mech8p_Verticillium_Lecanii.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_mech8p_Verticillium_Lecanii.jpeg"],
     "isNew": true,
     "description": "High-quality Verticillium Lecanii from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10207,7 +10207,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 354,
     "discount": Math.round(((354 - 171) / 354) * 100),
     "stock": 44,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_8li3ib_Yard_Long_Beans.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_8li3ib_Yard_Long_Beans.jpeg"],
     "isNew": true,
     "description": "High-quality Yard Long Beans from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10223,7 +10223,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 254,
     "discount": Math.round(((254 - 71) / 254) * 100),
     "stock": 106,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_zdsf0u_Zoysia_Grass.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_zdsf0u_Zoysia_Grass.jpg"],
     "isNew": true,
     "description": "High-quality Zoysia Grass from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -10239,7 +10239,7 @@ export const CATALOG_PRODUCTS: Product[] = [
     "mrp": 419,
     "discount": Math.round(((419 - 274) / 419) * 100),
     "stock": 97,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_9n5hbi__Wheat_Grass_seeds.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_9n5hbi__Wheat_Grass_seeds.jpg"],
     "isNew": true,
     "description": "High-quality `Wheat Grass seeds from IGO Agri Mart. Perfect for your agricultural needs."
   }

@@ -5037,7 +5037,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 499,
     "discount": Math.round(((499 - 470) / 499) * 100),
     "stock": 47,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_bgwn0a_16mm_L_joiner.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_bgwn0a_16mm_L_joiner.jpeg"],
     "isNew": true,
     "description": "High-quality 16mm L joiner from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5053,7 +5053,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 652,
     "discount": Math.round(((652 - 438) / 652) * 100),
     "stock": 62,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_cf31yh_16mm_T_joint.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_cf31yh_16mm_T_joint.jpg"],
     "isNew": true,
     "description": "High-quality 16mm T joint from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5069,7 +5069,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 280,
     "discount": Math.round(((280 - 87) / 280) * 100),
     "stock": 44,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_j1bvlg_Bell_Pepper__Capsicum_.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_j1bvlg_Bell_Pepper__Capsicum_.jpeg"],
     "isNew": true,
     "description": "High-quality Bell Pepper (Capsicum) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5085,7 +5085,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 524,
     "discount": Math.round(((524 - 376) / 524) * 100),
     "stock": 63,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_p2d86w_Biodegradable_Bags.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_p2d86w_Biodegradable_Bags.jpg"],
     "isNew": true,
     "description": "High-quality Biodegradable Bags from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5101,7 +5101,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 350,
     "discount": Math.round(((350 - 322) / 350) * 100),
     "stock": 100,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_tw8w3z_Cabbage_Seeds.webp",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_tw8w3z_Cabbage_Seeds.webp"],
     "isNew": true,
     "description": "High-quality Cabbage_Seeds from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5117,7 +5117,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 498,
     "discount": Math.round(((498 - 316) / 498) * 100),
     "stock": 104,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_xadujo_Cherry_Tomato.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_xadujo_Cherry_Tomato.jpg"],
     "isNew": true,
     "description": "High-quality Cherry Tomato from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5133,7 +5133,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 304,
     "discount": Math.round(((304 - 280) / 304) * 100),
     "stock": 91,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_8iumu2_Corrugated_Transit_Boxes.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_8iumu2_Corrugated_Transit_Boxes.jpg"],
     "isNew": true,
     "description": "High-quality Corrugated Transit Boxes from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5149,7 +5149,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 473,
     "discount": Math.round(((473 - 332) / 473) * 100),
     "stock": 18,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_qd7apw_Drip_tube_hold_stake_clip.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_qd7apw_Drip_tube_hold_stake_clip.jpg"],
     "isNew": true,
     "description": "High-quality Drip tube hold stake clip from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5165,7 +5165,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 218,
     "discount": Math.round(((218 - 154) / 218) * 100),
     "stock": 26,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_w21pse_End_cap.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_w21pse_End_cap.jpg"],
     "isNew": true,
     "description": "High-quality End cap from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5181,7 +5181,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 645,
     "discount": Math.round(((645 - 514) / 645) * 100),
     "stock": 101,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_0cl9pr_Garden_Scissors.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_0cl9pr_Garden_Scissors.jpg"],
     "isNew": true,
     "description": "High-quality Garden Scissors from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5197,7 +5197,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 244,
     "discount": Math.round(((244 - 100) / 244) * 100),
     "stock": 39,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_jazzvw_Hand_Trowel.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_jazzvw_Hand_Trowel.jpg"],
     "isNew": true,
     "description": "High-quality Hand Trowel from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5213,7 +5213,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 374,
     "discount": Math.round(((374 - 194) / 374) * 100),
     "stock": 99,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_vic522_Jute_Canvas_Carry_Bags.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_vic522_Jute_Canvas_Carry_Bags.jpg"],
     "isNew": true,
     "description": "High-quality Jute Canvas Carry Bags from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5229,7 +5229,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 624,
     "discount": Math.round(((624 - 417) / 624) * 100),
     "stock": 80,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_c2cssl_LED_Grow_Light__18W_.webp",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_c2cssl_LED_Grow_Light__18W_.webp"],
     "isNew": true,
     "description": "High-quality LED Grow Light (18W) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5245,7 +5245,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 634,
     "discount": Math.round(((634 - 513) / 634) * 100),
     "stock": 35,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_cclkk1_Measuring_Meters.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_cclkk1_Measuring_Meters.jpg"],
     "isNew": true,
     "description": "High-quality Measuring Meters from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5261,7 +5261,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 497,
     "discount": Math.round(((497 - 445) / 497) * 100),
     "stock": 100,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_xc4gai_MS_Pipe.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_xc4gai_MS_Pipe.jpg"],
     "isNew": true,
     "description": "High-quality MS Pipe from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5277,7 +5277,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 590,
     "discount": Math.round(((590 - 383) / 590) * 100),
     "stock": 84,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_lucy1f_Potting_Mix.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_lucy1f_Potting_Mix.jpg"],
     "isNew": true,
     "description": "High-quality Potting Mix from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5293,7 +5293,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 394,
     "discount": Math.round(((394 - 259) / 394) * 100),
     "stock": 67,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ch8b27_Premium_Gift_Boxes.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_ch8b27_Premium_Gift_Boxes.jpg"],
     "isNew": true,
     "description": "High-quality Premium Gift Boxes from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5309,7 +5309,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 685,
     "discount": Math.round(((685 - 499) / 685) * 100),
     "stock": 105,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_i831en_Safety_Gear.webp",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_i831en_Safety_Gear.webp"],
     "isNew": true,
     "description": "High-quality Safety Gear from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5325,7 +5325,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 149,
     "discount": Math.round(((149 - 78) / 149) * 100),
     "stock": 102,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_xj5ca2_Seedling_Wraps.jpeg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_xj5ca2_Seedling_Wraps.jpeg"],
     "isNew": true,
     "description": "High-quality Seedling Wraps from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5341,7 +5341,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 192,
     "discount": Math.round(((192 - 143) / 192) * 100),
     "stock": 17,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_2my4xq_Shade_Net_90___3m_.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_2my4xq_Shade_Net_90___3m_.jpg"],
     "isNew": true,
     "description": "High-quality Shade Net 90% (3m) from IGO Agri Mart. Perfect for your agricultural needs."
   },
@@ -5357,7 +5357,7 @@ export const NURSERY_TOOLS_PRODUCTS: Product[] = [
     "mrp": 595,
     "discount": Math.round(((595 - 516) / 595) * 100),
     "stock": 86,
-    "image": "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_4bzbtr_Stretch_Cling_Film.jpg",
+    "images": ["https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/new_4bzbtr_Stretch_Cling_Film.jpg"],
     "isNew": true,
     "description": "High-quality Stretch Cling Film from IGO Agri Mart. Perfect for your agricultural needs."
   }
