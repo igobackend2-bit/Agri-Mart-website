@@ -239,16 +239,19 @@ export default function AdminComponent({ lang, products, setProducts, categories
 
   useEffect(() => { loadOrders(); loadLeads(); }, []);
 
-  // Audible stock alert (once per admin session): urgent siren for OUT of stock,
-  // gentle warning for LOW stock.
+  // Audible stock alert when the admin opens the Dashboard or Inventory tab.
+  // Tying it to a tab click means there is a user gesture, so the browser allows
+  // the sound to play (audio on page-load is blocked by autoplay policy). Urgent
+  // siren for OUT of stock + gentle warning for LOW stock — both play when both
+  // conditions exist.
   useEffect(() => {
+    if (activeTab !== 'Dashboard' && activeTab !== 'Inventory') return;
     const out = products.filter(p => p.stock === 0).length;
     const low = products.filter(p => p.stock > 0 && p.stock < 20).length;
-    if ((out > 0 || low > 0) && !sessionStorage.getItem('igo_admin_stock_alerted')) {
-      sessionStorage.setItem('igo_admin_stock_alerted', '1');
-      if (out > 0) playOutOfStockSound(); else playLowStockSound();
-    }
-  }, [products]);
+    if (out > 0) playOutOfStockSound();
+    if (low > 0) setTimeout(() => playLowStockSound(), out > 0 ? 1100 : 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
   useEffect(() => {
     if (activeTab === 'Customers') loadCustomers();
     if (activeTab === 'Reports') loadOrders();
@@ -726,7 +729,11 @@ export default function AdminComponent({ lang, products, setProducts, categories
                 acc[k] = (acc[k] || 0) + 1;
                 return acc;
               }, {} as Record<string, number>);
-              const chips = [['All', orders.length] as [string, number], ...Object.entries(counts)];
+              // Always show every slot option (even with 0 orders) so the admin
+              // sees the full morning / midday / evening / standard breakdown.
+              const ALL_SLOTS = ['Tomorrow, 6–9 AM', 'Tomorrow, 9 AM–12 PM', 'Tomorrow, 4–7 PM', 'Standard (2–4 days)'];
+              const slotKeys = [...ALL_SLOTS, ...Object.keys(counts).filter(k => !ALL_SLOTS.includes(k))];
+              const chips = [['All', orders.length] as [string, number], ...slotKeys.map(k => [k, counts[k] || 0] as [string, number])];
               return chips.map(([slot, count]) => {
                 const active = slotFilter === slot;
                 return (

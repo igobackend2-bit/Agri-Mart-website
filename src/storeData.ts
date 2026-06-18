@@ -240,6 +240,24 @@ export function redeemWalletCoins(max: number): number {
 
 // ── Sounds (WebAudio, no asset files needed) ─────────────────────────────────
 // Louder default volume + a punchier waveform so the sounds carry across a room.
+//
+// Browsers block audio until the user interacts with the page. We keep ONE shared
+// AudioContext and unlock it on the first pointer/key/touch event, so later
+// programmatic sounds (order-placed chime, admin stock alerts) are allowed to play.
+let _sharedCtx: AudioContext | null = null;
+function getAudioCtx(): AudioContext | null {
+  try {
+    if (!_sharedCtx) _sharedCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    if (_sharedCtx.state === 'suspended') { try { _sharedCtx.resume(); } catch { /* ignore */ } }
+    return _sharedCtx;
+  } catch { return null; }
+}
+if (typeof window !== 'undefined') {
+  const unlock = () => { getAudioCtx(); };
+  ['pointerdown', 'keydown', 'touchstart', 'click'].forEach((ev) =>
+    window.addEventListener(ev, unlock, { passive: true })
+  );
+}
 function tone(ctx: AudioContext, freq: number, start: number, dur: number, vol = 0.6) {
   const o = ctx.createOscillator();
   const g = ctx.createGain();
@@ -254,8 +272,8 @@ function tone(ctx: AudioContext, freq: number, start: number, dur: number, vol =
 /** Happy rising chime (LOUD) — played when the customer places an order. */
 export function playOrderSuccessSound(): void {
   try {
-    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    if (ctx.state === 'suspended') { try { ctx.resume(); } catch { /* ignore */ } }
+    const ctx = getAudioCtx();
+    if (!ctx) return;
     tone(ctx, 523.25, 0, 0.22, 0.7);     // C5
     tone(ctx, 659.25, 0.16, 0.22, 0.7);  // E5
     tone(ctx, 783.99, 0.32, 0.32, 0.75); // G5
@@ -266,8 +284,8 @@ export function playOrderSuccessSound(): void {
 /** Generic admin alert (kept for compatibility) — LOUD triple-beep. */
 export function playAdminAlertSound(): void {
   try {
-    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    if (ctx.state === 'suspended') { try { ctx.resume(); } catch { /* ignore */ } }
+    const ctx = getAudioCtx();
+    if (!ctx) return;
     tone(ctx, 988, 0, 0.16, 0.8);
     tone(ctx, 988, 0.22, 0.16, 0.8);
     tone(ctx, 988, 0.44, 0.22, 0.8);
@@ -277,8 +295,8 @@ export function playAdminAlertSound(): void {
 /** LOW STOCK — gentle warning: two soft mid-tone beeps. */
 export function playLowStockSound(): void {
   try {
-    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    if (ctx.state === 'suspended') { try { ctx.resume(); } catch { /* ignore */ } }
+    const ctx = getAudioCtx();
+    if (!ctx) return;
     tone(ctx, 587.33, 0, 0.2, 0.6);   // D5
     tone(ctx, 587.33, 0.26, 0.22, 0.6);
   } catch { /* audio unavailable */ }
@@ -287,8 +305,8 @@ export function playLowStockSound(): void {
 /** OUT OF STOCK — urgent siren: loud alternating high/low, four sweeps. */
 export function playOutOfStockSound(): void {
   try {
-    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    if (ctx.state === 'suspended') { try { ctx.resume(); } catch { /* ignore */ } }
+    const ctx = getAudioCtx();
+    if (!ctx) return;
     tone(ctx, 1108.73, 0, 0.16, 0.9);    // high
     tone(ctx, 740, 0.18, 0.16, 0.9);     // low
     tone(ctx, 1108.73, 0.36, 0.16, 0.9); // high

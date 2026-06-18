@@ -45,6 +45,11 @@ export default function ProductDetailComponent({
 }: ProductDetailProps) {
   const t: LanguageDict = translations[lang];
 
+  // Always reflect the LATEST stock (admin overrides / order decrements) by reading
+  // the live product from the catalog rather than the possibly-stale `product` prop.
+  const liveProduct = allProducts.find((p) => p.id === product.id) || product;
+  const stock = liveProduct.stock;
+
   // Image selectors
   const [activeImage, setActiveImage] = useState<string>(product.images?.[0] || '/catalog/nursery-essentials/Pots.png');
   const [quantity, setQuantity] = useState<number>(1);
@@ -365,7 +370,7 @@ export default function ProductDetailComponent({
             </div>
 
             {/* Stock urgency */}
-            {product.stock === 0 ? (
+            {stock === 0 ? (
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-xs font-black text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 inline-block">Out of Stock — restocking soon</p>
                 {notified ? (
@@ -381,8 +386,8 @@ export default function ProductDetailComponent({
                   </button>
                 )}
               </div>
-            ) : product.stock < 20 ? (
-              <p className="text-xs font-black text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 inline-block">🔥 Low stock — only {product.stock} left, order soon!</p>
+            ) : stock < 20 ? (
+              <p className="text-xs font-black text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 inline-block">🔥 Low stock — only {stock} left, order soon!</p>
             ) : null}
 
             {/* Crop suitability chips (from product.crops) */}
@@ -439,15 +444,17 @@ export default function ProductDetailComponent({
                 </button>
               </div>
 
-              {/* Add To Cart CTA Button */}
+              {/* Add To Cart CTA Button — disabled when out of stock */}
               <button
-                onClick={() => {
-                  addToCart(cartProduct, quantity);
-                }}
-                className="bg-[#1B6B3A] hover:bg-emerald-900 text-white font-black text-sm px-6 py-0 h-12 rounded-xl flex items-center justify-center gap-2 flex-1 min-w-[140px] shadow-lg shadow-emerald-900/20 transition transform active:scale-95 hover:translate-y-[-2px] select-none cursor-pointer"
+                onClick={() => { if (stock !== 0) addToCart(cartProduct, quantity); }}
+                disabled={stock === 0}
+                className={'font-black text-sm px-6 py-0 h-12 rounded-xl flex items-center justify-center gap-2 flex-1 min-w-[140px] shadow-lg transition transform select-none ' +
+                  (stock === 0
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none'
+                    : 'bg-[#1B6B3A] hover:bg-emerald-900 text-white shadow-emerald-900/20 active:scale-95 hover:translate-y-[-2px] cursor-pointer')}
               >
                 <ShoppingCart className="h-5 w-5" />
-                <span>{t.addToCart}</span>
+                <span>{stock === 0 ? 'Out of Stock' : t.addToCart}</span>
               </button>
 
               {/* Wishlist Heart toggle */}

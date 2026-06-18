@@ -1,5 +1,4 @@
 import { Category, Product } from './types';
-
 export const PASTED_CATALOG_CATEGORIES: Category[] = [
   {
     "id": "pt-farm-machinery",
@@ -72,7 +71,6 @@ export const PASTED_CATALOG_CATEGORIES: Category[] = [
     "productCount": 10
   }
 ];
-
 export const PASTED_CATALOG_PRODUCTS: Product[] = [
   {
     "id": "pt-001",
@@ -10694,47 +10692,6 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     ]
   },
   {
-    "id": "pt-261",
-    "name": "IGO AgriMart Feed Supplements",
-    "displayName": "Feed Supplements",
-    "slug": "feed-supplements",
-    "brand": "IGO AgriMart",
-    "category": "Animal Husbandry",
-    "subcategory": "Fodder & Feed",
-    "price": 965,
-    "mrp": 1177,
-    "discount": 18,
-    "stock": 63,
-    "images": [
-      "/catalog/animal-husbandry/poultry.webp"
-    ],
-    "description": "Feed Supplements is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
-    "composition": "Feed Supplements supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
-    "usage": "Use as per label, crop stage and local agronomist recommendation. Store in a clean, dry place away from direct sunlight.",
-    "rating": 4.6,
-    "reviewCount": 393,
-    "isIgoOwn": true,
-    "problemFilter": "Growth Boosters",
-    "tags": [
-      "fodder-feed",
-      "animal-husbandry",
-      "feed",
-      "supplements"
-    ],
-    "unit": "1 pack",
-    "isOrganic": false,
-    "crops": [
-      "All crops"
-    ],
-    "certifications": [
-      {
-        "name": "IGO Quality Checked",
-        "issuer": "IGO AgriMart",
-        "isVerified": true
-      }
-    ]
-  },
-  {
     "id": "pt-262",
     "name": "IGO AgriMart Animal Medicines",
     "displayName": "Animal Medicines",
@@ -12006,47 +11963,6 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     ]
   },
   {
-    "id": "pt-293",
-    "name": "IGO AgriMart Solar Fencing",
-    "displayName": "Solar Fencing",
-    "slug": "solar-fencing",
-    "brand": "IGO AgriMart",
-    "category": "Solar Agriculture",
-    "subcategory": "Solar Agriculture",
-    "price": 15815,
-    "mrp": 19294,
-    "discount": 18,
-    "stock": 89,
-    "images": [
-      "/catalog/nursery-essentials/gardening-scissor.jpg"
-    ],
-    "description": "Solar Fencing is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
-    "composition": "Solar Fencing supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
-    "usage": "Use as per label, crop stage and local agronomist recommendation. Store in a clean, dry place away from direct sunlight.",
-    "rating": 4.6,
-    "reviewCount": 491,
-    "isIgoOwn": true,
-    "problemFilter": "Growth Boosters",
-    "tags": [
-      "solar-agriculture",
-      "solar-agriculture",
-      "solar",
-      "fencing"
-    ],
-    "unit": "1 unit",
-    "isOrganic": false,
-    "crops": [
-      "All crops"
-    ],
-    "certifications": [
-      {
-        "name": "IGO Quality Checked",
-        "issuer": "IGO AgriMart",
-        "isVerified": true
-      }
-    ]
-  },
-  {
     "id": "pt-294",
     "name": "IGO AgriMart Solar Dryers",
     "displayName": "Solar Dryers",
@@ -12523,129 +12439,6 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
       "forestry",
       "forestry",
       "teak",
-      "plants"
-    ],
-    "unit": "1 unit",
-    "isOrganic": false,
-    "crops": [
-      "All crops"
-    ],
-    "certifications": [
-      {
-        "name": "IGO Quality Checked",
-        "issuer": "IGO AgriMart",
-        "isVerified": true
-      }
-    ]
-  },
-  {
-    "id": "pt-306",
-    "name": "IGO AgriMart Bamboo Plants",
-    "displayName": "Bamboo Plants",
-    "slug": "bamboo-plants",
-    "brand": "IGO AgriMart",
-    "category": "Forestry",
-    "subcategory": "Forestry",
-    "price": 335,
-    "mrp": 409,
-    "discount": 18,
-    "stock": 128,
-    "images": [
-      "/catalog/farm-tools/weeder.webp"
-    ],
-    "description": "Bamboo Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
-    "composition": "Bamboo Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
-    "usage": "Use as per label, crop stage and local agronomist recommendation. Store in a clean, dry place away from direct sunlight.",
-    "rating": 4.3,
-    "reviewCount": 228,
-    "isIgoOwn": true,
-    "problemFilter": "Growth Boosters",
-    "tags": [
-      "forestry",
-      "forestry",
-      "bamboo",
-      "plants"
-    ],
-    "unit": "1 unit",
-    "isOrganic": false,
-    "crops": [
-      "All crops"
-    ],
-    "certifications": [
-      {
-        "name": "IGO Quality Checked",
-        "issuer": "IGO AgriMart",
-        "isVerified": true
-      }
-    ]
-  },
-  {
-    "id": "pt-307",
-    "name": "IGO AgriMart Sandalwood Plants",
-    "displayName": "Sandalwood Plants",
-    "slug": "sandalwood-plants",
-    "brand": "IGO AgriMart",
-    "category": "Forestry",
-    "subcategory": "Forestry",
-    "price": 365,
-    "mrp": 445,
-    "discount": 18,
-    "stock": 141,
-    "images": [
-      "/catalog/nursery-essentials/nursery-pots.jpg"
-    ],
-    "description": "Sandalwood Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
-    "composition": "Sandalwood Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
-    "usage": "Use as per label, crop stage and local agronomist recommendation. Store in a clean, dry place away from direct sunlight.",
-    "rating": 4.4,
-    "reviewCount": 247,
-    "isIgoOwn": true,
-    "problemFilter": "Growth Boosters",
-    "tags": [
-      "forestry",
-      "forestry",
-      "sandalwood",
-      "plants"
-    ],
-    "unit": "1 unit",
-    "isOrganic": false,
-    "crops": [
-      "All crops"
-    ],
-    "certifications": [
-      {
-        "name": "IGO Quality Checked",
-        "issuer": "IGO AgriMart",
-        "isVerified": true
-      }
-    ]
-  },
-  {
-    "id": "pt-308",
-    "name": "IGO AgriMart Eucalyptus Plants",
-    "displayName": "Eucalyptus Plants",
-    "slug": "eucalyptus-plants",
-    "brand": "IGO AgriMart",
-    "category": "Forestry",
-    "subcategory": "Forestry",
-    "price": 180,
-    "mrp": 220,
-    "discount": 18,
-    "stock": 154,
-    "images": [
-      "/catalog/nursery-essentials/Spraygun.png"
-    ],
-    "description": "Eucalyptus Plants is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
-    "composition": "Eucalyptus Plants supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
-    "usage": "Use as per label, crop stage and local agronomist recommendation. Store in a clean, dry place away from direct sunlight.",
-    "rating": 4.5,
-    "reviewCount": 266,
-    "isIgoOwn": true,
-    "problemFilter": "Growth Boosters",
-    "tags": [
-      "forestry",
-      "forestry",
-      "eucalyptus",
       "plants"
     ],
     "unit": "1 unit",
@@ -14425,46 +14218,6 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
     ]
   },
   {
-    "id": "pt-353",
-    "name": "IGO AgriMart Chilli",
-    "displayName": "Chilli",
-    "slug": "chilli",
-    "brand": "IGO AgriMart",
-    "category": "Fresh Farm Produce",
-    "subcategory": "Vegetables",
-    "price": 180,
-    "mrp": 220,
-    "discount": 18,
-    "stock": 89,
-    "images": [
-      "https://elkylzsyrktltvrftjgt.supabase.co/storage/v1/object/public/Images/catalog/upf94z_Greenchili.jfif"
-    ],
-    "description": "Chilli is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
-    "composition": "Chilli supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
-    "usage": "Use as per label, crop stage and local agronomist recommendation. Store in a clean, dry place away from direct sunlight.",
-    "rating": 4.2,
-    "reviewCount": 101,
-    "isIgoOwn": true,
-    "problemFilter": "Growth Boosters",
-    "tags": [
-      "vegetables",
-      "fresh-farm-produce",
-      "chilli"
-    ],
-    "unit": "1 kg",
-    "isOrganic": false,
-    "crops": [
-      "All crops"
-    ],
-    "certifications": [
-      {
-        "name": "IGO Quality Checked",
-        "issuer": "IGO AgriMart",
-        "isVerified": true
-      }
-    ]
-  },
-  {
     "id": "pt-354",
     "name": "IGO AgriMart Okra",
     "displayName": "Okra",
@@ -15667,48 +15420,6 @@ export const PASTED_CATALOG_PRODUCTS: Product[] = [
       "lab-testing",
       "lab-testing",
       "soil",
-      "testing",
-      "kits"
-    ],
-    "unit": "1 service booking",
-    "isOrganic": false,
-    "crops": [
-      "All crops"
-    ],
-    "certifications": [
-      {
-        "name": "IGO Quality Checked",
-        "issuer": "IGO AgriMart",
-        "isVerified": true
-      }
-    ]
-  },
-  {
-    "id": "pt-384",
-    "name": "IGO AgriMart Water Testing Kits",
-    "displayName": "Water Testing Kits",
-    "slug": "water-testing-kits",
-    "brand": "IGO AgriMart",
-    "category": "Lab & Testing",
-    "subcategory": "Lab & Testing",
-    "price": 2490,
-    "mrp": 3038,
-    "discount": 18,
-    "stock": 102,
-    "images": [
-      "/catalog/soil-health/soil-testing.webp"
-    ],
-    "description": "Water Testing Kits is part of the expanded IGO AgriMart catalog, added from the complete product taxonomy for seeds, inputs, farm equipment, livestock, fresh produce, services and agri-infrastructure.",
-    "composition": "Water Testing Kits supplied under IGO AgriMart quality checks. Exact pack size, material or active ingredient can be finalized per supplier listing.",
-    "usage": "Use as per label, crop stage and local agronomist recommendation. Store in a clean, dry place away from direct sunlight.",
-    "rating": 4.1,
-    "reviewCount": 180,
-    "isIgoOwn": true,
-    "problemFilter": "Soil Health",
-    "tags": [
-      "lab-testing",
-      "lab-testing",
-      "water",
       "testing",
       "kits"
     ],

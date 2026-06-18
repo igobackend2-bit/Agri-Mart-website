@@ -4,11 +4,9 @@
 // Prices use the PDF selling rate (base rate plus 30 percent margin);
 // foundation items (no rate in PDF) use current market rates.
 import { Product, Category } from './types';
-
 export const POLYHOUSE_CATEGORIES: Category[] = [
   { id: 'greenhouse-polyhouse', name: 'Greenhouse & Polyhouse', slug: 'greenhouse-polyhouse', icon: 'Home', productCount: 32 }
 ];
-
 export const POLYHOUSE_PRODUCTS: Product[] = [
   {
     id: 'prod-poly-1',

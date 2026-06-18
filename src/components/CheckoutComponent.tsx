@@ -572,35 +572,62 @@ export default function CheckoutComponent({
             )}
 
             {(
-              <div className="space-y-6 animate-fade-in">
-                <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-4">
+              <div className="space-y-5 animate-fade-in">
+                <h3 className="font-display font-bold text-[#1B6B3A] text-sm flex items-center gap-2 pb-3 border-b border-slate-100 mb-1">
                   <FileText className="h-5 w-5" />
-                  <span>4. Review & Confirm Order</span>
+                  <span>4. Review &amp; Confirm Order</span>
                 </h3>
-                
-                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
-                  <div className="flex justify-between items-center pb-2 border-b border-slate-200">
-                    <span className="text-xs text-slate-500 font-bold">Shipping Address:</span>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Shipping address card */}
+                  <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                    <div className="flex items-center gap-2 pb-2.5 mb-2.5 border-b border-slate-100">
+                      <span className="h-7 w-7 rounded-full bg-emerald-50 text-[#1B6B3A] flex items-center justify-center"><MapPin className="h-4 w-4" /></span>
+                      <span className="text-[11px] font-black uppercase tracking-wide text-slate-700">Shipping To</span>
+                    </div>
+                    <p className="text-sm font-extrabold text-slate-900">{formData.name}</p>
+                    <p className="text-[11px] font-bold text-slate-500 mb-1.5">{formData.phone}</p>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">{formData.address1}, {formData.city}, {formData.state} - {formData.pincode}</p>
                   </div>
-                  <p className="text-xs font-bold text-slate-800">{formData.name}, {formData.phone}</p>
-                  <p className="text-[11px] text-slate-600">{formData.address1}, {formData.city}, {formData.state} - {formData.pincode}</p>
+
+                  {/* Delivery & payment card */}
+                  <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                    <div className="flex items-center gap-2 pb-2.5 mb-2.5 border-b border-slate-100">
+                      <span className="h-7 w-7 rounded-full bg-amber-50 text-[#E8A020] flex items-center justify-center"><Truck className="h-4 w-4" /></span>
+                      <span className="text-[11px] font-black uppercase tracking-wide text-slate-700">Delivery &amp; Payment</span>
+                    </div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <CreditCard className="h-3.5 w-3.5 text-slate-400" />
+                      <span className="text-xs text-slate-500">Payment</span>
+                      <span className="ml-auto text-xs font-extrabold text-slate-900">{paymentMethod}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Truck className="h-3.5 w-3.5 text-slate-400" />
+                      <span className="text-xs text-slate-500">Slot</span>
+                      <span className="ml-auto text-[11px] font-bold text-[#1B6B3A] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">{deliverySlot}</span>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
-                  <div className="flex justify-between items-center pb-2 border-b border-slate-200">
-                    <span className="text-xs text-slate-500 font-bold">Delivery & Payment:</span>
+                {/* Total + trust strip */}
+                <div className="flex items-center justify-between bg-emerald-50/60 border border-emerald-200 rounded-2xl px-4 py-3">
+                  <div className="flex items-center gap-2 text-[11px] font-bold text-[#1B6B3A]">
+                    <ShieldCheck className="h-4 w-4" />
+                    <span>100% secure checkout</span>
                   </div>
-                  <p className="text-xs font-bold text-slate-800">Method: {paymentMethod}</p>
-                  <p className="text-[11px] text-slate-600">Slot: {deliverySlot}</p>
+                  <div className="text-right">
+                    <span className="block text-[10px] font-bold uppercase tracking-wide text-slate-400">Total payable</span>
+                    <span className="font-display font-black text-xl text-[#1B6B3A]">₹{finalTotal.toLocaleString('en-IN')}</span>
+                  </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={handlePlaceOrderSubmit}
                   disabled={isPlacing || cart.length === 0}
-                  className="w-full bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-sm py-4 rounded-xl text-center flex items-center justify-center gap-1.5 shadow-lg relative cursor-pointer disabled:opacity-60"
+                  className="w-full bg-[#1b6b3a] hover:bg-emerald-950 text-white font-black text-sm py-4 rounded-xl text-center flex items-center justify-center gap-2 shadow-lg relative cursor-pointer disabled:opacity-60 transition"
                 >
-                  {isPlacing ? 'Placing Order to Warehouse…' : '✅ Confirm & Place Order'}
+                  {isPlacing ? 'Placing Order to Warehouse…' : (<><CheckCircle className="h-5 w-5" /><span>Confirm &amp; Place Order · ₹{finalTotal.toLocaleString('en-IN')}</span></>)}
                 </button>
               </div>
             )}
