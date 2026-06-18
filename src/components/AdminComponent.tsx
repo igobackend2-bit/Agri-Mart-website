@@ -75,6 +75,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const [orderSearchQuery, setOrderSearchQuery] = useState('');
   const [productSearchQuery, setProductSearchQuery] = useState('');
   const [customers, setCustomers] = useState<any[]>([]);
+  const [custSearch, setCustSearch] = useState('');
   const [leads, setLeads] = useState<VisitorLead[]>([]);
   const [loadingLeads, setLoadingLeads] = useState(false);
   const [leadSearch, setLeadSearch] = useState('');
@@ -84,6 +85,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const [adminMsg, setAdminMsg] = useState('');
   const [loadingCustomers, setLoadingCustomers] = useState(false);
   const [stockFilter, setStockFilter] = useState<'all' | 'low' | 'out'>('all');
+  const [invSearch, setInvSearch] = useState('');
 
   const [coupons, setCoupons] = useState<CouponData[]>(() => getCoupons());
   const [showCouponForm, setShowCouponForm] = useState(false);
@@ -499,8 +501,10 @@ export default function AdminComponent({ lang, products, setProducts, categories
     p.category.toLowerCase().includes(productSearchQuery.toLowerCase())
   );
   const inventoryProducts = products.filter(p => {
-    if (stockFilter === 'low') return p.stock > 0 && p.stock < 20;
-    if (stockFilter === 'out') return p.stock === 0;
+    if (stockFilter === 'low' && !(p.stock > 0 && p.stock < 20)) return false;
+    if (stockFilter === 'out' && p.stock !== 0) return false;
+    const q = invSearch.trim().toLowerCase();
+    if (q && !(p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || (p.id || '').toLowerCase().includes(q))) return false;
     return true;
   });
 
@@ -995,6 +999,12 @@ export default function AdminComponent({ lang, products, setProducts, categories
           <div className="flex items-center justify-between flex-wrap gap-3">
             <h3 className="font-extrabold text-sm text-slate-800">Inventory Management</h3>
             <div className="flex gap-2 flex-wrap items-center">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-2 h-4 w-4 text-slate-400" />
+                <input value={invSearch} onChange={e => setInvSearch(e.target.value)}
+                  placeholder="Search product, brand, SKU…"
+                  className="bg-white border border-slate-200 rounded-lg pl-8 pr-3 py-1.5 text-xs w-48 sm:w-60 outline-none focus:border-[#1B6B3A]" />
+              </div>
               <button onClick={handleRefillAll}
                 className="bg-[#E8A020] hover:bg-amber-400 text-emerald-950 text-xs font-black px-4 py-1.5 rounded-lg shadow-sm">
                 ⟳ Refill All to 200
@@ -1059,44 +1069,90 @@ export default function AdminComponent({ lang, products, setProducts, categories
         </div>
       )}
 
-      {activeTab === 'Customers' && (
+      {activeTab === 'Customers' && (() => {
+        // Build a customer directory from real orders (name, email, phone, address,
+        // order count, total spent, dates). This is the data customers actually leave.
+        const map = new Map<string, any>();
+        orders.forEach(o => {
+          const a: any = o.deliveryAddress || {};
+          const key = (a.email || a.phone || o.phone || o.userId || o.id || '').toString().toLowerCase();
+          if (!key) return;
+          if (!map.has(key)) {
+            map.set(key, {
+              name: a.name || 'Customer', email: a.email || '', phone: a.phone || o.phone || '',
+              address: [a.addressLine1, a.addressLine2, a.city, a.state, a.pincode].filter(Boolean).join(', '),
+              orders: [] as any[], total: 0,
+            });
+          }
+          const c = map.get(key);
+          c.orders.push(o);
+          if (o.status !== 'Cancelled') c.total += (o.totalAmount || 0);
+          if (!c.name || c.name === 'Customer') c.name = a.name || c.name;
+          if (!c.email) c.email = a.email || c.email;
+        });
+        const all = Array.from(map.values()).sort((x, y) => y.total - x.total);
+        const q = custSearch.trim().toLowerCase();
+        const list = !q ? all : all.filter(c =>
+          c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q) ||
+          (c.phone || '').includes(q) || c.orders.some((o: any) => (o.id || '').toLowerCase().includes(q))
+        );
+        return (
         <div className="space-y-5">
-          <div className="flex items-center justify-between">
-            <h3 className="font-extrabold text-sm text-slate-800">Customers ({customers.length})</h3>
-            <button onClick={loadCustomers} className="flex items-center gap-1.5 text-xs text-slate-500 border border-slate-200 px-3 py-1.5 rounded-lg hover:text-[#1B6B3A]">
-              <RefreshCw className="h-3.5 w-3.5" /> Refresh
-            </button>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h3 className="font-extrabold text-sm text-slate-800">Customers ({all.length})</h3>
+            <div className="relative w-full sm:w-96">
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+              <input value={custSearch} onChange={e => setCustSearch(e.target.value)}
+                placeholder="Search by name, email, phone or order number…"
+                className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+            </div>
           </div>
-          {loadingCustomers ? (
-            <div className="py-12 text-center text-xs text-slate-400">Loading customers...</div>
-          ) : customers.length === 0 ? (
+          {list.length === 0 ? (
             <div className="py-16 text-center">
               <Users className="h-12 w-12 text-slate-200 mx-auto mb-3" />
-              <p className="text-sm font-bold text-slate-400">No registered customers yet</p>
+              <p className="text-sm font-bold text-slate-400">{q ? 'No customer matches your search.' : 'No customer orders yet.'}</p>
             </div>
           ) : (
-            <div className="border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
-              <table className="w-full text-xs text-slate-600 border-collapse">
-                <thead className="bg-slate-50 font-bold text-slate-600 border-b border-slate-200">
-                  <tr>{['Customer','Email','Phone','Role','Wishlist','Addresses'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {customers.map((c: any) => (
-                    <tr key={c.uid} className="hover:bg-slate-50/40">
-                      <td className="p-3 font-bold text-slate-800">{c.name || '-'}</td>
-                      <td className="p-3 text-slate-500">{c.email || '-'}</td>
-                      <td className="p-3">{c.phone || '-'}</td>
-                      <td className="p-3"><span className={'px-2 py-0.5 rounded-full text-[10px] font-bold ' + (c.role==='admin'?'bg-red-50 text-red-700':'bg-green-50 text-green-700')}>{c.role||'customer'}</span></td>
-                      <td className="p-3">{c.wishlist?.length || 0} items</td>
-                      <td className="p-3">{c.addresses?.length || 0} saved</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="space-y-3">
+              {list.map((c, i) => (
+                <div key={i} className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full bg-[#1B6B3A] text-white flex items-center justify-center font-black">{(c.name || 'C').charAt(0).toUpperCase()}</div>
+                      <div>
+                        <div className="font-black text-slate-800 text-sm">{c.name}</div>
+                        <div className="text-[11px] text-slate-500">{c.email || 'No email'} {c.phone ? '· ' + c.phone : ''}</div>
+                        {c.address && <div className="text-[11px] text-slate-400 mt-0.5 max-w-md">{c.address}</div>}
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="text-center bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-1.5">
+                        <div className="font-black text-[#1B6B3A] text-sm">{c.orders.length}</div>
+                        <div className="text-[9px] font-bold uppercase text-slate-400 tracking-wide">Orders</div>
+                      </div>
+                      <div className="text-center bg-amber-50 border border-amber-100 rounded-lg px-3 py-1.5">
+                        <div className="font-black text-amber-700 text-sm">Rs.{c.total.toLocaleString('en-IN')}</div>
+                        <div className="text-[9px] font-bold uppercase text-slate-400 tracking-wide">Spent</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5">
+                    {c.orders.sort((a: any, b: any) => (b.createdAt || '').localeCompare(a.createdAt || '')).map((o: any) => (
+                      <div key={o.id} className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                        <span className="font-mono font-bold text-slate-600">{o.id}</span>
+                        <span className="text-slate-400">{o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-IN') : ''}</span>
+                        <span className={'px-2 py-0.5 rounded-full font-bold ' + statusColor(o.status)}>{o.status}</span>
+                        <span className="font-black text-slate-700">Rs.{(o.totalAmount || 0).toLocaleString('en-IN')}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
-      )}
+        );
+      })()}
 
       {activeTab === 'Reports' && (
         <div className="space-y-6">

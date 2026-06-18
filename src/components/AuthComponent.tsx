@@ -540,23 +540,7 @@ export default function AuthComponent({ setCurrentPage, setUserProfile }: AuthCo
             </form>
           )}
 
-          {/* Google option (only on first steps) */}
-          {(phase === 'phone' || phase === 'email_login') && (
-            <>
-              <div className="my-7 relative flex items-center justify-center">
-                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/20"></div></div>
-                <span className="relative bg-transparent px-3 text-[10px] font-black text-slate-300 uppercase tracking-widest backdrop-blur-sm rounded-full">Or continue with</span>
-              </div>
-              <button
-                onClick={handleGoogleLogin}
-                disabled={busy}
-                className="w-full bg-white/90 hover:bg-white border-2 border-transparent text-slate-800 font-black text-sm py-3.5 rounded-2xl transition flex items-center justify-center gap-3 disabled:opacity-60 shadow-md"
-              >
-                <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
-                <span>{busy ? 'Connecting...' : 'Google Account'}</span>
-              </button>
-            </>
-          )}
+
 
           <div className="flex items-center justify-center gap-1.5 mt-8 text-[10px] text-emerald-300 font-bold">
             <ShieldCheck className="h-3.5 w-3.5" />
