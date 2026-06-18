@@ -732,11 +732,11 @@ export default function AdminComponent({ lang, products, setProducts, categories
             <div className="border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
               <table className="w-full text-xs text-slate-600 border-collapse">
                 <thead className="bg-slate-50 font-bold text-slate-600 border-b border-slate-200">
-                  <tr>{['Order ID','Customer','Items','Total','Payment','Status'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
+                  <tr>{['Order ID','Customer','Items','Total','Payment','Delivery Slot','Status'].map(h => <th key={h} className="p-3 text-left">{h}</th>)}</tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {filteredOrders.length === 0 ? (
-                    <tr><td colSpan={6} className="py-10 text-center text-slate-400 italic">No orders found.</td></tr>
+                    <tr><td colSpan={7} className="py-10 text-center text-slate-400 italic">No orders found.</td></tr>
                   ) : filteredOrders.map(o => (
                     <tr key={o.id} className="hover:bg-slate-50/40">
                       <td className="p-3 font-mono font-bold text-[10px]">
@@ -756,6 +756,9 @@ export default function AdminComponent({ lang, products, setProducts, categories
                       </td>
                       <td className="p-3 font-bold text-[#1B6B3A]">Rs.{o.totalAmount}</td>
                       <td className="p-3 text-[10px] text-slate-500">{o.paymentMethod || 'COD'}</td>
+                      <td className="p-3">
+                        <span className="inline-block text-[10px] font-bold text-[#1B6B3A] bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-full whitespace-nowrap">{o.deliverySlot || 'Standard (2–4 days)'}</span>
+                      </td>
                       <td className="p-3">
                         <select value={o.status} onChange={e => handleStatusChange(o.id, e.target.value as Order['status'])}
                           className={'border rounded px-2 py-1 text-[10px] font-bold focus:outline-none ' + statusColor(o.status)}>

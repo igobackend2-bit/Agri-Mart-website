@@ -37,6 +37,17 @@ export default function CartComponent({
   const [couponError, setCouponError] = useState<string>('');
   const [couponSuccess, setCouponSuccess] = useState<string>('');
 
+  // Delivery slot — chosen here and carried into checkout via a shared key.
+  // (Must match the slots listed in CheckoutComponent so the choice highlights.)
+  const DELIVERY_SLOTS = ['Tomorrow, 6–9 AM', 'Tomorrow, 9 AM–12 PM', 'Tomorrow, 4–7 PM', 'Standard (2–4 days)'];
+  const [deliverySlot, setDeliverySlot] = useState<string>(() => {
+    try { return localStorage.getItem('igo_delivery_slot') || DELIVERY_SLOTS[3]; } catch { return DELIVERY_SLOTS[3]; }
+  });
+  const chooseSlot = (slot: string) => {
+    setDeliverySlot(slot);
+    try { localStorage.setItem('igo_delivery_slot', slot); } catch { /* ignore */ }
+  };
+
   const [savedForLater, setSavedForLater] = useState<CartItem[]>(() => {
     const cached = localStorage.getItem('igo_agrimart_saved_for_later');
     return cached ? JSON.parse(cached) : [];
@@ -243,7 +254,30 @@ export default function CartComponent({
 
           {/* Right Summary column */}
           <div className="space-y-6">
-            
+
+            {/* Delivery slot picker card */}
+            <div className="bg-white border border-slate-200 p-5 rounded-xl">
+              <h4 className="font-display font-bold text-slate-800 text-xs uppercase tracking-widest flex items-center gap-1.5 mb-3">
+                <Truck className="h-4 w-4 text-[#1B6B3A]" />
+                <span>Choose Delivery Slot</span>
+              </h4>
+              <div className="grid grid-cols-2 gap-2">
+                {DELIVERY_SLOTS.map((slot) => (
+                  <button
+                    key={slot}
+                    type="button"
+                    onClick={() => chooseSlot(slot)}
+                    className={`text-left px-3 py-2 rounded-lg text-[11px] font-bold border-2 transition ${deliverySlot === slot
+                      ? 'border-[#1B6B3A] bg-emerald-50/50 text-[#1B6B3A]'
+                      : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
+                  >
+                    {slot}
+                  </button>
+                ))}
+              </div>
+              <p className="text-[10px] text-slate-400 font-medium mt-2.5">Fresh produce ships next-day; inputs &amp; tools ship standard.</p>
+            </div>
+
             {/* Promo coupon form card */}
             <div className="bg-white border border-slate-200 p-5 rounded-xl">
               <h4 className="font-display font-bold text-slate-800 text-xs uppercase tracking-widest flex items-center gap-1.5 mb-3">

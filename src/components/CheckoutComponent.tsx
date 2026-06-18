@@ -78,7 +78,15 @@ export default function CheckoutComponent({
 
   const [paymentMethod, setPaymentMethod] = useState<'COD' | 'UPI' | 'Card' | 'NetBanking'>('COD');
   const DELIVERY_SLOTS = ['Tomorrow, 6–9 AM', 'Tomorrow, 9 AM–12 PM', 'Tomorrow, 4–7 PM', 'Standard (2–4 days)'];
-  const [deliverySlot, setDeliverySlot] = useState<string>(DELIVERY_SLOTS[3]);
+  // Initialise from the slot the customer picked on the cart page (shared key).
+  const [deliverySlot, setDeliverySlot] = useState<string>(() => {
+    try { return localStorage.getItem('igo_delivery_slot') || DELIVERY_SLOTS[3]; } catch { return DELIVERY_SLOTS[3]; }
+  });
+  // Keep the shared key in sync so the choice persists if the user returns to cart.
+  const chooseSlot = (slot: string) => {
+    setDeliverySlot(slot);
+    try { localStorage.setItem('igo_delivery_slot', slot); } catch { /* ignore */ }
+  };
   const [isPlacing, setIsPlacing] = useState(false);
   const [orderIdCreated, setOrderIdCreated] = useState<string | null>(null);
   const [placedOrderState, setPlacedOrderState] = useState<Order | null>(null);
@@ -463,7 +471,7 @@ export default function CheckoutComponent({
                     <button
                       key={slot}
                       type="button"
-                      onClick={() => setDeliverySlot(slot)}
+                      onClick={() => chooseSlot(slot)}
                       className={`text-left px-3 py-2.5 rounded-xl text-xs font-bold border-2 transition ${deliverySlot === slot
                         ? 'border-[#1B6B3A] bg-emerald-50/40 text-[#1B6B3A]'
                         : 'border-slate-200 text-slate-600 hover:border-slate-300'

@@ -19,7 +19,8 @@ import { db, auth } from '../firebase';
 import { Product, Order, UserProfile, Address } from '../types';
 import { fetchUserOrders, cancelUserOrder, fetchUserProfile } from '../dbHelper';
 import { currentUid, clearSession } from '../session';
-import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, deleteInboxMessage, InboxMessage, getWalletCoins, mergeOrdersByStatus } from '../storeData';
+import { getLocalOrders, getInbox, markInboxRead, unreadInboxCount, deleteInboxMessage, InboxMessage, getWalletCoins, mergeOrdersByStatus, sendInboxMessage } from '../storeData';
+import { captureLead } from '../leads';
 import { Inbox as InboxIcon, Mail, Home, Store, ShoppingCart } from 'lucide-react';
 
 interface AccountComponentProps {
@@ -131,7 +132,7 @@ export default function AccountComponent({
   addToCart
 }: AccountComponentProps) {
   const t = accountTranslations[lang];
-  const [activeTab, setActiveTab] = useState<'Orders' | 'Inbox' | 'Wishlist' | 'Addresses' | 'Profile' | 'Support'>('Orders');
+  const [activeTab, setActiveTab] = useState<'Orders' | 'Inbox' | 'Wishlist' | 'Addresses' | 'Profile' | 'Support'>('Profile');
   const [inboxMsgs, setInboxMsgs] = useState<InboxMessage[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
@@ -337,22 +338,27 @@ export default function AccountComponent({
             })}
           </div>
 
-          {/* IGO Coins wallet */}
-          <div className="flex items-center justify-between bg-gradient-to-r from-amber-50 to-emerald-50 border border-amber-200/60 rounded-xl px-3.5 py-2.5">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">🪙</span>
-              <span className="text-[11px] font-black text-slate-700 uppercase tracking-wide">IGO Coins</span>
+          {/* IGO Coins wallet — loyalty reward */}
+          <div className="bg-gradient-to-r from-amber-50 to-emerald-50 border border-amber-200/60 rounded-xl px-3.5 py-3 space-y-1.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🪙</span>
+                <span className="text-[11px] font-black text-slate-700 uppercase tracking-wide">IGO Coins</span>
+              </div>
+              <span className="text-sm font-black text-[#1B6B3A]">{getWalletCoins().toLocaleString('en-IN')}</span>
             </div>
-            <span className="text-sm font-black text-[#1B6B3A]">{getWalletCoins().toLocaleString('en-IN')}</span>
+            <p className="text-[10px] leading-relaxed text-slate-500 font-medium">
+              You earn IGO Coins worth <span className="font-bold text-slate-700">2% of every order</span> — 1 Coin = ₹1. Your balance is worth <span className="font-bold text-[#1B6B3A]">₹{getWalletCoins().toLocaleString('en-IN')}</span> in discounts on future orders.
+            </p>
           </div>
 
           <div className="flex flex-col gap-1">
             {([
+              { key: 'Profile', icon: User, label: t.profile },
               { key: 'Orders', icon: ShoppingBag, label: t.orders },
               { key: 'Inbox', icon: InboxIcon, label: 'Inbox' },
               { key: 'Wishlist', icon: Heart, label: t.wishlist },
               { key: 'Addresses', icon: MapPin, label: t.addresses },
-              { key: 'Profile', icon: User, label: t.profile },
               { key: 'Support', icon: HelpCircle, label: 'Support Tickets' }
             ] as const).map((tab) => {
               const IconComp = tab.icon;
@@ -786,6 +792,11 @@ export default function AccountComponent({
                 </div>
 
                 <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-slate-400 block uppercase tracking-wide">{lang === 'ta' ? 'தொலைபேசி எண்' : 'Mobile Number'}</span>
+                  <div className="p-3 bg-slate-50 rounded-lg text-xs font-bold text-slate-600 border border-slate-100">{userProfile?.phone ? '+91 ' + userProfile.phone : 'Not added'}</div>
+                </div>
+
+                <div className="space-y-1">
                   <span className="text-[10px] font-bold text-slate-400 block uppercase tracking-wide">{t.roleStatus}</span>
                   <div className="p-3 bg-slate-50 rounded-lg text-xs font-black text-slate-650 text-slate-700 border border-slate-100 uppercase uppercase-tracking-widest capitalize">
                     {userProfile?.role} {t.gateway}
@@ -807,14 +818,42 @@ export default function AccountComponent({
                 <h4 className="font-display font-bold text-xs text-[#1B6B3A] uppercase tracking-wider mb-2">
                   Create a new ticket
                 </h4>
-                <form onSubmit={(e) => { e.preventDefault(); alert('Support ticket raised successfully! Our team will contact you shortly.'); (e.target as HTMLFormElement).reset(); }} className="space-y-4">
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  const form = e.target as HTMLFormElement;
+                  const fd = new FormData(form);
+                  const subject = String(fd.get('subject') || '').trim();
+                  const message = String(fd.get('message') || '').trim();
+                  // Route the ticket to the admin Leads inbox so the team actually sees it.
+                  try {
+                    captureLead({
+                      source: 'Other',
+                      name: userProfile?.name || 'Customer',
+                      phone: userProfile?.phone || '',
+                      email: userProfile?.email || undefined,
+                      subject: 'Support ticket: ' + (subject || 'No subject'),
+                      message,
+                    });
+                  } catch { /* ignore */ }
+                  // Confirmation in the customer's own inbox.
+                  try {
+                    sendInboxMessage({
+                      toEmail: userProfile?.email || 'all',
+                      title: 'Support ticket received',
+                      body: 'Thanks ' + (userProfile?.name || '') + '. We received your ticket: "' + (subject || 'No subject') + '". Our team will contact you shortly.',
+                    });
+                    setInboxMsgs(getInbox(userProfile?.email));
+                  } catch { /* ignore */ }
+                  alert('Support ticket raised successfully! Our team will contact you shortly.');
+                  form.reset();
+                }} className="space-y-4">
                   <div className="space-y-1">
                     <label className="text-[10px] font-bold text-slate-500 uppercase">Subject / Related Order</label>
-                    <input type="text" required placeholder="e.g. Order AGM-2026... not delivered" className="w-full bg-white border border-slate-200 rounded p-2 text-xs" />
+                    <input name="subject" type="text" required placeholder="e.g. Order AGM-2026... not delivered" className="w-full bg-white border border-slate-200 rounded p-2 text-xs" />
                   </div>
                   <div className="space-y-1">
                     <label className="text-[10px] font-bold text-slate-500 uppercase">Describe your issue</label>
-                    <textarea required rows={4} placeholder="Please provide detailed information..." className="w-full bg-white border border-slate-200 rounded p-2 text-xs"></textarea>
+                    <textarea name="message" required rows={4} placeholder="Please provide detailed information..." className="w-full bg-white border border-slate-200 rounded p-2 text-xs"></textarea>
                   </div>
                   <button type="submit" className="bg-[#1B6B3A] text-white hover:bg-emerald-950 text-xs font-black uppercase tracking-wider px-4 py-2 rounded-lg cursor-pointer transition shadow-sm">
                     Submit Ticket
