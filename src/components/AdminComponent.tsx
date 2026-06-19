@@ -5,7 +5,7 @@ import {
   Search, RefreshCw, DollarSign,
   AlertTriangle, TrendingUp, Image, Shield,
   CheckCircle, LayoutDashboard,
-  Archive, PieChart, Gift, Monitor, Wrench, LogOut, KeyRound, Bell, Inbox, Download, Store, ExternalLink
+  Archive, PieChart, Gift, Monitor, Wrench, LogOut, KeyRound, Bell, Inbox, Download, Store, ExternalLink, Upload
 } from 'lucide-react';
 import { Product, Order, Category, Brand } from '../types';
 import {
