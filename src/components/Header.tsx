@@ -381,7 +381,7 @@ export default function Header({
                     className="flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-[#1B6B3A] bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 transition cursor-pointer"
                   >
                     <User className="h-4 w-4" />
-                    <span>{userProfile?.role === 'admin' ? 'Admin Board' : t.myAccount}</span>
+                    <span>{userProfile?.role === 'admin' ? 'Admin Board' : (userProfile?.name || t.myAccount)}</span>
                   </button>
 
                   {userProfile?.role === 'admin' && (
