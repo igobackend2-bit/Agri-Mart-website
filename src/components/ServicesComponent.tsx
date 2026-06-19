@@ -146,28 +146,66 @@ export default function ServicesComponent({
           </button>
         </div>
 
-        {/* ── Our Flagship Farming Projects ─────────────────────── */}
-        <div className="mt-12">
-          <h3 className="font-display font-black text-slate-900 text-xl sm:text-2xl tracking-tight">Our Flagship Farming Projects</h3>
-          <p className="text-sm text-slate-500 mt-1">Turnkey, bankable agri-ventures engineered, built and managed by the IGO Group.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+        {/* ── Turnkey Farming Projects (mirrors IGO Agritech Farms) ───────────── */}
+        <div className="mt-14">
+          <div className="flex items-end justify-between flex-wrap gap-3">
+            <div>
+              <span className="bg-[#E8A020]/15 text-[#B45309] text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded">24 Project Types · Pan-India</span>
+              <h3 className="font-display font-black text-slate-900 text-xl sm:text-2xl tracking-tight mt-2">Turnkey Farming Projects</h3>
+              <p className="text-sm text-slate-500 mt-1 max-w-2xl">End-to-end agri-ventures engineered, built and managed by the IGO Group — from feasibility and design to construction, inputs and market linkage. Most projects are <b className="text-[#1B6B3A]">government-subsidy eligible</b>.</p>
+            </div>
+            <button onClick={() => setCurrentPage('contact')} className="bg-[#1B6B3A] hover:bg-[#15532d] text-white text-xs font-bold py-2.5 px-5 rounded-lg shrink-0 transition">Book Free Consultation</button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
             {[
-              { t: 'Polyhouse & Greenhouse', d: 'Climate-controlled protected cultivation — GI structures, shade nets, drip & fogger systems for year-round high-value crops.', img: '/images/live_trial_field_india.png' },
-              { t: 'Hydroponics & Vertical Farms', d: 'Soil-less NFT / DWC towers and grow systems for clean, high-yield vegetable and leafy-green production.', img: '/catalog/nursery tools/Flat Bed Hydroponic System 200 Planter.jpeg' },
-              { t: 'Goat & Livestock Farming', d: 'Modern goat, dairy and poultry units with health monitoring, feeding and shed engineering.', img: '/images/agri_farm_bg.png' },
-              { t: 'Aquaculture & Fisheries', d: 'Integrated fish & shrimp farms with biofloc tanks, aeration and cold-chain export readiness.', img: '/catalog/nursery tools/Fish Tank 3500 lt.jpeg' },
-              { t: 'Precision & Smart Farming', d: 'Sensor-driven irrigation, drone spraying and data-led agronomy for higher yield at lower cost.', img: '/images/post_drip_automation.png' },
-              { t: 'Cold Storage & Processing', d: 'Post-harvest cold rooms, warehouses and processing units to cut wastage and boost farm-gate value.', img: '/images/live_trial_field_main.png' },
-            ].map((p) => (
-              <button key={p.t} type="button" onClick={() => setCurrentPage('contact')}
-                className="text-left bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#1B6B3A] hover:shadow-md transition cursor-pointer">
-                <img src={p.img} alt={p.t} className="w-full h-36 object-cover" onError={(e) => { (e.target as HTMLImageElement).src = '/images/agri_farm_bg.png'; }} />
-                <div className="p-5">
-                  <div className="font-display font-black text-[#1B6B3A] text-base">{p.t}</div>
-                  <p className="text-xs text-slate-600 mt-2 leading-relaxed">{p.d}</p>
-                  <span className="inline-block mt-3 text-xs font-black text-[#1B6B3A]">Enquire about this project →</span>
+              {
+                title: 'Agri Farming Projects', count: '10 project types',
+                img: 'https://www.igoagritechfarms.in/assets/new%20project%20images/main-page/agri%20farming%20projects%20.png',
+                desc: 'High-value crop ventures — protected cultivation, soil-less systems and precision plantations engineered for year-round yield.',
+                items: ['Polyhouse & Protected Cultivation', 'Hydroponics (NFT / DWC)', 'Vertical Farming', 'Open-Field Orchards — Dragon Fruit, Mango, Guava, Papaya, Fig, Blueberry', 'Vegetable Cultivation — Tomato, Chilli, Capsicum, Cucumber, Melons', 'Medicinal Crops — Aloe Vera, Moringa, Turmeric, Ginger', 'Floriculture — Rose, Jasmine, Marigold', 'Mushroom Farming', 'Urban Farming', 'Nursery Setup'],
+              },
+              {
+                title: 'Aquaculture Farming Projects', count: '5 project types',
+                img: 'https://www.igoagritechfarms.in/assets/new%20project%20images/main-page/aquaculture%20projects%20.png',
+                desc: 'Integrated fish & shrimp farming with modern tanks, aeration and export-ready cold-chain readiness.',
+                items: ['Fish Farming', 'Biofloc Systems', 'Shrimp Farming', 'Crab Farming', 'Integrated Aquaculture'],
+              },
+              {
+                title: 'Livestock Farming Projects', count: '5 project types',
+                img: 'https://www.igoagritechfarms.in/assets/new%20project%20images/main-page/live%20stock%20project%20.png',
+                desc: 'Modern animal husbandry units with health monitoring, scientific feeding and shed engineering.',
+                items: ['Goat Farming', 'Sheep Farming', 'Dairy Farming', 'Poultry Farming', 'Integrated Livestock'],
+              },
+              {
+                title: 'Farm Engineering Projects', count: '4 project types',
+                img: 'https://www.igoagritechfarms.in/assets/new%20project%20images/main-page/farm%20engineering%20project%20.png',
+                desc: 'The civil & energy backbone of every farm — infrastructure, water systems, solar power and land development.',
+                items: ['Farm Infrastructure', 'Water Management & Irrigation', 'Solar & Renewable Energy', 'Land Development'],
+              },
+            ].map((cat) => (
+              <div key={cat.title} className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-md transition flex flex-col">
+                <div className="relative h-44 bg-slate-100 overflow-hidden">
+                  <img src={cat.img} alt={cat.title} className="w-full h-full object-cover" loading="lazy"
+                    onError={(e) => { (e.target as HTMLImageElement).src = '/images/agri_farm_bg.png'; }} />
+                  <span className="absolute top-3 left-3 bg-[#1B6B3A] text-white text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md shadow">{cat.count}</span>
+                  <span className="absolute bottom-3 right-3 bg-[#E8A020] text-emerald-950 text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded shadow">Subsidy Eligible</span>
                 </div>
-              </button>
+                <div className="p-5 flex-1 flex flex-col">
+                  <h4 className="font-display font-black text-[#1B6B3A] text-lg">{cat.title}</h4>
+                  <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{cat.desc}</p>
+                  <div className="flex flex-wrap gap-1.5 mt-3">
+                    {cat.items.map((it) => (
+                      <span key={it} className="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1">{it}</span>
+                    ))}
+                  </div>
+                  <button onClick={() => setCurrentPage('contact')}
+                    className="mt-4 self-start inline-flex items-center gap-1.5 bg-[#1B6B3A] hover:bg-[#15532d] text-white text-xs font-black px-4 py-2.5 rounded-lg transition">
+                    <span>Get free feasibility report</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
         </div>
