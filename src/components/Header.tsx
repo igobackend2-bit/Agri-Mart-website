@@ -164,9 +164,9 @@ export default function Header({
   return (
     <header className="sticky top-0 z-50 shadow-md">
       {/* Announcement Bar */}
-      <div className="bg-[#1B6B3A] text-[#F7F9F4] text-xs py-1.5 px-4 text-center font-medium tracking-wide border-b border-[#248F4E]">
+      <div className="bg-gradient-to-r from-[#15532d] via-[#1B6B3A] to-[#15532d] text-[#F7F9F4] text-[11px] sm:text-xs py-2 px-4 text-center font-medium tracking-wide">
         <div className="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-2 text-center">
-          <span className="mx-auto block text-center w-full sm:-mr-2 truncate sm:whitespace-normal">{getMarqueeLines().join('  |  ')}</span>
+          <span className="mx-auto block text-center w-full sm:-mr-2 truncate sm:whitespace-normal">{getMarqueeLines().join('  •  ')}</span>
         </div>
       </div>
 
@@ -214,7 +214,7 @@ export default function Header({
                 onChange={(e) => handleSearchChange(e.target.value)}
                 onFocus={() => searchQuery.trim() && setShowSearchSuggestions(true)}
                 placeholder={t.searchPlaceholder}
-                className="w-full bg-[#F7F9F4] text-[#1a1a1a] pl-4 pr-10 py-2 rounded-lg text-sm border border-slate-200 focus:outline-none focus:border-[#1B6B3A] focus:ring-1 focus:ring-[#1B6B3A] transition"
+                className="w-full bg-slate-50 text-[#1a1a1a] pl-5 pr-20 py-2.5 rounded-full text-sm border border-slate-200 focus:outline-none focus:border-[#1B6B3A] focus:ring-2 focus:ring-[#1B6B3A]/15 focus:bg-white transition shadow-sm"
               />
               <button 
                 type="button" 
@@ -271,13 +271,13 @@ export default function Header({
                   recognitionRef.current = recognition;
                   recognition.start();
                 }}
-                className={'absolute right-10 top-2.5 transition ' + (listening ? 'text-red-500 animate-pulse scale-110' : 'text-slate-400 hover:text-[#1B6B3A]')}
+                className={'absolute right-12 top-3 transition ' + (listening ? 'text-red-500 animate-pulse scale-110' : 'text-slate-400 hover:text-[#1B6B3A]')}
                 title={listening ? 'Listening… speak now' : 'Voice Search'}
               >
                 <Mic className="h-4.5 w-4.5" />
               </button>
-              <button type="submit" className="absolute right-3 top-2.5 text-slate-400 hover:text-[#1B6B3A] transition">
-                <Search className="h-4.5 w-4.5" />
+              <button type="submit" className="absolute right-2 top-1.5 bg-[#1B6B3A] hover:bg-[#15532d] text-white h-8 w-8 rounded-full flex items-center justify-center transition shadow-sm">
+                <Search className="h-4 w-4" />
               </button>
             </form>
 
@@ -345,7 +345,7 @@ export default function Header({
             {/* Tamil Language Toggle Toggle */}
             <button
               onClick={() => setLang(lang === 'en' ? 'ta' : 'en')}
-              className="flex items-center gap-1.5 px-3 py-1 bg-[#F7F9F4] text-[#1B6B3A] hover:bg-[#e9eee3] text-xs font-bold rounded-full transition border border-slate-100"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-[#1B6B3A] hover:bg-emerald-50 hover:border-[#1B6B3A]/30 text-xs font-bold rounded-full transition border border-slate-200"
               title="Change language / தமிழ்"
             >
               <Globe className="h-3.5 w-3.5" />
@@ -358,14 +358,14 @@ export default function Header({
             {/* Wishlist/favourites moved into the profile dashboard (Farming Wishlist tab). */}
 
             {/* Cart Button */}
-            <button 
-              onClick={() => setCurrentPage('cart')} 
-              className="relative p-1.5 text-slate-600 hover:text-[#1B6B3A] transition"
+            <button
+              onClick={() => setCurrentPage('cart')}
+              className="relative p-2 text-slate-600 hover:text-[#1B6B3A] hover:bg-slate-100 rounded-full transition"
               title={t.cart}
             >
               <ShoppingCart className="h-5 w-5" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#E8A020] text-slate-950 text-[9px] font-extrabold h-4 w-4 rounded-full flex items-center justify-center animate-bounce">
+                <span className="absolute -top-0.5 -right-0.5 bg-[#E8A020] text-slate-950 text-[9px] font-extrabold h-4 w-4 rounded-full flex items-center justify-center shadow ring-2 ring-white">
                   {cartCount}
                 </span>
               )}
@@ -435,8 +435,8 @@ export default function Header({
 
 
       {/* Global page navigation — shown on EVERY page */}
-      <nav className="bg-white border-b border-slate-100 shadow-sm select-none">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-1 sm:gap-2 min-h-[46px] overflow-x-auto no-scrollbar whitespace-nowrap">
+      <nav className="bg-white border-b border-slate-200 shadow-[0_1px_3px_rgba(15,23,42,0.04)] select-none">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-0.5 sm:gap-1 min-h-[50px] overflow-x-auto no-scrollbar whitespace-nowrap">
           {[
             { name: 'Home', action: () => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); } },
             { name: 'Shop', action: () => { setSelectedCategory(null); setCurrentPage('category'); } },
@@ -450,10 +450,10 @@ export default function Header({
             <button
               key={link.name}
               onClick={link.action}
-              className="relative px-3.5 sm:px-5 py-3 text-[13px] font-semibold text-slate-600 hover:text-[#1B6B3A] transition group"
+              className="relative px-3.5 sm:px-4 py-3.5 text-[12.5px] font-bold uppercase tracking-wide text-slate-600 hover:text-[#1B6B3A] hover:bg-emerald-50/60 rounded-md transition-colors group"
             >
               {link.name}
-              <span className="absolute left-1/2 -translate-x-1/2 bottom-1.5 h-0.5 w-0 group-hover:w-6 bg-[#1B6B3A] rounded-full transition-all duration-300" />
+              <span className="absolute left-3 right-3 bottom-1.5 h-[2.5px] w-0 group-hover:w-[calc(100%-1.5rem)] bg-gradient-to-r from-[#1B6B3A] to-[#E8A020] rounded-full transition-all duration-300" />
             </button>
           ))}
         </div>

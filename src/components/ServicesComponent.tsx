@@ -1,19 +1,45 @@
-import React from 'react';
-import { 
-  Hammer, 
-  Cpu, 
-  Sprout, 
-  Leaf, 
-  Award, 
-  CheckCircle2, 
+import React, { useState } from 'react';
+import {
+  Hammer,
+  Cpu,
+  Sprout,
+  Leaf,
+  Award,
+  CheckCircle2,
   ArrowRight,
   ShieldAlert,
   Activity,
   UserCheck,
-  Scale
+  Scale,
+  X,
+  ExternalLink
 } from 'lucide-react';
 import { Service } from '../types';
 import { SEED_SERVICES } from '../seedData';
+
+// Maps each project/category to its detail page on the IGO Agritech Farms site,
+// where the customer can read more and submit an enquiry.
+const PROJECT_LINKS: Record<string, string> = {
+  'Polyhouse Projects': 'https://www.igoagritechfarms.com/polyhouseproject.php',
+  'Hydroponic Projects': 'https://www.igoagritechfarms.com/hydroponicproject.php',
+  'Joint Venture Projects': 'https://www.igoagritechfarms.com/jointventureproject.php',
+  'Vertical Farming Projects': 'https://www.igoagritechfarms.com/verticalfarmingproject.php',
+  'Open Cultivation Projects': 'https://www.igoagritechfarms.com/opencultivationproject.php',
+  'Rooftop Projects': 'https://www.igoagritechfarms.com/rooftopproject.php',
+  'Floriculture Projects': 'https://www.igoagritechfarms.com/floricultureproject.php',
+  'Goat Farming Projects': 'https://www.igoagritechfarms.com/goatfarmingproject.php',
+  'Horticulture Projects': 'https://www.igoagritechfarms.com/horticultureproject.php',
+  'Landscaping Projects': 'https://www.igoagritechfarms.com/landscapingproject.php',
+  'Mushroom Cultivation Projects': 'https://www.igoagritechfarms.com/mushroomcultivationproject.php',
+  'Pondliner Projects': 'https://www.igoagritechfarms.com/pondlinerproject.php',
+  'Solar Dryer Projects': 'https://www.igoagritechfarms.com/solardryerproject.php',
+  'Nursery Projects': 'https://www.igoagritechfarms.com/nurseryproject.php',
+  'Microgreens Farming Projects': 'https://www.igoagritechfarms.com/microgreensproject.php',
+  'Agri Farming Projects': 'https://www.igoagritechfarms.in/projects/agri',
+  'Aquaculture Farming Projects': 'https://www.igoagritechfarms.in/projects/aquaculture',
+  'Livestock Farming Projects': 'https://www.igoagritechfarms.in/projects/livestock',
+  'Farm Engineering Projects': 'https://www.igoagritechfarms.in/projects/engineering',
+};
 
 interface ServicesComponentProps {
   lang: 'en' | 'ta';
@@ -31,6 +57,9 @@ export default function ServicesComponent({
     setSelectedService(srv);
     setCurrentPage('services-detail');
   };
+
+  // Project explainer modal — shows details + a redirect to IGO Agritech Farms.
+  const [openProject, setOpenProject] = useState<{ title: string; img: string; desc: string } | null>(null);
 
   return (
     <div className="bg-[#F7F9F4] min-h-screen py-10 px-4 sm:px-6">
@@ -199,9 +228,9 @@ export default function ServicesComponent({
                       <span key={it} className="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 rounded-full px-2.5 py-1">{it}</span>
                     ))}
                   </div>
-                  <button onClick={() => setCurrentPage('contact')}
+                  <button onClick={() => setOpenProject({ title: cat.title, img: cat.img, desc: cat.desc })}
                     className="mt-4 self-start inline-flex items-center gap-1.5 bg-[#1B6B3A] hover:bg-[#15532d] text-white text-xs font-black px-4 py-2.5 rounded-lg transition">
-                    <span>Get free feasibility report</span>
+                    <span>View details &amp; enquire</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
@@ -230,14 +259,14 @@ export default function ServicesComponent({
               { t: 'Nursery Projects', img: 'https://www.igoagritechfarms.com/images/nursery.webp', d: 'Commercial plant nursery setup — poly/shade structures, mist systems and quality planting material for saplings, seedlings and grafts.' },
               { t: 'Microgreens Farming Projects', img: 'https://www.igoagritechfarms.com/images/micro-2.png', d: 'Compact, fast-cycle microgreens production for premium urban and restaurant markets — high-margin, soil-less trays grown indoors year-round.' },
             ].map((p) => (
-              <button key={p.t} type="button" onClick={() => setCurrentPage('contact')}
+              <button key={p.t} type="button" onClick={() => setOpenProject({ title: p.t, img: p.img, desc: p.d })}
                 className="text-left bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#1B6B3A] hover:shadow-md transition cursor-pointer flex flex-col">
                 <img src={p.img} alt={p.t} loading="lazy" className="w-full h-40 object-cover"
                   onError={(e) => { (e.target as HTMLImageElement).src = '/images/agri_farm_bg.png'; }} />
                 <div className="p-5 flex-1 flex flex-col">
                   <div className="font-display font-black text-[#1B6B3A] text-base">{p.t}</div>
                   <p className="text-xs text-slate-600 mt-2 leading-relaxed flex-1">{p.d}</p>
-                  <span className="inline-flex items-center gap-1 mt-3 text-xs font-black text-[#1B6B3A]">Enquire about this project <ArrowRight className="h-3.5 w-3.5" /></span>
+                  <span className="inline-flex items-center gap-1 mt-3 text-xs font-black text-[#1B6B3A]">View details &amp; enquire <ArrowRight className="h-3.5 w-3.5" /></span>
                 </div>
               </button>
             ))}
@@ -269,6 +298,37 @@ export default function ServicesComponent({
         </div>
 
       </div>
+
+      {/* Project explainer + enquiry redirect modal */}
+      {openProject && (
+        <div className="fixed inset-0 z-[9999] bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setOpenProject(null)}>
+          <div className="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="relative h-48 bg-slate-100">
+              <img src={openProject.img} alt={openProject.title} className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).src = '/images/agri_farm_bg.png'; }} />
+              <button onClick={() => setOpenProject(null)} className="absolute top-3 right-3 h-8 w-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-slate-700 shadow">
+                <X className="h-4 w-4" />
+              </button>
+              <span className="absolute bottom-3 left-3 bg-[#E8A020] text-emerald-950 text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded shadow">Subsidy Eligible</span>
+            </div>
+            <div className="p-6">
+              <h3 className="font-display font-black text-[#1B6B3A] text-xl">{openProject.title}</h3>
+              <p className="text-sm text-slate-600 mt-2 leading-relaxed">{openProject.desc}</p>
+              <p className="text-xs text-slate-500 mt-3 leading-relaxed">Our engineering team handles feasibility, design, construction, inputs and market linkage end-to-end — and helps you access government subsidies. For full specifications, costing and to submit an enquiry, continue to IGO Agritech Farms.</p>
+              <div className="mt-5 flex flex-col sm:flex-row gap-2.5">
+                <a href={PROJECT_LINKS[openProject.title] || 'https://www.igoagritechfarms.com/projects.php'} target="_blank" rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#1B6B3A] hover:bg-[#15532d] text-white text-xs font-black px-4 py-3 rounded-lg transition">
+                  More details &amp; enquire <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+                <button onClick={() => { setOpenProject(null); setCurrentPage('contact'); }}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 bg-white border border-[#1B6B3A] text-[#1B6B3A] hover:bg-emerald-50 text-xs font-black px-4 py-3 rounded-lg transition">
+                  Contact our team
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
