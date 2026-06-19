@@ -78,9 +78,28 @@ const KEYS = {
   combos: 'igo_combo_offers',
   comboConfig: 'igo_combo_config',
   agriEvents: 'igo_agri_events',
+  sellers: 'igo_sellers',
   adminPwdHash: 'igo_admin_pwd_hash',
   adminSession: 'igo_admin_session',
 } as const;
+
+// Seller / vendor submissions (the "Sellers" page). Sellers list a product for
+// sale; the admin verifies, approves, and uploads payment proof.
+export interface Seller {
+  id: string;
+  name: string;
+  phone: string;
+  productName: string;
+  price: number;
+  quantity: number;
+  bankDetails: string;          // payout account / UPI / IFSC
+  productImage?: string;        // data URL of the product photo
+  status: 'Pending' | 'Approved' | 'Rejected';
+  paymentStatus: 'None' | 'Requested' | 'Paid';
+  adminMessage?: string;        // communication from admin → seller
+  paymentProofImage?: string;   // admin-uploaded bank payment screenshot
+  createdAt: string;
+}
 
 // Admin-managed "Upcoming Agri Events" shown on the home page.
 export interface AgriEvent {
@@ -263,6 +282,15 @@ export function getAgriEvents(): AgriEvent[] {
 }
 export function saveAgriEvents(list: AgriEvent[]): void {
   writeWithSync(KEYS.agriEvents, list);
+}
+
+// ── Sellers (vendor submissions on the Sellers page) ─────────────────────────
+export function getSellers(): Seller[] {
+  const list = readJSON<Seller[]>(KEYS.sellers, []);
+  return Array.isArray(list) ? list.filter((s) => s && s.id && s.name) : [];
+}
+export function saveSellers(list: Seller[]): void {
+  writeWithSync(KEYS.sellers, list);
 }
 
 // ── Category manager (admin edits each category's label + tile image) ────────

@@ -105,6 +105,7 @@ export interface Order {
   createdAt: any; // Firestore timestamp or UTC string
   phone: string;
   deliverySlot?: string; // chosen delivery slot (e.g. "Tomorrow, 6–9 AM")
+  couponDiscount?: number; // % or flat coupon applied at checkout (0 = none)
   messages?: { id: string; body: string; createdAt: string }[]; // admin → customer messages, stored on the order so they sync cross-device
 }
 

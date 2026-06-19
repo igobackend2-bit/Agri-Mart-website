@@ -202,6 +202,7 @@ export default function CheckoutComponent({
       createdAt: new Date().toISOString(),
       phone: formData.phone,
       deliverySlot,
+      couponDiscount: couponDiscount || 0,
     };
 
     const finalizeOrder = () => {

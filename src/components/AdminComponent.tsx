@@ -1326,14 +1326,17 @@ export default function AdminComponent({ lang, products, setProducts, categories
                       </div>
                     </div>
                   </div>
-                  <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5">
+                  <div className="mt-3 pt-3 border-t border-slate-100 space-y-1">
+                    <div className="text-[9px] font-black uppercase tracking-widest text-slate-300 mb-1">Tap an order for full details</div>
                     {c.orders.sort((a: any, b: any) => (b.createdAt || '').localeCompare(a.createdAt || '')).map((o: any) => (
-                      <div key={o.id} className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
-                        <span className="font-mono font-bold text-slate-600">{o.id}</span>
+                      <button key={o.id} type="button" onClick={() => { setViewOrder(o); setAdminMsg(''); }}
+                        className="w-full flex flex-wrap items-center justify-between gap-2 text-[11px] cursor-pointer hover:bg-emerald-50/60 -mx-2 px-2 py-1.5 rounded-lg transition text-left">
+                        <span className="font-mono font-bold text-[#1B6B3A] hover:underline">{o.id}</span>
                         <span className="text-slate-400">{o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-IN') : ''}</span>
+                        <span className="text-slate-500 truncate max-w-[160px]">{(o.items?.length || 0)} item{(o.items?.length || 0) === 1 ? '' : 's'}</span>
                         <span className={'px-2 py-0.5 rounded-full font-bold ' + statusColor(o.status)}>{o.status}</span>
                         <span className="font-black text-slate-700">Rs.{(o.totalAmount || 0).toLocaleString('en-IN')}</span>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -2016,6 +2019,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
                     </div>
                     <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Payment Method</span><span className="font-black text-slate-800">{viewOrder.paymentMethod || 'COD'}</span></div>
                     <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Delivery Slot</span><span className="font-black text-[#1B6B3A]">{viewOrder.deliverySlot || 'Standard (2–4 days)'}</span></div>
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Coupon Applied</span><span className="font-black text-slate-800">{viewOrder.couponDiscount ? (viewOrder.couponDiscount < 100 ? viewOrder.couponDiscount + '% off' : 'Rs.' + viewOrder.couponDiscount + ' off') : 'None'}</span></div>
                   </div>
                   <div className="grid grid-cols-3 gap-3 mt-4">
                     {[

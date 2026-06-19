@@ -1,21 +1,9 @@
 import React, { useState } from 'react';
 import {
-  Store,
-  Truck,
-  Package,
-  ClipboardList,
-  TrendingUp,
-  Wallet,
-  Users,
-  MapPin,
-  BarChart3,
-  Warehouse,
-  ArrowUpRight,
-  ArrowDownRight,
-  Award,
-  Sparkles,
-  Info
+  Store, Package, ShieldCheck, CheckCircle, X, Upload, Phone, Sparkles,
+  Info, Award, Clock, IndianRupee, Banknote, ClipboardCheck
 } from 'lucide-react';
+import { getSellers, saveSellers, Seller } from '../siteConfig';
 
 interface PartnerPortalComponentProps {
   lang: 'en' | 'ta';
@@ -23,320 +11,324 @@ interface PartnerPortalComponentProps {
   userProfile: any;
 }
 
-type PortalTab = 'dealer' | 'distributor';
+type SellerTab = 'sell' | 'dashboard' | 'review';
 
-// --- Sample/mock data — illustrates the intended Dealer & Distributor Portal experience ---
-const DEALER_KPIS = [
-  { label: 'This Month Sales', value: '₹4,82,300', delta: '+12.4%', up: true, icon: TrendingUp },
-  { label: 'Active Orders', value: '37', delta: '+5', up: true, icon: ClipboardList },
-  { label: 'Inventory SKUs', value: '212', delta: '-3', up: false, icon: Package },
-  { label: 'Wallet Balance', value: '₹68,540', delta: '+₹9,200', up: true, icon: Wallet },
-];
-
-const DEALER_ORDERS = [
-  { id: 'ORD-7741', customer: 'Murugan Farms, Trichy', items: 'NPK 19:19:19 (40 bags)', amount: '₹38,000', status: 'Dispatched' },
-  { id: 'ORD-7742', customer: 'Lakshmi Agro Traders, Salem', items: 'Coragen Insecticide (60 units)', amount: '₹52,400', status: 'Processing' },
-  { id: 'ORD-7743', customer: 'Senthil Nursery, Dindigul', items: 'Hybrid Tomato Seeds (25 packs)', amount: '₹6,250', status: 'Confirmed' },
-  { id: 'ORD-7744', customer: 'Karthik Agencies, Erode', items: 'Seaweed Extract (30 ltr)', amount: '₹14,700', status: 'Delivered' },
-];
-
-const DEALER_INVENTORY = [
-  { name: 'IGO Hybrid Tomato Seeds — Swaraksha Plus', stock: 184, reorderAt: 50, status: 'Healthy' },
-  { name: 'Coromandel NPK 19:19:19 Soluble Fertilizer', stock: 42, reorderAt: 60, status: 'Low Stock' },
-  { name: 'FMC Coragen Broad-Spectrum Insecticide', stock: 96, reorderAt: 40, status: 'Healthy' },
-  { name: 'IGO Bio Solutions Organic Seaweed Extract', stock: 18, reorderAt: 30, status: 'Reorder Now' },
-];
-
-const DEALER_COMMISSION = [
-  { period: 'This Month', sales: '₹4,82,300', commissionRate: '6%', earned: '₹28,938' },
-  { period: 'Last Month', sales: '₹4,15,800', commissionRate: '6%', earned: '₹24,948' },
-  { period: 'Quarter to Date', sales: '₹13,42,100', commissionRate: '6% avg.', earned: '₹80,526' },
-];
-
-const DISTRIBUTOR_KPIS = [
-  { label: 'Regional Revenue (TN)', value: '₹61.4 L', delta: '+8.7%', up: true, icon: TrendingUp },
-  { label: 'Active Dealers', value: '128', delta: '+6', up: true, icon: Store },
-  { label: 'Pending Bulk Orders', value: '14', delta: '+3', up: true, icon: ClipboardList },
-  { label: 'Warehouse Utilisation', value: '78%', delta: '+4%', up: true, icon: Warehouse },
-];
-
-const DEALER_ROSTER = [
-  { name: 'Murugan Agro Centre', district: 'Tiruchirappalli', tier: 'Gold', mtdSales: '₹6.2 L', status: 'Active' },
-  { name: 'Lakshmi Agro Traders', district: 'Salem', tier: 'Silver', mtdSales: '₹3.8 L', status: 'Active' },
-  { name: 'Senthil Nursery & Agencies', district: 'Dindigul', tier: 'Gold', mtdSales: '₹5.1 L', status: 'Active' },
-  { name: 'Karthik Agencies', district: 'Erode', tier: 'Bronze', mtdSales: '₹1.6 L', status: 'Onboarding' },
-  { name: 'Annai Velankanni Agro', district: 'Thanjavur', tier: 'Silver', mtdSales: '₹2.9 L', status: 'Active' },
-];
-
-const REGIONAL_PERFORMANCE = [
-  { region: 'Trichy & Cauvery Delta', revenue: '₹18.2 L', growth: '+11%', dealers: 34 },
-  { region: 'Western Districts (Salem–Erode)', revenue: '₹14.6 L', growth: '+7%', dealers: 29 },
-  { region: 'Southern Districts (Madurai–Dindigul)', revenue: '₹16.9 L', growth: '+14%', dealers: 38 },
-  { region: 'Northern Districts (Vellore–Krishnagiri)', revenue: '₹11.7 L', growth: '+4%', dealers: 27 },
-];
-
-const BULK_ORDERS = [
-  { id: 'BLK-2201', dealer: 'Murugan Agro Centre', product: 'NPK 19:19:19 Soluble Fertilizer', qty: '200 bags (MOQ 50)', status: 'Awaiting Approval' },
-  { id: 'BLK-2202', dealer: 'Senthil Nursery & Agencies', product: 'Hybrid Tomato Seeds — Swaraksha Plus', qty: '500 packs (MOQ 50)', status: 'Approved · Dispatch Pending' },
-  { id: 'BLK-2203', dealer: 'Annai Velankanni Agro', product: 'FMC Coragen Insecticide', qty: '150 units (MOQ 25)', status: 'Quotation Sent' },
-];
-
-function StatCard({ label, value, delta, up, icon: Icon }: { label: string; value: string; delta: string; up: boolean; icon: any }) {
-  return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
-      <div className="flex items-center justify-between mb-3">
-        <div className="h-9 w-9 rounded-xl bg-[#1B6B3A]/10 text-[#1B6B3A] flex items-center justify-center">
-          <Icon className="h-4.5 w-4.5" />
-        </div>
-        <span className={`inline-flex items-center gap-1 text-[11px] font-extrabold px-2 py-1 rounded-full ${up ? 'bg-emerald-50 text-emerald-700' : 'bg-[#D94F3D]/10 text-[#D94F3D]'}`}>
-          {up ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
-          {delta}
-        </span>
-      </div>
-      <p className="text-2xl font-extrabold text-slate-800">{value}</p>
-      <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-1">{label}</p>
-    </div>
-  );
+// Resize an uploaded image to a reasonable size and return a JPEG data URL so we
+// don't bloat storage with multi-MB photos.
+function readImageResized(file: File | undefined, onLoad: (url: string) => void) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => {
+      const max = 900;
+      let { width, height } = img;
+      if (width > max || height > max) {
+        if (width > height) { height = Math.round((height * max) / width); width = max; }
+        else { width = Math.round((width * max) / height); height = max; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) { ctx.drawImage(img, 0, 0, width, height); onLoad(canvas.toDataURL('image/jpeg', 0.82)); }
+      else onLoad(ev.target?.result as string);
+    };
+    img.onerror = () => onLoad(ev.target?.result as string);
+    img.src = ev.target?.result as string;
+  };
+  reader.readAsDataURL(file);
 }
 
-const statusPill = (status: string) => {
-  const map: Record<string, string> = {
-    'Delivered': 'bg-emerald-50 text-emerald-700',
-    'Dispatched': 'bg-sky-50 text-sky-700',
-    'Processing': 'bg-amber-50 text-amber-800',
-    'Confirmed': 'bg-slate-100 text-slate-600',
-    'Healthy': 'bg-emerald-50 text-emerald-700',
-    'Low Stock': 'bg-amber-50 text-amber-800',
-    'Reorder Now': 'bg-[#D94F3D]/10 text-[#D94F3D]',
-    'Active': 'bg-emerald-50 text-emerald-700',
-    'Onboarding': 'bg-amber-50 text-amber-800',
-    'Awaiting Approval': 'bg-amber-50 text-amber-800',
-    'Approved · Dispatch Pending': 'bg-sky-50 text-sky-700',
-    'Quotation Sent': 'bg-slate-100 text-slate-600',
-  };
-  return map[status] || 'bg-slate-100 text-slate-600';
-};
+const statusPill = (s: string) => ({
+  Pending: 'bg-amber-50 text-amber-800 border-amber-200',
+  Approved: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  Rejected: 'bg-rose-50 text-rose-700 border-rose-200',
+}[s] || 'bg-slate-100 text-slate-600 border-slate-200');
 
-const tierPill = (tier: string) => {
-  const map: Record<string, string> = {
-    Gold: 'bg-[#E8A020]/15 text-[#9c6c0c]',
-    Silver: 'bg-slate-200 text-slate-700',
-    Bronze: 'bg-orange-100 text-orange-800',
-  };
-  return map[tier] || 'bg-slate-100 text-slate-600';
-};
+const payPill = (s: string) => ({
+  None: 'bg-slate-100 text-slate-500 border-slate-200',
+  Requested: 'bg-sky-50 text-sky-700 border-sky-200',
+  Paid: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+}[s] || 'bg-slate-100 text-slate-500 border-slate-200');
 
-export default function PartnerPortalComponent({
-  lang,
-  setCurrentPage,
-  userProfile
-}: PartnerPortalComponentProps) {
-  const [tab, setTab] = useState<PortalTab>('dealer');
+export default function PartnerPortalComponent({ setCurrentPage, userProfile }: PartnerPortalComponentProps) {
+  const isAdmin = userProfile?.role === 'admin';
+  const [tab, setTab] = useState<SellerTab>('sell');
+  const [sellers, setSellers] = useState<Seller[]>(() => getSellers());
+
+  // ── Become-a-Seller form ──────────────────────────────────────────────────
+  const blank = { name: '', phone: '', productName: '', price: '', quantity: '', bankDetails: '', productImage: '' };
+  const [form, setForm] = useState({ ...blank });
+  const [agree, setAgree] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const refresh = () => setSellers(getSellers());
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || form.phone.length < 10 || !form.productName.trim() || !form.price || !form.quantity || !form.bankDetails.trim()) {
+      alert('Please fill all fields (name, 10-digit phone, product, price, quantity and bank details).');
+      return;
+    }
+    if (!agree) { alert('Please accept the seller terms & conditions to continue.'); return; }
+    const seller: Seller = {
+      id: 'sel-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      name: form.name.trim(), phone: form.phone.trim(), productName: form.productName.trim(),
+      price: Number(form.price) || 0, quantity: Number(form.quantity) || 0,
+      bankDetails: form.bankDetails.trim(), productImage: form.productImage || undefined,
+      status: 'Pending', paymentStatus: 'None', createdAt: new Date().toISOString(),
+    };
+    const next = [seller, ...getSellers()];
+    saveSellers(next); setSellers(next);
+    setForm({ ...blank }); setAgree(false); setSubmitted(true);
+  };
+
+  // ── Seller dashboard (lookup by phone) ────────────────────────────────────
+  const [lookupPhone, setLookupPhone] = useState('');
+  const myListings = lookupPhone.trim().length >= 4
+    ? sellers.filter((s) => s.phone.includes(lookupPhone.trim()))
+    : [];
+
+  // ── Admin actions ─────────────────────────────────────────────────────────
+  const updateSeller = (id: string, patch: Partial<Seller>) => {
+    const next = getSellers().map((s) => (s.id === id ? { ...s, ...patch } : s));
+    saveSellers(next); setSellers(next);
+  };
+  const removeSeller = (id: string) => {
+    if (!window.confirm('Remove this seller submission?')) return;
+    const next = getSellers().filter((s) => s.id !== id);
+    saveSellers(next); setSellers(next);
+  };
+
+  const TERMS = [
+    'Products listed must be genuine, in good condition and accurately described.',
+    'IGO Agri Mart verifies every listing before it is approved for sale.',
+    'Agreed price is final; IGO Agri Mart may deduct a small platform/handling fee.',
+    'Payouts are made to the bank details you provide, after the product is received and verified.',
+    'You authorise IGO Agri Mart to communicate with you about your listing and payout.',
+  ];
 
   return (
     <div className="bg-[#F7F9F4] min-h-screen py-10 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-5xl mx-auto">
 
         {/* Breadcrumb */}
         <nav className="text-xs text-slate-500 mb-6 font-mono">
           <span className="cursor-pointer hover:text-[#1B6B3A]" onClick={() => setCurrentPage('home')}>Home</span>
           <span className="mx-2">/</span>
-          <span className="text-slate-850 font-bold">Partner Portal</span>
+          <span className="text-slate-850 font-bold">Sell on IGO Agri Mart</span>
         </nav>
 
         {/* Header */}
-        <div className="bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-100 mb-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 h-40 w-40 bg-[#1B6B3A]/5 rounded-bl-full pointer-events-none"></div>
-          <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 bg-[#1B6B3A]/10 text-[#1B6B3A] text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">
-              <Sparkles className="h-3.5 w-3.5" /> Dealer & Distributor Network · Demo Preview
-            </span>
-            <h2 className="font-display font-extrabold text-[#1B6B3A] text-3xl sm:text-4xl mt-4 tracking-tight flex items-center gap-3">
-              <Store className="h-8 w-8 sm:h-9 sm:w-9 shrink-0" />
-              {lang === 'ta' ? 'பார்ட்னர் போர்டல் — டீலர் & விநியோகஸ்தர்' : 'Partner Portal — Dealer & Distributor Network'}
-            </h2>
-            <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-              {lang === 'ta'
-                ? 'IGO டீலர் மற்றும் விநியோகஸ்தர் வலையமைப்புக்கான டாஷ்போர்டுகளின் முன்னோட்டம் — தயாரிப்பு மேலாண்மை, இருப்பு, ஆர்டர்கள், விற்பனை பகுப்பாய்வு, கமிஷன் கண்காணிப்பு மற்றும் பிராந்திய செயல்திறன் ஆகியவற்றை ஒரே இடத்தில் காட்டுகிறது.'
-                : 'A preview of the dashboards envisioned for IGO’s Dealer & Distributor network — product & inventory management, order queues, sales analytics, wallet/commission tracking, and regional performance, all in one place.'}
-            </p>
-          </div>
+        <div className="bg-white rounded-2xl p-6 sm:p-9 shadow-sm border border-slate-100 mb-7 relative overflow-hidden">
+          <div className="absolute top-0 right-0 h-40 w-40 bg-[#1B6B3A]/5 rounded-bl-full pointer-events-none" />
+          <span className="inline-flex items-center gap-1.5 bg-[#1B6B3A]/10 text-[#1B6B3A] text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">
+            <Sparkles className="h-3.5 w-3.5" /> Become a Seller
+          </span>
+          <h2 className="font-display font-extrabold text-[#1B6B3A] text-3xl sm:text-4xl mt-4 tracking-tight flex items-center gap-3">
+            <Store className="h-8 w-8 shrink-0" /> Sell your products on IGO Agri Mart
+          </h2>
+          <p className="text-sm text-slate-600 mt-3 leading-relaxed max-w-2xl">
+            List your product with price and quantity, our team verifies it, and once approved you track everything —
+            status, messages and your payment proof — right here in your seller dashboard.
+          </p>
         </div>
 
-        {/* Tab Switcher */}
-        <div className="inline-flex bg-white rounded-full border border-slate-100 shadow-sm p-1 mb-7">
-          <button
-            onClick={() => setTab('dealer')}
-            className={`flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider px-5 py-2.5 rounded-full transition ${tab === 'dealer' ? 'bg-[#1B6B3A] text-white' : 'text-slate-500 hover:text-[#1B6B3A]'}`}
-          >
-            <Store className="h-4 w-4" /> {lang === 'ta' ? 'டீலர் டாஷ்போர்டு' : 'Dealer Dashboard'}
-          </button>
-          <button
-            onClick={() => setTab('distributor')}
-            className={`flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider px-5 py-2.5 rounded-full transition ${tab === 'distributor' ? 'bg-[#1B6B3A] text-white' : 'text-slate-500 hover:text-[#1B6B3A]'}`}
-          >
-            <Truck className="h-4 w-4" /> {lang === 'ta' ? 'விநியோகஸ்தர் டாஷ்போர்டு' : 'Distributor Dashboard'}
-          </button>
+        {/* Tabs */}
+        <div className="inline-flex bg-white rounded-full border border-slate-100 shadow-sm p-1 mb-7 flex-wrap">
+          {([['sell', 'Become a Seller'], ['dashboard', 'Seller Dashboard'], ...(isAdmin ? [['review', 'Seller Approvals'] as [SellerTab, string]] : [])] as [SellerTab, string][]).map(([key, label]) => (
+            <button key={key} onClick={() => setTab(key)}
+              className={'flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider px-5 py-2.5 rounded-full transition ' + (tab === key ? 'bg-[#1B6B3A] text-white' : 'text-slate-500 hover:text-[#1B6B3A]')}>
+              {key === 'sell' ? <Store className="h-4 w-4" /> : key === 'dashboard' ? <Package className="h-4 w-4" /> : <ClipboardCheck className="h-4 w-4" />}
+              {label}{key === 'review' && sellers.filter((s) => s.status === 'Pending').length > 0 ? ' (' + sellers.filter((s) => s.status === 'Pending').length + ')' : ''}
+            </button>
+          ))}
         </div>
 
-        {tab === 'dealer' ? (
-          <div className="space-y-6">
-            {/* KPI Row */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {DEALER_KPIS.map((k, i) => (
-                <div key={i}>
-                  <StatCard label={k.label} value={k.value} delta={k.delta} up={k.up} icon={k.icon} />
+        {/* ── BECOME A SELLER ─────────────────────────────────────────────── */}
+        {tab === 'sell' && (
+          <div className="grid lg:grid-cols-3 gap-6">
+            <form onSubmit={handleSubmit} className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-sm">
+              <h3 className="font-display font-black text-slate-900 text-lg">List your product</h3>
+              {submitted && (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-800 flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 mt-0.5 shrink-0" />
+                  <span>Submitted! Our team will verify it shortly. Track it in the <b>Seller Dashboard</b> tab using your phone number.</span>
                 </div>
-              ))}
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-6">
-              {/* Orders queue */}
-              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
-                  <ClipboardList className="h-3.5 w-3.5" /> Orders Queue
-                </p>
-                <div className="space-y-3">
-                  {DEALER_ORDERS.map(o => (
-                    <div key={o.id} className="flex items-center justify-between gap-3 border-b border-slate-50 pb-3 last:border-0 last:pb-0">
-                      <div className="min-w-0">
-                        <p className="text-xs font-extrabold text-slate-800">{o.id} · {o.customer}</p>
-                        <p className="text-[11px] text-slate-400 line-clamp-1">{o.items}</p>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <p className="text-xs font-extrabold text-slate-800">{o.amount}</p>
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${statusPill(o.status)}`}>{o.status}</span>
-                      </div>
-                    </div>
-                  ))}
+              )}
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Your Name</label>
+                  <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g. Murugan" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold" />
                 </div>
-              </div>
-
-              {/* Inventory */}
-              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
-                  <Package className="h-3.5 w-3.5" /> Inventory Health
-                </p>
-                <div className="space-y-3">
-                  {DEALER_INVENTORY.map((p, i) => (
-                    <div key={i} className="flex items-center justify-between gap-3 border-b border-slate-50 pb-3 last:border-0 last:pb-0">
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-slate-800 line-clamp-1">{p.name}</p>
-                        <p className="text-[11px] text-slate-400">Stock: {p.stock} units · Reorder at {p.reorderAt}</p>
-                      </div>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${statusPill(p.status)}`}>{p.status}</span>
-                    </div>
-                  ))}
+                <div>
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Phone Number</label>
+                  <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} placeholder="10-digit mobile" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold" />
                 </div>
-              </div>
-            </div>
-
-            {/* Wallet & Commission */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
-                <Wallet className="h-3.5 w-3.5" /> Dealer Wallet & Commission Tracking
-              </p>
-              <div className="grid sm:grid-cols-3 gap-4">
-                {DEALER_COMMISSION.map((c, i) => (
-                  <div key={i} className="bg-[#F7F9F4] rounded-xl border border-slate-100 p-4">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{c.period}</p>
-                    <p className="text-lg font-extrabold text-slate-800 mt-1">{c.earned}</p>
-                    <p className="text-[11px] text-slate-500 mt-1">Sales: {c.sales} · Rate: {c.commissionRate}</p>
+                <div className="sm:col-span-2">
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Product Name</label>
+                  <input value={form.productName} onChange={(e) => setForm({ ...form, productName: e.target.value })} placeholder="e.g. Organic Vermicompost 25kg" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Price (Rs.)</label>
+                  <input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} placeholder="e.g. 450" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Quantity available</label>
+                  <input type="number" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value })} placeholder="e.g. 50" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold" />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Bank Details (for your payout)</label>
+                  <textarea value={form.bankDetails} onChange={(e) => setForm({ ...form, bankDetails: e.target.value })} rows={2} placeholder="Account holder, A/c number, IFSC, or UPI ID" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold resize-none" />
+                  <p className="text-[10px] text-slate-400 mt-1 flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Shared only with the IGO Agri Mart team for your payout.</p>
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Product Photo (optional)</label>
+                  <div className="flex items-center gap-3">
+                    <label className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-2 rounded-lg cursor-pointer inline-flex items-center gap-1.5 transition">
+                      <Upload className="h-3.5 w-3.5" /> Upload Photo
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageResized(e.target.files?.[0], (url) => setForm((f) => ({ ...f, productImage: url })))} />
+                    </label>
+                    {form.productImage && <img src={form.productImage} alt="" className="h-12 w-12 rounded-lg object-cover border border-slate-200" />}
                   </div>
-                ))}
+                </div>
               </div>
+              <label className="flex items-start gap-2 text-xs text-slate-600">
+                <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} className="mt-0.5 h-4 w-4 accent-[#1B6B3A]" />
+                <span>I accept the seller <b>terms &amp; conditions</b> shown on the right.</span>
+              </label>
+              <button type="submit" className="bg-[#1B6B3A] hover:bg-[#15532d] text-white font-black text-sm px-6 py-3 rounded-xl transition w-full sm:w-auto">Save &amp; Submit for Verification</button>
+            </form>
+
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm h-fit">
+              <h4 className="font-display font-black text-slate-900 text-sm flex items-center gap-1.5"><ClipboardCheck className="h-4 w-4 text-[#1B6B3A]" /> Terms &amp; Conditions</h4>
+              <ul className="mt-3 space-y-2.5">
+                {TERMS.map((t, i) => (
+                  <li key={i} className="text-[11px] text-slate-600 leading-relaxed flex items-start gap-2"><CheckCircle className="h-3.5 w-3.5 text-[#1B6B3A] mt-0.5 shrink-0" /> {t}</li>
+                ))}
+              </ul>
             </div>
           </div>
-        ) : (
-          <div className="space-y-6">
-            {/* KPI Row */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {DISTRIBUTOR_KPIS.map((k, i) => (
-                <div key={i}>
-                  <StatCard label={k.label} value={k.value} delta={k.delta} up={k.up} icon={k.icon} />
-                </div>
-              ))}
-            </div>
+        )}
 
-            <div className="grid lg:grid-cols-2 gap-6">
-              {/* Dealer roster */}
-              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
-                  <Users className="h-3.5 w-3.5" /> Dealer Management Roster
-                </p>
-                <div className="space-y-3">
-                  {DEALER_ROSTER.map((d, i) => (
-                    <div key={i} className="flex items-center justify-between gap-3 border-b border-slate-50 pb-3 last:border-0 last:pb-0">
-                      <div className="min-w-0">
-                        <p className="text-xs font-extrabold text-slate-800 flex items-center gap-1.5">
-                          {d.name}
-                          <span className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded-full ${tierPill(d.tier)}`}>{d.tier}</span>
-                        </p>
-                        <p className="text-[11px] text-slate-400 flex items-center gap-1"><MapPin className="h-3 w-3" /> {d.district} · MTD: {d.mtdSales}</p>
-                      </div>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${statusPill(d.status)}`}>{d.status}</span>
-                    </div>
-                  ))}
+        {/* ── SELLER DASHBOARD ────────────────────────────────────────────── */}
+        {tab === 'dashboard' && (
+          <div className="space-y-5">
+            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Enter your phone number to see your listings</label>
+              <div className="flex gap-2 max-w-sm">
+                <div className="relative flex-1">
+                  <Phone className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                  <input value={lookupPhone} onChange={(e) => setLookupPhone(e.target.value.replace(/\D/g, '').slice(0, 10))} placeholder="Your 10-digit number" className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2.5 text-xs font-bold" />
                 </div>
-              </div>
-
-              {/* Bulk orders */}
-              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
-                  <ClipboardList className="h-3.5 w-3.5" /> Bulk Orders / RFQ Queue
-                </p>
-                <div className="space-y-3">
-                  {BULK_ORDERS.map(b => (
-                    <div key={b.id} className="flex items-center justify-between gap-3 border-b border-slate-50 pb-3 last:border-0 last:pb-0">
-                      <div className="min-w-0">
-                        <p className="text-xs font-extrabold text-slate-800">{b.id} · {b.dealer}</p>
-                        <p className="text-[11px] text-slate-400 line-clamp-1">{b.product} — {b.qty}</p>
-                      </div>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${statusPill(b.status)}`}>{b.status}</span>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-[10px] text-slate-400 mt-3 flex items-start gap-1.5">
-                  <Info className="h-3 w-3 mt-0.5 shrink-0" />
-                  Bulk-order thresholds reference each product's <span className="font-bold">MOQ</span> field — already added to the catalog data model.
-                </p>
+                <button onClick={refresh} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 rounded-lg">Refresh</button>
               </div>
             </div>
 
-            {/* Regional performance */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
-                <BarChart3 className="h-3.5 w-3.5" /> Regional Performance & Revenue Dashboard
-              </p>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {REGIONAL_PERFORMANCE.map((r, i) => (
-                  <div key={i} className="bg-[#F7F9F4] rounded-xl border border-slate-100 p-4 flex items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="text-xs font-bold text-slate-800 line-clamp-1">{r.region}</p>
-                      <p className="text-[11px] text-slate-400">{r.dealers} active dealers</p>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <p className="text-sm font-extrabold text-slate-800">{r.revenue}</p>
-                      <span className="text-[10px] font-bold text-emerald-700">{r.growth}</span>
+            {lookupPhone.trim().length < 4 ? (
+              <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center text-sm text-slate-400">Enter your phone number above to view your product listings and payment status.</div>
+            ) : myListings.length === 0 ? (
+              <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center text-sm text-slate-400">No listings found for this number. Submit one in the <b>Become a Seller</b> tab.</div>
+            ) : (
+              <div className="space-y-4">
+                {myListings.map((s) => (
+                  <div key={s.id} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                    <div className="flex items-start gap-4">
+                      {s.productImage && <img src={s.productImage} alt="" className="h-16 w-16 rounded-xl object-cover border border-slate-200 shrink-0" />}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h4 className="font-display font-black text-slate-900 text-base">{s.productName}</h4>
+                          <span className={'text-[10px] font-black uppercase px-2 py-0.5 rounded-full border ' + statusPill(s.status)}>{s.status}</span>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-1">Rs.{s.price.toLocaleString('en-IN')} · Qty {s.quantity} · Listed {new Date(s.createdAt).toLocaleDateString('en-IN')}</p>
+                        {s.adminMessage && (
+                          <div className="mt-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-[11px] text-amber-900"><b>Message from IGO:</b> {s.adminMessage}</div>
+                        )}
+                        <div className="mt-2 flex items-center gap-2 text-[11px]">
+                          <Banknote className="h-3.5 w-3.5 text-slate-400" />
+                          <span className="text-slate-500">Payment:</span>
+                          <span className={'font-black px-2 py-0.5 rounded-full border ' + payPill(s.paymentStatus)}>{s.paymentStatus === 'None' ? 'Pending' : s.paymentStatus}</span>
+                        </div>
+                        {s.paymentProofImage && (
+                          <div className="mt-3">
+                            <p className="text-[10px] font-black uppercase tracking-wide text-emerald-700 mb-1">Payment proof from IGO</p>
+                            <img src={s.paymentProofImage} alt="payment proof" className="max-h-56 rounded-xl border border-slate-200" />
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            )}
+          </div>
+        )}
+
+        {/* ── ADMIN: SELLER APPROVALS ─────────────────────────────────────── */}
+        {tab === 'review' && isAdmin && (
+          <div className="space-y-4">
+            {sellers.length === 0 ? (
+              <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center text-sm text-slate-400">No seller submissions yet.</div>
+            ) : (
+              [...sellers].sort((a, b) => (a.status === 'Pending' ? -1 : 1) - (b.status === 'Pending' ? -1 : 1)).map((s) => (
+                <div key={s.id} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      {s.productImage && <img src={s.productImage} alt="" className="h-14 w-14 rounded-xl object-cover border border-slate-200" />}
+                      <div>
+                        <h4 className="font-black text-slate-900 text-sm">{s.productName}</h4>
+                        <p className="text-[11px] text-slate-500">{s.name} · {s.phone}</p>
+                        <p className="text-[11px] text-slate-700 font-bold mt-0.5 flex items-center gap-1"><IndianRupee className="h-3 w-3" />{s.price.toLocaleString('en-IN')} · Qty {s.quantity}</p>
+                      </div>
+                    </div>
+                    <span className={'text-[10px] font-black uppercase px-2 py-1 rounded-full border ' + statusPill(s.status)}>{s.status}</span>
+                  </div>
+
+                  <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg p-3 text-[11px] text-slate-700">
+                    <span className="font-black text-slate-500 uppercase tracking-wide text-[9px] block mb-0.5">Payout bank details</span>
+                    {s.bankDetails}
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <button onClick={() => updateSeller(s.id, { status: 'Approved' })} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Approve</button>
+                    <button onClick={() => updateSeller(s.id, { status: 'Rejected' })} className="bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg">Reject</button>
+                    <button onClick={() => updateSeller(s.id, { paymentStatus: 'Requested' })} className="bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold px-3 py-1.5 rounded-lg">Request bank details</button>
+                    <label className="bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1.5">
+                      <Upload className="h-3.5 w-3.5" /> {s.paymentProofImage ? 'Replace payment proof' : 'Upload payment proof'}
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageResized(e.target.files?.[0], (url) => updateSeller(s.id, { paymentProofImage: url, paymentStatus: 'Paid' }))} />
+                    </label>
+                    <button onClick={() => removeSeller(s.id)} className="text-slate-400 hover:text-rose-600 text-xs font-bold px-2">Delete</button>
+                  </div>
+
+                  <div className="mt-3 flex gap-2">
+                    <input
+                      defaultValue={s.adminMessage || ''}
+                      onBlur={(e) => { if (e.target.value !== (s.adminMessage || '')) updateSeller(s.id, { adminMessage: e.target.value }); }}
+                      placeholder="Message to the seller (saved when you click away)…"
+                      className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs" />
+                  </div>
+
+                  <div className="mt-2 flex items-center gap-2 text-[11px]">
+                    <span className="text-slate-500">Payment status:</span>
+                    <span className={'font-black px-2 py-0.5 rounded-full border ' + payPill(s.paymentStatus)}>{s.paymentStatus}</span>
+                    {s.paymentProofImage && <img src={s.paymentProofImage} alt="" className="h-10 rounded border border-slate-200" />}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
 
         {/* Footer note */}
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-7 flex items-start gap-2.5">
-          <Award className="h-4 w-4 text-amber-700 shrink-0 mt-0.5" />
+          <Info className="h-4 w-4 text-amber-700 shrink-0 mt-0.5" />
           <p className="text-[11px] text-amber-900 leading-relaxed">
-            {lang === 'ta'
-              ? 'மாதிரி காட்சி: இந்த டாஷ்போர்டுகள் மாதிரி தரவுகளுடன் கட்டமைக்கப்பட்டுள்ளன. நேரடி பதிப்புக்கு பங்கு அடிப்படையிலான அங்கீகாரம், ஆர்டர்/இருப்பு backend மற்றும் கணக்கு லெட்ஜர் தேவை.'
-              : 'Demo Preview: these dashboards are built with sample data to illustrate the intended Dealer/Distributor experience. Going live requires role-based authentication, an order/inventory backend, and a wallet/commission ledger — see the Agri Mart 2.0 roadmap document for the phased plan.'}
+            Bank/payout details are sensitive. They are shared only with the IGO Agri Mart team for your payment. For full
+            production security, payout details should be held in a protected (access-controlled) store.
           </p>
         </div>
-        {userProfile?.role === 'admin' && (
-          <p className="text-[10px] text-slate-400 mt-3 font-mono">Signed in as Admin — in production this portal would be scoped to authenticated Dealer/Distributor accounts only.</p>
+        {!isAdmin && (
+          <p className="text-[10px] text-slate-400 mt-3 flex items-center gap-1"><Clock className="h-3 w-3" /> Seller approvals are managed by the IGO Agri Mart admin team.</p>
         )}
       </div>
     </div>
