@@ -33,7 +33,8 @@ import {
   getCategoryMeta, saveCategoryMeta, CategoryMeta,
   getCustomCategories, saveCustomCategories, CustomCategory,
   getComboConfig, saveComboConfig, ComboConfig,
-  getAgriEvents, saveAgriEvents, AgriEvent
+  getAgriEvents, saveAgriEvents, AgriEvent,
+  getSellers, saveSellers, Seller
 } from '../siteConfig';
 
 interface AdminComponentProps {
@@ -46,7 +47,7 @@ interface AdminComponentProps {
   setCurrentPage?: (p: string) => void;
 }
 
-type AdminTab = 'Dashboard' | 'Orders' | 'Leads' | 'Products' | 'Inventory' | 'Customers' | 'Reports' | 'Coupons' | 'Content' | 'Settings';
+type AdminTab = 'Dashboard' | 'Orders' | 'Leads' | 'Products' | 'Inventory' | 'Customers' | 'Sellers' | 'Reports' | 'Coupons' | 'Content' | 'Settings';
 
 interface CouponData {
   code: string;
@@ -65,6 +66,7 @@ const TAB_CONFIG: { id: AdminTab; label: string; icon: React.ElementType; color:
   { id: 'Products', label: 'Products', icon: Tag, color: 'text-violet-600' },
   { id: 'Inventory', label: 'Inventory', icon: Archive, color: 'text-orange-600' },
   { id: 'Customers', label: 'Customers', icon: Users, color: 'text-cyan-600' },
+  { id: 'Sellers', label: 'Sellers', icon: Store, color: 'text-emerald-600' },
   { id: 'Reports', label: 'Reports', icon: PieChart, color: 'text-pink-600' },
   { id: 'Coupons', label: 'Coupons', icon: Gift, color: 'text-amber-600' },
   { id: 'Content', label: 'Content', icon: Monitor, color: 'text-teal-600' },
@@ -80,6 +82,24 @@ export default function AdminComponent({ lang, products, setProducts, categories
   // Global combo offer (Frequently Bought Together) — one partner product + a
   // discount % shown alongside ANY product the customer views.
   const [comboCfg, setComboCfg] = useState<ComboConfig>(() => getComboConfig());
+
+  // Seller submissions (vendors who want to sell on the site).
+  const [sellers, setSellers] = useState<Seller[]>(() => getSellers());
+  const updateSeller = (id: string, patch: Partial<Seller>) => {
+    const next = getSellers().map((s) => (s.id === id ? { ...s, ...patch } : s));
+    saveSellers(next); setSellers(next);
+  };
+  const removeSeller = (id: string) => {
+    if (!window.confirm('Remove this seller submission?')) return;
+    const next = getSellers().filter((s) => s.id !== id);
+    saveSellers(next); setSellers(next);
+  };
+  const readSellerImage = (file: File | undefined, cb: (url: string) => void) => {
+    if (!file) return;
+    const r = new FileReader();
+    r.onload = (ev) => cb(ev.target?.result as string);
+    r.readAsDataURL(file);
+  };
 
   // Upcoming Agri Events editor.
   const [events, setEvents] = useState<AgriEvent[]>(() => getAgriEvents());
@@ -1346,6 +1366,76 @@ export default function AdminComponent({ lang, products, setProducts, categories
         </div>
         );
       })()}
+
+      {activeTab === 'Sellers' && (
+        <div className="space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h3 className="font-extrabold text-sm text-slate-800">Seller Submissions & Approvals ({sellers.length})</h3>
+          </div>
+          <div className="space-y-4">
+            {sellers.length === 0 ? (
+              <div className="py-16 text-center bg-white border border-slate-200 rounded-xl shadow-sm">
+                <Store className="h-12 w-12 text-slate-200 mx-auto mb-3" />
+                <p className="text-sm font-bold text-slate-400">No seller submissions yet.</p>
+              </div>
+            ) : (
+              [...sellers].sort((a, b) => (a.status === 'Pending' ? -1 : 1) - (b.status === 'Pending' ? -1 : 1)).map((s) => (
+                <div key={s.id} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      {s.productImage ? <img src={s.productImage} alt="" className="h-14 w-14 rounded-xl object-cover border border-slate-200" /> : <div className="h-14 w-14 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-center"><Store className="h-6 w-6 text-slate-300" /></div>}
+                      <div>
+                        <h4 className="font-black text-slate-900 text-sm">{s.productName}</h4>
+                        <p className="text-[11px] text-slate-500">{s.name} · {s.phone}</p>
+                        <p className="text-[11px] text-slate-700 font-bold mt-0.5 flex items-center gap-1">Rs.{s.price.toLocaleString('en-IN')} · Qty {s.quantity}</p>
+                      </div>
+                    </div>
+                    <span className={'text-[10px] font-black uppercase px-2 py-1 rounded-full border ' + 
+                      (s.status === 'Pending' ? 'bg-amber-50 text-amber-800 border-amber-200' :
+                       s.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                       'bg-rose-50 text-rose-700 border-rose-200')
+                    }>{s.status}</span>
+                  </div>
+
+                  <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg p-3 text-[11px] text-slate-700">
+                    <span className="font-black text-slate-500 uppercase tracking-wide text-[9px] block mb-0.5">Payout bank details</span>
+                    {s.bankDetails}
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <button onClick={() => updateSeller(s.id, { status: 'Approved' })} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Approve</button>
+                    <button onClick={() => updateSeller(s.id, { status: 'Rejected' })} className="bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg">Reject</button>
+                    <button onClick={() => updateSeller(s.id, { paymentStatus: 'Requested' })} className="bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold px-3 py-1.5 rounded-lg">Request bank details</button>
+                    <label className="bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1.5">
+                      <Upload className="h-3.5 w-3.5" /> {s.paymentProofImage ? 'Replace payment proof' : 'Upload payment proof'}
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => readSellerImage(e.target.files?.[0], (url) => updateSeller(s.id, { paymentProofImage: url, paymentStatus: 'Paid' }))} />
+                    </label>
+                    <button onClick={() => removeSeller(s.id)} className="text-slate-400 hover:text-rose-600 text-xs font-bold px-2">Delete</button>
+                  </div>
+
+                  <div className="mt-3 flex gap-2">
+                    <input
+                      defaultValue={s.adminMessage || ''}
+                      onBlur={(e) => { if (e.target.value !== (s.adminMessage || '')) updateSeller(s.id, { adminMessage: e.target.value }); }}
+                      placeholder="Message to the seller (saved when you click away)…"
+                      className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs" />
+                  </div>
+
+                  <div className="mt-2 flex items-center gap-2 text-[11px]">
+                    <span className="text-slate-500">Payment status:</span>
+                    <span className={'font-black px-2 py-0.5 rounded-full border ' + 
+                      (s.paymentStatus === 'None' ? 'bg-slate-100 text-slate-500 border-slate-200' :
+                       s.paymentStatus === 'Requested' ? 'bg-sky-50 text-sky-700 border-sky-200' :
+                       'bg-emerald-50 text-emerald-700 border-emerald-200')
+                    }>{s.paymentStatus === 'None' ? 'Pending' : s.paymentStatus}</span>
+                    {s.paymentProofImage && <img src={s.paymentProofImage} alt="" className="h-10 rounded border border-slate-200" />}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
 
       {activeTab === 'Reports' && (
         <div className="space-y-6">
