@@ -31,7 +31,8 @@ import {
   getComplexOverrides, saveComplexOverrides, ComplexOverrides,
   getSiteImages, saveSiteImages, SiteImages,
   getCategoryMeta, saveCategoryMeta, CategoryMeta,
-  getCustomCategories, saveCustomCategories, CustomCategory
+  getCustomCategories, saveCustomCategories, CustomCategory,
+  getCombos, saveCombos, ComboOffer
 } from '../siteConfig';
 
 interface AdminComponentProps {
@@ -75,6 +76,11 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
   const [orderSearchQuery, setOrderSearchQuery] = useState('');
   const [slotFilter, setSlotFilter] = useState<string>('All');
+  // Combo offers (Frequently Bought Together) editor state.
+  const [combos, setCombos] = useState<ComboOffer[]>(() => getCombos());
+  const [comboMain, setComboMain] = useState('');
+  const [comboPartner, setComboPartner] = useState('');
+  const [comboPrice, setComboPrice] = useState<number>(0);
   const [productSearchQuery, setProductSearchQuery] = useState('');
   const [customers, setCustomers] = useState<any[]>([]);
   const [custSearch, setCustSearch] = useState('');
@@ -197,7 +203,8 @@ export default function AdminComponent({ lang, products, setProducts, categories
     price: 350, mrp: 450, discount: 22,
     images: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=600&q=80',
     description: '', stock: 120, problemFilter: 'Growth Boosters',
-    unit: '', dosage: '', crops: '', isOrganic: false, expiryDate: '', origin: '', batchNumber: '', moq: 1
+    unit: '', dosage: '', crops: '', isOrganic: false, expiryDate: '', origin: '', batchNumber: '', moq: 1,
+    usage: '', composition: ''
   });
 
   const loadOrders = async () => {
@@ -314,7 +321,8 @@ export default function AdminComponent({ lang, products, setProducts, categories
       price: 350, mrp: 450, discount: 22,
       images: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=600&q=80',
       description: '', stock: 120, problemFilter: 'Growth Boosters',
-      unit: '', dosage: '', crops: '', isOrganic: false, expiryDate: '', origin: '', batchNumber: '', moq: 1
+      unit: '', dosage: '', crops: '', isOrganic: false, expiryDate: '', origin: '', batchNumber: '', moq: 1,
+      usage: '', composition: ''
     });
     setEditingProductId(null);
   };
@@ -323,11 +331,12 @@ export default function AdminComponent({ lang, products, setProducts, categories
     setNewProduct({
       name: p.name, category: p.category, subcategory: p.subcategory || '', brand: p.brand,
       price: p.price, mrp: p.mrp, discount: p.discount || 0,
-      images: p.images?.[0] || '', description: p.description || '', stock: p.stock,
+      images: (p.images || []).join('\n'), description: p.description || '', stock: p.stock,
       problemFilter: p.problemFilter || 'Growth Boosters',
       unit: p.unit || '', dosage: p.dosage || '', crops: (p.crops || []).join(', '),
       isOrganic: !!p.isOrganic, expiryDate: p.expiryDate || '', origin: p.origin || '',
-      batchNumber: p.batchNumber || '', moq: p.moq || 1
+      batchNumber: p.batchNumber || '', moq: p.moq || 1,
+      usage: p.usage || '', composition: p.composition || ''
     });
     setEditingProductId(p.id);
     setShowProductForm(true);
@@ -350,10 +359,33 @@ export default function AdminComponent({ lang, products, setProducts, categories
     alert('Done! Every product is refilled to 200 units.');
   };
 
+  // ── Combo offers (Frequently Bought Together) ──────────────────────────────
+  const comboSum = () => {
+    const m = products.find(p => p.name === comboMain);
+    const pn = products.find(p => p.name === comboPartner);
+    return (m?.price || 0) + (pn?.price || 0);
+  };
+  const handleAddCombo = () => {
+    if (!comboMain || !comboPartner || comboMain === comboPartner) {
+      alert('Pick two different products for the combo.'); return;
+    }
+    const price = comboPrice > 0 ? comboPrice : comboSum();
+    const next = [...combos.filter(c => c.mainName !== comboMain), { mainName: comboMain, partnerName: comboPartner, price }];
+    setCombos(next); saveCombos(next);
+    setComboMain(''); setComboPartner(''); setComboPrice(0);
+    alert('Combo saved! It now shows on the "' + comboMain + '" product page.');
+  };
+  const handleRemoveCombo = (mainName: string) => {
+    const next = combos.filter(c => c.mainName !== mainName);
+    setCombos(next); saveCombos(next);
+  };
+
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProduct.name.trim()) { alert('Product name is required.'); return; }
     const subcategory = newProduct.subcategory.trim() || newProduct.category;
+    // Support multiple gallery images — one URL/data-URI per line.
+    const imageList = (newProduct.images || '').split('\n').map(s => s.trim()).filter(Boolean);
 
     // Editing an existing product
     if (editingProductId) {
@@ -364,7 +396,10 @@ export default function AdminComponent({ lang, products, setProducts, categories
           name: newProduct.name, category: newProduct.category, subcategory,
           brand: newProduct.brand, price: Number(newProduct.price), mrp: Number(newProduct.mrp),
           discount: Number(newProduct.discount) || Math.round(((newProduct.mrp - newProduct.price) / newProduct.mrp) * 100),
-          images: [newProduct.images], description: newProduct.description || existing.description,
+          images: imageList.length ? imageList : existing.images,
+          description: newProduct.description || existing.description,
+          usage: newProduct.usage || existing.usage,
+          composition: newProduct.composition || existing.composition,
           stock: Number(newProduct.stock), problemFilter: newProduct.problemFilter,
           unit: newProduct.unit || undefined, dosage: newProduct.dosage || undefined,
           crops: newProduct.crops ? newProduct.crops.split(',').map(c => c.trim()).filter(Boolean) : undefined,
@@ -388,9 +423,12 @@ export default function AdminComponent({ lang, products, setProducts, categories
       name: newProduct.name, category: newProduct.category, subcategory,
       brand: newProduct.brand, price: Number(newProduct.price), mrp: Number(newProduct.mrp),
       discount: Number(newProduct.discount) || Math.round(((newProduct.mrp - newProduct.price) / newProduct.mrp) * 100),
-      images: [newProduct.images], description: newProduct.description || 'Premium quality agricultural input.',
+      images: imageList.length ? imageList : ['https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=600&q=80'],
+      description: newProduct.description || 'Premium quality agricultural input.',
       rating: 4.8, reviewCount: 1, stock: Number(newProduct.stock),
-      problemFilter: newProduct.problemFilter, usage: 'As directed on label.', composition: 'As per specification.',
+      problemFilter: newProduct.problemFilter,
+      usage: newProduct.usage || 'As directed on label.',
+      composition: newProduct.composition || 'As per specification.',
       isIgoOwn: brands.find(x => x.name === newProduct.brand)?.type === 'igo_own' || false,
       unit: newProduct.unit || undefined, dosage: newProduct.dosage || undefined,
       crops: newProduct.crops ? newProduct.crops.split(',').map(c => c.trim()).filter(Boolean) : undefined,
@@ -896,6 +934,39 @@ export default function AdminComponent({ lang, products, setProducts, categories
             </div>
           </div>
 
+          {/* Combo Offers editor — "Frequently Bought Together" */}
+          <div className="bg-amber-50/40 border border-amber-200 rounded-xl p-5 space-y-3">
+            <h4 className="font-extrabold text-xs text-[#B45309] uppercase tracking-widest">✨ Frequently Bought Together — Combo Offers</h4>
+            <p className="text-[11px] text-slate-500 leading-relaxed">Pick a <b>main product</b> + a <b>partner product</b> and set a combo price. It appears on the main product's page. Leave the price empty to auto-use the sum of both prices.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+              <select value={comboMain} onChange={e => setComboMain(e.target.value)} className="bg-white border rounded-lg p-2 text-xs font-bold">
+                <option value="">Main product…</option>
+                {products.map(p => <option key={p.id} value={p.name}>{p.name}</option>)}
+              </select>
+              <select value={comboPartner} onChange={e => setComboPartner(e.target.value)} className="bg-white border rounded-lg p-2 text-xs font-bold">
+                <option value="">Partner product…</option>
+                {products.map(p => <option key={p.id} value={p.name}>{p.name}</option>)}
+              </select>
+              <input type="number" value={comboPrice || ''} onChange={e => setComboPrice(Number(e.target.value))}
+                placeholder={comboMain && comboPartner ? ('Combo ₹ (auto ' + comboSum() + ')') : 'Combo price ₹'}
+                className="bg-white border rounded-lg p-2 text-xs font-bold" />
+              <button type="button" onClick={handleAddCombo} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-2 rounded-lg transition">Save Combo</button>
+            </div>
+            {combos.length > 0 && (
+              <div className="space-y-1.5 pt-1">
+                {combos.map(c => (
+                  <div key={c.mainName} className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs">
+                    <span className="font-bold text-slate-700">{c.mainName} <span className="text-slate-400">+</span> {c.partnerName}</span>
+                    <span className="flex items-center gap-3">
+                      <span className="font-black text-[#1B6B3A]">₹{c.price}</span>
+                      <button type="button" onClick={() => handleRemoveCombo(c.mainName)} className="text-rose-500 hover:text-rose-700 font-bold">Remove</button>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {showProductForm && (
             <form onSubmit={handleCreateProduct} className="bg-slate-50 border border-slate-200 rounded-xl p-6 max-w-2xl space-y-4">
               <h4 className="font-extrabold text-xs text-[#1B6B3A] uppercase tracking-widest pb-2 border-b border-slate-200">
@@ -954,33 +1025,53 @@ export default function AdminComponent({ lang, products, setProducts, categories
                     placeholder="e.g. 1kg, 500ml" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
                 </div>
                 <div className="col-span-2">
-                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Product Image (URL or Local File)</label>
-                  <div className="flex gap-2 items-center">
-                    <input type="text" value={newProduct.images} onChange={e => setNewProduct({...newProduct, images: e.target.value})}
-                      placeholder="Paste image URL here" className="flex-1 bg-white border rounded-lg p-2.5 text-xs font-bold" />
-                    <span className="text-xs font-bold text-slate-400">OR</span>
-                    <label className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2.5 rounded-lg cursor-pointer transition whitespace-nowrap">
-                      Upload File
-                      <input type="file" accept="image/*" className="hidden" onChange={e => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const reader = new FileReader();
-                          reader.onload = (ev) => setNewProduct({...newProduct, images: ev.target?.result as string});
-                          reader.readAsDataURL(file);
-                        }
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Product Gallery Images — one URL per line (first = main image)</label>
+                  <div className="flex gap-2 items-start">
+                    <textarea value={newProduct.images} onChange={e => setNewProduct({...newProduct, images: e.target.value})}
+                      rows={3} placeholder={'Paste one image URL per line.\nThe first one is shown as the main image.'}
+                      className="flex-1 bg-white border rounded-lg p-2.5 text-xs font-bold resize-y" />
+                    <label className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-2.5 rounded-lg cursor-pointer transition whitespace-nowrap">
+                      + Add Image
+                      <input type="file" accept="image/*" multiple className="hidden" onChange={e => {
+                        const files = Array.from(e.target.files || []);
+                        files.forEach(file => readImageFile(file, (url) => {
+                          setNewProduct(prev => ({ ...prev, images: prev.images ? prev.images.trim() + '\n' + url : url }));
+                        }));
+                        e.currentTarget.value = '';
                       }} />
                     </label>
                   </div>
-                  {newProduct.images && (
-                    <div className="mt-2">
-                      <img src={newProduct.images} alt="Preview" className="h-20 w-20 object-cover rounded-lg border border-slate-200 shadow-sm" />
-                    </div>
-                  )}
+                  {/* Thumbnail previews of every image, with a remove button */}
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {(newProduct.images || '').split('\n').map(s => s.trim()).filter(Boolean).map((url, idx) => (
+                      <div key={idx} className="relative group">
+                        <img src={url} alt={'Preview ' + (idx + 1)} className="h-16 w-16 object-cover rounded-lg border border-slate-200 shadow-sm" onError={(ev) => { (ev.target as HTMLImageElement).style.opacity = '0.3'; }} />
+                        {idx === 0 && <span className="absolute -top-1.5 -left-1.5 bg-[#1B6B3A] text-white text-[8px] font-black px-1.5 py-0.5 rounded-full">MAIN</span>}
+                        <button type="button" title="Remove image"
+                          onClick={() => setNewProduct(prev => {
+                            const arr = (prev.images || '').split('\n').map(x => x.trim()).filter(Boolean);
+                            arr.splice(idx, 1);
+                            return { ...prev, images: arr.join('\n') };
+                          })}
+                          className="absolute -top-1.5 -right-1.5 bg-rose-500 text-white h-4 w-4 rounded-full flex items-center justify-center text-[10px] font-black opacity-0 group-hover:opacity-100 transition">×</button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div className="col-span-2">
-                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Description</label>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Description <span className="text-slate-400 normal-case font-medium">(Product Overview tab)</span></label>
                   <textarea value={newProduct.description} onChange={e => setNewProduct({...newProduct, description: e.target.value})}
                     rows={2} className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold resize-none" />
+                </div>
+                <div className="col-span-2">
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Usage Instructions <span className="text-slate-400 normal-case font-medium">(Usage Instructions tab)</span></label>
+                  <textarea value={newProduct.usage} onChange={e => setNewProduct({...newProduct, usage: e.target.value})}
+                    rows={2} placeholder="e.g. Soak seeds 6 hours before sowing. Sow 1cm deep…" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold resize-none" />
+                </div>
+                <div className="col-span-2">
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Composition Details <span className="text-slate-400 normal-case font-medium">(Composition Details tab)</span></label>
+                  <textarea value={newProduct.composition} onChange={e => setNewProduct({...newProduct, composition: e.target.value})}
+                    rows={2} placeholder="e.g. 100% natural seeds, germination rate 90%…" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold resize-none" />
                 </div>
                 <div className="col-span-2 flex items-center gap-2">
                   <input type="checkbox" checked={newProduct.isOrganic} onChange={e => setNewProduct({...newProduct, isOrganic: e.target.checked})}

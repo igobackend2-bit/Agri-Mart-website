@@ -21,6 +21,7 @@ import { Product, Review } from '../types';
 import { translations, LanguageDict } from '../translation';
 import { fetchReviews, addReview } from '../dbHelper';
 import { sendInboxMessage } from '../storeData';
+import { getCombos } from '../siteConfig';
 
 interface ProductDetailProps {
   lang: 'en' | 'ta';
@@ -152,8 +153,18 @@ export default function ProductDetailComponent({
   const [newComment, setNewComment] = useState<string>('');
   const [reviewSuccess, setReviewSuccess] = useState<boolean>(false);
 
-  // Frequently bought elements
-  const frequentlyBoughtProduct = allProducts.find(x => x.category === product.category && x.id !== product.id) || allProducts[0];
+  // Frequently bought elements. Use the admin-defined combo for this product if
+  // one exists (Admin → Products → Combo Offers); otherwise auto-pick a same-
+  // category product and price it as the simple sum of the two.
+  const comboCfg = getCombos().find(c => c.mainName.toLowerCase() === product.name.toLowerCase());
+  const frequentlyBoughtProduct = comboCfg
+    ? (allProducts.find(x => x.name.toLowerCase() === comboCfg.partnerName.toLowerCase())
+        || allProducts.find(x => x.category === product.category && x.id !== product.id)
+        || allProducts[0])
+    : (allProducts.find(x => x.category === product.category && x.id !== product.id) || allProducts[0]);
+  const comboPrice = comboCfg
+    ? comboCfg.price
+    : (product.price + (frequentlyBoughtProduct?.price || 0));
 
   // Update active image when changing products
   useEffect(() => {
@@ -524,7 +535,7 @@ export default function ProductDetailComponent({
             <div className="flex items-center gap-4 shrink-0 text-center sm:text-right mt-4 sm:mt-0">
               <div>
                 <span className="text-[10px] text-slate-400 block uppercase font-bold">Bundle Price</span>
-                <span className="text-base font-black text-slate-900">₹{product.price + frequentlyBoughtProduct.price}</span>
+                <span className="text-base font-black text-slate-900">₹{comboPrice}</span>
               </div>
               <button
                 onClick={() => {
@@ -572,7 +583,7 @@ export default function ProductDetailComponent({
         <div className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-2">
           {activeTab === 'Overview' && (
             <div className="space-y-4">
-              <p>{product.description}</p>
+              <p>{liveProduct.description}</p>
               <div className="bg-[#F7F9F4] p-4 rounded-lg border border-slate-100 max-w-xl">
                 <h5 className="font-display font-bold text-[#1B6B3A] text-xs flex items-center gap-1.5 mb-2">
                   <Info className="h-4 w-4" />
@@ -589,7 +600,7 @@ export default function ProductDetailComponent({
             <div className="space-y-3">
               <h5 className="font-bold text-slate-800">Operational Instructions:</h5>
               <p className="bg-[#F7F9F4] p-4 rounded-lg text-slate-700 italic border-l-4 border-[#1B6B3A]">
-                {product.usage || "Place 1 tablet or dilute 2ml per 1 litre of clean water. Spray once early morning or late evening depending on weather."}
+                {liveProduct.usage || "Place 1 tablet or dilute 2ml per 1 litre of clean water. Spray once early morning or late evening depending on weather."}
               </p>
             </div>
           )}
@@ -598,7 +609,7 @@ export default function ProductDetailComponent({
             <div className="space-y-3">
               <h5 className="font-bold text-slate-800">Chemical and organic trace element structures:</h5>
               <p className="bg-[#F7F9F4] p-4 rounded-lg text-slate-700 italic border-l-4 border-[#E8A020]">
-                {product.composition || "100% genuine water soluble compound ingredients mapped under Indian agricultural regulations."}
+                {liveProduct.composition || "100% genuine water soluble compound ingredients mapped under Indian agricultural regulations."}
               </p>
             </div>
           )}

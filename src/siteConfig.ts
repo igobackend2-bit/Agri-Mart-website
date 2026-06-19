@@ -75,9 +75,18 @@ const KEYS = {
   pageContent: 'igo_page_content',
   categoryMeta: 'igo_category_meta',
   customCategories: 'igo_custom_categories',
+  combos: 'igo_combo_offers',
   adminPwdHash: 'igo_admin_pwd_hash',
   adminSession: 'igo_admin_session',
 } as const;
+
+// Admin-defined "Frequently Bought Together" combo offers. Matched to a product
+// by name so they survive catalog rebuilds.
+export interface ComboOffer {
+  mainName: string;     // main product name
+  partnerName: string;  // partner product name
+  price: number;        // combo bundle price (admin set; defaults to sum of the two)
+}
 
 import { supabase } from './lib/supabase';
 
@@ -208,6 +217,15 @@ export function getCustomCategories(): CustomCategory[] {
 }
 export function saveCustomCategories(list: CustomCategory[]): void {
   writeWithSync(KEYS.customCategories, list);
+}
+
+// ── Combo offers (admin "Frequently Bought Together") ────────────────────────
+export function getCombos(): ComboOffer[] {
+  const list = readJSON<ComboOffer[]>(KEYS.combos, []);
+  return Array.isArray(list) ? list.filter((c) => c && c.mainName && c.partnerName) : [];
+}
+export function saveCombos(list: ComboOffer[]): void {
+  writeWithSync(KEYS.combos, list);
 }
 
 // ── Category manager (admin edits each category's label + tile image) ────────
