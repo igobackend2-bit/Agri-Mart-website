@@ -436,7 +436,7 @@ export default function Header({
 
       {/* Global page navigation — shown on EVERY page */}
       <nav className="bg-white border-b border-slate-200 shadow-[0_1px_3px_rgba(15,23,42,0.04)] select-none">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-0.5 sm:gap-1 min-h-[50px] overflow-x-auto no-scrollbar whitespace-nowrap">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3 sm:gap-8 min-h-[50px] overflow-x-auto no-scrollbar whitespace-nowrap">
           {[
             { name: 'Home', action: () => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); } },
             { name: 'Shop', action: () => { setSelectedCategory(null); setCurrentPage('category'); } },
@@ -450,10 +450,10 @@ export default function Header({
             <button
               key={link.name}
               onClick={link.action}
-              className="relative px-3.5 sm:px-4 py-3.5 text-[12.5px] font-bold uppercase tracking-wide text-slate-600 hover:text-[#1B6B3A] hover:bg-emerald-50/60 rounded-md transition-colors group"
+              className="relative px-2 py-4 text-[13.5px] font-semibold text-slate-700 hover:text-[#1B6B3A] transition-colors group"
             >
               {link.name}
-              <span className="absolute left-3 right-3 bottom-1.5 h-[2.5px] w-0 group-hover:w-[calc(100%-1.5rem)] bg-gradient-to-r from-[#1B6B3A] to-[#E8A020] rounded-full transition-all duration-300" />
+              <span className="absolute left-0 bottom-0 h-[3px] w-full origin-center scale-x-0 group-hover:scale-x-100 bg-[#1B6B3A] transition-transform duration-300 ease-out rounded-t-full" />
             </button>
           ))}
         </div>
