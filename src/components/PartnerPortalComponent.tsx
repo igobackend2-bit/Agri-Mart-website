@@ -166,24 +166,24 @@ export default function PartnerPortalComponent({ setCurrentPage, userProfile }: 
                   <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} placeholder="10-digit mobile" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold" />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Product Name</label>
-                  <input value={form.productName} onChange={(e) => setForm({ ...form, productName: e.target.value })} placeholder="e.g. Organic Vermicompost 25kg" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold" />
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Product Name & Category</label>
+                  <input value={form.productName} onChange={(e) => setForm({ ...form, productName: e.target.value })} placeholder="e.g. Organic Vermicompost (Fertilizer)" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold" />
                 </div>
                 <div>
-                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Price (Rs.)</label>
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Price per Unit / Bag (Rs.)</label>
                   <input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} placeholder="e.g. 450" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold" />
                 </div>
                 <div>
-                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Quantity available</label>
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Total Units / Bags Available</label>
                   <input type="number" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value })} placeholder="e.g. 50" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold" />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Bank Details (for your payout)</label>
-                  <textarea value={form.bankDetails} onChange={(e) => setForm({ ...form, bankDetails: e.target.value })} rows={2} placeholder="Account holder, A/c number, IFSC, or UPI ID" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold resize-none" />
-                  <p className="text-[10px] text-slate-400 mt-1 flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Shared only with the IGO Agri Mart team for your payout.</p>
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Your Pickup Address & Bank Details</label>
+                  <textarea value={form.bankDetails} onChange={(e) => setForm({ ...form, bankDetails: e.target.value })} rows={3} placeholder="1. Complete pickup address&#10;2. Account holder name, A/c number, IFSC or UPI ID" className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold resize-none" />
+                  <p className="text-[10px] text-slate-400 mt-1 flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Shared only with the IGO Agri Mart team.</p>
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Product Photo (optional)</label>
+                  <label className="text-[10px] font-black uppercase tracking-wide text-slate-500 block mb-1">Product Photo (Highly Recommended)</label>
                   <div className="flex items-center gap-3">
                     <label className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-2 rounded-lg cursor-pointer inline-flex items-center gap-1.5 transition">
                       <Upload className="h-3.5 w-3.5" /> Upload Photo
