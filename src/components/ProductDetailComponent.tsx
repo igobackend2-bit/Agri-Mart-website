@@ -591,7 +591,7 @@ export default function ProductDetailComponent({
         <div className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-2">
           {activeTab === 'Overview' && (
             <div className="space-y-4">
-              <p>{liveProduct.description}</p>
+              <p>{product.description}</p>
               <div className="bg-[#F7F9F4] p-4 rounded-lg border border-slate-100 max-w-xl">
                 <h5 className="font-display font-bold text-[#1B6B3A] text-xs flex items-center gap-1.5 mb-2">
                   <Info className="h-4 w-4" />
@@ -607,8 +607,8 @@ export default function ProductDetailComponent({
           {activeTab === 'Usage' && (
             <div className="space-y-3">
               <h5 className="font-bold text-slate-800">Operational Instructions:</h5>
-              <p className="bg-[#F7F9F4] p-4 rounded-lg text-slate-700 italic border-l-4 border-[#1B6B3A]">
-                {liveProduct.usage || "Place 1 tablet or dilute 2ml per 1 litre of clean water. Spray once early morning or late evening depending on weather."}
+              <p className="bg-[#F7F9F4] p-4 rounded-lg text-slate-700 whitespace-pre-line border-l-4 border-[#1B6B3A]">
+                {product.usage || "Place 1 tablet or dilute 2ml per 1 litre of clean water. Spray once early morning or late evening depending on weather."}
               </p>
             </div>
           )}
@@ -616,8 +616,8 @@ export default function ProductDetailComponent({
           {activeTab === 'Composition' && (
             <div className="space-y-3">
               <h5 className="font-bold text-slate-800">Chemical and organic trace element structures:</h5>
-              <p className="bg-[#F7F9F4] p-4 rounded-lg text-slate-700 italic border-l-4 border-[#E8A020]">
-                {liveProduct.composition || "100% genuine water soluble compound ingredients mapped under Indian agricultural regulations."}
+              <p className="bg-[#F7F9F4] p-4 rounded-lg text-slate-700 whitespace-pre-line border-l-4 border-[#E8A020]">
+                {product.composition || "100% genuine water soluble compound ingredients mapped under Indian agricultural regulations."}
               </p>
             </div>
           )}
