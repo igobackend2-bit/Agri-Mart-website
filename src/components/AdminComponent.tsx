@@ -635,12 +635,16 @@ export default function AdminComponent({ lang, products, setProducts, categories
         <div className="space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Total Revenue', value: 'Rs.' + revenue.toLocaleString('en-IN'), icon: DollarSign, color: 'bg-emerald-50 text-emerald-700 border-emerald-200', sub: 'All-time non-cancelled' },
-              { label: 'Total Orders', value: orders.length, icon: ShoppingBag, color: 'bg-blue-50 text-blue-700 border-blue-200', sub: pendingOrders + ' pending' },
-              { label: 'Products', value: products.length, icon: Tag, color: 'bg-violet-50 text-violet-700 border-violet-200', sub: outOfStockProducts.length + ' out of stock' },
-              { label: 'Delivered', value: deliveredOrders, icon: CheckCircle, color: 'bg-green-50 text-green-700 border-green-200', sub: orders.filter(o=>o.status==='Dispatched').length + ' in transit' },
+              { label: 'Total Revenue', value: 'Rs.' + revenue.toLocaleString('en-IN'), icon: DollarSign, color: 'bg-emerald-50 text-emerald-700 border-emerald-200', sub: 'All-time non-cancelled', tab: 'Orders' },
+              { label: 'Total Orders', value: orders.length, icon: ShoppingBag, color: 'bg-blue-50 text-blue-700 border-blue-200', sub: pendingOrders + ' pending', tab: 'Orders' },
+              { label: 'Products', value: products.length, icon: Tag, color: 'bg-violet-50 text-violet-700 border-violet-200', sub: outOfStockProducts.length + ' out of stock', tab: 'Products' },
+              { label: 'Delivered', value: deliveredOrders, icon: CheckCircle, color: 'bg-green-50 text-green-700 border-green-200', sub: orders.filter(o=>o.status==='Dispatched').length + ' in transit', tab: 'Orders' },
             ].map((kpi, i) => (
-              <div key={i} className={'border rounded-xl p-4 ' + kpi.color}>
+              <div 
+                key={i} 
+                onClick={() => setActiveTab(kpi.tab as AdminTab)}
+                className={'border rounded-xl p-4 cursor-pointer hover:shadow-md hover:scale-[1.02] transition-all ' + kpi.color}
+              >
                 <div className="flex items-center justify-between mb-2">
                   <kpi.icon className="h-5 w-5 opacity-70" />
                   <span className="text-[10px] font-bold uppercase tracking-widest opacity-50">{kpi.label}</span>
