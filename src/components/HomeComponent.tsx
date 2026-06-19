@@ -465,7 +465,7 @@ export default function HomeComponent({
     return defaultProducts;
   };
 
-  const todaysOffers = getOverrideProducts("Today's Selection", [...products].sort((a, b) => {
+  const todaysOffers = getOverrideProducts("Freshly Arrived", [...products].sort((a, b) => {
     const da = a.mrp > 0 ? Math.round((1 - a.price / a.mrp) * 100) : 0;
     const db = b.mrp > 0 ? Math.round((1 - b.price / b.mrp) * 100) : 0;
     return db - da;
