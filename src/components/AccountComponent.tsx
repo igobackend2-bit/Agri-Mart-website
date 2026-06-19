@@ -605,14 +605,26 @@ export default function AccountComponent({
           {/* INBOX VIEW TAB */}
           {activeTab === 'Inbox' && (() => {
             // Full notification list = live order-status updates + saved messages.
-            const orderNotifs = orders.map((o) => ({
-              id: 'ord-' + o.id,
-              title: 'Order ' + o.id + ' — ' + o.status,
-              body: orderStatusLine(o.status),
-              createdAt: typeof o.createdAt === 'string' ? o.createdAt : new Date().toISOString(),
-              orderId: o.id,
-              canDelete: false,
-            }));
+            const orderNotifs = orders.flatMap((o) => {
+              const statusNotif = {
+                id: 'ord-' + o.id,
+                title: 'Order ' + o.id + ' — ' + o.status,
+                body: orderStatusLine(o.status),
+                createdAt: typeof o.createdAt === 'string' ? o.createdAt : new Date().toISOString(),
+                orderId: o.id,
+                canDelete: false,
+              };
+              // Admin → customer messages stored on the order (sync across devices).
+              const msgs = (o.messages || []).map((m) => ({
+                id: 'omsg-' + m.id,
+                title: '✉️ Message · Order ' + o.id,
+                body: m.body,
+                createdAt: m.createdAt,
+                orderId: o.id,
+                canDelete: false,
+              }));
+              return [statusNotif, ...msgs];
+            });
             const msgNotifs = inboxMsgs.map((m) => ({
               id: m.id, title: m.title, body: m.body, createdAt: m.createdAt, orderId: m.orderId, canDelete: true,
             }));

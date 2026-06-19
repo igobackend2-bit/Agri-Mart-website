@@ -63,14 +63,26 @@ export default function NotificationBell({ userProfile, setCurrentPage }: Notifi
       // Merge with the local mirror so admin status changes (same browser) show.
       const orders = mergeOrdersByStatus(cloud, getLocalOrders());
       const seen = readSeen();
-      const notifs: Notif[] = orders.map((o) => ({
-        id: 'ord-' + o.id,
-        title: `Order ${o.id} — ${o.status}`,
-        body: statusLine(o.status),
-        createdAt: typeof o.createdAt === 'string' ? o.createdAt : new Date().toISOString(),
-        read: seen[o.id] === o.status,
-        orderId: o.id,
-      }));
+      const notifs: Notif[] = orders.flatMap((o) => {
+        const statusNotif: Notif = {
+          id: 'ord-' + o.id,
+          title: `Order ${o.id} — ${o.status}`,
+          body: statusLine(o.status),
+          createdAt: typeof o.createdAt === 'string' ? o.createdAt : new Date().toISOString(),
+          read: seen[o.id] === o.status,
+          orderId: o.id,
+        };
+        // Admin → customer messages attached to the order (cross-device).
+        const msgs: Notif[] = ((o as any).messages || []).map((m: any) => ({
+          id: 'omsg-' + m.id,
+          title: `✉️ Message · Order ${o.id}`,
+          body: m.body,
+          createdAt: m.createdAt,
+          read: seen['omsg-' + m.id] === '1',
+          orderId: o.id,
+        }));
+        return [statusNotif, ...msgs];
+      });
       setOrderNotifs(notifs);
     } catch { /* offline — keep last */ }
   }, [uid]);
@@ -103,7 +115,10 @@ export default function NotificationBell({ userProfile, setCurrentPage }: Notifi
     // Mark inbox read + remember each order's current status as "seen".
     markInboxRead(email);
     const seen = readSeen();
-    orderNotifs.forEach((n) => { if (n.orderId) seen[n.orderId] = n.title.split('— ')[1] || ''; });
+    orderNotifs.forEach((n) => {
+      if (n.id.startsWith('omsg-')) seen[n.id] = '1';            // admin message → seen
+      else if (n.orderId) seen[n.orderId] = n.title.split('— ')[1] || ''; // order status → seen
+    });
     writeSeen(seen);
     refreshInbox();
     refreshOrders();

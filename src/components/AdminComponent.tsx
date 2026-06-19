@@ -10,7 +10,7 @@ import {
 import { Product, Order, Category, Brand } from '../types';
 import {
   fetchAllOrders, updateOrderStatus, seedProducts,
-  deleteProduct, addProduct, clearAndReseedProducts, fetchUserProfile
+  deleteProduct, addProduct, clearAndReseedProducts, fetchUserProfile, appendOrderMessage
 } from '../dbHelper';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
@@ -1990,8 +1990,8 @@ export default function AdminComponent({ lang, products, setProducts, categories
         );
         const totalSpent = customerOrders.filter(o => o.status !== 'Cancelled').reduce((sm, o) => sm + o.totalAmount, 0);
         return (
-          <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" style={{ background: 'rgba(15,23,42,0.55)' }} onClick={() => setViewOrder(null)}>
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl h-[95vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+          <div className="fixed inset-0 z-[999] bg-slate-100 overflow-y-auto">
+            <div className="bg-white w-full min-h-screen max-w-6xl mx-auto shadow-xl" onClick={e => e.stopPropagation()}>
               <div className="bg-[#1B6B3A] text-white px-6 py-4 flex items-center justify-between sticky top-0 z-10">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-200">Order Details</p>
@@ -2069,15 +2069,37 @@ export default function AdminComponent({ lang, products, setProducts, categories
 
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
                   <h4 className="font-extrabold text-xs text-slate-500 uppercase tracking-widest mb-2">Send Message to Customer Inbox</h4>
+                  {Array.isArray(viewOrder.messages) && viewOrder.messages.length > 0 && (
+                    <div className="mb-3 space-y-1.5">
+                      {viewOrder.messages.map((m) => (
+                        <div key={m.id} className="bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-700">
+                          <span className="block">{m.body}</span>
+                          <span className="text-[10px] text-slate-400">{new Date(m.createdAt).toLocaleString('en-IN')}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <textarea value={adminMsg} onChange={e => setAdminMsg(e.target.value)} rows={2}
                     placeholder="e.g. Your seeds batch is fresh stock from today's arrival — dispatching tomorrow morning."
                     className="w-full bg-white border border-slate-200 rounded-xl p-3 text-xs outline-none focus:border-[#1B6B3A] resize-none" />
                   <button
                     onClick={() => {
-                      if (!adminMsg.trim()) return;
-                      sendInboxMessage({ toEmail: cEmail || 'all', title: 'Message about order ' + viewOrder.id, body: adminMsg.trim(), orderId: viewOrder.id });
+                      const msg = adminMsg.trim();
+                      if (!msg) return;
+                      // 1) Local inbox (same-device) — instant.
+                      sendInboxMessage({ toEmail: cEmail || 'all', title: 'Message about order ' + viewOrder.id, body: msg, orderId: viewOrder.id });
+                      // 2) Attach to the order in Supabase so it reaches the customer
+                      //    reliably across devices (the shared local inbox does not).
+                      appendOrderMessage(viewOrder.id, msg).catch(() => { /* offline — local copy saved */ });
+                      // 3) Update the local order mirror so it shows immediately.
+                      try {
+                        const existing = Array.isArray(viewOrder.messages) ? viewOrder.messages : [];
+                        const withMsg = { ...viewOrder, messages: [...existing, { id: 'amsg-' + Date.now().toString(36), body: msg, createdAt: new Date().toISOString() }] };
+                        saveLocalOrder(withMsg);
+                        setViewOrder(withMsg);
+                      } catch { /* ignore */ }
                       setAdminMsg('');
-                      alert('Message sent to the customer profile inbox.');
+                      alert('Message sent to the customer — it will appear in their Inbox.');
                     }}
                     className="mt-2 bg-[#1B6B3A] text-white text-xs font-bold px-5 py-2 rounded-lg">
                     Send to Inbox

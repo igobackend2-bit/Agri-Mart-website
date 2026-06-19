@@ -115,6 +115,20 @@ export async function cancelUserOrder(orderId: string): Promise<void> {
   logErr('cancelUserOrder', error);
 }
 
+// Append an admin → customer message to the order itself. Because orders sync
+// per-user from Supabase, this reaches the customer reliably across devices
+// (unlike the shared local inbox which different devices overwrite).
+export async function appendOrderMessage(orderId: string, body: string): Promise<void> {
+  const { data } = await supabase.from(T_ORDERS).select('data').eq('id', orderId).maybeSingle();
+  if (!data) return;
+  const order: any = data.data || {};
+  const messages = Array.isArray(order.messages) ? order.messages : [];
+  messages.push({ id: 'amsg-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), body, createdAt: new Date().toISOString() });
+  const updated = { ...order, messages };
+  const { error } = await supabase.from(T_ORDERS).update({ data: updated }).eq('id', orderId);
+  logErr('appendOrderMessage', error);
+}
+
 // ── User profiles (Supabase + local mirror) ───────────────────────────────────
 // A local mirror guarantees the profile persists and is always retrievable even
 // if the Supabase `profiles` table isn't set up yet — so the customer always
