@@ -10,7 +10,7 @@ import {
 import { Product, Order, Category, Brand } from '../types';
 import {
   fetchAllOrders, updateOrderStatus, seedProducts,
-  deleteProduct, addProduct, clearAndReseedProducts
+  deleteProduct, addProduct, clearAndReseedProducts, fetchUserProfile
 } from '../dbHelper';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
@@ -104,6 +104,15 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const [leadStatusFilter, setLeadStatusFilter] = useState<'All' | LeadStatus>('All');
   const [viewOrder, setViewOrder] = useState<Order | null>(null);
   const [adminMsg, setAdminMsg] = useState('');
+  // Real customer profile (looked up by the order's userId) so the modal shows the
+  // actual buyer — not a stale name saved in the delivery address.
+  const [modalProfile, setModalProfile] = useState<any>(null);
+  useEffect(() => {
+    setModalProfile(null);
+    if (viewOrder?.userId) {
+      fetchUserProfile(viewOrder.userId).then((p) => { if (p) setModalProfile(p); }).catch(() => { /* ignore */ });
+    }
+  }, [viewOrder]);
   const [loadingCustomers, setLoadingCustomers] = useState(false);
   const [stockFilter, setStockFilter] = useState<'all' | 'low' | 'out'>('all');
   const [invSearch, setInvSearch] = useState('');
@@ -1504,6 +1513,32 @@ export default function AdminComponent({ lang, products, setProducts, categories
         <div className="space-y-6">
           <h3 className="font-extrabold text-sm text-slate-800">Content Management</h3>
 
+          {/* Upcoming Agri Events editor */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-1">🗓 Upcoming Agri Events</h4>
+            <p className="text-[11px] text-slate-400 mb-4">Add the trade shows, expos and farmer meets shown on the home page. While this list is empty, a built-in default set is shown.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-6 gap-2 mb-3">
+              <input value={newEvent.name} onChange={e => setNewEvent({ ...newEvent, name: e.target.value })} placeholder="Event name" className="sm:col-span-2 bg-slate-50 border rounded-lg p-2 text-xs font-bold" />
+              <input value={newEvent.city} onChange={e => setNewEvent({ ...newEvent, city: e.target.value })} placeholder="City" className="bg-slate-50 border rounded-lg p-2 text-xs font-bold" />
+              <input value={newEvent.date} onChange={e => setNewEvent({ ...newEvent, date: e.target.value })} placeholder="Date e.g. Jul 9-11, 2026" className="bg-slate-50 border rounded-lg p-2 text-xs font-bold" />
+              <select value={newEvent.type} onChange={e => setNewEvent({ ...newEvent, type: e.target.value })} className="bg-slate-50 border rounded-lg p-2 text-xs font-bold">
+                {['Trade Expo', 'Horticulture', 'AgriTech', 'National', 'Farmer Meet', 'International'].map(o => <option key={o}>{o}</option>)}
+              </select>
+              <input value={newEvent.emoji} onChange={e => setNewEvent({ ...newEvent, emoji: e.target.value })} placeholder="Emoji 🏭" maxLength={2} className="bg-slate-50 border rounded-lg p-2 text-xs font-bold text-center" />
+            </div>
+            <button onClick={handleAddEvent} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-4 py-2 rounded-lg transition">+ Add Event</button>
+            {events.length > 0 && (
+              <div className="mt-4 space-y-1.5">
+                {events.map((ev, idx) => (
+                  <div key={idx} className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs">
+                    <span className="font-bold text-slate-700 truncate">{ev.emoji} {ev.name} <span className="text-slate-400 font-medium">· {ev.city} · {ev.date} · {ev.type}</span></span>
+                    <button onClick={() => handleRemoveEvent(idx)} className="text-rose-500 hover:text-rose-700 font-bold shrink-0 ml-2">Remove</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Image Manager — swap key site images by URL or /images/ path */}
           <div className="bg-white border border-slate-200 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
@@ -1946,9 +1981,9 @@ export default function AdminComponent({ lang, products, setProducts, categories
       {/* ── CUSTOMER 360 / ORDER DETAIL MODAL ─────────────────────────── */}
       {viewOrder && (() => {
         const actualCustomer = customers.find(c => c.uid === viewOrder.userId);
-        const cEmail = (actualCustomer?.email || viewOrder.deliveryAddress?.email || '').toLowerCase();
-        const cName = actualCustomer?.name || viewOrder.deliveryAddress?.name || '-';
-        const cPhone = actualCustomer?.phone || viewOrder.phone || viewOrder.deliveryAddress?.phone || '';
+        const cEmail = (modalProfile?.email || actualCustomer?.email || viewOrder.deliveryAddress?.email || '').toLowerCase();
+        const cName = modalProfile?.name || actualCustomer?.name || viewOrder.deliveryAddress?.name || '-';
+        const cPhone = modalProfile?.phone || actualCustomer?.phone || viewOrder.phone || viewOrder.deliveryAddress?.phone || '';
         const customerOrders = orders.filter(o =>
           (cEmail && (o.deliveryAddress?.email || '').toLowerCase() === cEmail) ||
           (cPhone && (o.phone === cPhone || o.deliveryAddress?.phone === cPhone))
@@ -1970,9 +2005,9 @@ export default function AdminComponent({ lang, products, setProducts, categories
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
                   <h4 className="font-extrabold text-xs text-slate-500 uppercase tracking-widest mb-3">Customer Profile</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Name</span><span className="font-black text-slate-800">{cName}</span></div>
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Name</span><span className="font-black text-slate-900 text-sm">{cName}</span></div>
                     <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Phone</span><a href={'tel:' + cPhone} className="font-black text-[#1B6B3A]">{cPhone || '-'}</a></div>
-                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Email</span><span className="font-bold text-slate-700">{cEmail || '-'}</span></div>
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Email</span><span className="font-black text-slate-900 text-sm break-all">{cEmail || '-'}</span></div>
                     <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Pincode</span><span className="font-bold text-slate-700">{viewOrder.deliveryAddress?.pincode || '-'}</span></div>
                     <div className="sm:col-span-2"><span className="text-slate-400 font-bold block text-[10px] uppercase">Full Address</span>
                       <span className="font-bold text-slate-700">

@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { CartItem, Address, Order, OrderItem } from '../types';
 import { db, auth } from '../firebase';
-import { placeOrder } from '../dbHelper';
+import { placeOrder, fetchUserProfile } from '../dbHelper';
 import { getSettings } from '../siteConfig';
 import { isSignedIn, currentUid, markSignedIn } from '../session';
 import {
@@ -65,6 +65,21 @@ export default function CheckoutComponent({
       }
     });
     return () => unsub();
+  }, []);
+
+  // Pre-fill the customer's REAL identity from their logged-in profile so the
+  // order always carries the correct name / email / phone — instead of a previous
+  // device user's saved address (which caused admin to see the wrong customer).
+  useEffect(() => {
+    fetchUserProfile(currentUid()).then((p) => {
+      if (!p) return;
+      setFormData((f) => ({
+        ...f,
+        name: p.name || f.name,
+        email: p.email || f.email,
+        phone: p.phone || f.phone,
+      }));
+    }).catch(() => { /* ignore */ });
   }, []);
 
   const [detectingLoc, setDetectingLoc] = useState(false);
