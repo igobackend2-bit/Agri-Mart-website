@@ -1022,21 +1022,55 @@ export default function AdminComponent({ lang, products, setProducts, categories
                     placeholder="e.g. 1kg, 500ml" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
                 </div>
                 <div className="col-span-2">
-                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Product Gallery Images — one URL per line (first = main image)</label>
-                  <div className="flex gap-2 items-start">
-                    <textarea value={newProduct.images} onChange={e => setNewProduct({...newProduct, images: e.target.value})}
-                      rows={3} placeholder={'Paste one image URL per line.\nThe first one is shown as the main image.'}
-                      className="flex-1 bg-white border rounded-lg p-2.5 text-xs font-bold resize-y" />
-                    <label className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-2.5 rounded-lg cursor-pointer transition whitespace-nowrap">
-                      + Add Image
-                      <input type="file" accept="image/*" multiple className="hidden" onChange={e => {
-                        const files = Array.from(e.target.files || []);
-                        files.forEach(file => readImageFile(file, (url) => {
-                          setNewProduct(prev => ({ ...prev, images: prev.images ? prev.images.trim() + '\n' + url : url }));
-                        }));
-                        e.currentTarget.value = '';
-                      }} />
-                    </label>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Product Gallery Images (first = main image)</label>
+                  <div className="flex flex-col gap-2">
+                    {(newProduct.images || '').split('\n').map((url, idx) => (
+                      <div key={idx} className="flex gap-2 items-center">
+                        <input
+                          type="text"
+                          value={url}
+                          onChange={e => {
+                            const arr = (newProduct.images || '').split('\n');
+                            arr[idx] = e.target.value;
+                            setNewProduct({ ...newProduct, images: arr.join('\n') });
+                          }}
+                          placeholder={`Image URL ${idx + 1}`}
+                          className="flex-1 bg-white border rounded-lg p-2.5 text-xs font-bold"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const arr = (newProduct.images || '').split('\n');
+                            arr.splice(idx, 1);
+                            setNewProduct({ ...newProduct, images: arr.join('\n') });
+                          }}
+                          className="bg-rose-500 text-white px-3 py-2.5 rounded-lg font-bold text-xs hover:bg-rose-600 transition"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                    <div className="flex gap-2 mt-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setNewProduct({ ...newProduct, images: newProduct.images ? newProduct.images + '\n' : '\n' });
+                        }}
+                        className="bg-slate-200 text-slate-700 hover:bg-slate-300 text-xs font-bold px-4 py-2.5 rounded-lg transition"
+                      >
+                        + Add Image URL Field
+                      </button>
+                      <label className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-4 py-2.5 rounded-lg cursor-pointer transition whitespace-nowrap">
+                        + Upload File
+                        <input type="file" accept="image/*" multiple className="hidden" onChange={e => {
+                          const files = Array.from(e.target.files || []);
+                          files.forEach(file => readImageFile(file, (url) => {
+                            setNewProduct(prev => ({ ...prev, images: prev.images ? prev.images.trim() + '\n' + url : url }));
+                          }));
+                          e.currentTarget.value = '';
+                        }} />
+                      </label>
+                    </div>
                   </div>
                   {/* Thumbnail previews of every image, with a remove button */}
                   <div className="flex flex-wrap gap-2 mt-2">

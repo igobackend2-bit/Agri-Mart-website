@@ -270,10 +270,9 @@ export default function ProductDetailComponent({
             )}
           </div>
 
-          {/* Thumbnails (Supports up to 5 elements) */}
+          {/* Thumbnails */}
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
-            {Array.from({ length: 4 }).map((_, idx) => {
-              const imgUrl = product.images?.[idx] || product.images?.[0] || '/catalog/nursery-essentials/Pots.png';
+            {(product.images || ['/catalog/nursery-essentials/Pots.png']).map((imgUrl, idx) => {
               const isActive = activeImage === imgUrl;
               return (
                 <div
