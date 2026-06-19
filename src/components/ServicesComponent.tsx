@@ -208,6 +208,40 @@ export default function ServicesComponent({
               </div>
             ))}
           </div>
+
+          {/* Detailed portfolio — every individual project (igoagritechfarms.com) */}
+          <h4 className="font-display font-black text-slate-900 text-lg mt-12 mb-1">Explore Every Project We Build</h4>
+          <p className="text-sm text-slate-500 mb-5">Tap any project to request a free feasibility report and cost estimate from our engineering team.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              { t: 'Polyhouse Projects', img: 'https://www.igoagritechfarms.com/images/pr7.webp', d: 'Climate-controlled GI polyhouses, shade nets & fan-pad greenhouses for year-round, high-yield cultivation of vegetables, flowers and exotic crops — protected from pests, rain and heat.' },
+              { t: 'Hydroponic Projects', img: 'https://www.igoagritechfarms.com/images/pr3.webp', d: 'Soil-less NFT, DWC and drip hydroponic systems that grow clean, fast, high-density crops using up to 90% less water — ideal for leafy greens and exotic vegetables.' },
+              { t: 'Joint Venture Projects', img: 'https://www.igoagritechfarms.com/images/joint.jpg', d: 'Partner with IGO on a profit-sharing agri venture — we bring expertise, technology and management, you bring land — for a fully managed, bankable farm business.' },
+              { t: 'Vertical Farming Projects', img: 'https://www.igoagritechfarms.com/images/vertical1.jpg', d: 'Multi-tier indoor grow systems with LED lighting and climate control that maximise yield per square foot — perfect for urban and space-constrained sites.' },
+              { t: 'Open Cultivation Projects', img: 'https://www.igoagritechfarms.com/images/cultivation.png', d: 'Precision open-field plantations — dragon fruit, mango, guava, papaya and more — with drip irrigation, fertigation and full agronomy support for maximum ROI.' },
+              { t: 'Rooftop Projects', img: 'https://www.igoagritechfarms.com/images/rooftop1.jpg', d: 'Turn idle terraces into productive gardens — lightweight grow beds, containers and hydroponic units for fresh vegetables at home or on commercial rooftops.' },
+              { t: 'Floriculture Projects', img: 'https://www.igoagritechfarms.com/images/floriculture.avif', d: 'Commercial flower farming — rose, jasmine, marigold and exotic blooms — under climate-controlled precision for steady, high-value market supply.' },
+              { t: 'Goat Farming Projects', img: 'https://www.igoagritechfarms.com/images/pr4.webp', d: 'Scientifically designed goat & sheep units with proper shed engineering, breed selection, feeding and health management for profitable livestock returns.' },
+              { t: 'Horticulture Projects', img: 'https://www.igoagritechfarms.com/images/horticulture.webp', d: 'End-to-end fruit and vegetable orchard development — planning, planting, irrigation and crop care for sustainable, high-quality horticultural produce.' },
+              { t: 'Landscaping Projects', img: 'https://www.igoagritechfarms.com/images/pr1.webp', d: 'Professional landscape design and execution for homes, farms, resorts and institutions — lawns, gardens, hardscapes and green walls.' },
+              { t: 'Mushroom Cultivation Projects', img: 'https://www.igoagritechfarms.com/images/mushroom.jpeg', d: 'Low-space, high-return mushroom units — oyster, milky and button — with climate-controlled rooms, spawn supply and hands-on cultivation training.' },
+              { t: 'Pondliner Projects', img: 'https://www.igoagritechfarms.com/images/pondliner.jpg', d: 'HDPE / geomembrane pond liners for water storage, aquaculture and farm reservoirs — leak-proof, UV-stable and long-lasting water management.' },
+              { t: 'Solar Dryer Projects', img: 'https://www.igoagritechfarms.com/images/solar1.png', d: 'Solar-powered dehydration units to dry fruits, vegetables and spices hygienically — cutting post-harvest losses with clean, off-grid energy.' },
+              { t: 'Nursery Projects', img: 'https://www.igoagritechfarms.com/images/nursery.webp', d: 'Commercial plant nursery setup — poly/shade structures, mist systems and quality planting material for saplings, seedlings and grafts.' },
+              { t: 'Microgreens Farming Projects', img: 'https://www.igoagritechfarms.com/images/micro-2.png', d: 'Compact, fast-cycle microgreens production for premium urban and restaurant markets — high-margin, soil-less trays grown indoors year-round.' },
+            ].map((p) => (
+              <button key={p.t} type="button" onClick={() => setCurrentPage('contact')}
+                className="text-left bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#1B6B3A] hover:shadow-md transition cursor-pointer flex flex-col">
+                <img src={p.img} alt={p.t} loading="lazy" className="w-full h-40 object-cover"
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/images/agri_farm_bg.png'; }} />
+                <div className="p-5 flex-1 flex flex-col">
+                  <div className="font-display font-black text-[#1B6B3A] text-base">{p.t}</div>
+                  <p className="text-xs text-slate-600 mt-2 leading-relaxed flex-1">{p.d}</p>
+                  <span className="inline-flex items-center gap-1 mt-3 text-xs font-black text-[#1B6B3A]">Enquire about this project <ArrowRight className="h-3.5 w-3.5" /></span>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* ── Why IGO Agritech is the best ─────────────────────── */}
