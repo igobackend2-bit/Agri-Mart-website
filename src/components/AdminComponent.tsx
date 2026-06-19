@@ -242,7 +242,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
     try { await removeLead(id); } catch { }
   };
 
-  useEffect(() => { loadOrders(); loadLeads(); }, []);
+  useEffect(() => { loadOrders(); loadLeads(); loadCustomers(); }, []);
 
   // Audible stock alert when the admin opens the Dashboard or Inventory tab.
   // Tying it to a tab click means there is a user gesture, so the browser allows
@@ -800,8 +800,8 @@ export default function AdminComponent({ lang, products, setProducts, categories
                       </td>
                       <td className="p-3">
                         <button onClick={() => { setViewOrder(o); setAdminMsg(''); }} className="text-left hover:underline">
-                          <div className="font-black text-slate-900">{o.deliveryAddress?.name}</div>
-                          <div className="text-xs font-bold text-slate-800">{o.deliveryAddress?.email || o.deliveryAddress?.city}</div>
+                          <div className="font-black text-slate-900">{customers.find(c => c.uid === o.userId)?.name || o.deliveryAddress?.name}</div>
+                          <div className="text-xs font-bold text-slate-800">{customers.find(c => c.uid === o.userId)?.email || o.deliveryAddress?.email || o.deliveryAddress?.city}</div>
                         </button>
                       </td>
                       <td className="p-3 min-w-[160px] max-w-[240px] align-top">
@@ -1930,8 +1930,10 @@ export default function AdminComponent({ lang, products, setProducts, categories
 
       {/* ── CUSTOMER 360 / ORDER DETAIL MODAL ─────────────────────────── */}
       {viewOrder && (() => {
-        const cEmail = (viewOrder.deliveryAddress?.email || '').toLowerCase();
-        const cPhone = viewOrder.phone || viewOrder.deliveryAddress?.phone || '';
+        const actualCustomer = customers.find(c => c.uid === viewOrder.userId);
+        const cEmail = (actualCustomer?.email || viewOrder.deliveryAddress?.email || '').toLowerCase();
+        const cName = actualCustomer?.name || viewOrder.deliveryAddress?.name || '-';
+        const cPhone = actualCustomer?.phone || viewOrder.phone || viewOrder.deliveryAddress?.phone || '';
         const customerOrders = orders.filter(o =>
           (cEmail && (o.deliveryAddress?.email || '').toLowerCase() === cEmail) ||
           (cPhone && (o.phone === cPhone || o.deliveryAddress?.phone === cPhone))
@@ -1939,7 +1941,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
         const totalSpent = customerOrders.filter(o => o.status !== 'Cancelled').reduce((sm, o) => sm + o.totalAmount, 0);
         return (
           <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" style={{ background: 'rgba(15,23,42,0.55)' }} onClick={() => setViewOrder(null)}>
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[88vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl h-[95vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
               <div className="bg-[#1B6B3A] text-white px-6 py-4 flex items-center justify-between sticky top-0 z-10">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-200">Order Details</p>
@@ -1953,9 +1955,9 @@ export default function AdminComponent({ lang, products, setProducts, categories
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
                   <h4 className="font-extrabold text-xs text-slate-500 uppercase tracking-widest mb-3">Customer Profile</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Name</span><span className="font-black text-slate-800">{viewOrder.deliveryAddress?.name || '-'}</span></div>
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Name</span><span className="font-black text-slate-800">{cName}</span></div>
                     <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Phone</span><a href={'tel:' + cPhone} className="font-black text-[#1B6B3A]">{cPhone || '-'}</a></div>
-                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Email</span><span className="font-bold text-slate-700">{viewOrder.deliveryAddress?.email || '-'}</span></div>
+                    <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Email</span><span className="font-bold text-slate-700">{cEmail || '-'}</span></div>
                     <div><span className="text-slate-400 font-bold block text-[10px] uppercase">Pincode</span><span className="font-bold text-slate-700">{viewOrder.deliveryAddress?.pincode || '-'}</span></div>
                     <div className="sm:col-span-2"><span className="text-slate-400 font-bold block text-[10px] uppercase">Full Address</span>
                       <span className="font-bold text-slate-700">
@@ -2023,7 +2025,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
                   <button
                     onClick={() => {
                       if (!adminMsg.trim()) return;
-                      sendInboxMessage({ toEmail: viewOrder.deliveryAddress?.email || 'all', title: 'Message about order ' + viewOrder.id, body: adminMsg.trim(), orderId: viewOrder.id });
+                      sendInboxMessage({ toEmail: cEmail || 'all', title: 'Message about order ' + viewOrder.id, body: adminMsg.trim(), orderId: viewOrder.id });
                       setAdminMsg('');
                       alert('Message sent to the customer profile inbox.');
                     }}
