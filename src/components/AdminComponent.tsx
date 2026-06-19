@@ -79,6 +79,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
   const [orderSearchQuery, setOrderSearchQuery] = useState('');
   const [slotFilter, setSlotFilter] = useState<string>('All');
+  const [expandedCustomer, setExpandedCustomer] = useState<string | null>(null);
   // Global combo offer (Frequently Bought Together) — one partner product + a
   // discount % shown alongside ANY product the customer views.
   const [comboCfg, setComboCfg] = useState<ComboConfig>(() => getComboConfig());
@@ -1289,6 +1290,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
           if (!key) return;
           if (!map.has(key)) {
             map.set(key, {
+              id: key,
               name: a.name || 'Customer', email: a.email || '', phone: a.phone || o.phone || '',
               address: [a.addressLine1, a.addressLine2, a.city, a.state, a.pincode].filter(Boolean).join(', '),
               orders: [] as any[], total: 0,
@@ -1328,11 +1330,15 @@ export default function AdminComponent({ lang, products, setProducts, categories
                 <div key={i} className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-[#1B6B3A] text-white flex items-center justify-center font-black">{(c.name || 'C').charAt(0).toUpperCase()}</div>
+                      <div className="h-10 w-10 rounded-full bg-[#1B6B3A] text-white flex items-center justify-center font-black shrink-0">{(c.name || 'C').charAt(0).toUpperCase()}</div>
                       <div>
-                        <div className="font-black text-slate-800 text-sm">{c.name}</div>
-                        <div className="text-[11px] text-slate-500">{c.email || 'No email'} {c.phone ? '· ' + c.phone : ''}</div>
-                        {c.address && <div className="text-[11px] text-slate-400 mt-0.5 max-w-md">{c.address}</div>}
+                        <button type="button" onClick={() => setExpandedCustomer(expandedCustomer === c.id ? null : c.id)} className="font-black text-slate-800 text-sm hover:text-[#1B6B3A] hover:underline text-left transition">{c.name}</button>
+                        {expandedCustomer === c.id && (
+                          <div className="mt-1">
+                            <div className="text-[11px] text-slate-500">{c.email || 'No email'} {c.phone ? '· ' + c.phone : ''}</div>
+                            {c.address && <div className="text-[11px] text-slate-400 mt-0.5 max-w-md">{c.address}</div>}
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="flex gap-2">
@@ -1346,19 +1352,21 @@ export default function AdminComponent({ lang, products, setProducts, categories
                       </div>
                     </div>
                   </div>
-                  <div className="mt-3 pt-3 border-t border-slate-100 space-y-1">
-                    <div className="text-[9px] font-black uppercase tracking-widest text-slate-300 mb-1">Tap an order for full details</div>
-                    {c.orders.sort((a: any, b: any) => (b.createdAt || '').localeCompare(a.createdAt || '')).map((o: any) => (
-                      <button key={o.id} type="button" onClick={() => { setViewOrder(o); setAdminMsg(''); }}
-                        className="w-full flex flex-wrap items-center justify-between gap-2 text-[11px] cursor-pointer hover:bg-emerald-50/60 -mx-2 px-2 py-1.5 rounded-lg transition text-left">
-                        <span className="font-mono font-bold text-[#1B6B3A] hover:underline">{o.id}</span>
-                        <span className="text-slate-400">{o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-IN') : ''}</span>
-                        <span className="text-slate-500 truncate max-w-[160px]">{(o.items?.length || 0)} item{(o.items?.length || 0) === 1 ? '' : 's'}</span>
-                        <span className={'px-2 py-0.5 rounded-full font-bold ' + statusColor(o.status)}>{o.status}</span>
-                        <span className="font-black text-slate-700">Rs.{(o.totalAmount || 0).toLocaleString('en-IN')}</span>
-                      </button>
-                    ))}
-                  </div>
+                  {expandedCustomer === c.id && (
+                    <div className="mt-3 pt-3 border-t border-slate-100 space-y-1">
+                      <div className="text-[9px] font-black uppercase tracking-widest text-slate-300 mb-1">Tap an order for full details</div>
+                      {c.orders.sort((a: any, b: any) => (b.createdAt || '').localeCompare(a.createdAt || '')).map((o: any) => (
+                        <button key={o.id} type="button" onClick={() => { setViewOrder(o); setAdminMsg(''); }}
+                          className="w-full flex flex-wrap items-center justify-between gap-2 text-[11px] cursor-pointer hover:bg-emerald-50/60 -mx-2 px-2 py-1.5 rounded-lg transition text-left">
+                          <span className="font-mono font-bold text-[#1B6B3A] hover:underline">{o.id}</span>
+                          <span className="text-slate-400">{o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-IN') : ''}</span>
+                          <span className="text-slate-500 truncate max-w-[160px]">{(o.items?.length || 0)} item{(o.items?.length || 0) === 1 ? '' : 's'}</span>
+                          <span className={'px-2 py-0.5 rounded-full font-bold ' + statusColor(o.status)}>{o.status}</span>
+                          <span className="font-black text-slate-700">Rs.{(o.totalAmount || 0).toLocaleString('en-IN')}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
