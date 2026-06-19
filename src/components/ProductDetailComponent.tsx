@@ -21,7 +21,7 @@ import { Product, Review } from '../types';
 import { translations, LanguageDict } from '../translation';
 import { fetchReviews, addReview } from '../dbHelper';
 import { sendInboxMessage } from '../storeData';
-import { getCombos } from '../siteConfig';
+import { getComboConfig } from '../siteConfig';
 
 interface ProductDetailProps {
   lang: 'en' | 'ta';
@@ -153,18 +153,21 @@ export default function ProductDetailComponent({
   const [newComment, setNewComment] = useState<string>('');
   const [reviewSuccess, setReviewSuccess] = useState<boolean>(false);
 
-  // Frequently bought elements. Use the admin-defined combo for this product if
-  // one exists (Admin → Products → Combo Offers); otherwise auto-pick a same-
-  // category product and price it as the simple sum of the two.
-  const comboCfg = getCombos().find(c => c.mainName.toLowerCase() === product.name.toLowerCase());
-  const frequentlyBoughtProduct = comboCfg
-    ? (allProducts.find(x => x.name.toLowerCase() === comboCfg.partnerName.toLowerCase())
-        || allProducts.find(x => x.category === product.category && x.id !== product.id)
-        || allProducts[0])
-    : (allProducts.find(x => x.category === product.category && x.id !== product.id) || allProducts[0]);
-  const comboPrice = comboCfg
-    ? comboCfg.price
-    : (product.price + (frequentlyBoughtProduct?.price || 0));
+  // Frequently bought elements. The admin sets ONE global offer product + a
+  // discount % (Admin → Products → Daily Combo Offer) that shows with EVERY
+  // product. If the partner resolves and isn't the same item, use it and apply
+  // the % off the combined price; otherwise fall back to an auto same-category
+  // pick at the plain sum.
+  const comboCfg = getComboConfig();
+  const configuredPartner = comboCfg.enabled
+    ? allProducts.find(x => x.name.toLowerCase() === (comboCfg.partnerName || '').toLowerCase() && x.id !== product.id)
+    : undefined;
+  const frequentlyBoughtProduct = configuredPartner
+    || allProducts.find(x => x.category === product.category && x.id !== product.id)
+    || allProducts[0];
+  const comboSum = product.price + (frequentlyBoughtProduct?.price || 0);
+  const comboPct = configuredPartner ? Math.max(0, Math.min(90, comboCfg.percentOff || 0)) : 0;
+  const comboPrice = Math.round(comboSum * (1 - comboPct / 100));
 
   // Update active image when changing products
   useEffect(() => {
@@ -536,6 +539,12 @@ export default function ProductDetailComponent({
               <div>
                 <span className="text-[10px] text-slate-400 block uppercase font-bold">Bundle Price</span>
                 <span className="text-base font-black text-slate-900">₹{comboPrice}</span>
+                {comboPct > 0 && (
+                  <span className="block leading-tight">
+                    <span className="text-[11px] text-slate-400 line-through mr-1.5">₹{comboSum}</span>
+                    <span className="text-[10px] font-black text-white bg-[#D94F3D] px-1.5 py-0.5 rounded">{comboPct}% OFF</span>
+                  </span>
+                )}
               </div>
               <button
                 onClick={() => {

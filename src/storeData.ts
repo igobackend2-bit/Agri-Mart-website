@@ -269,49 +269,58 @@ function tone(ctx: AudioContext, freq: number, start: number, dur: number, vol =
   o.start(ctx.currentTime + start); o.stop(ctx.currentTime + start + dur + 0.05);
 }
 
-/** Happy rising chime (LOUD) — played when the customer places an order. */
-export function playOrderSuccessSound(): void {
+// Play a sequence of [freq, start, dur, vol] notes. Critically, we RESUME the
+// AudioContext first and only schedule the tones once it is actually running —
+// scheduling against a still-suspended context uses a frozen currentTime (0), so
+// the notes land "in the past" and never sound. Resuming-then-firing fixes the
+// order-placed chime and the admin stock alarms not playing.
+function playSeq(notes: [number, number, number, number][]): void {
   try {
     const ctx = getAudioCtx();
     if (!ctx) return;
-    tone(ctx, 523.25, 0, 0.22, 0.7);     // C5
-    tone(ctx, 659.25, 0.16, 0.22, 0.7);  // E5
-    tone(ctx, 783.99, 0.32, 0.32, 0.75); // G5
-    tone(ctx, 1046.5, 0.5, 0.45, 0.65);  // C6 flourish
+    let done = false;
+    const fire = () => {
+      if (done) return; done = true;
+      try { notes.forEach((n) => tone(ctx, n[0], n[1], n[2], n[3])); } catch { /* ignore */ }
+    };
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(fire).catch(fire);
+      // Safety net in case resume() never resolves on this browser.
+      setTimeout(fire, 250);
+    } else {
+      fire();
+    }
   } catch { /* audio unavailable */ }
+}
+
+/** Happy rising chime (LOUD) — played when the customer places an order. */
+export function playOrderSuccessSound(): void {
+  playSeq([
+    [523.25, 0, 0.22, 0.7],    // C5
+    [659.25, 0.16, 0.22, 0.7], // E5
+    [783.99, 0.32, 0.32, 0.75],// G5
+    [1046.5, 0.5, 0.45, 0.65], // C6 flourish
+  ]);
 }
 
 /** Generic admin alert (kept for compatibility) — LOUD triple-beep. */
 export function playAdminAlertSound(): void {
-  try {
-    const ctx = getAudioCtx();
-    if (!ctx) return;
-    tone(ctx, 988, 0, 0.16, 0.8);
-    tone(ctx, 988, 0.22, 0.16, 0.8);
-    tone(ctx, 988, 0.44, 0.22, 0.8);
-  } catch { /* audio unavailable */ }
+  playSeq([[988, 0, 0.16, 0.8], [988, 0.22, 0.16, 0.8], [988, 0.44, 0.22, 0.8]]);
 }
 
 /** LOW STOCK — gentle warning: two soft mid-tone beeps. */
 export function playLowStockSound(): void {
-  try {
-    const ctx = getAudioCtx();
-    if (!ctx) return;
-    tone(ctx, 587.33, 0, 0.2, 0.6);   // D5
-    tone(ctx, 587.33, 0.26, 0.22, 0.6);
-  } catch { /* audio unavailable */ }
+  playSeq([[587.33, 0, 0.2, 0.6], [587.33, 0.26, 0.22, 0.6]]);
 }
 
 /** OUT OF STOCK — urgent siren: loud alternating high/low, four sweeps. */
 export function playOutOfStockSound(): void {
-  try {
-    const ctx = getAudioCtx();
-    if (!ctx) return;
-    tone(ctx, 1108.73, 0, 0.16, 0.9);    // high
-    tone(ctx, 740, 0.18, 0.16, 0.9);     // low
-    tone(ctx, 1108.73, 0.36, 0.16, 0.9); // high
-    tone(ctx, 740, 0.54, 0.28, 0.9);     // low (long)
-  } catch { /* audio unavailable */ }
+  playSeq([
+    [1108.73, 0, 0.16, 0.9],    // high
+    [740, 0.18, 0.16, 0.9],     // low
+    [1108.73, 0.36, 0.16, 0.9], // high
+    [740, 0.54, 0.28, 0.9],     // low (long)
+  ]);
 }
 
 // ── Location detection (browser geolocation + free reverse geocoding) ───────

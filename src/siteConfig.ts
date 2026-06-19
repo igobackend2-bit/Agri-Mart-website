@@ -76,16 +76,26 @@ const KEYS = {
   categoryMeta: 'igo_category_meta',
   customCategories: 'igo_custom_categories',
   combos: 'igo_combo_offers',
+  comboConfig: 'igo_combo_config',
   adminPwdHash: 'igo_admin_pwd_hash',
   adminSession: 'igo_admin_session',
 } as const;
 
 // Admin-defined "Frequently Bought Together" combo offers. Matched to a product
-// by name so they survive catalog rebuilds.
+// by name so they survive catalog rebuilds. (Legacy per-product model.)
 export interface ComboOffer {
   mainName: string;     // main product name
   partnerName: string;  // partner product name
   price: number;        // combo bundle price (admin set; defaults to sum of the two)
+}
+
+// Global combo: ONE partner/offer product shown alongside ANY product the
+// customer views, with a discount percentage off the combined price. The admin
+// updates the percentage whenever they like (e.g. each morning).
+export interface ComboConfig {
+  partnerName: string;  // the product offered with every item
+  percentOff: number;   // % discount off (mainPrice + partnerPrice)
+  enabled: boolean;
 }
 
 import { supabase } from './lib/supabase';
@@ -226,6 +236,14 @@ export function getCombos(): ComboOffer[] {
 }
 export function saveCombos(list: ComboOffer[]): void {
   writeWithSync(KEYS.combos, list);
+}
+
+const DEFAULT_COMBO_CONFIG: ComboConfig = { partnerName: '', percentOff: 0, enabled: false };
+export function getComboConfig(): ComboConfig {
+  return { ...DEFAULT_COMBO_CONFIG, ...readJSON<Partial<ComboConfig>>(KEYS.comboConfig, {}) };
+}
+export function saveComboConfig(cfg: ComboConfig): void {
+  writeWithSync(KEYS.comboConfig, cfg);
 }
 
 // ── Category manager (admin edits each category's label + tile image) ────────

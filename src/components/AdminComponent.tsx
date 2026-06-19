@@ -32,7 +32,7 @@ import {
   getSiteImages, saveSiteImages, SiteImages,
   getCategoryMeta, saveCategoryMeta, CategoryMeta,
   getCustomCategories, saveCustomCategories, CustomCategory,
-  getCombos, saveCombos, ComboOffer
+  getComboConfig, saveComboConfig, ComboConfig
 } from '../siteConfig';
 
 interface AdminComponentProps {
@@ -76,11 +76,9 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
   const [orderSearchQuery, setOrderSearchQuery] = useState('');
   const [slotFilter, setSlotFilter] = useState<string>('All');
-  // Combo offers (Frequently Bought Together) editor state.
-  const [combos, setCombos] = useState<ComboOffer[]>(() => getCombos());
-  const [comboMain, setComboMain] = useState('');
-  const [comboPartner, setComboPartner] = useState('');
-  const [comboPrice, setComboPrice] = useState<number>(0);
+  // Global combo offer (Frequently Bought Together) — one partner product + a
+  // discount % shown alongside ANY product the customer views.
+  const [comboCfg, setComboCfg] = useState<ComboConfig>(() => getComboConfig());
   const [productSearchQuery, setProductSearchQuery] = useState('');
   const [customers, setCustomers] = useState<any[]>([]);
   const [custSearch, setCustSearch] = useState('');
@@ -252,7 +250,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
   // siren for OUT of stock + gentle warning for LOW stock — both play when both
   // conditions exist.
   useEffect(() => {
-    if (activeTab !== 'Dashboard' && activeTab !== 'Inventory') return;
+    if (activeTab !== 'Dashboard' && activeTab !== 'Inventory' && activeTab !== 'Products') return;
     const out = products.filter(p => p.stock === 0).length;
     const low = products.filter(p => p.stock > 0 && p.stock < 20).length;
     if (out > 0) playOutOfStockSound();
@@ -359,25 +357,17 @@ export default function AdminComponent({ lang, products, setProducts, categories
     alert('Done! Every product is refilled to 200 units.');
   };
 
-  // ── Combo offers (Frequently Bought Together) ──────────────────────────────
-  const comboSum = () => {
-    const m = products.find(p => p.name === comboMain);
-    const pn = products.find(p => p.name === comboPartner);
-    return (m?.price || 0) + (pn?.price || 0);
+  // ── Global combo offer (Frequently Bought Together) ────────────────────────
+  const handleSaveCombo = () => {
+    if (!comboCfg.partnerName) { alert('Pick the offer product to bundle with every item.'); return; }
+    const pct = Math.max(0, Math.min(90, Number(comboCfg.percentOff) || 0));
+    const next = { ...comboCfg, percentOff: pct, enabled: true };
+    setComboCfg(next); saveComboConfig(next);
+    alert('Combo offer saved! "' + next.partnerName + '" now shows with every product at ' + pct + '% off the combined price.');
   };
-  const handleAddCombo = () => {
-    if (!comboMain || !comboPartner || comboMain === comboPartner) {
-      alert('Pick two different products for the combo.'); return;
-    }
-    const price = comboPrice > 0 ? comboPrice : comboSum();
-    const next = [...combos.filter(c => c.mainName !== comboMain), { mainName: comboMain, partnerName: comboPartner, price }];
-    setCombos(next); saveCombos(next);
-    setComboMain(''); setComboPartner(''); setComboPrice(0);
-    alert('Combo saved! It now shows on the "' + comboMain + '" product page.');
-  };
-  const handleRemoveCombo = (mainName: string) => {
-    const next = combos.filter(c => c.mainName !== mainName);
-    setCombos(next); saveCombos(next);
+  const handleDisableCombo = () => {
+    const next = { ...comboCfg, enabled: false };
+    setComboCfg(next); saveComboConfig(next);
   };
 
   const handleCreateProduct = async (e: React.FormEvent) => {
@@ -934,38 +924,45 @@ export default function AdminComponent({ lang, products, setProducts, categories
             </div>
           </div>
 
-          {/* Combo Offers editor — "Frequently Bought Together" */}
-          <div className="bg-amber-50/40 border border-amber-200 rounded-xl p-5 space-y-3">
-            <h4 className="font-extrabold text-xs text-[#B45309] uppercase tracking-widest">✨ Frequently Bought Together — Combo Offers</h4>
-            <p className="text-[11px] text-slate-500 leading-relaxed">Pick a <b>main product</b> + a <b>partner product</b> and set a combo price. It appears on the main product's page. Leave the price empty to auto-use the sum of both prices.</p>
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
-              <select value={comboMain} onChange={e => setComboMain(e.target.value)} className="bg-white border rounded-lg p-2 text-xs font-bold">
-                <option value="">Main product…</option>
-                {products.map(p => <option key={p.id} value={p.name}>{p.name}</option>)}
-              </select>
-              <select value={comboPartner} onChange={e => setComboPartner(e.target.value)} className="bg-white border rounded-lg p-2 text-xs font-bold">
-                <option value="">Partner product…</option>
-                {products.map(p => <option key={p.id} value={p.name}>{p.name}</option>)}
-              </select>
-              <input type="number" value={comboPrice || ''} onChange={e => setComboPrice(Number(e.target.value))}
-                placeholder={comboMain && comboPartner ? ('Combo ₹ (auto ' + comboSum() + ')') : 'Combo price ₹'}
-                className="bg-white border rounded-lg p-2 text-xs font-bold" />
-              <button type="button" onClick={handleAddCombo} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-2 rounded-lg transition">Save Combo</button>
-            </div>
-            {combos.length > 0 && (
-              <div className="space-y-1.5 pt-1">
-                {combos.map(c => (
-                  <div key={c.mainName} className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs">
-                    <span className="font-bold text-slate-700">{c.mainName} <span className="text-slate-400">+</span> {c.partnerName}</span>
-                    <span className="flex items-center gap-3">
-                      <span className="font-black text-[#1B6B3A]">₹{c.price}</span>
-                      <button type="button" onClick={() => handleRemoveCombo(c.mainName)} className="text-rose-500 hover:text-rose-700 font-bold">Remove</button>
-                    </span>
-                  </div>
-                ))}
+          {/* Global Combo Offer — "Frequently Bought Together" */}
+          {(() => {
+            const partner = products.find(p => p.name === comboCfg.partnerName);
+            const pct = Math.max(0, Math.min(90, Number(comboCfg.percentOff) || 0));
+            return (
+            <div className="bg-amber-50/40 border border-amber-200 rounded-xl p-5 space-y-3">
+              <h4 className="font-extrabold text-xs text-[#B45309] uppercase tracking-widest">✨ Frequently Bought Together — Daily Combo Offer</h4>
+              <p className="text-[11px] text-slate-500 leading-relaxed">
+                Pick one <b>offer product</b> and a <b>discount %</b>. It shows alongside <b>every</b> product the
+                customer views — no need to choose a main product. The combo price = (that product's price + offer
+                product's price) − your %. Change the % any morning to run a fresh daily deal.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <select value={comboCfg.partnerName} onChange={e => setComboCfg({ ...comboCfg, partnerName: e.target.value })}
+                  className="bg-white border rounded-lg p-2 text-xs font-bold sm:col-span-2">
+                  <option value="">Offer product to bundle with everything…</option>
+                  {products.map(p => <option key={p.id} value={p.name}>{p.name} — ₹{p.price}</option>)}
+                </select>
+                <div className="flex items-center gap-1.5 bg-white border rounded-lg px-2">
+                  <input type="number" min={0} max={90} value={comboCfg.percentOff || ''} onChange={e => setComboCfg({ ...comboCfg, percentOff: Number(e.target.value) })}
+                    placeholder="Discount" className="flex-1 p-2 text-xs font-bold outline-none w-full" />
+                  <span className="text-xs font-black text-slate-500">% OFF</span>
+                </div>
               </div>
-            )}
-          </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <button type="button" onClick={handleSaveCombo} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-4 py-2 rounded-lg transition">Save / Update Offer</button>
+                {comboCfg.enabled && <button type="button" onClick={handleDisableCombo} className="text-rose-500 hover:text-rose-700 text-xs font-bold px-3 py-2">Turn Off</button>}
+                {comboCfg.enabled && partner && (
+                  <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1.5">
+                    Live: any product + <b>{partner.name}</b> at <b>{pct}% off</b> the combined price
+                  </span>
+                )}
+                {comboCfg.enabled && !partner && (
+                  <span className="text-[11px] font-bold text-rose-700 bg-rose-50 border border-rose-200 rounded-full px-3 py-1.5">Offer product not found — pick again.</span>
+                )}
+              </div>
+            </div>
+            );
+          })()}
 
           {showProductForm && (
             <form onSubmit={handleCreateProduct} className="bg-slate-50 border border-slate-200 rounded-xl p-6 max-w-2xl space-y-4">
