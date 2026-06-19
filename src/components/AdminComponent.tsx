@@ -1402,35 +1402,35 @@ export default function AdminComponent({ lang, products, setProducts, categories
                       (s.status === 'Pending' ? 'bg-amber-50 text-amber-800 border-amber-200' :
                        s.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                        'bg-rose-50 text-rose-700 border-rose-200')
-                    }>{s.status}</span>
+                    }>Listing: {s.status}</span>
                   </div>
 
                   <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg p-3 text-[11px] text-slate-700">
-                    <span className="font-black text-slate-500 uppercase tracking-wide text-[9px] block mb-0.5">Payout bank details</span>
+                    <span className="font-black text-slate-500 uppercase tracking-wide text-[9px] block mb-0.5">Seller's Payout Bank Details</span>
                     {s.bankDetails}
                   </div>
 
                   <div className="mt-3 flex flex-wrap gap-2">
-                    <button onClick={() => updateSeller(s.id, { status: 'Approved' })} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Approve</button>
-                    <button onClick={() => updateSeller(s.id, { status: 'Rejected' })} className="bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg">Reject</button>
-                    <button onClick={() => updateSeller(s.id, { paymentStatus: 'Requested' })} className="bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold px-3 py-1.5 rounded-lg">Request bank details</button>
+                    <button onClick={() => updateSeller(s.id, { status: 'Approved' })} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Approve Listing</button>
+                    <button onClick={() => updateSeller(s.id, { status: 'Rejected' })} className="bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg">Reject Listing</button>
+                    <button onClick={() => updateSeller(s.id, { paymentStatus: 'Requested' })} className="bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold px-3 py-1.5 rounded-lg">Ask Seller for Bank Details</button>
                     <label className="bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1.5">
-                      <Upload className="h-3.5 w-3.5" /> {s.paymentProofImage ? 'Replace payment proof' : 'Upload payment proof'}
+                      <Upload className="h-3.5 w-3.5" /> {s.paymentProofImage ? 'Replace Proof of Payout' : 'Upload Proof of Payout'}
                       <input type="file" accept="image/*" className="hidden" onChange={(e) => readSellerImage(e.target.files?.[0], (url) => updateSeller(s.id, { paymentProofImage: url, paymentStatus: 'Paid' }))} />
                     </label>
-                    <button onClick={() => removeSeller(s.id)} className="text-slate-400 hover:text-rose-600 text-xs font-bold px-2">Delete</button>
+                    <button onClick={() => removeSeller(s.id)} className="text-slate-400 hover:text-rose-600 text-xs font-bold px-2">Delete Request</button>
                   </div>
 
                   <div className="mt-3 flex gap-2">
                     <input
                       defaultValue={s.adminMessage || ''}
                       onBlur={(e) => { if (e.target.value !== (s.adminMessage || '')) updateSeller(s.id, { adminMessage: e.target.value }); }}
-                      placeholder="Message to the seller (saved when you click away)…"
+                      placeholder="Type a direct reply to the seller (auto-saves on click away)..."
                       className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs" />
                   </div>
 
                   <div className="mt-2 flex items-center gap-2 text-[11px]">
-                    <span className="text-slate-500">Payment status:</span>
+                    <span className="text-slate-500">Payout to Seller Status:</span>
                     <span className={'font-black px-2 py-0.5 rounded-full border ' + 
                       (s.paymentStatus === 'None' ? 'bg-slate-100 text-slate-500 border-slate-200' :
                        s.paymentStatus === 'Requested' ? 'bg-sky-50 text-sky-700 border-sky-200' :
