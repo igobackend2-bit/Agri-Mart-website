@@ -800,8 +800,8 @@ export default function AdminComponent({ lang, products, setProducts, categories
                       </td>
                       <td className="p-3">
                         <button onClick={() => { setViewOrder(o); setAdminMsg(''); }} className="text-left hover:underline">
-                          <div className="font-bold text-slate-800">{o.deliveryAddress?.name}</div>
-                          <div className="text-[10px] text-slate-400">{o.deliveryAddress?.email || o.deliveryAddress?.city}</div>
+                          <div className="font-black text-slate-900">{o.deliveryAddress?.name}</div>
+                          <div className="text-xs font-bold text-slate-800">{o.deliveryAddress?.email || o.deliveryAddress?.city}</div>
                         </button>
                       </td>
                       <td className="p-3 min-w-[160px] max-w-[240px] align-top">

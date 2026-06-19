@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   CheckCircle, 
   MapPin, 
@@ -44,15 +44,29 @@ export default function CheckoutComponent({
 
   const saved = getLastAddress();
   const [formData, setFormData] = useState({
-    name: saved?.name || '',
+    name: auth.currentUser?.displayName || saved?.name || '',
     phone: saved?.phone || '',
-    email: saved?.email || '',
+    email: auth.currentUser?.email || saved?.email || '',
     address1: saved?.addressLine || '',
     address2: '',
     city: saved?.city || '',
     state: 'Tamil Nadu',
     pincode: saved?.pincode || ''
   });
+
+  useEffect(() => {
+    const unsub = auth.onAuthStateChanged(user => {
+      if (user) {
+        setFormData(f => ({
+          ...f,
+          name: user.displayName || f.name,
+          email: user.email || f.email
+        }));
+      }
+    });
+    return () => unsub();
+  }, []);
+
   const [detectingLoc, setDetectingLoc] = useState(false);
 
   const handleDetectLocation = async () => {
