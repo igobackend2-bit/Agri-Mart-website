@@ -36,7 +36,7 @@ interface ProductDetailProps {
 
 export default function ProductDetailComponent({
   lang,
-  product,
+  product: initialProduct,
   allProducts,
   wishlist,
   toggleWishlist,
@@ -46,10 +46,10 @@ export default function ProductDetailComponent({
 }: ProductDetailProps) {
   const t: LanguageDict = translations[lang];
 
-  // Always reflect the LATEST stock (admin overrides / order decrements) by reading
-  // the live product from the catalog rather than the possibly-stale `product` prop.
-  const liveProduct = allProducts.find((p) => p.id === product.id) || product;
-  const stock = liveProduct.stock;
+  // Always reflect the LATEST details (admin overrides / order decrements / images) by reading
+  // the live product from the catalog rather than the possibly-stale `initialProduct` prop.
+  const product = allProducts.find((p) => p.id === initialProduct.id) || initialProduct;
+  const stock = product.stock;
 
   // Image selectors
   const [activeImage, setActiveImage] = useState<string>(product.images?.[0] || '/catalog/nursery-essentials/Pots.png');
