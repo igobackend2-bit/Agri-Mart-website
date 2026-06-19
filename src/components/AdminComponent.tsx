@@ -32,7 +32,8 @@ import {
   getSiteImages, saveSiteImages, SiteImages,
   getCategoryMeta, saveCategoryMeta, CategoryMeta,
   getCustomCategories, saveCustomCategories, CustomCategory,
-  getComboConfig, saveComboConfig, ComboConfig
+  getComboConfig, saveComboConfig, ComboConfig,
+  getAgriEvents, saveAgriEvents, AgriEvent
 } from '../siteConfig';
 
 interface AdminComponentProps {
@@ -79,6 +80,20 @@ export default function AdminComponent({ lang, products, setProducts, categories
   // Global combo offer (Frequently Bought Together) — one partner product + a
   // discount % shown alongside ANY product the customer views.
   const [comboCfg, setComboCfg] = useState<ComboConfig>(() => getComboConfig());
+
+  // Upcoming Agri Events editor.
+  const [events, setEvents] = useState<AgriEvent[]>(() => getAgriEvents());
+  const [newEvent, setNewEvent] = useState<AgriEvent>({ name: '', city: '', date: '', type: 'Trade Expo', emoji: '🏭' });
+  const handleAddEvent = () => {
+    if (!newEvent.name.trim() || !newEvent.city.trim() || !newEvent.date.trim()) { alert('Please fill event name, city and date.'); return; }
+    const next = [...events, { ...newEvent, name: newEvent.name.trim(), city: newEvent.city.trim(), date: newEvent.date.trim() }];
+    setEvents(next); saveAgriEvents(next);
+    setNewEvent({ name: '', city: '', date: '', type: 'Trade Expo', emoji: '🏭' });
+  };
+  const handleRemoveEvent = (idx: number) => {
+    const next = events.filter((_, i) => i !== idx);
+    setEvents(next); saveAgriEvents(next);
+  };
   const [productSearchQuery, setProductSearchQuery] = useState('');
   const [customers, setCustomers] = useState<any[]>([]);
   const [custSearch, setCustSearch] = useState('');

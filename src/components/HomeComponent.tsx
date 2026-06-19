@@ -45,7 +45,7 @@ import {
 import { Product, Category, Brand } from '../types';
 import { SEED_CATEGORIES, SEED_BRANDS, CROP_KITS, SUBSIDY_INFO, SEED_POSTS } from '../seedData';
 import { translations, LanguageDict } from '../translation';
-import { getBanners, getHomeOverrides, getComplexOverrides, getCategoryMeta, getCustomCategories } from '../siteConfig';
+import { getBanners, getHomeOverrides, getComplexOverrides, getCategoryMeta, getCustomCategories, getAgriEvents } from '../siteConfig';
 import { detectLocation, getSavedLocation } from '../storeData';
 import { FarmStories, LiveTrialFields, IgoEcosystemCarousel } from './HomeAdaptedFeatures';
 
@@ -289,6 +289,8 @@ export default function HomeComponent({
   const [activeTab, setActiveTab] = useState<'All' | 'Seeds' | 'Fertilizers' | 'Pesticides' | 'Tools'>('All');
   const [subsidyQuery, setSubsidyQuery] = useState('');
   const [selectedSubsidyIndex, setSelectedSubsidyIndex] = useState<number | null>(null);
+  // Blog article reader modal (opens the full post when "Read" is clicked).
+  const [readingPost, setReadingPost] = useState<(typeof SEED_POSTS)[number] | null>(null);
 
   // Filter Best Sellers
   const getFilteredBestSellers = () => {
@@ -1204,11 +1206,12 @@ export default function HomeComponent({
         <SectionHeader
           title="Farmer's Knowledge & Advisory Hub 📖"
           sub="Expert guides, disease alerts, and best practices."
-          onViewAll={() => (setCurrentPage as (p: string) => void)('events')}
+          onViewAll={() => (setCurrentPage as (p: string) => void)('blog')}
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {SEED_POSTS.slice(0, 3).map((post) => (
-            <div key={post.id} className="border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition group">
+            <div key={post.id} onClick={() => setReadingPost(post)}
+              className="border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition group cursor-pointer">
               <div className="h-40 w-full overflow-hidden">
                 <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
               </div>
@@ -1221,12 +1224,41 @@ export default function HomeComponent({
                 <p className="text-[11px] text-slate-500 line-clamp-2">{post.excerpt}</p>
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-[10px] font-semibold text-slate-700">By {post.author}</span>
-                  <button className="text-[#1B6B3A] font-bold text-xs hover:underline flex items-center gap-1">Read <ArrowRight className="w-3 h-3" /></button>
+                  <button onClick={(e) => { e.stopPropagation(); setReadingPost(post); }} className="text-[#1B6B3A] font-bold text-xs hover:underline flex items-center gap-1">Read <ArrowRight className="w-3 h-3" /></button>
                 </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Full article reader modal */}
+        {readingPost && (
+          <div className="fixed inset-0 z-[9999] bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setReadingPost(null)}>
+            <div className="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="relative h-52 sm:h-64 bg-slate-100">
+                <img src={readingPost.image} alt={readingPost.title} className="w-full h-full object-cover" />
+                <button onClick={() => setReadingPost(null)} className="absolute top-3 right-3 h-9 w-9 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-slate-700 shadow text-lg font-bold">✕</button>
+              </div>
+              <div className="p-6 sm:p-8">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2.5 py-1 rounded uppercase tracking-wide">{readingPost.category}</span>
+                  <span className="text-[11px] text-slate-500 font-semibold">{readingPost.readTime}</span>
+                </div>
+                <h2 className="font-display font-black text-slate-900 text-2xl sm:text-3xl leading-tight tracking-tight">{readingPost.title}</h2>
+                <p className="text-xs text-slate-500 font-semibold mt-2">By {readingPost.author} · {new Date(readingPost.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
+                <div className="mt-5 text-sm text-slate-700 leading-relaxed whitespace-pre-line">{readingPost.content}</div>
+                {readingPost.tags && readingPost.tags.length > 0 && (
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {readingPost.tags.map((tg) => (
+                      <span key={tg} className="text-[10px] font-bold text-[#1B6B3A] bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-1">#{tg}</span>
+                    ))}
+                  </div>
+                )}
+                <button onClick={() => setReadingPost(null)} className="mt-7 bg-[#1B6B3A] hover:bg-[#15532d] text-white text-xs font-black px-5 py-2.5 rounded-lg transition">Close Article</button>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ── STATS BAR (photographic background) ───────────────────────── */}
@@ -1262,14 +1294,14 @@ export default function HomeComponent({
           onViewAll={() => (setCurrentPage as (p: string) => void)('events')}
         />
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {AGRI_EVENTS.map((ev, i) => (
+          {(getAgriEvents().length ? getAgriEvents() : AGRI_EVENTS).map((ev: any, i: number) => (
             <div
               key={i}
               className="bg-white border border-slate-200 rounded-xl overflow-hidden cursor-pointer hover:shadow-lg hover:border-emerald-500 transition-all flex flex-col group"
               onClick={() => (setCurrentPage as (p: string) => void)('events')}
             >
               <div className="bg-slate-50 p-4 flex items-center justify-center border-b border-slate-100 group-hover:bg-emerald-50 transition-colors">
-                <span className="text-3xl grayscale group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110">{ev.emoji}</span>
+                <span className="text-3xl grayscale group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110">{ev.emoji || '📅'}</span>
               </div>
               <div className="p-4 flex-1 flex flex-col">
                 <span className="inline-block text-[9px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md self-start mb-2 tracking-widest uppercase">{ev.type}</span>

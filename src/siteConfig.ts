@@ -77,9 +77,19 @@ const KEYS = {
   customCategories: 'igo_custom_categories',
   combos: 'igo_combo_offers',
   comboConfig: 'igo_combo_config',
+  agriEvents: 'igo_agri_events',
   adminPwdHash: 'igo_admin_pwd_hash',
   adminSession: 'igo_admin_session',
 } as const;
+
+// Admin-managed "Upcoming Agri Events" shown on the home page.
+export interface AgriEvent {
+  name: string;
+  city: string;
+  date: string;
+  type: string;
+  emoji?: string;
+}
 
 // Admin-defined "Frequently Bought Together" combo offers. Matched to a product
 // by name so they survive catalog rebuilds. (Legacy per-product model.)
@@ -244,6 +254,15 @@ export function getComboConfig(): ComboConfig {
 }
 export function saveComboConfig(cfg: ComboConfig): void {
   writeWithSync(KEYS.comboConfig, cfg);
+}
+
+// ── Agri events (admin-managed "Upcoming Agri Events") ───────────────────────
+export function getAgriEvents(): AgriEvent[] {
+  const list = readJSON<AgriEvent[]>(KEYS.agriEvents, []);
+  return Array.isArray(list) ? list.filter((e) => e && e.name) : [];
+}
+export function saveAgriEvents(list: AgriEvent[]): void {
+  writeWithSync(KEYS.agriEvents, list);
 }
 
 // ── Category manager (admin edits each category's label + tile image) ────────
