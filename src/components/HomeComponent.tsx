@@ -583,6 +583,12 @@ export default function HomeComponent({
 
       {/* ── DYNAMIC PREMIUM HERO CAROUSEL ────────────────── */}
       <div className="relative overflow-hidden bg-slate-900 min-h-[450px] sm:min-h-[500px] flex items-center">
+        {/* Background brand video */}
+        <video autoPlay muted loop playsInline poster="/images/agri_farm_bg.png"
+          className="absolute inset-0 w-full h-full object-cover z-0">
+          <source src="/videos/igo-hero.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/85 via-slate-900/60 to-slate-900/35 z-[1]" />
         {HERO_SLIDES.map((slide, idx) => (
           <div
             key={idx}
@@ -590,13 +596,6 @@ export default function HomeComponent({
               activeSlide === idx ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
           >
-            <img
-              src={slide.img}
-              alt={slide.title}
-              className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
-            />
-            <div className={`absolute inset-0 bg-gradient-to-r ${slide.color} to-slate-900/40`} />
-            
             <div className="relative max-w-7xl mx-auto px-6 sm:px-8 h-full flex flex-col justify-center">
               <div className="max-w-2xl mt-12">
                 <span className="inline-block bg-white text-slate-900 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-4 shadow-lg">
@@ -644,46 +643,6 @@ export default function HomeComponent({
         </div>
       </div>
 
-      {/* ── ABOUT IGO (company story + corporate impact) ──────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-8">
-        <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm grid lg:grid-cols-2">
-          <div className="p-7 sm:p-10">
-            <span className="inline-flex items-center gap-1.5 bg-[#1B6B3A]/10 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full">
-              <Sprout className="h-3.5 w-3.5" /> Established 2014 - Pan-India
-            </span>
-            <h2 className="font-display font-black text-slate-900 text-2xl sm:text-3xl tracking-tight mt-4">Transforming Indian Agriculture</h2>
-            <p className="text-sm text-slate-600 leading-relaxed mt-3">
-              <b className="text-[#1B6B3A]">IGO Agri Mart</b> is the online agri-inputs marketplace of the <b>IGO Group</b> - India's leading agri engineering, farming and consulting ecosystem. For over a decade we have delivered world-class turnkey solutions in polyhouse construction, precision hydroponics and vertical farming, and put genuine inputs within every farmer's reach.
-            </p>
-            <p className="text-sm text-slate-600 leading-relaxed mt-3">
-              Our integrated ecosystem spans <b>16+ brands</b> across agriculture, food processing and fintech. We don't just supply inputs - we build sustainable, high-yield agricultural legacies.
-            </p>
-            <div className="mt-5 flex items-center gap-3 bg-[#F7F9F4] border border-slate-100 rounded-xl p-3 max-w-sm">
-              <Award className="h-6 w-6 text-[#E8A020] shrink-0" />
-              <div>
-                <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Recognised Excellence</div>
-                <div className="text-xs font-bold text-slate-800">MSME Awards 2024 - Best Agri-Consulting Brand</div>
-              </div>
-            </div>
-            <button onClick={() => (setCurrentPage as (p: string) => void)('igo-groups')} className="mt-5 inline-flex items-center gap-1.5 bg-[#1B6B3A] hover:bg-[#15532d] text-white text-xs font-black px-5 py-3 rounded-xl transition">
-              Learn about the IGO Group <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
-          <div className="bg-emerald-950 text-white p-7 sm:p-10">
-            <div className="flex items-center gap-2 text-[#E8A020] font-display font-black text-sm uppercase tracking-widest mb-6">
-              <span className="h-0.5 w-6 bg-[#E8A020] inline-block" /> Corporate Impact
-            </div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-7">
-              {[['2014','Established'],['10+','Years of Experience'],['15,000+','Successful Projects'],['28+','States Served'],['75+','Awards Won'],['16+','Group Brands']].map((s) => (
-                <div key={s[1]}>
-                  <div className="font-display font-black text-3xl sm:text-4xl text-[#E8A020]">{s[0]}</div>
-                  <div className="text-[11px] text-emerald-100/80 uppercase tracking-widest mt-1">{s[1]}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
       {/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-8 mb-6">
         <div className="flex items-center gap-2 mb-6">
@@ -1567,3 +1526,4 @@ export default function HomeComponent({
     </div>
   );
 }
+                                                                
