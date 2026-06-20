@@ -719,7 +719,9 @@ export default function HomeComponent({
             </div>
           </div>
         </div>
-      </section>\n\n{/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
+      </section>
+
+      {/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-8 mb-6">
         <div className="flex items-center gap-2 mb-6">
           <span className="bg-[#1B6B3A]/10 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full">
@@ -747,7 +749,9 @@ export default function HomeComponent({
             </div>
           ))}
         </div>
-      </section>\n\n{/* ── USP STRIP (assurance cards) ─────────────── */}
+      </section>
+
+      {/* ── USP STRIP (assurance cards) ─────────────── */}
       <div className="max-w-7xl mx-auto px-4 mt-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
