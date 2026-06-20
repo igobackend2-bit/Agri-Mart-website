@@ -46,7 +46,7 @@ export const SEED_PRODUCTS: Product[] = CATALOG_PRODUCTS;
 const CATEGORY_ICONS: Record<string, string> = {
   'Vegetables': 'Carrot',
   'Fruits': 'Apple',
-  'Valluvam Products': 'Wheat',
+  'Native Foods & Millets': 'Wheat',
   'Vegetable Seeds': 'Sprout',
   'Fruit Seeds': 'Sprout',
   'Field Seeds': 'Wheat',
@@ -63,7 +63,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 
 // Display order for the storefront
 const CATEGORY_ORDER = [
-  'Vegetables', 'Fruits',
+  'Vegetables', 'Fruits', 'Native Foods & Millets',
   'Vegetable Seeds', 'Fruit Seeds', 'Field Seeds', 'Flower Seeds',
   'Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers',
   'Indoor Plants', 'Outdoor Plants & Trees', 'Precision Tools & Equipments',

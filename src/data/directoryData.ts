@@ -10,7 +10,6 @@ export const directoryData = [
       { id: 'b-1', name: 'IGO Agritech Farms' },
       { id: 'b-2', name: 'Farmers Factory' },
       { id: 'b-3', name: 'IGO Nursery' },
-      { id: 'b-4', name: 'Valluvam' },
       { id: 'b-5', name: 'IGO Farm Factories' }
     ]
   },

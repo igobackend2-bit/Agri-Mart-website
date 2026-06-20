@@ -344,7 +344,7 @@ export default function HomeComponent({
   // Category rail — built from the REAL catalog so every tile has a real image
   // and only categories that actually have products are shown (no empty circles).
   const CAT_ORDER = [
-    'Vegetables', 'Fruits',
+    'Vegetables', 'Fruits', 'Native Foods & Millets',
     'Vegetable Seeds', 'Fruit Seeds', 'Field Seeds', 'Flower Seeds',
     'Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers',
     'Indoor Plants', 'Outdoor Plants & Trees',
@@ -1261,6 +1261,106 @@ export default function HomeComponent({
             </div>
           </div>
         )}
+      </section>
+
+      {/* ── ABOUT IGO (company story) ─────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-8">
+        <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
+          <div className="grid lg:grid-cols-2">
+            <div className="p-7 sm:p-10">
+              <span className="inline-flex items-center gap-1.5 bg-[#1B6B3A]/10 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                <Sprout className="h-3.5 w-3.5" /> Established 2014 · Pan-India
+              </span>
+              <h2 className="font-display font-black text-slate-900 text-2xl sm:text-3xl tracking-tight mt-4">
+                About IGO — A Decade of Growing India
+              </h2>
+              <p className="text-sm text-slate-600 leading-relaxed mt-3">
+                <b className="text-[#1B6B3A]">IGO Agri Mart</b> is the online agri-inputs marketplace of the <b>IGO Group</b> —
+                India's leading agri engineering, farming and consulting ecosystem. Over <b>10+ years</b> we have delivered
+                <b> 15,000+ successful farming projects</b> across <b>28+ states</b>, earned <b>75+ awards</b>, and built a family
+                of <b>16+ brands</b> spanning agri retail, farming, food processing, fintech, F&amp;B, real estate and agri-education.
+              </p>
+              <p className="text-sm text-slate-600 leading-relaxed mt-3">
+                Our mission is simple: empower every Indian farmer with <b>genuine inputs, modern engineering and fair access</b> —
+                delivered fast, priced honestly, and backed by expert agronomy support.
+              </p>
+              <div className="mt-5 bg-[#F7F9F4] border-l-4 border-[#1B6B3A] rounded-r-xl p-4">
+                <p className="text-[13px] italic text-slate-700 leading-relaxed">"We are not just cultivating land — we are building lasting legacies for every farmer and family we serve."</p>
+                <p className="text-[11px] font-black text-[#1B6B3A] mt-2 uppercase tracking-wide">Dr. John Yesudhas · Founder &amp; CEO, IGO Group</p>
+              </div>
+              <button onClick={() => (setCurrentPage as (p: string) => void)('igo-groups')}
+                className="mt-5 inline-flex items-center gap-1.5 bg-[#1B6B3A] hover:bg-[#15532d] text-white text-xs font-black px-5 py-3 rounded-xl transition">
+                Explore the IGO Group <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+            <div className="bg-emerald-950 text-white p-7 sm:p-10 flex flex-col justify-center">
+              <h3 className="font-display font-black text-[#E8A020] text-lg mb-5">Why farmers trust IGO</h3>
+              <div className="grid grid-cols-2 gap-5">
+                {[
+                  { n: '2014', l: 'Established' },
+                  { n: '10+', l: 'Years of Experience' },
+                  { n: '15,000+', l: 'Successful Projects' },
+                  { n: '28+', l: 'States Served' },
+                  { n: '75+', l: 'Awards Won' },
+                  { n: '16+', l: 'Group Brands' },
+                ].map((s) => (
+                  <div key={s.l}>
+                    <div className="font-display font-black text-3xl text-[#E8A020]">{s.n}</div>
+                    <div className="text-[11px] text-emerald-100/80 uppercase tracking-widest mt-1">{s.l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── INSIDE THE IGO ECOSYSTEM ──────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-8">
+        <div className="text-center max-w-2xl mx-auto mb-7">
+          <span className="inline-flex items-center gap-1.5 bg-[#E8A020]/15 text-[#B45309] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full">
+            <Sparkles className="h-3.5 w-3.5" /> One Group · Many Brands
+          </span>
+          <h2 className="font-display font-black text-slate-900 text-2xl sm:text-3xl tracking-tight mt-3">Inside the IGO Ecosystem</h2>
+          <p className="text-sm text-slate-500 mt-2">From soil to shelf to finance — every part of a farmer's journey is supported by an IGO brand, working together under one trusted group.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {[
+            { icon: Hammer, t: 'IGO Agritech Farms', d: 'Agri engineering & turnkey farm projects — polyhouses, hydroponics, vertical & open-field farms built end-to-end.' },
+            { icon: Package, t: 'Farmers Factory', d: 'Food processing & manufacturing — pure, fresh, organic produce delivered farm-to-table.' },
+            { icon: Sprout, t: 'IGO Nursery', d: 'Polyhouse-grown plants, saplings and quality planting material shipped across India.' },
+            { icon: Tag, t: 'IGO Agri Mart', d: 'This marketplace — genuine seeds, fertilizers, crop protection & farm tools, delivered fast at honest prices.' },
+            { icon: TrendingUp, t: 'IGO Farm Loans', d: 'Government subsidy facilitation & farm finance — up to 90% PM-KUSUM / NABARD / NHB linkage.' },
+            { icon: GraduationCap, t: 'IGO Academy', d: 'Agri education & farmer mentorship — training the next generation of profitable, sustainable farmers.' },
+          ].map((b) => {
+            const Ic = b.icon;
+            return (
+              <div key={b.t} className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-[#1B6B3A]/30 transition">
+                <div className="h-11 w-11 rounded-xl bg-emerald-50 text-[#1B6B3A] flex items-center justify-center border border-emerald-100">
+                  <Ic className="h-5 w-5" />
+                </div>
+                <h3 className="font-display font-black text-slate-900 text-base mt-3">{b.t}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed mt-1.5">{b.d}</p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Vision & Mission */}
+        <div className="grid md:grid-cols-2 gap-5 mt-6">
+          <div className="bg-emerald-950 text-white rounded-2xl p-6">
+            <div className="flex items-center gap-2 text-[#E8A020] font-display font-black text-sm uppercase tracking-widest mb-2">
+              <ShieldCheck className="h-4 w-4" /> Our Vision
+            </div>
+            <p className="text-sm text-emerald-50/90 leading-relaxed">To be the leading pan-India brand in precision agriculture — empowering farmers with innovative, sustainable engineering that maximises ROI while nurturing the earth.</p>
+          </div>
+          <div className="bg-white border border-slate-200 rounded-2xl p-6">
+            <div className="flex items-center gap-2 text-[#1B6B3A] font-display font-black text-sm uppercase tracking-widest mb-2">
+              <Leaf className="h-4 w-4" /> Our Mission
+            </div>
+            <p className="text-sm text-slate-600 leading-relaxed">To put genuine inputs, modern farm technology and fair finance within every Indian farmer's reach — delivered quickly, priced honestly, and backed by real agronomy support.</p>
+          </div>
+        </div>
       </section>
 
       {/* ── STATS BAR (photographic background) ───────────────────────── */}
