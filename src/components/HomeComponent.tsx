@@ -371,11 +371,11 @@ export default function HomeComponent({
 
   const DEFAULT_HERO_SLIDES = [
     {
-      img: '/images/banners/agri_inputs_banner.png',
-      badge: 'WELCOME TO IGO AGRIMART',
-      title: lang === 'en' ? 'India\'s Premium Agri-Inputs. Delivered Fast.' : 'உங்கள் பண்ணைக்கு தேவையான அனைத்தும். வேகமாக டெலிவரி.',
-      sub: lang === 'en' ? 'Certified seeds, fertilizers, crop protection & equipment for Indian farmers — same-day dispatch from our regional hubs' : '835+ விவசாயப் பொருட்கள் · அதே நாள் அனுப்புதல் · சான்றளிக்கப்பட்ட தரம்',
-      btn: 'Shop Best Sellers', btnAction: 'seeds-saplings', color: 'from-emerald-950/85 via-emerald-900/50 to-transparent'
+      img: 'https://images.unsplash.com/photo-1595844730298-b864a93a0279?w=1600&q=80&fit=crop', // Professional polyhouse image
+      badge: 'IGO AGRITECH FARMS',
+      title: lang === 'en' ? 'India\'s Premier Agri Engineering Brand' : 'இந்தியாவின் முன்னணி வேளாண் பொறியியல் நிறுவனம்',
+      sub: lang === 'en' ? 'Pioneering sustainable agriculture with turnkey Polyhouse construction, precision Hydroponics, and full-scale farm infrastructure.' : 'பாலிகவுஸ் அமைப்பு மற்றும் ஹைட்ரோபோனிக்ஸ் விவசாயத்தில் நிபுணத்துவம்',
+      btn: 'Explore Engineering', btnAction: 'greenhouse-polyhouse', color: 'from-emerald-950/85 via-emerald-900/50 to-transparent'
     },
     {
       img: '/images/banners/irrigation_banner.png',
@@ -644,7 +644,110 @@ export default function HomeComponent({
         </div>
       </div>
 
-      {/* ── USP STRIP (assurance cards) ─────────────── */}
+      {/* ── ABOUT IGO (premium corporate story) ───────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-12">
+        <div className="bg-white border border-slate-200 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-emerald-900/5 relative group">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1B6B3A]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
+          
+          <div className="grid lg:grid-cols-12">
+            <div className="lg:col-span-7 p-8 sm:p-12 md:p-16 flex flex-col justify-center relative z-10 bg-white">
+              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-[#1B6B3A]/10 text-[#1B6B3A] text-[11px] font-extrabold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-6 border border-emerald-100 w-fit">
+                <Sprout className="h-4 w-4" /> Established 2013 · Pan-India
+              </span>
+              
+              <h2 className="font-display font-black text-slate-900 text-3xl sm:text-4xl md:text-5xl tracking-tight leading-[1.1]">
+                Transforming Indian <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1B6B3A] to-emerald-600">Agriculture</span>
+              </h2>
+              
+              <p className="text-base text-slate-600 leading-relaxed mt-6">
+                <strong className="text-slate-900 font-black">IGO Agritech Farms</strong> stands at the forefront of India's agricultural revolution. 
+                With over <strong className="text-[#1B6B3A]">11 years of proven excellence</strong>, we deliver world-class turnkey solutions in advanced <strong className="text-slate-900">Polyhouse Construction, precision Hydroponics, and Vertical Farming</strong>.
+              </p>
+              
+              <p className="text-base text-slate-600 leading-relaxed mt-4">
+                Our integrated ecosystem spans <strong className="text-slate-900">16+ brands</strong> across agriculture, food processing, and fintech. We don't just supply inputs; we build sustainable, high-yield agricultural legacies.
+              </p>
+              
+              <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="flex -space-x-3">
+                  <div className="h-12 w-12 rounded-full border-2 border-white bg-emerald-100 flex items-center justify-center shadow-sm">
+                    <Award className="h-5 w-5 text-[#1B6B3A]" />
+                  </div>
+                  <div className="h-12 w-12 rounded-full border-2 border-white bg-amber-50 flex items-center justify-center shadow-sm relative z-10">
+                    <BadgeCheck className="h-5 w-5 text-[#E8A020]" />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-wider font-bold text-slate-400">Recognized Excellence</p>
+                  <p className="text-sm font-bold text-slate-800">MSME Awards 2024 - Best Agri-Consulting Brand</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 relative bg-emerald-950 overflow-hidden flex flex-col justify-center p-8 sm:p-12 md:p-16">
+              <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#E8A020 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#E8A020]/20 blur-3xl rounded-full translate-x-1/3 -translate-y-1/3"></div>
+              
+              <div className="relative z-10">
+                <h3 className="font-display font-black text-white text-xl md:text-2xl mb-8 flex items-center gap-3">
+                  <span className="h-1 w-8 bg-[#E8A020] rounded-full"></span>
+                  Corporate Impact
+                </h3>
+                
+                <div className="grid grid-cols-2 gap-x-6 gap-y-10">
+                  {[
+                    { n: '2013', l: 'Established Year' },
+                    { n: '15,000+', l: 'Successful Projects' },
+                    { n: '2,000+', l: 'Employees Pan-India' },
+                    { n: '28+', l: 'States Served' },
+                    { n: '75+', l: 'Awards Won' },
+                    { n: '16+', l: 'Group Brands' },
+                  ].map((s) => (
+                    <div key={s.l} className="group/stat cursor-default">
+                      <div className="font-display font-black text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-br from-[#E8A020] to-amber-200 group-hover/stat:scale-105 transition-transform origin-left">
+                        {s.n}
+                      </div>
+                      <div className="text-[10px] sm:text-xs text-emerald-200/80 uppercase tracking-[0.15em] mt-2 font-semibold flex items-center gap-2">
+                        {s.l}
+                        <span className="h-[1px] w-4 bg-emerald-800 transition-all group-hover/stat:w-8 group-hover/stat:bg-[#E8A020]"></span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>\n\n{/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-8 mb-6">
+        <div className="flex items-center gap-2 mb-6">
+          <span className="bg-[#1B6B3A]/10 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full">
+            Our Expertise
+          </span>
+          <h2 className="font-display font-black text-slate-900 text-2xl tracking-tight">IGO Signature Services</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { title: 'Polyhouse Construction', desc: 'Turnkey high-tech polyhouse and greenhouse setups for maximum yield.', icon: Home, bg: 'bg-emerald-50 text-[#1B6B3A]' },
+            { title: 'Hydroponics Setup', desc: 'Advanced soil-less farming systems with automated nutrient dosing.', icon: Zap, bg: 'bg-blue-50 text-blue-700' },
+            { title: 'AMC Services', desc: 'Comprehensive annual maintenance contracts for your farm infrastructure.', icon: Wrench, bg: 'bg-amber-50 text-amber-700' },
+            { title: 'Buyback Guarantee', desc: 'Assured market linkages and buyback services for your harvested crops.', icon: RefreshCw, bg: 'bg-purple-50 text-purple-700' }
+          ].map((srv, idx) => (
+            <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer">
+              <div className={`h-12 w-12 rounded-xl flex items-center justify-center mb-4 ${srv.bg} group-hover:scale-110 transition-transform`}>
+                <srv.icon className="h-6 w-6" />
+              </div>
+              <h3 className="font-display font-black text-slate-800 text-lg mb-2">{srv.title}</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">{srv.desc}</p>
+              <div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-[#1B6B3A] transition-colors">
+                Explore Service <ArrowRight className="h-3 w-3" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>\n\n{/* ── USP STRIP (assurance cards) ─────────────── */}
       <div className="max-w-7xl mx-auto px-4 mt-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
@@ -1053,35 +1156,7 @@ export default function HomeComponent({
         <IgoEcosystemCarousel />
       </section>
 
-      {/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-8 mb-6">
-        <div className="flex items-center gap-2 mb-6">
-          <span className="bg-[#1B6B3A]/10 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full">
-            Our Expertise
-          </span>
-          <h2 className="font-display font-black text-slate-900 text-2xl tracking-tight">IGO Signature Services</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { title: 'Polyhouse Construction', desc: 'Turnkey high-tech polyhouse and greenhouse setups for maximum yield.', icon: Home, bg: 'bg-emerald-50 text-[#1B6B3A]' },
-            { title: 'Hydroponics Setup', desc: 'Advanced soil-less farming systems with automated nutrient dosing.', icon: Zap, bg: 'bg-blue-50 text-blue-700' },
-            { title: 'AMC Services', desc: 'Comprehensive annual maintenance contracts for your farm infrastructure.', icon: Wrench, bg: 'bg-amber-50 text-amber-700' },
-            { title: 'Buyback Guarantee', desc: 'Assured market linkages and buyback services for your harvested crops.', icon: RefreshCw, bg: 'bg-purple-50 text-purple-700' }
-          ].map((srv, idx) => (
-            <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer">
-              <div className={`h-12 w-12 rounded-xl flex items-center justify-center mb-4 ${srv.bg} group-hover:scale-110 transition-transform`}>
-                <srv.icon className="h-6 w-6" />
-              </div>
-              <h3 className="font-display font-black text-slate-800 text-lg mb-2">{srv.title}</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">{srv.desc}</p>
-              <div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-[#1B6B3A] transition-colors">
-                Explore Service <ArrowRight className="h-3 w-3" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      
 
       {/* ── MARKET INTELLIGENCE / PRICE TRACKER (AGRA.global-style) ─── */}
       <section className="max-w-7xl mx-auto px-4 py-8">
@@ -1191,97 +1266,7 @@ export default function HomeComponent({
         )}
       </section>
 
-      {/* ── ABOUT IGO (premium corporate story) ───────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <div className="bg-white border border-slate-200 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-emerald-900/5 relative group">
-          {/* subtle glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1B6B3A]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
-          
-          <div className="grid lg:grid-cols-12">
-            {/* Left Column: Story */}
-            <div className="lg:col-span-7 p-8 sm:p-12 md:p-16 flex flex-col justify-center relative z-10 bg-white">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-[#1B6B3A]/10 text-[#1B6B3A] text-[11px] font-extrabold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-6 border border-emerald-100 w-fit">
-                <Sprout className="h-4 w-4" /> Established 2013 · Pan-India
-              </span>
-              
-              <h2 className="font-display font-black text-slate-900 text-3xl sm:text-4xl md:text-5xl tracking-tight leading-[1.1]">
-                About IGO — <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1B6B3A] to-emerald-600">A Decade of Growing India</span>
-              </h2>
-              
-              <p className="text-base text-slate-600 leading-relaxed mt-6">
-                <strong className="text-slate-900 font-black">IGO Agritech Farms</strong> is India's leading Agri Engineering & Agri Consulting brand. 
-                With over <strong className="text-[#1B6B3A]">11+ years of excellence</strong>, we specialize in high-tech <strong className="text-slate-900">Polyhouse Construction, Hydroponics Setups, Vertical Farming, and complete AMC & Buyback services</strong>.
-              </p>
-              
-              <p className="text-base text-slate-600 leading-relaxed mt-4">
-                Our ecosystem spans <strong className="text-slate-900">16+ brands</strong> across agriculture, food processing, fintech, and education. We empower farmers with genuine inputs, precision infrastructure, and sustainable farming solutions.
-              </p>
-              
-              <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <div className="flex -space-x-3">
-                  <div className="h-12 w-12 rounded-full border-2 border-white bg-emerald-100 flex items-center justify-center shadow-sm">
-                    <Award className="h-5 w-5 text-[#1B6B3A]" />
-                  </div>
-                  <div className="h-12 w-12 rounded-full border-2 border-white bg-amber-50 flex items-center justify-center shadow-sm relative z-10">
-                    <BadgeCheck className="h-5 w-5 text-[#E8A020]" />
-                  </div>
-                </div>
-                <div>
-                  <p className="text-[11px] uppercase tracking-wider font-bold text-slate-400">Recognized Excellence</p>
-                  <p className="text-sm font-bold text-slate-800">MSME Awards 2024 - Best Agri-Consulting Brand</p>
-                </div>
-              </div>
-
-              <div className="mt-8 pt-8 border-t border-slate-100 flex items-center justify-between">
-                <div>
-                  <p className="text-[13px] italic text-slate-600 font-medium">"Cultivating land & building lasting legacies."</p>
-                  <p className="text-[10px] font-black text-[#1B6B3A] mt-1 uppercase tracking-widest">Dr. John Yesudhas · Founder & CEO</p>
-                </div>
-                <button onClick={() => (setCurrentPage as (p: string) => void)('igo-groups')}
-                  className="shrink-0 h-12 w-12 bg-[#1B6B3A] hover:bg-emerald-950 text-white rounded-full flex items-center justify-center transition-transform hover:scale-110 shadow-lg shadow-emerald-900/20">
-                  <ArrowRight className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Right Column: Dynamic Stats */}
-            <div className="lg:col-span-5 relative bg-emerald-950 overflow-hidden flex flex-col justify-center p-8 sm:p-12 md:p-16">
-              {/* background pattern */}
-              <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#E8A020 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#E8A020]/20 blur-3xl rounded-full translate-x-1/3 -translate-y-1/3"></div>
-              
-              <div className="relative z-10">
-                <h3 className="font-display font-black text-white text-xl md:text-2xl mb-8 flex items-center gap-3">
-                  <span className="h-1 w-8 bg-[#E8A020] rounded-full"></span>
-                  Why farmers trust IGO
-                </h3>
-                
-                <div className="grid grid-cols-2 gap-x-6 gap-y-10">
-                  {[
-                    { n: '2013', l: 'Established Year' },
-                    { n: '15,000+', l: 'Successful Projects' },
-                    { n: '2,000+', l: 'Employees Pan-India' },
-                    { n: '28+', l: 'States Served' },
-                    { n: '75+', l: 'Awards Won' },
-                    { n: '16+', l: 'Group Brands' },
-                  ].map((s) => (
-                    <div key={s.l} className="group/stat cursor-default">
-                      <div className="font-display font-black text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-br from-[#E8A020] to-amber-200 group-hover/stat:scale-105 transition-transform origin-left">
-                        {s.n}
-                      </div>
-                      <div className="text-[10px] sm:text-xs text-emerald-200/80 uppercase tracking-[0.15em] mt-2 font-semibold flex items-center gap-2">
-                        {s.l}
-                        <span className="h-[1px] w-4 bg-emerald-800 transition-all group-hover/stat:w-8 group-hover/stat:bg-[#E8A020]"></span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* ── INSIDE THE IGO ECOSYSTEM ──────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-8">
