@@ -721,35 +721,7 @@ export default function HomeComponent({
         </div>
       </section>
 
-      {/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-8 mb-6">
-        <div className="flex items-center gap-2 mb-6">
-          <span className="bg-[#1B6B3A]/10 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full">
-            Our Expertise
-          </span>
-          <h2 className="font-display font-black text-slate-900 text-2xl tracking-tight">IGO Signature Services</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { title: 'Polyhouse Construction', desc: 'Turnkey high-tech polyhouse and greenhouse setups for maximum yield.', icon: Home, bg: 'bg-emerald-50 text-[#1B6B3A]' },
-            { title: 'Hydroponics Setup', desc: 'Advanced soil-less farming systems with automated nutrient dosing.', icon: Zap, bg: 'bg-blue-50 text-blue-700' },
-            { title: 'AMC Services', desc: 'Comprehensive annual maintenance contracts for your farm infrastructure.', icon: Wrench, bg: 'bg-amber-50 text-amber-700' },
-            { title: 'Buyback Guarantee', desc: 'Assured market linkages and buyback services for your harvested crops.', icon: RefreshCw, bg: 'bg-purple-50 text-purple-700' }
-          ].map((srv, idx) => (
-            <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer">
-              <div className={`h-12 w-12 rounded-xl flex items-center justify-center mb-4 ${srv.bg} group-hover:scale-110 transition-transform`}>
-                <srv.icon className="h-6 w-6" />
-              </div>
-              <h3 className="font-display font-black text-slate-800 text-lg mb-2">{srv.title}</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">{srv.desc}</p>
-              <div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-[#1B6B3A] transition-colors">
-                Explore Service <ArrowRight className="h-3 w-3" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      
 
       {/* ── USP STRIP (assurance cards) ─────────────── */}
       <div className="max-w-7xl mx-auto px-4 mt-6">
@@ -1381,7 +1353,37 @@ export default function HomeComponent({
         </div>
       </section>
 
-      {/* ── B2B BULK TRADE INQUIRY (FarmerShrine + FarmLyx-style) ───── */}
+      {/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-8 mb-6">
+        <div className="flex items-center gap-2 mb-6">
+          <span className="bg-[#1B6B3A]/10 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full">
+            Our Expertise
+          </span>
+          <h2 className="font-display font-black text-slate-900 text-2xl tracking-tight">IGO Signature Services</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { title: 'Polyhouse Construction', desc: 'Turnkey high-tech polyhouse and greenhouse setups for maximum yield.', icon: Home, bg: 'bg-emerald-50 text-[#1B6B3A]' },
+            { title: 'Hydroponics Setup', desc: 'Advanced soil-less farming systems with automated nutrient dosing.', icon: Zap, bg: 'bg-blue-50 text-blue-700' },
+            { title: 'AMC Services', desc: 'Comprehensive annual maintenance contracts for your farm infrastructure.', icon: Wrench, bg: 'bg-amber-50 text-amber-700' },
+            { title: 'Buyback Guarantee', desc: 'Assured market linkages and buyback services for your harvested crops.', icon: RefreshCw, bg: 'bg-purple-50 text-purple-700' }
+          ].map((srv, idx) => (
+            <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer">
+              <div className={`h-12 w-12 rounded-xl flex items-center justify-center mb-4 ${srv.bg} group-hover:scale-110 transition-transform`}>
+                <srv.icon className="h-6 w-6" />
+              </div>
+              <h3 className="font-display font-black text-slate-800 text-lg mb-2">{srv.title}</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">{srv.desc}</p>
+              <div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-[#1B6B3A] transition-colors">
+                Explore Service <ArrowRight className="h-3 w-3" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+{/* ── B2B BULK TRADE INQUIRY (FarmerShrine + FarmLyx-style) ───── */}
       <section className="max-w-7xl mx-auto px-4 py-8">
         <div className="bg-gradient-to-br from-[#1B6B3A] to-emerald-800 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-16 translate-x-16" />
