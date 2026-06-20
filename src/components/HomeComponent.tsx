@@ -1307,6 +1307,83 @@ export default function HomeComponent({
         </div>
       </section>
 
+
+      {/* ── CORPORATE IMPACT (B2B SCALE) ───────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-8 mb-6 mt-10">
+        <div className="rounded-[2rem] overflow-hidden shadow-xl border border-slate-200">
+          <div className="grid lg:grid-cols-12">
+            <div className="lg:col-span-7 p-8 sm:p-12 md:p-16 flex flex-col justify-center relative z-10 bg-white">
+              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-[#1B6B3A]/10 text-[#1B6B3A] text-[11px] font-extrabold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-6 border border-emerald-100 w-fit">
+                <Sprout className="h-4 w-4" /> Established 2013 · Pan-India
+              </span>
+              
+              <h2 className="font-display font-black text-slate-900 text-3xl sm:text-4xl md:text-5xl tracking-tight leading-[1.1]">
+                Transforming Indian <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1B6B3A] to-emerald-600">Agriculture</span>
+              </h2>
+              
+              <p className="text-base text-slate-600 leading-relaxed mt-6">
+                <strong className="text-slate-900 font-black">IGO Agritech Farms</strong> stands at the forefront of India's agricultural revolution. 
+                With over <strong className="text-[#1B6B3A]">11 years of proven excellence</strong>, we deliver world-class turnkey solutions in advanced <strong className="text-slate-900">Polyhouse Construction, precision Hydroponics, and Vertical Farming</strong>.
+              </p>
+              
+              <p className="text-base text-slate-600 leading-relaxed mt-4">
+                Our integrated ecosystem spans <strong className="text-slate-900">16+ brands</strong> across agriculture, food processing, and fintech. We don't just supply inputs; we build sustainable, high-yield agricultural legacies.
+              </p>
+              
+              <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="flex -space-x-3">
+                  <div className="h-12 w-12 rounded-full border-2 border-white bg-emerald-100 flex items-center justify-center shadow-sm">
+                    <Award className="h-5 w-5 text-[#1B6B3A]" />
+                  </div>
+                  <div className="h-12 w-12 rounded-full border-2 border-white bg-amber-50 flex items-center justify-center shadow-sm relative z-10">
+                    <BadgeCheck className="h-5 w-5 text-[#E8A020]" />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-wider font-bold text-slate-400">Recognized Excellence</p>
+                  <p className="text-sm font-bold text-slate-800">MSME Awards 2024 - Best Agri-Consulting Brand</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 relative bg-emerald-950 overflow-hidden flex flex-col justify-center p-8 sm:p-12 md:p-16">
+              <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#E8A020 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#E8A020]/20 blur-3xl rounded-full translate-x-1/3 -translate-y-1/3"></div>
+              
+              <div className="relative z-10">
+                <h3 className="font-display font-black text-white text-xl md:text-2xl mb-8 flex items-center gap-3">
+                  <span className="h-1 w-8 bg-[#E8A020] rounded-full"></span>
+                  Corporate Impact
+                </h3>
+                
+                <div className="grid grid-cols-2 gap-x-6 gap-y-10">
+                  {[
+                    { n: '2013', l: 'Established Year' },
+                    { n: '15,000+', l: 'Successful Projects' },
+                    { n: '2,000+', l: 'Employees Pan-India' },
+                    { n: '28+', l: 'States Served' },
+                    { n: '75+', l: 'Awards Won' },
+                    { n: '16+', l: 'Group Brands' },
+                  ].map((s) => (
+                    <div key={s.l} className="group/stat cursor-default">
+                      <div className="font-display font-black text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-br from-[#E8A020] to-amber-200 group-hover/stat:scale-105 transition-transform origin-left">
+                        {s.n}
+                      </div>
+                      <div className="text-[10px] sm:text-xs text-emerald-200/80 uppercase tracking-[0.15em] mt-2 font-semibold flex items-center gap-2">
+                        {s.l}
+                        <span className="h-[1px] w-4 bg-emerald-800 transition-all group-hover/stat:w-8 group-hover/stat:bg-[#E8A020]"></span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
 {/* ── B2B BULK TRADE INQUIRY (FarmerShrine + FarmLyx-style) ───── */}
       <section className="max-w-7xl mx-auto px-4 py-8">
         <div className="bg-gradient-to-br from-[#1B6B3A] to-emerald-800 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden">
