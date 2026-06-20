@@ -670,7 +670,7 @@ export default function HomeComponent({
       <section className="max-w-7xl mx-auto px-4 py-10">
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-display font-black text-slate-900 text-xl sm:text-2xl tracking-tight">
-            Shop our best agri categories
+            Shop our all categories
           </h2>
           <div className="hidden sm:flex items-center gap-2">
             <button
@@ -1045,10 +1045,7 @@ export default function HomeComponent({
         </div>
       </section>
 
-      {/* ── FARM STORIES ──────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 pt-6">
-        <FarmStories />
-      </section>
+      {/* (Farmer Updates removed per request) */}
 
       {/* ── LIVE STREAMS & ECOSYSTEM ───────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-4">
@@ -1056,102 +1053,33 @@ export default function HomeComponent({
         <IgoEcosystemCarousel />
       </section>
 
-      {/* ── SUBSIDY FINDER ───────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-6 mb-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Crop Solution Kits */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="bg-red-50 text-[#D94F3D] border border-red-100 font-black text-[10px] uppercase px-2.5 py-1 rounded">Save up to 33% Combo</span>
+      {/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-8 mb-6">
+        <div className="flex items-center gap-2 mb-6">
+          <span className="bg-[#1B6B3A]/10 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full">
+            Our Expertise
+          </span>
+          <h2 className="font-display font-black text-slate-900 text-2xl tracking-tight">IGO Signature Services</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { title: 'Polyhouse Construction', desc: 'Turnkey high-tech polyhouse and greenhouse setups for maximum yield.', icon: Home, bg: 'bg-emerald-50 text-[#1B6B3A]' },
+            { title: 'Hydroponics Setup', desc: 'Advanced soil-less farming systems with automated nutrient dosing.', icon: Zap, bg: 'bg-blue-50 text-blue-700' },
+            { title: 'AMC Services', desc: 'Comprehensive annual maintenance contracts for your farm infrastructure.', icon: Wrench, bg: 'bg-amber-50 text-amber-700' },
+            { title: 'Buyback Guarantee', desc: 'Assured market linkages and buyback services for your harvested crops.', icon: RefreshCw, bg: 'bg-purple-50 text-purple-700' }
+          ].map((srv, idx) => (
+            <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer">
+              <div className={`h-12 w-12 rounded-xl flex items-center justify-center mb-4 ${srv.bg} group-hover:scale-110 transition-transform`}>
+                <srv.icon className="h-6 w-6" />
+              </div>
+              <h3 className="font-display font-black text-slate-800 text-lg mb-2">{srv.title}</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">{srv.desc}</p>
+              <div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-[#1B6B3A] transition-colors">
+                Explore Service <ArrowRight className="h-3 w-3" />
+              </div>
             </div>
-            <h4 className="font-display font-black text-slate-800 text-lg mb-1">Crop Solution Kits</h4>
-            <p className="text-xs text-slate-400 mb-4">Professional bundles with seeds, inputs & bio-defences</p>
-            <div className="space-y-3">
-              {CROP_KITS.map((kit) => (
-                <div key={kit.id} className="border-b border-dashed border-slate-100 pb-3 last:border-0">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="font-semibold text-xs text-slate-800">{kit.name}</div>
-                      <div className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">{kit.description}</div>
-                    </div>
-                    <div className="text-right ml-3">
-                      <div className="text-[10px] text-slate-400 line-through">₹{kit.mrp}</div>
-                      <div className="text-xs font-black text-[#1B6B3A]">₹{kit.price}</div>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => alert(`Added ${kit.name} combo to Cart!`)}
-                    className="text-[10px] font-bold text-[#E8A020] hover:text-[#1B6B3A] flex items-center gap-1 mt-1.5 transition"
-                  >
-                    <CornerDownRight className="h-3 w-3" />
-                    Instant Order Combo
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Govt Subsidy Finder */}
-          <div id="subsidy-widget" className="bg-emerald-950 text-white p-6 rounded-2xl shadow-xl">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="h-5 w-5 bg-[#E8A020] rounded-full flex items-center justify-center font-bold text-xs text-emerald-950">₹</span>
-              <span className="text-xs font-bold text-[#E8A020] uppercase tracking-wider">Gov Subsidy Portal</span>
-            </div>
-            <h4 className="font-display font-black text-white text-lg mb-1">Government Agri Subsidy Finder</h4>
-            <p className="text-xs text-emerald-200 mb-4 leading-relaxed">
-              Buy drip systems, implements & organic inputs with up to 50% subsidy under PMKSY.
-            </p>
-            <label className="text-[11px] font-bold text-[#E8A020] block uppercase tracking-wide mb-1.5">
-              Search by category or scheme:
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={subsidyQuery}
-                onChange={(e) => { setSubsidyQuery(e.target.value); setSelectedSubsidyIndex(null); }}
-                placeholder="e.g. Drip, Cutters, Organic"
-                className="bg-emerald-900 border border-emerald-700 rounded-lg px-3 py-2 flex-1 text-xs text-white placeholder-emerald-400 focus:outline-none focus:border-[#E8A020]"
-              />
-              <button
-                onClick={() => {
-                  const idx = SUBSIDY_INFO.findIndex(x =>
-                    x.applicableFor.toLowerCase().includes(subsidyQuery.toLowerCase()) ||
-                    x.schemeName.toLowerCase().includes(subsidyQuery.toLowerCase())
-                  );
-                  setSelectedSubsidyIndex(idx > -1 ? idx : 0);
-                }}
-                className="bg-[#E8A020] hover:bg-amber-400 text-emerald-950 text-xs font-bold px-4 py-2 rounded-lg transition"
-              >Find</button>
-            </div>
-            <div className="mt-4 bg-emerald-900/50 border border-emerald-800 p-4 rounded-xl min-h-[80px]">
-              {selectedSubsidyIndex !== null ? (
-                <div>
-                  <div className="text-xs font-bold text-white">{SUBSIDY_INFO[selectedSubsidyIndex].schemeName}</div>
-                  <div className="grid grid-cols-2 gap-3 mt-2">
-                    <div>
-                      <div className="text-[9px] uppercase text-emerald-300">Subsidy</div>
-                      <div className="text-sm font-black text-[#E8A020]">{SUBSIDY_INFO[selectedSubsidyIndex].subsidyAmount}</div>
-                    </div>
-                    <div>
-                      <div className="text-[9px] uppercase text-emerald-300">Provider</div>
-                      <div className="text-xs text-white">{SUBSIDY_INFO[selectedSubsidyIndex].authorizedProvider}</div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-xs text-emerald-400 italic flex items-center justify-center h-full">
-                  Type "Drip" or "Organic" to find matching schemes
-                </div>
-              )}
-            </div>
-            <div className="mt-4 pt-3 border-t border-emerald-900 flex justify-between items-center">
-              <span className="text-[11px] text-emerald-300">Need help? Book IGO expert consultation</span>
-              <button
-                onClick={() => window.open('https://wa.me/917397785803?text=Hello%20IGO,%20subsidy%20query')}
-                className="text-xs text-[#E8A020] hover:text-white font-bold transition"
-              >Learn More</button>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
