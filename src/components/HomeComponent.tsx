@@ -1273,6 +1273,10 @@ export default function HomeComponent({
         </div>
       </section>
 
+      
+      {/* ── CORPORATE IMPACT (B2B SCALE) ───────────────────────────────── */}
+      ��i m p o
+
       {/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-8 mb-6">
         <div className="flex items-center gap-2 mb-6">
