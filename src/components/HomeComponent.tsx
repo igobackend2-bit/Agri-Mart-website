@@ -1015,54 +1015,6 @@ export default function HomeComponent({
         </div>
       </div>
 
-      {/* ── AGRO DELIVERY BENEFITS (INSTAMART-STYLE) ───────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {NATIONAL_FEATURES.map((item) => (
-            <div key={item.title} className={`rounded-3xl border border-slate-200 p-5 flex items-start gap-4 ${item.color}`}>
-              <div className="p-3 rounded-2xl bg-white shadow-sm">
-                <item.icon className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-display font-black text-slate-900 text-sm">{item.title}</h3>
-                <p className="text-[12px] text-slate-500 mt-2">{item.detail}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── HOW IGO WORKS ────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {[
-            {
-              title: 'Browse professional agri products',
-              desc: 'Find inputs by crop, pest, livestock or farm process through curated categories.',
-              icon: Truck
-            },
-            {
-              title: 'Place secure orders instantly',
-              desc: 'Checkout with transparent pricing, farm-grade quality, and fast dispatch options.',
-              icon: ShieldCheck
-            },
-            {
-              title: 'Receive support from agronomists',
-              desc: 'Access expert product advice, delivery status and return support seamlessly.',
-              icon: HeadphonesIcon
-            }
-          ].map((item) => (
-            <div key={item.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="inline-flex items-center justify-center rounded-3xl bg-[#E8A020]/15 p-4 text-[#1B6B3A] mb-4">
-                <item.icon className="h-6 w-6" />
-              </div>
-              <h3 className="font-display font-black text-slate-900 text-lg leading-tight">{item.title}</h3>
-              <p className="mt-3 text-sm text-slate-500 leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── SMART SEARCH AND QUICK ACTIONS ───────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6">
         <div className="bg-white border border-slate-200 rounded-[2rem] p-5 sm:p-6 shadow-sm">
