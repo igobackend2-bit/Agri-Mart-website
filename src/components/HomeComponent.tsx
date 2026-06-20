@@ -1564,5 +1564,6 @@ export default function HomeComponent({
         </div>
       </section>
 
-      {/* ── APP DOWNLOAD BANNER (KisaanTrade-style) ─────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-6 mb-4">
+    </div>
+  );
+}
