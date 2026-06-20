@@ -650,7 +650,6 @@ export default function HomeComponent({
       
 
       {/* ── CORPORATE IMPACT (B2B SCALE) ───────────────────────────────── */}
-      ��i m p o
 
       {/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-8 mb-6">
@@ -877,8 +876,8 @@ export default function HomeComponent({
       {/* ── BEST SELLING (BigHaat-style) ─────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 bg-white rounded-2xl shadow-sm mb-6">
         <SectionHeader
-          title="Best Selling"
-          sub="Best prices available today."
+          title="Best Sellers"
+          sub="The inputs Indian farmers reorder most — proven quality, honest prices."
           onViewAll={() => { setSelectedCategory(null); setCurrentPage('category'); }}
         />
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
@@ -889,8 +888,8 @@ export default function HomeComponent({
       {/* ── FRESHLY ARRIVED (TODAY'S SELECTION) ──────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 bg-white rounded-2xl shadow-sm mb-6">
         <SectionHeader
-          title={"Freshly Arrived / Today's Selection ⚡"}
-          sub="Best prices available today on fresh harvest."
+          title={"Freshly Arrived ⚡"}
+          sub="Just-harvested produce and newly stocked inputs — dispatched the same day."
           onViewAll={() => { setSelectedCategory(null); setCurrentPage('category'); }}
         />
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none h-scroll">
@@ -957,7 +956,7 @@ export default function HomeComponent({
       <section className="max-w-7xl mx-auto px-4 py-6">
         <SectionHeader
           title={'Shop By Crop 🌾'}
-          sub="Get solutions customised for your crops."
+          sub="Curated input bundles matched to your crop and its growth stage."
           onViewAll={() => { setSelectedCategory('seeds-saplings'); setCurrentPage('category'); }}
         />
         <div className="flex gap-3 sm:gap-5 overflow-x-auto pb-2 scrollbar-none">
@@ -1017,7 +1016,7 @@ export default function HomeComponent({
       <section className="max-w-7xl mx-auto px-4 py-6 mb-6 bg-slate-50 rounded-2xl shadow-sm border border-slate-100">
         <SectionHeader
           title="Urban & Balcony Gardening 🪴"
-          sub="Everything you need for your home garden oasis."
+          sub="Everything for a thriving balcony, terrace or home garden."
           onViewAll={() => handleCategoryClick('urban-balcony-gardening')}
         />
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
@@ -1068,7 +1067,7 @@ export default function HomeComponent({
       <section className="max-w-7xl mx-auto px-4 py-6 bg-white rounded-2xl shadow-sm mb-6">
         <SectionHeader
           title="Trending Products 🔥"
-          sub="Farmer favorites this week."
+          sub="This week's most-loved products across Indian farms."
           onViewAll={() => { setSelectedCategory(null); setCurrentPage('category'); }}
         />
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
@@ -1534,86 +1533,3 @@ export default function HomeComponent({
 
       {/* ── APP DOWNLOAD BANNER (KisaanTrade-style) ─────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 mb-4">
-        <div className="rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden shadow-xl">
-          <img src="https://images.unsplash.com/photo-1492496913980-501348b61469?w=1600&q=70&fit=crop" alt=""
-            className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/80 to-emerald-950/70" />
-          <div className="relative z-10 text-center sm:text-left">
-            <span className="inline-block bg-[#E8A020] text-slate-900 text-[9px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full mb-3">Coming Soon</span>
-            <h2 className="font-display font-black text-xl sm:text-2xl text-white leading-tight mb-1">Get the IGO AgriMart App</h2>
-            <p className="text-slate-400 text-sm max-w-sm">
-              Order seeds, fertilizers &amp; equipment. Track deliveries. Get crop advisory — all from your phone.
-            </p>
-            <div className="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start">
-              {['Order Tracking', 'Crop Doctor', 'Price Alerts', 'Tamil Support'].map(f => (
-                <span key={f} className="text-[10px] font-bold text-slate-300 bg-white/10 border border-white/20 px-2.5 py-1 rounded-full">{f}</span>
-              ))}
-            </div>
-          </div>
-          <div className="relative z-10 flex flex-col sm:flex-row gap-3 shrink-0">
-            <button
-              onClick={() => alert('IGO AgriMart App — launching soon! Register interest via WhatsApp: +91 7397785803')}
-              className="flex items-center gap-2 bg-white text-slate-900 font-black text-sm px-5 py-3 rounded-xl shadow-lg hover:bg-slate-100 transition min-h-[48px]"
-            >
-              <span className="text-xl">▶</span>
-              <div className="text-left">
-                <div className="text-[9px] font-normal text-slate-500">Available on</div>
-                <div className="text-sm font-black">Google Play</div>
-              </div>
-            </button>
-            <button
-              onClick={() => alert('IGO AgriMart App — launching soon! Register interest via WhatsApp: +91 7397785803')}
-              className="flex items-center gap-2 bg-white text-slate-900 font-black text-sm px-5 py-3 rounded-xl shadow-lg hover:bg-slate-100 transition min-h-[48px]"
-            >
-              <span className="text-xl"></span>
-              <div className="text-left">
-                <div className="text-[9px] font-normal text-slate-500">Download on</div>
-                <div className="text-sm font-black">App Store</div>
-              </div>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <div className="text-center mb-8">
-          <span className="inline-block bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">Farmer Stories</span>
-          <h2 className="font-extrabold text-2xl text-slate-800">Trusted by 10,000+ Farmers</h2>
-          <p className="text-slate-400 text-sm mt-1">Real results from farmers across Tamil Nadu and beyond</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { name: "Murugan S.", location: "Villupuram, Tamil Nadu", crop: "Paddy & Sugarcane", rating: 5, text: "IGO Agri Mart changed how I buy inputs. I get certified seeds and organic fertilizers delivered to my village within 2 days. Quality is exceptional and prices are 15% lower than local shops.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&q=80" },
-            { name: "Lakshmi R.", location: "Coimbatore, Tamil Nadu", crop: "Flowers & Vegetables", rating: 5, text: "As a small farmer, I always struggled with fake pesticides. Through IGO, every product is genuine with batch numbers. The Crop Doctor feature helped me identify disease in my roses and fix it quickly.", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&q=80" },
-            { name: "Rajan K.", location: "Madurai, Tamil Nadu", crop: "Cotton & Groundnut", rating: 5, text: "Ordered drip irrigation from IGO Agri Mart with government subsidy support. The team helped with PMKSY paperwork. Saved Rs.45,000 on installation. My water usage dropped by 40%. Highly recommend!", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&q=80" },
-          ].map((item, i) => (
-            <div key={i} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition">
-              <div className="flex items-center gap-1 mb-3">
-                {[...Array(item.rating)].map((_, j) => (
-                  <span key={j} className="text-[#E8A020] text-sm">&#9733;</span>
-                ))}
-              </div>
-              <p className="text-sm text-slate-600 leading-relaxed mb-4 italic">&ldquo;{item.text}&rdquo;</p>
-              <div className="flex items-center gap-3 border-t border-slate-100 pt-4">
-                <img src={item.img} alt={item.name}
-                  className="h-10 w-10 rounded-full object-cover border-2 border-emerald-100"
-                  onError={(e) => { (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80"; }} />
-                <div>
-                  <div className="font-extrabold text-slate-800 text-sm">{item.name}</div>
-                  <div className="text-[11px] text-slate-400">{item.location}</div>
-                  <div className="text-[10px] text-emerald-600 font-bold mt-0.5">&#127806; {item.crop}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-    </div>
-  );
-}
-
-function filteredProductCount(products: any[], category: string): number {
-  return products.filter(p => p.category === category).length;
-}
