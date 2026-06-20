@@ -82,7 +82,7 @@ const CATEGORY_MAP: Record<string, any> = {
     '/catalog/farmer-factory-fruits/BananaNendhiram.jfif',
     '/catalog/farmer-factory-fruits/BananaPoovan.jfif'
   ] },
-  'native-foods-millets': { icon: Wheat, text: 'Native Foods & Millets', count: 'Valluvam Range', desc: 'Millets, spices, dry fruits, cold-pressed oils, honey & jaggery — chemical-free', bg: 'bg-amber-50 text-amber-700', images: [
+  'native-foods-millets': { icon: Wheat, text: 'Native Foods & Millets', count: 'Native Range', desc: 'Millets, spices, dry fruits, cold-pressed oils, honey & jaggery — chemical-free', bg: 'bg-amber-50 text-amber-700', images: [
     '/catalog/farmer-factory-valluvam/BarnyardMillet.jpg',
     '/catalog/farmer-factory-valluvam/BrowntopMillet.jpg',
     '/catalog/farmer-factory-valluvam/Cardamom.jpg',
@@ -344,7 +344,7 @@ export default function HomeComponent({
   // Category rail — built from the REAL catalog so every tile has a real image
   // and only categories that actually have products are shown (no empty circles).
   const CAT_ORDER = [
-    'Vegetables', 'Fruits', 'Valluvam Products',
+    'Vegetables', 'Fruits',
     'Vegetable Seeds', 'Fruit Seeds', 'Field Seeds', 'Flower Seeds',
     'Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers',
     'Indoor Plants', 'Outdoor Plants & Trees',
@@ -740,7 +740,8 @@ export default function HomeComponent({
         </div>
       </section>
 
-      {/* ── COMBO KITS & DEALS SECTION ───────────────────────────────── */}
+      {/* ── COMBO KITS & DEALS SECTION — removed per request ─────────── */}
+      {false && (
       <section className="max-w-7xl mx-auto px-4 py-6 bg-white rounded-2xl shadow-sm mb-6">
         <SectionHeader
           title="Combo Kits & Deals"
@@ -792,6 +793,7 @@ export default function HomeComponent({
           ))}
         </div>
       </section>
+      )}
 
       {/* ── SHOP BY CROP (BigHaat-style circular) ────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6">
@@ -1404,7 +1406,6 @@ export default function HomeComponent({
                 const DIV = [
                   { logo: "/images/Brands/8.jpg", logoText: "IGO AGRI TECHFARMS", subtitle: "CORE BUSINESS", title: "IGO Agritech Farms", desc: "Leading agricultural engineering and infrastructure development for modern tech-enabled farming across India.", status: "active" },
                   { logo: "/images/Brands/20.jpg", logoText: "FARMERS FACTORY", subtitle: "PROCESSING & MFG", title: "Farmers Factory", desc: "State-of-the-art food processing and manufacturing delivering pure, fresh, organic products directly to consumers.", status: "active" },
-                  { logo: "/images/Brands/7.jpg", logoText: "VALLUVAM", subtitle: "AGRI CONSULTANCY", title: "Valluvam", desc: "Expert agricultural consultancy providing strategic guidance, research, and sustainable farming methodologies.", status: "active" },
                   { logo: "/images/Brands/10.jpg", logoText: "PROTEIN CUTS", subtitle: "FARM-TO-TABLE", title: "Protein Cuts", desc: "Premium quality, ethically sourced protein products from our trusted network directly to your kitchen.", status: "active" },
                   { logo: "/images/Brands/14.jpg", logoText: "IGO NURSERY", subtitle: "PLANT PROPAGATION", title: "IGO Nursery", desc: "Premium polyhouse-grown plants, saplings and AgriTech greenery delivered across India.", status: "active" },
                   { logo: "/images/Brands/6.jpg", logoText: "IGO AGRI MART", subtitle: "DISTRIBUTION", title: "IGO Agri Mart", desc: "Seeds, fertilizers, plants and farm essentials — the agri-distribution network for every farmer.", status: "active" },

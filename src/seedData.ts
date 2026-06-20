@@ -63,7 +63,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 
 // Display order for the storefront
 const CATEGORY_ORDER = [
-  'Vegetables', 'Fruits', 'Valluvam Products',
+  'Vegetables', 'Fruits',
   'Vegetable Seeds', 'Fruit Seeds', 'Field Seeds', 'Flower Seeds',
   'Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers',
   'Indoor Plants', 'Outdoor Plants & Trees', 'Precision Tools & Equipments',

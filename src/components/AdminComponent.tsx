@@ -5,7 +5,7 @@ import {
   Search, RefreshCw, DollarSign,
   AlertTriangle, TrendingUp, Image, Shield,
   CheckCircle, LayoutDashboard,
-  Archive, PieChart, Gift, Monitor, Wrench, LogOut, KeyRound, Bell, Inbox, Download, Store, ExternalLink, Upload
+  Archive, PieChart, Gift, Monitor, Wrench, LogOut, KeyRound, Bell, Inbox, Download, Store, ExternalLink, Upload, Info
 } from 'lucide-react';
 import { Product, Order, Category, Brand } from '../types';
 import {
@@ -306,6 +306,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
     if (activeTab === 'Customers') loadCustomers();
     if (activeTab === 'Reports') loadOrders();
     if (activeTab === 'Leads') loadLeads();
+    if (activeTab === 'Sellers') setSellers(getSellers());
   }, [activeTab]);
 
   // ── Live auto-refresh every 5s — but PAUSE while the admin is editing ─────────
@@ -1112,7 +1113,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
                       <label className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-4 py-2.5 rounded-lg cursor-pointer transition whitespace-nowrap">
                         + Upload File
                         <input type="file" accept="image/*" multiple className="hidden" onChange={e => {
-                          const files = Array.from(e.target.files || []);
+                          const files = Array.from(e.target.files || []) as File[];
                           files.forEach(file => readImageFile(file, (url) => {
                             setNewProduct(prev => ({ ...prev, images: prev.images ? prev.images.trim() + '\n' + url : url }));
                           }));
@@ -1442,6 +1443,68 @@ export default function AdminComponent({ lang, products, setProducts, categories
               ))
             )}
           </div>
+        </div>
+      )}
+
+      {activeTab === 'Sellers' && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="font-extrabold text-sm text-slate-800">Seller Submissions ({sellers.length})</h3>
+            <div className="flex gap-2 text-[11px]">
+              <span className="px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-bold">{sellers.filter(s => s.status === 'Pending').length} pending</span>
+              <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold">{sellers.filter(s => s.status === 'Approved').length} approved</span>
+              <button onClick={() => setSellers(getSellers())} className="px-3 py-1 rounded-lg bg-[#1B6B3A] text-white font-bold">Refresh</button>
+            </div>
+          </div>
+          {sellers.length === 0 ? (
+            <div className="bg-white border border-slate-200 rounded-xl p-12 text-center text-sm text-slate-400">No seller submissions yet. They appear here the moment a seller submits the "Become a Seller" form.</div>
+          ) : (
+            [...sellers].sort((a, b) => (a.status === 'Pending' ? 0 : 1) - (b.status === 'Pending' ? 0 : 1) || (b.createdAt || '').localeCompare(a.createdAt || '')).map(s => (
+              <div key={s.id} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    {s.productImage && <img src={s.productImage} alt="" className="h-16 w-16 rounded-xl object-cover border border-slate-200" />}
+                    <div>
+                      <h4 className="font-black text-slate-900 text-sm">{s.productName}</h4>
+                      <p className="text-[11px] text-slate-500">by <span className="font-bold text-slate-700">{s.name}</span> · {s.phone}</p>
+                      <p className="text-[11px] text-slate-700 font-bold mt-0.5">Rs.{s.price.toLocaleString('en-IN')} · Qty {s.quantity} · {new Date(s.createdAt).toLocaleDateString('en-IN')}</p>
+                    </div>
+                  </div>
+                  <span className={'text-[10px] font-black uppercase px-2.5 py-1 rounded-full border ' + (s.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : s.status === 'Rejected' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-800 border-amber-200')}>{s.status}</span>
+                </div>
+
+                <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg p-3 text-[11px] text-slate-700">
+                  <span className="font-black text-slate-500 uppercase tracking-wide text-[9px] block mb-0.5">Payout bank details</span>
+                  {s.bankDetails}
+                </div>
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button onClick={() => updateSeller(s.id, { status: 'Approved' })} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Approve</button>
+                  <button onClick={() => updateSeller(s.id, { status: 'Rejected' })} className="bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg">Reject</button>
+                  <button onClick={() => updateSeller(s.id, { paymentStatus: 'Requested' })} className="bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold px-3 py-1.5 rounded-lg">Request bank details</button>
+                  <label className="bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1.5">
+                    <Upload className="h-3.5 w-3.5" /> {s.paymentProofImage ? 'Replace payment proof' : 'Upload payment proof'}
+                    <input type="file" accept="image/*" className="hidden" onChange={e => readSellerImage(e.target.files?.[0], (url) => updateSeller(s.id, { paymentProofImage: url, paymentStatus: 'Paid' }))} />
+                  </label>
+                  <button onClick={() => removeSeller(s.id)} className="text-slate-400 hover:text-rose-600 text-xs font-bold px-2">Delete</button>
+                </div>
+
+                <div className="mt-3 flex flex-col sm:flex-row gap-2 sm:items-center">
+                  <input
+                    defaultValue={s.adminMessage || ''}
+                    onBlur={e => { if (e.target.value !== (s.adminMessage || '')) { updateSeller(s.id, { adminMessage: e.target.value }); } }}
+                    placeholder="Reply to the seller (saved when you click away)…"
+                    className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs" />
+                  <span className="text-[11px] flex items-center gap-1.5">
+                    <span className="text-slate-500">Payment:</span>
+                    <span className={'font-black px-2 py-0.5 rounded-full border ' + (s.paymentStatus === 'Paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : s.paymentStatus === 'Requested' ? 'bg-sky-50 text-sky-700 border-sky-200' : 'bg-slate-100 text-slate-500 border-slate-200')}>{s.paymentStatus}</span>
+                  </span>
+                </div>
+                {s.paymentProofImage && <img src={s.paymentProofImage} alt="payment proof" className="mt-3 max-h-48 rounded-xl border border-slate-200" />}
+              </div>
+            ))
+          )}
+          <p className="text-[11px] text-slate-400 flex items-start gap-1.5"><Info className="h-3.5 w-3.5 mt-0.5 shrink-0" />The seller sees your approval, your reply message and the payment-proof image on the Sellers page → "Seller Dashboard" (they look it up by their phone number).</p>
         </div>
       )}
 

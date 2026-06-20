@@ -348,7 +348,7 @@ export default function CartComponent({
                     // customer's account. After login the user returns to the cart.
                     if (!isSignedIn()) {
                       try { localStorage.setItem('igo_resume', 'cart'); } catch { /* ignore */ }
-                      setCurrentPage('auth');
+                      setCurrentPage('account');
                     } else {
                       setCurrentPage('checkout');
                     }

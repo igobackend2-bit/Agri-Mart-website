@@ -343,14 +343,20 @@ export default function Header({
           <div className="flex items-center gap-4 sm:gap-6">
             
             {/* Tamil Language Toggle Toggle */}
-            <button
-              onClick={() => setLang(lang === 'en' ? 'ta' : 'en')}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-[#1B6B3A] hover:bg-emerald-50 hover:border-[#1B6B3A]/30 text-xs font-bold rounded-full transition border border-slate-200"
-              title="Change language / தமிழ்"
-            >
-              <Globe className="h-3.5 w-3.5" />
-              <span>{lang === 'en' ? 'தமிழ்' : 'English'}</span>
-            </button>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-[#1B6B3A] hover:bg-emerald-50 hover:border-[#1B6B3A]/30 rounded-full transition border border-slate-200">
+              <Globe className="h-3.5 w-3.5 shrink-0" />
+              <select
+                value={lang}
+                onChange={(e) => setLang(e.target.value as any)}
+                className="bg-transparent text-xs font-bold text-[#1B6B3A] outline-none cursor-pointer pr-1"
+                title="Change language"
+              >
+                <option value="en">English</option>
+                <option value="ta">{'தமிழ் (Tamil)'}</option>
+                <option value="hi">{'हिन्दी (Hindi)'}</option>
+                <option value="te">{'తెలుగు (Telugu)'}</option>
+              </select>
+            </div>
 
             {/* Notification Bell */}
             <NotificationBell userProfile={userProfile} setCurrentPage={setCurrentPage} />
@@ -436,13 +442,13 @@ export default function Header({
 
       {/* Global page navigation — shown on EVERY page */}
       <nav className="bg-white border-b border-slate-200 shadow-[0_1px_3px_rgba(15,23,42,0.04)] select-none">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3 sm:gap-8 min-h-[50px] overflow-x-auto no-scrollbar whitespace-nowrap">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3 sm:gap-9 min-h-[58px] overflow-x-auto no-scrollbar whitespace-nowrap">
           {[
             { name: 'Home', action: () => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); } },
             { name: 'Shop', action: () => { setSelectedCategory(null); setCurrentPage('category'); } },
             { name: 'Sellers', action: () => setCurrentPage('partners') },
             { name: 'Services', action: () => setCurrentPage('services') },
-            { name: 'Farm Loans', action: () => setCurrentPage('farm-loans') },
+            { name: 'Farm Loans', action: () => window.open('https://igofarmloans.com', '_blank', 'noopener,noreferrer') },
             { name: 'Contact Us', action: () => setCurrentPage('contact') },
             { name: 'FAQs', action: () => setCurrentPage('knowledge-hub') },
             { name: 'Blogs', action: () => setCurrentPage('blog') },
@@ -450,7 +456,7 @@ export default function Header({
             <button
               key={link.name}
               onClick={link.action}
-              className="relative px-2 py-4 text-[13.5px] font-semibold text-slate-700 hover:text-[#1B6B3A] transition-colors group"
+              className="relative px-2 py-5 text-[15px] font-bold text-slate-700 hover:text-[#1B6B3A] transition-colors group"
             >
               {link.name}
               <span className="absolute left-0 bottom-0 h-[3px] w-full origin-center scale-x-0 group-hover:scale-x-100 bg-[#1B6B3A] transition-transform duration-300 ease-out rounded-t-full" />

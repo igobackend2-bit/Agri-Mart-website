@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ChevronRight,
   SlidersHorizontal,
@@ -549,7 +549,9 @@ export default function CategoryComponent({
               {selectedProblem && <FilterChip label={selectedProblem} onClear={() => setSelectedProblem(null)} />}
               {selectedCrop && <FilterChip label={`Crop: ${selectedCrop}`} onClear={() => setSelectedCrop(null)} />}
               {selectedBrands.map((b) => (
-                <FilterChip key={b} label={b} onClear={() => setSelectedBrands(selectedBrands.filter((x) => x !== b))} />
+                <React.Fragment key={b}>
+                  <FilterChip label={b} onClear={() => setSelectedBrands(selectedBrands.filter((x) => x !== b))} />
+                </React.Fragment>
               ))}
               {minRating > 0 && <FilterChip label={`${minRating}★ & up`} onClear={() => setMinRating(0)} />}
               {inStockOnly && <FilterChip label="In stock" onClear={() => setInStockOnly(false)} />}

@@ -12,11 +12,12 @@ export interface Product {
   stock: number;
   images: string[];
   description: string;
-  composition: string;
-  usage: string;
-  rating: number;
-  reviewCount: number;
-  isIgoOwn: boolean;
+  composition?: string;
+  usage?: string;
+  rating?: number;
+  reviewCount?: number;
+  isIgoOwn?: boolean;
+  isNew?: boolean;
   problemFilter?: string; // e.g. "Pest Control", "Disease Control", "Growth Boosters", "Manures & Fertilizers"
   tags?: string[];
 
