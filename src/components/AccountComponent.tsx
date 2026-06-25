@@ -132,7 +132,14 @@ export default function AccountComponent({
   addToCart
 }: AccountComponentProps) {
   const t = accountTranslations[lang];
-  const [activeTab, setActiveTab] = useState<'Orders' | 'Inbox' | 'Wishlist' | 'Addresses' | 'Profile' | 'Support'>('Profile');
+  const [activeTab, setActiveTab] = useState<'Orders' | 'Inbox' | 'Wishlist' | 'Addresses' | 'Profile' | 'Support'>(() => {
+    const saved = sessionStorage.getItem('igo_account_tab');
+    if (saved) {
+      sessionStorage.removeItem('igo_account_tab');
+      return saved as any;
+    }
+    return 'Profile';
+  });
   const [inboxMsgs, setInboxMsgs] = useState<InboxMessage[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);

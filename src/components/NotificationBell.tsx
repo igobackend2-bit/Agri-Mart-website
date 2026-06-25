@@ -169,7 +169,11 @@ export default function NotificationBell({ userProfile, setCurrentPage }: Notifi
               all.slice(0, 25).map((m) => (
                 <button
                   key={m.id}
-                  onClick={() => { setOpen(false); setCurrentPage('account'); }}
+                  onClick={() => { 
+                    setOpen(false); 
+                    sessionStorage.setItem('igo_account_tab', m.orderId ? 'Orders' : 'Inbox');
+                    setCurrentPage('account'); 
+                  }}
                   className={`w-full text-left flex gap-3 px-4 py-3 hover:bg-slate-50 transition ${m.read ? '' : 'bg-emerald-50/40'}`}
                 >
                   <div className={`shrink-0 h-8 w-8 rounded-full flex items-center justify-center ${m.orderId ? 'bg-emerald-100 text-[#1B6B3A]' : 'bg-amber-100 text-amber-700'}`}>
@@ -190,7 +194,11 @@ export default function NotificationBell({ userProfile, setCurrentPage }: Notifi
 
           {all.length > 0 && (
             <button
-              onClick={() => { setOpen(false); setCurrentPage('account'); }}
+              onClick={() => { 
+                setOpen(false); 
+                sessionStorage.setItem('igo_account_tab', 'Inbox');
+                setCurrentPage('account'); 
+              }}
               className="w-full py-3 text-xs font-black text-[#1B6B3A] hover:bg-emerald-50 transition border-t border-slate-100"
             >
               View all in My Account →
