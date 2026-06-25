@@ -29,6 +29,7 @@ import ContactComponent from './components/ContactComponent';
 import CropDoctorComponent from './components/CropDoctorComponent';
 import PartnerPortalComponent from './components/PartnerPortalComponent';
 import KnowledgeHubComponent from './components/KnowledgeHubComponent';
+import FaqComponent from './components/FaqComponent';
 
 import Footer from './components/Footer';
 import OrderTrackingComponent from './components/OrderTrackingComponent';
@@ -722,6 +723,10 @@ export default function App() {
 
             {currentPage === 'knowledge-hub' && (
               <KnowledgeHubComponent lang={lang} setCurrentPage={setCurrentPage} />
+            )}
+
+            {currentPage === 'faqs' && (
+              <FaqComponent lang={lang} setCurrentPage={setCurrentPage} />
             )}
 
             {currentPage === 'events' && (

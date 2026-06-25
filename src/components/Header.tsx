@@ -453,7 +453,7 @@ export default function Header({
             { name: 'Services', action: () => setCurrentPage('services') },
             { name: 'Farm Loans', action: () => setCurrentPage('farm-loans') },
             { name: 'Contact Us', action: () => setCurrentPage('contact') },
-            { name: 'FAQs', action: () => setCurrentPage('knowledge-hub') },
+            { name: 'FAQs', action: () => setCurrentPage('faqs') },
             { name: 'Blogs', action: () => setCurrentPage('blog') },
           ].map((link) => (
             <button

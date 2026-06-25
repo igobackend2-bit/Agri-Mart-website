@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Hammer,
   Cpu,
@@ -35,10 +36,10 @@ const PROJECT_LINKS: Record<string, string> = {
   'Solar Dryer Projects': 'https://www.igoagritechfarms.com/solardryerproject.php',
   'Nursery Projects': 'https://www.igoagritechfarms.com/nurseryproject.php',
   'Microgreens Farming Projects': 'https://www.igoagritechfarms.com/microgreensproject.php',
-  'Agri Farming Projects': 'https://www.igoagritechfarms.in/projects/agri',
-  'Aquaculture Farming Projects': 'https://www.igoagritechfarms.in/projects/aquaculture',
-  'Livestock Farming Projects': 'https://www.igoagritechfarms.in/projects/livestock',
-  'Farm Engineering Projects': 'https://www.igoagritechfarms.in/projects/engineering',
+  'Agri Farming Projects': 'https://www.igoagritechfarms.com/projects.php',
+  'Aquaculture Farming Projects': 'https://www.igoagritechfarms.com/projects.php',
+  'Livestock Farming Projects': 'https://www.igoagritechfarms.com/goatfarmingproject.php',
+  'Farm Engineering Projects': 'https://www.igoagritechfarms.com/projects.php',
 };
 
 // Full in-page detail shown when a customer taps a project — so they can read
@@ -87,6 +88,19 @@ export default function ServicesComponent({
 
   // Project explainer modal — shows details + a redirect to IGO Agritech Farms.
   const [openProject, setOpenProject] = useState<{ title: string; img: string; desc: string } | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  // When the full-page detail opens, jump to the top so it's visible (some
+  // ancestors use CSS transforms which can offset fixed overlays) and lock the
+  // background page from scrolling underneath.
+  useEffect(() => {
+    if (openProject) {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = prev; };
+    }
+  }, [openProject]);
 
   return (
     <div className="bg-[#F7F9F4] min-h-screen py-10 px-4 sm:px-6">
@@ -399,6 +413,35 @@ export default function ServicesComponent({
           </button>
         </div>
 
+        {/* ── Frequently Asked Questions ─────────────────────── */}
+        <div className="mt-14">
+          <h3 className="font-display font-black text-slate-900 text-xl sm:text-2xl tracking-tight">Frequently Asked Questions</h3>
+          <p className="text-sm text-slate-500 mt-1 max-w-2xl">Quick answers to what most farmers and entrepreneurs ask before starting a project.</p>
+          <div className="mt-5 space-y-2.5">
+            {[
+              { q: 'How do I start a project with IGO?', a: 'Just submit an enquiry or call us. We arrange a free consultation, visit your site for a feasibility study, and prepare a design, cost estimate and ROI plan — all before you commit. There is no obligation.' },
+              { q: 'Are these projects eligible for government subsidy?', a: 'Most are. Depending on the project, you may qualify for PM-KUSUM, NHB, NABARD or state horticulture subsidies — up to 90% on eligible components. Our team prepares and files the subsidy paperwork for you.' },
+              { q: 'Do you only build, or do you support after handover?', a: 'We stay with you. Every project includes agronomy support and an optional Annual Maintenance Contract (AMC), plus market linkage and buyback options on selected crops, so your farm keeps running profitably.' },
+              { q: 'How much land or space do I need?', a: 'It varies — rooftop and hydroponic units work in a few hundred square feet, while open cultivation and livestock projects scale to acres. Tell us your available space and we will recommend the best-fit project.' },
+              { q: 'Which areas do you serve?', a: 'IGO delivers turnkey agri projects pan-India, engineered and quality-audited from our Chennai headquarters with 6000+ projects delivered.' },
+              { q: 'Will you help me sell what I grow?', a: 'Yes. Through our 27-brand ecosystem we offer market linkage and buyback options on selected crops, connecting your harvest to assured buyers at fair, pre-agreed pricing.' },
+            ].map((f, i) => (
+              <div key={f.q} className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+                <button type="button" onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between gap-3 text-left px-5 py-4 hover:bg-slate-50 transition">
+                  <span className="text-sm font-black text-slate-800">{f.q}</span>
+                  <span className={'text-[#1B6B3A] text-lg font-black shrink-0 transition-transform ' + (openFaq === i ? 'rotate-45' : '')}>+</span>
+                </button>
+                {openFaq === i && (
+                  <div className="px-5 pb-4 -mt-1">
+                    <p className="text-sm text-slate-600 leading-relaxed">{f.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* ── Why IGO Agritech is the best ─────────────────────── */}
         <div className="mt-10 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
           <h3 className="font-display font-black text-slate-900 text-xl sm:text-2xl tracking-tight">Why Choose IGO Agritech</h3>
@@ -406,7 +449,7 @@ export default function ServicesComponent({
             {[
               { t: 'In-house Engineering', d: 'Design, structures and automation built by our own agri-engineering team.' },
               { t: 'Govt Subsidy Linkage', d: 'Direct PM-KUSUM, NHB & NABARD subsidy facilitation — up to 90% coverage.' },
-              { t: '26-Vertical Ecosystem', d: 'Land, finance, build, inputs and market access under one IGO Group roof.' },
+              { t: '27-Brand Ecosystem', d: 'Land, finance, build, inputs and market access under one IGO Group roof.' },
               { t: 'Quality-Checked', d: 'Every project sponsored and quality-audited by IGO Group, Chennai HQ.' },
             ].map((w) => (
               <div key={w.t} className="bg-[#F7F9F4] border border-slate-100 rounded-xl p-4">
@@ -430,86 +473,112 @@ export default function ServicesComponent({
         const detail = PROJECT_DETAILS[openProject.title];
         const benefits = detail?.benefits || ['Engineered & built by IGO’s in-house team', 'Government-subsidy eligible', 'Quality inputs & agronomy support', 'Market linkage & buyback options'];
         const idealFor = detail?.idealFor || 'Farmers, entrepreneurs and land owners looking for a professionally managed agri-venture.';
-        return (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/80 backdrop-blur-sm flex items-start sm:items-center justify-center p-0 sm:p-4 overflow-y-auto" onClick={() => setOpenProject(null)}>
-          <div className="bg-white sm:rounded-2xl w-full max-w-3xl shadow-2xl min-h-screen sm:min-h-0 sm:max-h-[92vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            {/* Hero */}
-            <div className="relative h-56 sm:h-72 bg-slate-900 sticky top-0 z-10">
-              <img src={openProject.img} alt={openProject.title} className="w-full h-full object-cover opacity-90"
-                onError={(e) => { (e.target as HTMLImageElement).src = '/images/agri_farm_bg.png'; }} />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent"></div>
-              <button onClick={() => setOpenProject(null)} className="absolute top-3 right-3 h-9 w-9 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-slate-700 shadow">
-                <X className="h-4 w-4" />
+        return createPortal((
+        <div className="fixed inset-0 z-[9999] bg-white overflow-y-auto">
+          {/* Top back bar */}
+          <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-200">
+            <div className="max-w-5xl mx-auto px-4 sm:px-8 h-14 flex items-center justify-between">
+              <button onClick={() => setOpenProject(null)} className="inline-flex items-center gap-1.5 text-sm font-black text-[#1B6B3A] hover:text-[#15532d]">
+                <ArrowRight className="h-4 w-4 rotate-180" /> Back to Services
               </button>
-              <div className="absolute bottom-4 left-5 right-5">
-                <span className="bg-[#E8A020] text-emerald-950 text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded shadow">Subsidy Eligible · Turnkey</span>
-                <h3 className="font-display font-black text-white text-2xl sm:text-3xl tracking-tight mt-2">{openProject.title}</h3>
+              <button onClick={() => setOpenProject(null)} className="h-9 w-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500" aria-label="Close">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Full-width hero */}
+          <div className="relative h-64 sm:h-[26rem] bg-slate-900">
+            <img src={openProject.img} alt={openProject.title} className="w-full h-full object-cover opacity-90"
+              onError={(e) => { (e.target as HTMLImageElement).src = '/images/agri_farm_bg.png'; }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/40 to-slate-900/10"></div>
+            <div className="absolute bottom-7 left-0 right-0">
+              <div className="max-w-5xl mx-auto px-4 sm:px-8">
+                <span className="bg-[#E8A020] text-emerald-950 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded shadow">Subsidy Eligible · Turnkey</span>
+                <h1 className="font-display font-black text-white text-3xl sm:text-5xl tracking-tight mt-3 leading-[1.05]">{openProject.title}</h1>
               </div>
             </div>
+          </div>
 
-            <div className="p-5 sm:p-8">
-              <p className="text-sm text-slate-700 leading-relaxed">{openProject.desc}</p>
+          {/* Page content */}
+          <div className="max-w-5xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+            <p className="text-base text-slate-700 leading-relaxed max-w-3xl">{openProject.desc}</p>
 
-              {/* Key benefits */}
-              <h4 className="font-display font-black text-slate-900 text-base mt-6 mb-3">Why choose this project</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {benefits.map((b) => (
-                  <div key={b} className="flex items-start gap-2 bg-[#F7F9F4] border border-slate-100 rounded-xl p-3">
-                    <CheckCircle2 className="h-4 w-4 text-[#1B6B3A] shrink-0 mt-0.5" />
-                    <span className="text-xs font-bold text-slate-700 leading-snug">{b}</span>
+            <div className="grid lg:grid-cols-3 gap-8 mt-8">
+              {/* Main column */}
+              <div className="lg:col-span-2 space-y-8">
+                {/* Key benefits */}
+                <div>
+                  <h2 className="font-display font-black text-slate-900 text-xl mb-4">Why choose this project</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {benefits.map((b) => (
+                      <div key={b} className="flex items-start gap-2.5 bg-[#F7F9F4] border border-slate-100 rounded-xl p-4">
+                        <CheckCircle2 className="h-5 w-5 text-[#1B6B3A] shrink-0 mt-0.5" />
+                        <span className="text-sm font-bold text-slate-700 leading-snug">{b}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
 
-              {/* Ideal for */}
-              <div className="mt-5 bg-emerald-50 border border-emerald-100 rounded-xl p-4">
-                <div className="text-[10px] font-black uppercase tracking-wider text-[#1B6B3A]">Ideal for</div>
-                <p className="text-xs text-slate-700 font-semibold mt-1 leading-relaxed">{idealFor}</p>
-              </div>
-
-              {/* How we build it */}
-              <h4 className="font-display font-black text-slate-900 text-base mt-6 mb-3">How we deliver it</h4>
-              <div className="space-y-2">
-                {PROJECT_PROCESS.map((step, i) => (
-                  <div key={step} className="flex items-start gap-3">
-                    <div className="h-6 w-6 rounded-full bg-[#1B6B3A] text-white text-[11px] font-black flex items-center justify-center shrink-0">{i + 1}</div>
-                    <span className="text-xs text-slate-700 font-semibold leading-relaxed pt-0.5">{step}</span>
+                {/* How we deliver it */}
+                <div>
+                  <h2 className="font-display font-black text-slate-900 text-xl mb-4">How we deliver it</h2>
+                  <div className="space-y-3">
+                    {PROJECT_PROCESS.map((step, i) => (
+                      <div key={step} className="flex items-start gap-3.5">
+                        <div className="h-8 w-8 rounded-full bg-[#1B6B3A] text-white text-sm font-black flex items-center justify-center shrink-0">{i + 1}</div>
+                        <span className="text-sm text-slate-700 font-semibold leading-relaxed pt-1">{step}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
 
-              {/* What's included */}
-              <h4 className="font-display font-black text-slate-900 text-base mt-6 mb-3">What’s included</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2">
-                {PROJECT_INCLUDED.map((inc) => (
-                  <div key={inc} className="flex items-center gap-2 text-xs text-slate-700 font-semibold">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-[#E8A020] shrink-0" /> {inc}
+                {/* What's included */}
+                <div>
+                  <h2 className="font-display font-black text-slate-900 text-xl mb-4">What’s included</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5">
+                    {PROJECT_INCLUDED.map((inc) => (
+                      <div key={inc} className="flex items-center gap-2 text-sm text-slate-700 font-semibold">
+                        <CheckCircle2 className="h-4 w-4 text-[#E8A020] shrink-0" /> {inc}
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
 
-              {/* Subsidy & cost assurance */}
-              <div className="mt-6 bg-emerald-950 text-white rounded-xl p-4">
-                <div className="text-sm font-black text-[#E8A020]">Government subsidy &amp; free cost estimate</div>
-                <p className="text-[11px] text-emerald-100 mt-1 leading-relaxed">Most projects qualify for PM-KUSUM, NHB, NABARD or state horticulture subsidies — up to 90% support on eligible components. Our team prepares a free, site-specific cost estimate and ROI plan before you commit. No obligation.</p>
-              </div>
+              {/* Sidebar */}
+              <div className="lg:col-span-1 space-y-5">
+                {/* Ideal for */}
+                <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-5">
+                  <div className="text-[11px] font-black uppercase tracking-wider text-[#1B6B3A]">Ideal for</div>
+                  <p className="text-sm text-slate-700 font-semibold mt-1.5 leading-relaxed">{idealFor}</p>
+                </div>
 
-              {/* CTAs */}
-              <div className="mt-6 flex flex-col sm:flex-row gap-2.5">
-                <button onClick={() => { setOpenProject(null); setCurrentPage('contact'); }}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#1B6B3A] hover:bg-[#15532d] text-white text-xs font-black px-4 py-3.5 rounded-xl transition">
-                  Get a Free Quote &amp; Consultation <ArrowRight className="h-3.5 w-3.5" />
-                </button>
-                <a href={PROJECT_LINKS[openProject.title] || 'https://www.igoagritechfarms.com/projects.php'} target="_blank" rel="noopener noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 bg-white border border-[#1B6B3A] text-[#1B6B3A] hover:bg-emerald-50 text-xs font-black px-4 py-3.5 rounded-xl transition">
-                  Full specs on IGO Agritech <ExternalLink className="h-3.5 w-3.5" />
-                </a>
+                {/* Subsidy & cost assurance */}
+                <div className="bg-emerald-950 text-white rounded-2xl p-5">
+                  <div className="text-sm font-black text-[#E8A020]">Govt subsidy &amp; free estimate</div>
+                  <p className="text-xs text-emerald-100 mt-1.5 leading-relaxed">Most projects qualify for PM-KUSUM, NHB, NABARD or state horticulture subsidies — up to 90% support on eligible components. We prepare a free, site-specific cost estimate and ROI plan before you commit. No obligation.</p>
+                </div>
+
+                {/* CTAs */}
+                <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm sticky top-20">
+                  <div className="font-display font-black text-slate-900 text-base">Ready to start?</div>
+                  <p className="text-xs text-slate-500 mt-1 mb-4">Talk to our engineering team for a tailored plan and quote.</p>
+                  <button onClick={() => { setOpenProject(null); setCurrentPage('contact'); }}
+                    className="w-full inline-flex items-center justify-center gap-1.5 bg-[#1B6B3A] hover:bg-[#15532d] text-white text-sm font-black px-4 py-3.5 rounded-xl transition">
+                    Get a Free Quote <ArrowRight className="h-4 w-4" />
+                  </button>
+                  <a href={PROJECT_LINKS[openProject.title] || 'https://www.igoagritechfarms.com/projects.php'} target="_blank" rel="noopener noreferrer"
+                    className="w-full mt-2.5 inline-flex items-center justify-center gap-1.5 bg-white border border-[#1B6B3A] text-[#1B6B3A] hover:bg-emerald-50 text-sm font-black px-4 py-3.5 rounded-xl transition">
+                    Full specs on IGO Agritech <ExternalLink className="h-4 w-4" />
+                  </a>
+                  <p className="text-[10px] text-slate-400 text-center mt-3">Quality-audited by IGO Group, Chennai · 6000+ projects delivered</p>
+                </div>
               </div>
-              <p className="text-[10px] text-slate-400 text-center mt-3">Quality-audited by IGO Group of Companies, Chennai · 6000+ projects delivered</p>
             </div>
           </div>
         </div>
-        );
+        ), document.body);
       })()}
     </div>
   );

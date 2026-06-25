@@ -75,6 +75,7 @@ const KEYS = {
   pageContent: 'igo_page_content',
   productSpecs: 'igo_product_specs',
   productPacks: 'igo_product_packs',
+  blogPosts: 'igo_blog_posts',
   categoryMeta: 'igo_category_meta',
   customCategories: 'igo_custom_categories',
   combos: 'igo_combo_offers',
@@ -353,6 +354,21 @@ export function packsFor(name: string): ProductPack[] {
         label: String(r.label), mult: Number(r.mult) || 1, save: Number(r.save) || 0,
       }))
     : [];
+}
+
+// ── Admin-authored blog posts (admin "Blog Posts" manager) ──────────────────
+// Stored as a list and merged with the built-in seed posts on the Blog page.
+export type AdminBlogPost = {
+  id: string; title: string; slug: string; excerpt: string; content: string;
+  category: string; author: string; readTime: string; image: string;
+  createdAt: string; tags?: string[];
+};
+export function getBlogPosts(): AdminBlogPost[] {
+  const v = readJSON<AdminBlogPost[]>(KEYS.blogPosts, []);
+  return Array.isArray(v) ? v : [];
+}
+export function saveBlogPosts(posts: AdminBlogPost[]): void {
+  writeWithSync(KEYS.blogPosts, posts);
 }
 
 // ── Homepage Overrides ───────────────────────────────────────────────────────

@@ -38,7 +38,8 @@ import {
   getSellers, saveSellers, Seller,
   getPageContent, savePageContent,
   getProductSpecs, saveProductSpecs, ProductSpecs,
-  getProductPacks, saveProductPacks, ProductPacks
+  getProductPacks, saveProductPacks, ProductPacks,
+  getBlogPosts, saveBlogPosts, AdminBlogPost
 } from '../siteConfig';
 import { SEED_POSTS } from '../seedData';
 
@@ -227,6 +228,30 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const setPackRowField = (name: string, idx: number, field: 'label' | 'mult' | 'save', val: string) => setProductPacks((p) => { const rows = [...(p[name] || [])]; rows[idx] = { ...rows[idx], [field]: field === 'label' ? val : Number(val) }; return { ...p, [name]: rows }; });
   const removePackRow = (name: string, idx: number) => setProductPacks((p) => ({ ...p, [name]: (p[name] || []).filter((_, i) => i !== idx) }));
   const saveProductPacksHandler = () => { saveProductPacks(productPacks); alert('Pack & unit sizes saved. They now show on the product page.'); };
+
+  // ── Blog Posts manager (admin writes articles for the Blogs page) ──────────
+  const emptyBlog: AdminBlogPost = { id: '', title: '', slug: '', excerpt: '', content: '', category: 'Crop Advice', author: 'IGO Agronomy Team', readTime: '4 min read', image: '', createdAt: '', tags: [] };
+  const [blogPosts, setBlogPosts] = useState<AdminBlogPost[]>(() => getBlogPosts());
+  const [blogForm, setBlogForm] = useState<AdminBlogPost>({ ...emptyBlog });
+  const [blogTagsText, setBlogTagsText] = useState('');
+  const resetBlogForm = () => { setBlogForm({ ...emptyBlog }); setBlogTagsText(''); };
+  const editBlog = (p: AdminBlogPost) => { setBlogForm({ ...p }); setBlogTagsText((p.tags || []).join(', ')); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const deleteBlog = (id: string) => { if (!window.confirm('Delete this blog post?')) return; const next = getBlogPosts().filter((b) => b.id !== id); saveBlogPosts(next); setBlogPosts(next); };
+  const saveBlogHandler = () => {
+    if (!blogForm.title.trim() || !blogForm.excerpt.trim() || !blogForm.content.trim()) { alert('Please fill in at least the Title, Excerpt and Content.'); return; }
+    const tags = blogTagsText.split(',').map((t) => t.trim()).filter(Boolean);
+    const slug = (blogForm.slug || blogForm.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const existing = getBlogPosts();
+    let next: AdminBlogPost[];
+    if (blogForm.id) {
+      next = existing.map((b) => (b.id === blogForm.id ? { ...blogForm, slug, tags } : b));
+    } else {
+      const post: AdminBlogPost = { ...blogForm, id: 'blog-' + Date.now().toString(36), slug, tags, createdAt: new Date().toISOString(), image: blogForm.image || '/images/agri_farm_bg.png' };
+      next = [post, ...existing];
+    }
+    saveBlogPosts(next); setBlogPosts(next); resetBlogForm();
+    alert('Blog post saved. It now appears on the Blogs page.');
+  };
   // Admin dark / light mode (persisted per-browser; only restyles the admin panel).
   const [adminTheme, setAdminTheme] = useState<'light' | 'dark'>(() => {
     try { return localStorage.getItem('igo_admin_theme') === 'dark' ? 'dark' : 'light'; } catch { return 'light'; }
@@ -2849,14 +2874,55 @@ export default function AdminComponent({ lang, products, setProducts, categories
             )}
           </div>
 
-          
+          {/* Blog Posts manager */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-1">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">📝 Blog Posts</h4>
+              <span className="text-[10px] text-slate-400 font-bold">{blogPosts.length} custom post{blogPosts.length === 1 ? '' : 's'}</span>
+            </div>
+            <p className="text-[11px] text-slate-400 mb-4">Write articles that appear on the <b>Blogs</b> page. New posts show first (newest on top) alongside the built-in advisories.</p>
 
-          
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <input value={blogForm.title} onChange={e => setBlogForm({ ...blogForm, title: e.target.value })} placeholder="Title *" className="sm:col-span-2 bg-slate-50 border rounded-lg p-2.5 text-xs font-bold" />
+              <input value={blogForm.category} onChange={e => setBlogForm({ ...blogForm, category: e.target.value })} placeholder="Category (e.g. Crop Advice)" className="bg-slate-50 border rounded-lg p-2.5 text-xs font-bold" />
+              <input value={blogForm.author} onChange={e => setBlogForm({ ...blogForm, author: e.target.value })} placeholder="Author" className="bg-slate-50 border rounded-lg p-2.5 text-xs font-bold" />
+              <input value={blogForm.readTime} onChange={e => setBlogForm({ ...blogForm, readTime: e.target.value })} placeholder="Read time e.g. 4 min read" className="bg-slate-50 border rounded-lg p-2.5 text-xs font-bold" />
+              <input value={blogTagsText} onChange={e => setBlogTagsText(e.target.value)} placeholder="Tags (comma separated)" className="bg-slate-50 border rounded-lg p-2.5 text-xs font-bold" />
+              <textarea value={blogForm.excerpt} onChange={e => setBlogForm({ ...blogForm, excerpt: e.target.value })} placeholder="Short summary / excerpt *" rows={2} className="sm:col-span-2 bg-slate-50 border rounded-lg p-2.5 text-xs font-bold resize-none" />
+              <textarea value={blogForm.content} onChange={e => setBlogForm({ ...blogForm, content: e.target.value })} placeholder="Full article content * — leave a blank line between paragraphs" rows={6} className="sm:col-span-2 bg-slate-50 border rounded-lg p-2.5 text-xs font-bold resize-none" />
+              <div className="sm:col-span-2">
+                <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Cover image</label>
+                <div className="flex gap-2 items-center">
+                  <input value={blogForm.image} onChange={e => setBlogForm({ ...blogForm, image: e.target.value })} placeholder="Image URL or upload →" className="flex-1 bg-slate-50 border rounded-lg p-2.5 text-xs font-bold" />
+                  <label className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-4 py-2.5 rounded-lg cursor-pointer transition whitespace-nowrap">
+                    ⬆ Upload
+                    <input type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) readImageInline(f, (url) => setBlogForm(prev => ({ ...prev, image: url }))); e.currentTarget.value = ''; }} />
+                  </label>
+                </div>
+                {blogForm.image && <img src={blogForm.image} alt="cover preview" className="h-20 w-32 object-cover rounded-lg border border-slate-200 mt-2" onError={(ev) => { (ev.target as HTMLImageElement).style.opacity = '0.3'; }} />}
+              </div>
+            </div>
+            <div className="flex gap-2 mt-3">
+              <button onClick={saveBlogHandler} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-4 py-2 rounded-lg transition">{blogForm.id ? 'Update Post' : '+ Publish Post'}</button>
+              {blogForm.id && <button onClick={resetBlogForm} className="bg-slate-200 text-slate-700 hover:bg-slate-300 text-xs font-bold px-4 py-2 rounded-lg transition">Cancel edit</button>}
+            </div>
 
-          
-          
-          
-          
+            {blogPosts.length > 0 && (
+              <div className="mt-5 space-y-1.5">
+                <div className="text-[10px] font-black text-slate-400 uppercase tracking-wide">Your posts</div>
+                {blogPosts.map((b) => (
+                  <div key={b.id} className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs gap-2">
+                    <span className="font-bold text-slate-700 truncate">{b.title} <span className="text-slate-400 font-medium">· {b.category}</span></span>
+                    <div className="flex gap-3 shrink-0">
+                      <button onClick={() => editBlog(b)} className="text-[#1B6B3A] hover:underline font-bold">Edit</button>
+                      <button onClick={() => deleteBlog(b.id)} className="text-rose-500 hover:text-rose-700 font-bold">Delete</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
         </div>
       )}
 
