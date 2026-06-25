@@ -5,7 +5,8 @@ import {
   Search, RefreshCw, DollarSign,
   AlertTriangle, TrendingUp, Image, Shield,
   CheckCircle, LayoutDashboard,
-  Archive, PieChart, Gift, Monitor, Wrench, LogOut, KeyRound, Bell, Inbox, Download, Store, ExternalLink, Upload, Info
+  Archive, PieChart, Gift, Monitor, Wrench, LogOut, KeyRound, Bell, Inbox, Download, Store, ExternalLink, Upload, Info, ArrowRight,
+  X, Phone, Package, ClipboardCheck
 } from 'lucide-react';
 import { Product, Order, Category, Brand } from '../types';
 import {
@@ -34,8 +35,12 @@ import {
   getCustomCategories, saveCustomCategories, CustomCategory,
   getComboConfig, saveComboConfig, ComboConfig,
   getAgriEvents, saveAgriEvents, AgriEvent,
-  getSellers, saveSellers, Seller
+  getSellers, saveSellers, Seller,
+  getPageContent, savePageContent,
+  getProductSpecs, saveProductSpecs, ProductSpecs,
+  getProductPacks, saveProductPacks, ProductPacks
 } from '../siteConfig';
+import { SEED_POSTS } from '../seedData';
 
 interface AdminComponentProps {
   lang: 'en' | 'ta';
@@ -86,6 +91,24 @@ export default function AdminComponent({ lang, products, setProducts, categories
 
   // Seller submissions (vendors who want to sell on the site).
   const [sellers, setSellers] = useState<Seller[]>(() => getSellers());
+  const [editingSellerId, setEditingSellerId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<Partial<Seller>>({});
+
+  const startEditing = (seller: Seller) => {
+    setEditingSellerId(seller.id);
+    setEditForm({ ...seller });
+  };
+  const saveEdit = () => {
+    if (editingSellerId === 'NEW') {
+      const newS = { ...editForm, id: 's-' + Date.now(), status: 'Approved', paymentStatus: 'None', createdAt: new Date().toISOString() } as Seller;
+      const next = [...sellers, newS];
+      saveSellers(next); setSellers(next);
+      setEditingSellerId(null);
+    } else if (editingSellerId) {
+      updateSeller(editingSellerId, editForm);
+      setEditingSellerId(null);
+    }
+  };
   const updateSeller = (id: string, patch: Partial<Seller>) => {
     const next = getSellers().map((s) => (s.id === id ? { ...s, ...patch } : s));
     saveSellers(next); setSellers(next);
@@ -171,6 +194,88 @@ export default function AdminComponent({ lang, products, setProducts, categories
   const saveSiteImagesHandler = () => {
     saveSiteImages(siteImages);
     alert('Site images saved. They now apply across the website.');
+  };
+  // Home-page editable text (per-field overrides stored under page key 'home').
+  const [homeText, setHomeText] = useState<Record<string, string>>(() => getPageContent().home || {});
+  const setHomeField = (k: string, v: string) => setHomeText((prev) => ({ ...prev, [k]: v }));
+  const saveHomeText = () => {
+    savePageContent({ ...getPageContent(), home: homeText });
+    alert('Home page text saved. It now applies across the website.');
+  };
+  const resetHomeFields = (keys: string[]) => {
+    if (!window.confirm('Reset these fields back to the built-in default text?')) return;
+    const next = { ...homeText };
+    keys.forEach((k) => delete next[k]);
+    setHomeText(next);
+    savePageContent({ ...getPageContent(), home: next });
+    alert('Reset to default. The built-in text now shows on the live site.');
+  };
+  const hasCustom = (keys: string[]) => keys.some((k) => (homeText[k] || '').trim() !== '');
+  // Per-product specifications editor (Attribute -> Detail rows, stored by product name).
+  const [productSpecs, setProductSpecs] = useState<ProductSpecs>(() => getProductSpecs());
+  const [specProduct, setSpecProduct] = useState('');
+  const specRowsFor = (name: string) => productSpecs[name] || [];
+  const addSpecRow = () => { if (!specProduct) return; setProductSpecs((p) => ({ ...p, [specProduct]: [...(p[specProduct] || []), { k: '', v: '' }] })); };
+  const setSpecRowField = (idx: number, field: 'k' | 'v', val: string) => setProductSpecs((p) => { const rows = [...(p[specProduct] || [])]; rows[idx] = { ...rows[idx], [field]: val }; return { ...p, [specProduct]: rows }; });
+  const removeSpecRow = (idx: number) => setProductSpecs((p) => ({ ...p, [specProduct]: (p[specProduct] || []).filter((_, i) => i !== idx) }));
+  const saveProductSpecsHandler = () => { saveProductSpecs(productSpecs); alert('Product specifications saved. They now show on the product page.'); };
+
+  // ── Per-product pack / unit sizes (5kg, 10kg…) shown on the product page ──
+  const [productPacks, setProductPacks] = useState<ProductPacks>(() => getProductPacks());
+  const packRowsFor = (name: string) => productPacks[name] || [];
+  const addPackRow = (name: string) => { if (!name) return; setProductPacks((p) => ({ ...p, [name]: [...(p[name] || []), { label: '', mult: 1, save: 0 }] })); };
+  const setPackRowField = (name: string, idx: number, field: 'label' | 'mult' | 'save', val: string) => setProductPacks((p) => { const rows = [...(p[name] || [])]; rows[idx] = { ...rows[idx], [field]: field === 'label' ? val : Number(val) }; return { ...p, [name]: rows }; });
+  const removePackRow = (name: string, idx: number) => setProductPacks((p) => ({ ...p, [name]: (p[name] || []).filter((_, i) => i !== idx) }));
+  const saveProductPacksHandler = () => { saveProductPacks(productPacks); alert('Pack & unit sizes saved. They now show on the product page.'); };
+  // Admin dark / light mode (persisted per-browser; only restyles the admin panel).
+  const [adminTheme, setAdminTheme] = useState<'light' | 'dark'>(() => {
+    try { return localStorage.getItem('igo_admin_theme') === 'dark' ? 'dark' : 'light'; } catch { return 'light'; }
+  });
+  const toggleAdminTheme = () => setAdminTheme((prev) => {
+    const next = prev === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('igo_admin_theme', next); } catch { /* ignore */ }
+    return next;
+  });
+  // Resize an image file to a small JPEG data URL inline (no Supabase storage
+  // bucket needed) so it always works and can be stored in the page-text config.
+  const readImageInline = (file: File | undefined, onLoad: (url: string) => void) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { alert('Please choose an image file.'); return; }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const im = new Image();
+      im.onload = () => {
+        const max = 500;
+        let { width, height } = im;
+        if (width > max || height > max) {
+          if (width > height) { height = Math.round((height * max) / width); width = max; }
+          else { width = Math.round((width * max) / height); height = max; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) { ctx.drawImage(im, 0, 0, width, height); onLoad(canvas.toDataURL('image/jpeg', 0.85)); }
+        else onLoad(ev.target?.result as string);
+      };
+      im.onerror = () => onLoad(ev.target?.result as string);
+      im.src = ev.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+  // Upload an image OR a (short) video from the computer. Images are resized;
+  // videos are stored as-is — keep them small, or place the file in /public/videos
+  // and paste its path (e.g. /videos/clip.mp4) instead.
+  const readMediaInline = (file: File | undefined, onLoad: (url: string) => void) => {
+    if (!file) return;
+    if (file.type.startsWith('image/')) { readImageFile(file, onLoad); return; }
+    if (file.type.startsWith('video/')) {
+      if (file.size > 3 * 1024 * 1024) { alert('This video is too large to store in the browser (max ~3 MB). For a full hero video, put the file in your /public/videos folder and paste its path (e.g. /videos/clip.mp4) — there is no size limit that way.'); return; }
+      const reader = new FileReader();
+      reader.onload = (ev) => onLoad(ev.target?.result as string);
+      reader.readAsDataURL(file);
+      return;
+    }
+    alert('Please choose an image or a video file.');
   };
   // Read ANY image from the computer and auto-resize/compress it so it's small
   // enough to store — no size limit on the original file.
@@ -521,11 +626,11 @@ export default function AdminComponent({ lang, products, setProducts, categories
   };
 
   const handleSaveBanners = () => {
-    const valid = banners.filter(b => b.img.trim() && b.title.trim());
+    const valid = banners.filter(b => b.img.trim() || b.title.trim());
     saveBanners(valid);
     alert(valid.length > 0
-      ? valid.length + ' custom hero banner(s) saved. The homepage slider now shows your banners.'
-      : 'No complete banners (image + title required) — homepage will show the default slider.');
+      ? valid.length + ' hero banner(s) saved. The homepage slider now shows your banner(s). (A headline is optional for image/video banners.)'
+      : 'No banners added yet — add an image or video to at least one slot. The homepage will show the default slider.');
   };
 
   const updateBanner = (i: number, field: keyof HeroBanner, value: string) => {
@@ -627,7 +732,21 @@ export default function AdminComponent({ lang, products, setProducts, categories
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-emerald-50 via-[#F7F9F4] to-amber-50/40">
+    <div className={'min-h-screen w-full bg-gradient-to-br from-emerald-50 via-[#F7F9F4] to-amber-50/40' + (adminTheme === 'dark' ? ' admin-dark' : '')}>
+      <style>{`
+        .admin-dark { background:#0b1220 !important; }
+        .admin-dark .bg-white { background-color:#111827 !important; }
+        .admin-dark .bg-slate-50 { background-color:#0f172a !important; }
+        .admin-dark .bg-slate-100 { background-color:#1e293b !important; }
+        .admin-dark .text-slate-900, .admin-dark .text-slate-800, .admin-dark .text-slate-700, .admin-dark .text-slate-600 { color:#e2e8f0 !important; }
+        .admin-dark .text-slate-500, .admin-dark .text-slate-400 { color:#94a3b8 !important; }
+        .admin-dark .border-slate-200, .admin-dark .border-slate-100 { border-color:#334155 !important; }
+        .admin-dark .bg-emerald-50, .admin-dark .bg-emerald-50\\/60 { background-color:#0f291d !important; }
+        .admin-dark .border-emerald-200, .admin-dark .border-emerald-100 { border-color:#1f5138 !important; }
+        .admin-dark .text-emerald-700, .admin-dark .text-emerald-800, .admin-dark .text-\\[\\#1B6B3A\\] { color:#6ee7b7 !important; }
+        .admin-dark input, .admin-dark textarea, .admin-dark select { background-color:#0f172a !important; color:#e2e8f0 !important; border-color:#334155 !important; }
+        .admin-dark input::placeholder, .admin-dark textarea::placeholder { color:#64748b !important; }
+      `}</style>
     <div className="max-w-7xl mx-auto px-4 py-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 bg-gradient-to-r from-[#0B3D22] to-[#1B6B3A] rounded-2xl px-5 py-4 shadow-lg shadow-emerald-900/20">
         <div className="flex items-center gap-3.5">
@@ -640,6 +759,9 @@ export default function AdminComponent({ lang, products, setProducts, categories
           </div>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
+          <button onClick={toggleAdminTheme} title="Toggle dark / light mode" className="flex items-center gap-1.5 text-xs text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 rounded-lg font-bold transition">
+            {adminTheme === 'dark' ? '☀️ Light' : '🌙 Dark'}
+          </button>
           {setCurrentPage && (
             <button onClick={() => setCurrentPage('home')} className="flex items-center gap-1.5 text-xs text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 rounded-lg font-bold transition">
               <Store className="h-3.5 w-3.5" /> View Store
@@ -1071,6 +1193,44 @@ export default function AdminComponent({ lang, products, setProducts, categories
                   <input type="text" value={newProduct.unit} onChange={e => setNewProduct({...newProduct, unit: e.target.value})}
                     placeholder="e.g. 1kg, 500ml" className="w-full bg-white border rounded-lg p-2.5 text-xs font-bold" />
                 </div>
+                {/* Pack & Unit Sizes editor — sets the 5kg/10kg/etc. options shown on the product page */}
+                <div className="col-span-2 bg-emerald-50/60 border border-emerald-200 rounded-xl p-3.5">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div>
+                      <label className="text-[11px] text-[#1B6B3A] font-extrabold uppercase tracking-wide block">📦 Pack &amp; Unit Sizes (shown on product page)</label>
+                      <p className="text-[10px] text-slate-500 mt-0.5">Add the quantity options a customer can pick — e.g. <b>5 kg</b> (× 5, 4% off), <b>10 kg</b> (× 10, 8% off). Price auto-calculates from Selling Price × Qty − discount. Leave empty to use the automatic 1 / 3 / 5 options.</p>
+                    </div>
+                    <button type="button" onClick={saveProductPacksHandler}
+                      className="text-[11px] font-bold bg-[#1B6B3A] text-white px-3.5 py-1.5 rounded-lg hover:bg-emerald-950 transition shrink-0">Save Pack Sizes</button>
+                  </div>
+                  {!newProduct.name?.trim() ? (
+                    <p className="text-[11px] text-rose-500 font-bold mt-2">Enter the product name above first, then add pack sizes.</p>
+                  ) : (
+                    <div className="mt-3 space-y-2">
+                      <div className="grid grid-cols-[1fr_64px_64px_28px] gap-2 text-[9px] font-black text-slate-400 uppercase tracking-wide px-0.5">
+                        <span>Label</span><span>× Qty</span><span>% Off</span><span></span>
+                      </div>
+                      {packRowsFor(newProduct.name).map((row, idx) => {
+                        const price = Math.round((Number(newProduct.price) || 0) * (Number(row.mult) || 1) * (1 - (Number(row.save) || 0) / 100));
+                        return (
+                          <div key={idx} className="grid grid-cols-[1fr_64px_64px_28px] gap-2 items-center">
+                            <input type="text" value={row.label} onChange={e => setPackRowField(newProduct.name, idx, 'label', e.target.value)}
+                              placeholder="e.g. 5 kg" className="bg-white border rounded-lg p-2 text-xs font-bold" />
+                            <input type="number" min={1} value={row.mult} onChange={e => setPackRowField(newProduct.name, idx, 'mult', e.target.value)}
+                              className="bg-white border rounded-lg p-2 text-xs font-bold text-center" />
+                            <input type="number" min={0} max={90} value={row.save} onChange={e => setPackRowField(newProduct.name, idx, 'save', e.target.value)}
+                              className="bg-white border rounded-lg p-2 text-xs font-bold text-center" />
+                            <button type="button" onClick={() => removePackRow(newProduct.name, idx)}
+                              className="text-rose-500 hover:text-rose-700 font-black text-lg leading-none">×</button>
+                            <span className="col-span-4 text-[10px] text-slate-500 font-bold -mt-1">→ Customer pays <b className="text-[#1B6B3A]">₹{price.toLocaleString('en-IN')}</b> for {row.label || 'this pack'}</span>
+                          </div>
+                        );
+                      })}
+                      <button type="button" onClick={() => addPackRow(newProduct.name)}
+                        className="text-[11px] font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 px-3.5 py-1.5 rounded-lg transition">+ Add Pack Size</button>
+                    </div>
+                  )}
+                </div>
                 <div className="col-span-2">
                   <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Product Gallery Images (first = main image)</label>
                   <div className="flex flex-col gap-2">
@@ -1377,134 +1537,198 @@ export default function AdminComponent({ lang, products, setProducts, categories
       })()}
 
       {activeTab === 'Sellers' && (
-        <div className="space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="font-extrabold text-sm text-slate-800">Seller Submissions & Approvals ({sellers.length})</h3>
-          </div>
-          <div className="space-y-4">
-            {sellers.length === 0 ? (
-              <div className="py-16 text-center bg-white border border-slate-200 rounded-xl shadow-sm">
-                <Store className="h-12 w-12 text-slate-200 mx-auto mb-3" />
-                <p className="text-sm font-bold text-slate-400">No seller submissions yet.</p>
+        <div className="grid lg:grid-cols-12 gap-6 items-start">
+          {/* LEFT SIDEBAR: List of Sellers */}
+          <div className="lg:col-span-4 space-y-4 sticky top-6">
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-[0_8px_30px_rgba(8,34,22,0.04)]">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-display font-black text-slate-900 text-lg tracking-tight">Seller Submissions</h3>
+                <span className="bg-emerald-100 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-full">{sellers.length} total</span>
               </div>
-            ) : (
-              [...sellers].sort((a, b) => (a.status === 'Pending' ? -1 : 1) - (b.status === 'Pending' ? -1 : 1)).map((s) => (
-                <div key={s.id} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div className="flex items-start gap-3">
-                      {s.productImage ? <img src={s.productImage} alt="" className="h-14 w-14 rounded-xl object-cover border border-slate-200" /> : <div className="h-14 w-14 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-center"><Store className="h-6 w-6 text-slate-300" /></div>}
-                      <div>
-                        <h4 className="font-black text-slate-900 text-sm">{s.productName}</h4>
-                        <p className="text-[11px] text-slate-500">{s.name} · {s.phone}</p>
-                        <p className="text-[11px] text-slate-700 font-bold mt-0.5 flex items-center gap-1">Rs.{s.price.toLocaleString('en-IN')} · Qty {s.quantity}</p>
+              <button onClick={() => { setEditingSellerId('NEW'); setEditForm({}); }} className="w-full bg-[#1B6B3A] hover:bg-emerald-900 text-white font-bold py-3 rounded-2xl flex items-center justify-center gap-2 transition-all mb-4 shadow-[0_4px_14px_rgba(27,107,58,0.3)]">
+                <Store className="h-4 w-4" /> Add New Seller
+              </button>
+              
+              <div className="space-y-3 max-h-[600px] overflow-auto pr-1">
+                {sellers.length === 0 ? (
+                  <p className="text-center text-sm text-slate-400 py-6">No seller submissions yet.</p>
+                ) : (
+                  [...sellers].sort((a, b) => (a.status === 'Pending' ? 0 : 1) - (b.status === 'Pending' ? 0 : 1) || (b.createdAt || '').localeCompare(a.createdAt || '')).map(s => (
+                    <div 
+                      key={s.id} 
+                      onClick={() => startEditing(s)} 
+                      className={`cursor-pointer rounded-2xl p-4 transition-all border ${editingSellerId === s.id ? 'border-emerald-400 bg-emerald-50/50 shadow-md ring-2 ring-emerald-100' : 'border-slate-200 bg-white hover:border-emerald-200 hover:shadow-sm'}`}
+                    >
+                      <h4 className="font-black text-slate-900 text-sm truncate">{s.name || 'Unnamed Business'}</h4>
+                      <p className="text-xs text-slate-500 mt-1 font-medium">{s.productName} · Rs.{s.price.toLocaleString('en-IN')}</p>
+                      <div className="flex justify-between items-center mt-3 pt-3 border-t border-slate-100">
+                        <span className={'text-[10px] font-black uppercase px-2 py-0.5 rounded-full border tracking-wide ' + (s.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : s.status === 'Rejected' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-800 border-amber-200')}>{s.status}</span>
+                        <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1"><Phone className="h-3 w-3" /> {s.phone}</span>
                       </div>
                     </div>
-                    <span className={'text-[10px] font-black uppercase px-2 py-1 rounded-full border ' + 
-                      (s.status === 'Pending' ? 'bg-amber-50 text-amber-800 border-amber-200' :
-                       s.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                       'bg-rose-50 text-rose-700 border-rose-200')
-                    }>Listing: {s.status}</span>
-                  </div>
-
-                  <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg p-3 text-[11px] text-slate-700">
-                    <span className="font-black text-slate-500 uppercase tracking-wide text-[9px] block mb-0.5">Seller's Payout Bank Details</span>
-                    {s.bankDetails}
-                  </div>
-
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <button onClick={() => updateSeller(s.id, { status: 'Approved' })} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Approve Listing</button>
-                    <button onClick={() => updateSeller(s.id, { status: 'Rejected' })} className="bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg">Reject Listing</button>
-                    <button onClick={() => updateSeller(s.id, { paymentStatus: 'Requested' })} className="bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold px-3 py-1.5 rounded-lg">Ask Seller for Bank Details</button>
-                    <label className="bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1.5">
-                      <Upload className="h-3.5 w-3.5" /> {s.paymentProofImage ? 'Replace Proof of Payout' : 'Upload Proof of Payout'}
-                      <input type="file" accept="image/*" className="hidden" onChange={(e) => readSellerImage(e.target.files?.[0], (url) => updateSeller(s.id, { paymentProofImage: url, paymentStatus: 'Paid' }))} />
-                    </label>
-                    <button onClick={() => removeSeller(s.id)} className="text-slate-400 hover:text-rose-600 text-xs font-bold px-2">Delete Request</button>
-                  </div>
-
-                  <div className="mt-3 flex gap-2">
-                    <input
-                      defaultValue={s.adminMessage || ''}
-                      onBlur={(e) => { if (e.target.value !== (s.adminMessage || '')) updateSeller(s.id, { adminMessage: e.target.value }); }}
-                      placeholder="Type a direct reply to the seller (auto-saves on click away)..."
-                      className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs" />
-                  </div>
-
-                  <div className="mt-2 flex items-center gap-2 text-[11px]">
-                    <span className="text-slate-500">Payout to Seller Status:</span>
-                    <span className={'font-black px-2 py-0.5 rounded-full border ' + 
-                      (s.paymentStatus === 'None' ? 'bg-slate-100 text-slate-500 border-slate-200' :
-                       s.paymentStatus === 'Requested' ? 'bg-sky-50 text-sky-700 border-sky-200' :
-                       'bg-emerald-50 text-emerald-700 border-emerald-200')
-                    }>{s.paymentStatus === 'None' ? 'Pending' : s.paymentStatus}</span>
-                    {s.paymentProofImage && <img src={s.paymentProofImage} alt="" className="h-10 rounded border border-slate-200" />}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      )}
-
-      {activeTab === 'Sellers' && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="font-extrabold text-sm text-slate-800">Seller Submissions ({sellers.length})</h3>
-            <div className="flex gap-2 text-[11px]">
-              <span className="px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-bold">{sellers.filter(s => s.status === 'Pending').length} pending</span>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold">{sellers.filter(s => s.status === 'Approved').length} approved</span>
-              <button onClick={() => setSellers(getSellers())} className="px-3 py-1 rounded-lg bg-[#1B6B3A] text-white font-bold">Refresh</button>
+                  ))
+                )}
+              </div>
             </div>
+            <p className="text-[11px] text-slate-500 font-medium px-2 leading-relaxed"><Info className="h-3.5 w-3.5 inline text-slate-400 mb-0.5" /> Approving a seller allows them to see their status in the portal. Use "Publish to Store" to actually add their product to the live site.</p>
           </div>
-          {sellers.length === 0 ? (
-            <div className="bg-white border border-slate-200 rounded-xl p-12 text-center text-sm text-slate-400">No seller submissions yet. They appear here the moment a seller submits the "Become a Seller" form.</div>
-          ) : (
-            [...sellers].sort((a, b) => (a.status === 'Pending' ? 0 : 1) - (b.status === 'Pending' ? 0 : 1) || (b.createdAt || '').localeCompare(a.createdAt || '')).map(s => (
-              <div key={s.id} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div className="flex items-start gap-3">
-                    {s.productImage && <img src={s.productImage} alt="" className="h-16 w-16 rounded-xl object-cover border border-slate-200" />}
-                    <div>
-                      <h4 className="font-black text-slate-900 text-sm">{s.productName}</h4>
-                      <p className="text-[11px] text-slate-500">by <span className="font-bold text-slate-700">{s.name}</span> · {s.phone}</p>
-                      <p className="text-[11px] text-slate-700 font-bold mt-0.5">Rs.{s.price.toLocaleString('en-IN')} · Qty {s.quantity} · {new Date(s.createdAt).toLocaleDateString('en-IN')}</p>
+
+          {/* RIGHT COLUMN: Full Edit Form & Details */}
+          <div className="lg:col-span-8">
+            {editingSellerId ? (
+              <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-[0_22px_56px_rgba(8,34,22,0.06)]">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-display font-black text-2xl text-slate-900 tracking-tight">{editingSellerId === 'NEW' ? 'Add New Seller' : 'Edit Seller Details'}</h3>
+                  <button onClick={() => setEditingSellerId(null)} className="h-8 w-8 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-full flex items-center justify-center transition-colors"><X className="h-4 w-4" /></button>
+                </div>
+                <p className="text-slate-500 text-sm mb-8">Manage the business details, product catalog, and approval status for this seller.</p>
+
+                <div className="space-y-8">
+                  {/* Business Details Section */}
+                  <div>
+                    <div className="bg-emerald-50 border border-[#cef4dc] text-emerald-800 text-xs font-bold px-4 py-2 rounded-full inline-flex items-center gap-2 mb-4">
+                      <Store className="h-4 w-4" /> Business Details
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="sm:col-span-2">
+                        <label className="block text-[11px] font-black uppercase text-slate-500 tracking-widest mb-1.5">Business Name *</label>
+                        <input value={editForm.name || ''} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} className="w-full bg-white border border-slate-300 rounded-2xl px-4 py-3.5 text-sm font-medium text-slate-800 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-50 outline-none transition-all" />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-black uppercase text-slate-500 tracking-widest mb-1.5">Phone Number *</label>
+                        <input value={editForm.phone || ''} onChange={(e) => setEditForm({ ...editForm, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} className="w-full bg-white border border-slate-300 rounded-2xl px-4 py-3.5 text-sm font-medium text-slate-800 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-50 outline-none transition-all" />
+                      </div>
                     </div>
                   </div>
-                  <span className={'text-[10px] font-black uppercase px-2.5 py-1 rounded-full border ' + (s.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : s.status === 'Rejected' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-800 border-amber-200')}>{s.status}</span>
-                </div>
 
-                <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg p-3 text-[11px] text-slate-700">
-                  <span className="font-black text-slate-500 uppercase tracking-wide text-[9px] block mb-0.5">Payout bank details</span>
-                  {s.bankDetails}
-                </div>
+                  {/* Product Details Section */}
+                  <div>
+                    <div className="bg-emerald-50 border border-[#cef4dc] text-emerald-800 text-xs font-bold px-4 py-2 rounded-full inline-flex items-center gap-2 mb-4">
+                      <Package className="h-4 w-4" /> Product Details
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="sm:col-span-2">
+                        <label className="block text-[11px] font-black uppercase text-slate-500 tracking-widest mb-1.5">Product Name & Category *</label>
+                        <input value={editForm.productName || ''} onChange={(e) => setEditForm({ ...editForm, productName: e.target.value })} className="w-full bg-white border border-slate-300 rounded-2xl px-4 py-3.5 text-sm font-medium text-slate-800 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-50 outline-none transition-all" />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-black uppercase text-slate-500 tracking-widest mb-1.5">Price / Unit (₹) *</label>
+                        <input type="number" value={editForm.price || ''} onChange={(e) => setEditForm({ ...editForm, price: Number(e.target.value) })} className="w-full bg-white border border-slate-300 rounded-2xl px-4 py-3.5 text-sm font-medium text-slate-800 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-50 outline-none transition-all" />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-black uppercase text-slate-500 tracking-widest mb-1.5">Quantity Available *</label>
+                        <input type="number" value={editForm.quantity || ''} onChange={(e) => setEditForm({ ...editForm, quantity: Number(e.target.value) })} className="w-full bg-white border border-slate-300 rounded-2xl px-4 py-3.5 text-sm font-medium text-slate-800 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-50 outline-none transition-all" />
+                      </div>
+                    </div>
+                  </div>
 
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <button onClick={() => updateSeller(s.id, { status: 'Approved' })} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Approve</button>
-                  <button onClick={() => updateSeller(s.id, { status: 'Rejected' })} className="bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-lg">Reject</button>
-                  <button onClick={() => updateSeller(s.id, { paymentStatus: 'Requested' })} className="bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold px-3 py-1.5 rounded-lg">Request bank details</button>
-                  <label className="bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1.5">
-                    <Upload className="h-3.5 w-3.5" /> {s.paymentProofImage ? 'Replace payment proof' : 'Upload payment proof'}
-                    <input type="file" accept="image/*" className="hidden" onChange={e => readSellerImage(e.target.files?.[0], (url) => updateSeller(s.id, { paymentProofImage: url, paymentStatus: 'Paid' }))} />
-                  </label>
-                  <button onClick={() => removeSeller(s.id)} className="text-slate-400 hover:text-rose-600 text-xs font-bold px-2">Delete</button>
-                </div>
+                  {/* Address & Bank Section */}
+                  <div>
+                    <div className="bg-emerald-50 border border-[#cef4dc] text-emerald-800 text-xs font-bold px-4 py-2 rounded-full inline-flex items-center gap-2 mb-4">
+                      <ClipboardCheck className="h-4 w-4" /> Address & Documents
+                    </div>
+                    <div className="grid gap-4">
+                      <div>
+                        <label className="block text-[11px] font-black uppercase text-slate-500 tracking-widest mb-1.5">Pickup Address & Bank Details *</label>
+                        <textarea value={editForm.bankDetails || ''} onChange={(e) => setEditForm({ ...editForm, bankDetails: e.target.value })} rows={3} className="w-full min-h-[104px] resize-y bg-white border border-slate-300 rounded-2xl px-4 py-3.5 text-sm font-medium text-slate-800 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-50 outline-none transition-all" />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-black uppercase text-slate-500 tracking-widest mb-1.5">Product Photo (Optional)</label>
+                        <div className="flex flex-wrap items-center gap-4">
+                          <label className="bg-white border-2 border-dashed border-slate-300 hover:border-emerald-400 hover:bg-emerald-50 text-slate-600 text-sm font-bold px-6 py-4 rounded-2xl cursor-pointer flex-1 flex flex-col items-center justify-center gap-2 transition-all">
+                            <Upload className="h-6 w-6 text-emerald-600" /> 
+                            <span>Click to upload image</span>
+                            <input type="file" accept="image/*" className="hidden" onChange={(e) => readSellerImage(e.target.files?.[0], (url) => setEditForm({ ...editForm, productImage: url }))} />
+                          </label>
+                          {editForm.productImage && <div className="relative shrink-0"><img src={editForm.productImage} alt="Preview" className="h-24 w-24 rounded-2xl object-cover border border-slate-200 shadow-sm" /></div>}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Status & Actions Section (Only for existing sellers) */}
+                  {editingSellerId !== 'NEW' && (
+                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <span className="text-[11px] font-black uppercase text-slate-500 tracking-widest">Status:</span>
+                          <div className="flex gap-2">
+                            <button onClick={() => setEditForm({ ...editForm, status: 'Approved' })} className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${editForm.status === 'Approved' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-300 hover:border-emerald-400'}`}>Approved</button>
+                            <button onClick={() => setEditForm({ ...editForm, status: 'Rejected' })} className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${editForm.status === 'Rejected' ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-slate-600 border-slate-300 hover:border-rose-400'}`}>Rejected</button>
+                            <button onClick={() => setEditForm({ ...editForm, status: 'Pending' })} className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${editForm.status === 'Pending' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-600 border-slate-300 hover:border-amber-400'}`}>Pending</button>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                           <span className="text-[11px] font-black uppercase text-slate-500 tracking-widest">Payment:</span>
+                           <select value={editForm.paymentStatus || 'None'} onChange={e => setEditForm({ ...editForm, paymentStatus: e.target.value as any })} className="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700 outline-none">
+                             <option value="None">None</option>
+                             <option value="Requested">Requested</option>
+                             <option value="Paid">Paid</option>
+                           </select>
+                        </div>
+                      </div>
+                      <div className="mt-4 pt-4 border-t border-slate-200 flex flex-col gap-3">
+                        <label className="block text-[11px] font-black uppercase text-slate-500 tracking-widest">Admin Message to Seller (Optional)</label>
+                        <input value={editForm.adminMessage || ''} onChange={e => setEditForm({ ...editForm, adminMessage: e.target.value })} placeholder="Type a message for the seller to see when they track their status..." className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-700 focus:border-emerald-400 outline-none" />
+                      </div>
+                    </div>
+                  )}
 
-                <div className="mt-3 flex flex-col sm:flex-row gap-2 sm:items-center">
-                  <input
-                    defaultValue={s.adminMessage || ''}
-                    onBlur={e => { if (e.target.value !== (s.adminMessage || '')) { updateSeller(s.id, { adminMessage: e.target.value }); } }}
-                    placeholder="Reply to the seller (saved when you click away)…"
-                    className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs" />
-                  <span className="text-[11px] flex items-center gap-1.5">
-                    <span className="text-slate-500">Payment:</span>
-                    <span className={'font-black px-2 py-0.5 rounded-full border ' + (s.paymentStatus === 'Paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : s.paymentStatus === 'Requested' ? 'bg-sky-50 text-sky-700 border-sky-200' : 'bg-slate-100 text-slate-500 border-slate-200')}>{s.paymentStatus}</span>
-                  </span>
+                  {/* Submit Button */}
+                  <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-100">
+                    <div className="flex items-center gap-3">
+                      <button onClick={saveEdit} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white font-black px-8 py-3.5 rounded-xl text-sm transition-all shadow-[0_4px_14px_rgba(27,107,58,0.3)] hover:shadow-[0_6px_20px_rgba(27,107,58,0.4)]">
+                        {editingSellerId === 'NEW' ? 'Create Seller' : 'Save Changes'}
+                      </button>
+                      <button onClick={() => setEditingSellerId(null)} className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-6 py-3.5 rounded-xl text-sm transition-all">Cancel</button>
+                    </div>
+                    {editingSellerId !== 'NEW' && (
+                      <div className="flex gap-2">
+                        <button onClick={() => {
+                          if (!editForm.productName || !editForm.price) {
+                            alert('Product name and price are required to publish!');
+                            return;
+                          }
+                          if (!window.confirm('Add this product to the main public store?')) return;
+                          const newP: Product = {
+                            id: 'p-' + Date.now(),
+                            name: editForm.productName,
+                            price: editForm.price,
+                            mrp: Math.round(editForm.price * 1.2), // Auto 20% MRP markup
+                            category: 'Uncategorized',
+                            brand: editForm.name || 'Vendor',
+                            unit: 'Unit',
+                            image: editForm.productImage || 'https://via.placeholder.com/400x400?text=Product',
+                            inStock: true,
+                            description: `Shipped and sold by ${editForm.name} (${editForm.phone})`,
+                            rating: 0, reviews: 0
+                          };
+                          setProducts([...products, newP]);
+                          alert('Product Published to Store! You can find it in the Products tab.');
+                        }} className="bg-purple-100 hover:bg-purple-200 text-purple-800 font-black px-4 py-3.5 rounded-xl text-sm transition-all flex items-center gap-2 border border-purple-200">
+                          <Upload className="h-4 w-4" /> Publish to Store
+                        </button>
+                        <button onClick={() => {
+                          if(window.confirm('Delete this seller permanently?')) {
+                            removeSeller(editingSellerId);
+                            setEditingSellerId(null);
+                          }
+                        }} className="text-slate-400 hover:text-rose-600 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 font-bold px-4 py-3.5 rounded-xl text-sm transition-all">
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                {s.paymentProofImage && <img src={s.paymentProofImage} alt="payment proof" className="mt-3 max-h-48 rounded-xl border border-slate-200" />}
               </div>
-            ))
-          )}
-          <p className="text-[11px] text-slate-400 flex items-start gap-1.5"><Info className="h-3.5 w-3.5 mt-0.5 shrink-0" />The seller sees your approval, your reply message and the payment-proof image on the Sellers page → "Seller Dashboard" (they look it up by their phone number).</p>
+            ) : (
+              <div className="bg-white border border-slate-200 border-dashed rounded-3xl p-12 text-center h-full flex flex-col items-center justify-center min-h-[400px]">
+                <Store className="h-16 w-16 text-slate-200 mb-4" />
+                <h3 className="font-display font-black text-slate-800 text-xl mb-2">Select a Seller to View</h3>
+                <p className="text-slate-500 text-sm max-w-sm mx-auto">Click on any seller submission from the list on the left to review their details, edit information, or publish their products to the store.</p>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -1675,228 +1899,67 @@ export default function AdminComponent({ lang, products, setProducts, categories
 
       {activeTab === 'Content' && (
         <div className="space-y-6">
-          <h3 className="font-extrabold text-sm text-slate-800">Content Management</h3>
-
-          {/* Upcoming Agri Events editor */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5">
-            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-1">🗓 Upcoming Agri Events</h4>
-            <p className="text-[11px] text-slate-400 mb-4">Add the trade shows, expos and farmer meets shown on the home page. While this list is empty, a built-in default set is shown.</p>
-            <div className="grid grid-cols-1 sm:grid-cols-6 gap-2 mb-3">
-              <input value={newEvent.name} onChange={e => setNewEvent({ ...newEvent, name: e.target.value })} placeholder="Event name" className="sm:col-span-2 bg-slate-50 border rounded-lg p-2 text-xs font-bold" />
-              <input value={newEvent.city} onChange={e => setNewEvent({ ...newEvent, city: e.target.value })} placeholder="City" className="bg-slate-50 border rounded-lg p-2 text-xs font-bold" />
-              <input value={newEvent.date} onChange={e => setNewEvent({ ...newEvent, date: e.target.value })} placeholder="Date e.g. Jul 9-11, 2026" className="bg-slate-50 border rounded-lg p-2 text-xs font-bold" />
-              <select value={newEvent.type} onChange={e => setNewEvent({ ...newEvent, type: e.target.value })} className="bg-slate-50 border rounded-lg p-2 text-xs font-bold">
-                {['Trade Expo', 'Horticulture', 'AgriTech', 'National', 'Farmer Meet', 'International'].map(o => <option key={o}>{o}</option>)}
-              </select>
-              <input value={newEvent.emoji} onChange={e => setNewEvent({ ...newEvent, emoji: e.target.value })} placeholder="Emoji 🏭" maxLength={2} className="bg-slate-50 border rounded-lg p-2 text-xs font-bold text-center" />
-            </div>
-            <button onClick={handleAddEvent} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-4 py-2 rounded-lg transition">+ Add Event</button>
-            {events.length > 0 && (
-              <div className="mt-4 space-y-1.5">
-                {events.map((ev, idx) => (
-                  <div key={idx} className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs">
-                    <span className="font-bold text-slate-700 truncate">{ev.emoji} {ev.name} <span className="text-slate-400 font-medium">· {ev.city} · {ev.date} · {ev.type}</span></span>
-                    <button onClick={() => handleRemoveEvent(idx)} className="text-rose-500 hover:text-rose-700 font-bold shrink-0 ml-2">Remove</button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Image Manager — swap key site images by URL or /images/ path */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">🖼️ Image Manager</h4>
-              <button onClick={saveSiteImagesHandler} className="text-xs font-bold bg-[#1B6B3A] text-white px-4 py-1.5 rounded-lg hover:bg-emerald-950 transition">
-                Save Images
-              </button>
-            </div>
-            <p className="text-[11px] text-slate-400 mb-4">Paste an image URL, or a path to a file in your /public folder (e.g. <code>/images/hero.png</code>). Leave blank to keep the built-in image.</p>
-            <div className="space-y-4">
-              {SITE_IMAGE_SLOTS.map((slot) => (
-                <div key={slot.key} className="flex flex-col sm:flex-row gap-3 sm:items-center">
-                  <div className="sm:w-48 shrink-0">
-                    <div className="text-xs font-black text-slate-700">{slot.label}</div>
-                    <div className="text-[10px] text-slate-400">{slot.hint}</div>
-                  </div>
-                  <input
-                    type="text"
-                    value={siteImages[slot.key] || ''}
-                    onChange={(e) => setSiteImagesState({ ...siteImages, [slot.key]: e.target.value })}
-                    placeholder="https://…  or  /images/your-image.png"
-                    className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]"
-                  />
-                  <label className="shrink-0 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-lg">
-                    Upload
-                    <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageFile(e.target.files?.[0], (url) => setSiteImagesState({ ...siteImages, [slot.key]: url }))} />
-                  </label>
-                  {(siteImages[slot.key] || '').trim() && (
-                    <img src={siteImages[slot.key]} alt="" className="h-12 w-20 object-cover rounded-md border border-slate-200" />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Category Manager — rename categories, change their tile image, or hide them */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">🗂️ Category Manager</h4>
-              <button onClick={saveCategoryMetaHandler} className="text-xs font-bold bg-[#1B6B3A] text-white px-4 py-1.5 rounded-lg hover:bg-emerald-950 transition">
-                Save Categories
-              </button>
-            </div>
-            <p className="text-[11px] text-slate-400 mb-4">Rename a category, replace its homepage tile image (URL or /images/ path), or hide it. Leave blank to keep the default.</p>
-
-            {/* Add a brand-new category */}
-            <div className="bg-emerald-50/60 border border-emerald-200 rounded-lg p-3 mb-4">
-              <div className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest mb-2">➕ Add New Category</div>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <input type="text" value={newCatName} onChange={(e) => setNewCatName(e.target.value)}
-                  placeholder="Category name (e.g. Animal Husbandry)"
-                  className="sm:w-56 bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
-                <input type="text" value={newCatImage} onChange={(e) => setNewCatImage(e.target.value)}
-                  placeholder="Tile image URL or /images/cat.png (optional)"
-                  className="flex-1 bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
-                <label className="shrink-0 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-lg">
-                  Upload
-                  <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageFile(e.target.files?.[0], (url) => setNewCatImage(url))} />
-                </label>
-                <button onClick={addCustomCategory} className="bg-[#1B6B3A] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-emerald-950 transition shrink-0">Add Category</button>
-              </div>
-              {customCats.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {customCats.map((c) => (
-                    <span key={c.slug} className="inline-flex items-center gap-1.5 bg-white border border-emerald-200 text-[#1B6B3A] text-[11px] font-bold pl-2.5 pr-1.5 py-1 rounded-full">
-                      {c.name}
-                      <button onClick={() => removeCustomCategory(c.slug)} className="h-4 w-4 flex items-center justify-center rounded-full hover:bg-rose-100 text-rose-500" aria-label={`Remove ${c.name}`}>×</button>
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
-              {categories.map((c) => {
-                const m = categoryMeta[c.name] || {};
-                return (
-                  <div key={c.id} className="flex flex-col sm:flex-row gap-2 sm:items-center border-b border-slate-100 pb-3">
-                    <div className="sm:w-40 shrink-0 text-xs font-black text-slate-700 truncate">{c.name}</div>
-                    <input
-                      type="text"
-                      value={m.label || ''}
-                      onChange={(e) => setCatField(c.name, 'label', e.target.value)}
-                      placeholder="New label (optional)"
-                      className="sm:w-44 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-[#1B6B3A]"
-                    />
-                    <input
-                      type="text"
-                      value={m.image || ''}
-                      onChange={(e) => setCatField(c.name, 'image', e.target.value)}
-                      placeholder="Image URL or /images/cat.png"
-                      className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-[#1B6B3A]"
-                    />
-                    <label className="shrink-0 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-2.5 py-1.5 rounded-lg">
-                      Upload
-                      <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageFile(e.target.files?.[0], (url) => setCatField(c.name, 'image', url))} />
-                    </label>
-                    {(m.image || '').trim() && <img src={m.image} alt="" className="h-9 w-9 object-cover rounded-full border border-slate-200" />}
-                    <label className="flex items-center gap-1 text-[10px] font-bold text-slate-500 shrink-0">
-                      <input type="checkbox" checked={!!m.hidden} onChange={(e) => setCatField(c.name, 'hidden', e.target.checked)} /> Hide
-                    </label>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="bg-white border border-slate-200 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Marquee Banner Text</h4>
-              {!editingMarquee ? (
-                <button onClick={() => { setEditingMarquee(true); setMarqueeInput(marqueeLines.join('\n')); }}
-                  className="text-xs font-bold text-[#1B6B3A] flex items-center gap-1 hover:underline">
-                  <Edit3 className="h-3.5 w-3.5" /> Edit
-                </button>
-              ) : (
-                <div className="flex gap-2">
-                  <button onClick={saveMarquee} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-1.5 rounded-lg">Save</button>
-                  <button onClick={() => setEditingMarquee(false)} className="bg-slate-200 text-slate-700 text-xs font-bold px-3 py-1.5 rounded-lg">Cancel</button>
-                </div>
-              )}
-            </div>
-            {editingMarquee ? (
-              <textarea value={marqueeInput} onChange={e => setMarqueeInput(e.target.value)} rows={6}
-                placeholder="One line per marquee item..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs font-mono outline-none resize-none" />
-            ) : (
-              <div className="space-y-2">
-                {marqueeLines.map((line, i) => (
-                  <div key={i} className="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-lg text-xs text-slate-700">
-                    <span className="text-slate-300 font-bold w-5">#{i+1}</span> {line}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <div className="bg-white border border-slate-200 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-1">
-              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Homepage Hero Banners</h4>
-              <button onClick={handleSaveBanners} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-1.5 rounded-lg">Save Banners</button>
-            </div>
-            <p className="text-[11px] text-slate-400 mb-4">Fill image URL + title to replace the default homepage slider. Leave all empty to keep defaults.</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {banners.map((b, i) => (
-                <div key={i} className="border border-slate-200 rounded-xl p-4 space-y-2.5">
-                  <div className="flex items-center gap-2 text-xs font-black text-slate-600">
-                    <Image className="h-4 w-4 text-[#1B6B3A]" /> Banner Slot {i + 1}
-                  </div>
-                  {b.img ? (
-                    <img src={b.img} alt={'Banner ' + (i+1) + ' preview'} className="w-full h-20 object-cover rounded-lg border"
-                      onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                  ) : (
-                    <div className="w-full h-20 bg-slate-50 border-2 border-dashed border-slate-200 rounded-lg flex items-center justify-center text-[10px] text-slate-400 font-bold">No image yet</div>
-                  )}
-                  <input type="text" value={b.img} onChange={e => updateBanner(i, 'img', e.target.value)}
-                    placeholder="Image URL (https://...)" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
-                  <input type="text" value={b.badge} onChange={e => updateBanner(i, 'badge', e.target.value)}
-                    placeholder="Badge text (e.g. Mega Sale)" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
-                  <input type="text" value={b.title} onChange={e => updateBanner(i, 'title', e.target.value)}
-                    placeholder="Headline" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] font-bold outline-none focus:border-[#1B6B3A]" />
-                  <input type="text" value={b.sub} onChange={e => updateBanner(i, 'sub', e.target.value)}
-                    placeholder="Sub-text" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
-                  <div className="grid grid-cols-2 gap-2">
-                    <input type="text" value={b.btn} onChange={e => updateBanner(i, 'btn', e.target.value)}
-                      placeholder="Button text" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
-                    <select value={b.btnAction} onChange={e => updateBanner(i, 'btnAction', e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-[11px] outline-none focus:border-[#1B6B3A]">
-                      {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                    </select>
-                  </div>
-                  {b.img && (
-                    <button onClick={() => setBanners(banners.map((x, idx) => idx === i ? { img: '', badge: '', title: '', sub: '', btn: 'Shop Now', btnAction: 'seeds-saplings' } : x))}
-                      className="text-[10px] text-red-500 font-bold hover:underline">Clear slot</button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-white border border-slate-200 rounded-xl p-5">
+<div className="bg-white border border-slate-200 rounded-xl p-5">
             <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-              Homepage Section Overrides
+              Edit Home Page Sections
             </h4>
-            <p className="text-[10px] text-slate-400 mb-4">Manually assign specific products to homepage sections. Leave a section empty to use the automatic dynamic products.</p>
+            <p className="text-[10px] text-slate-400 mb-4">Pick a section below to edit its text, images, banners or products. A green note shows exactly where it appears on the live website. Changes go live after you click Save in that section.</p>
             <div className="space-y-4">
               <div>
-                <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Select Section to Override</label>
+                <label className="text-[10px] text-slate-500 font-bold uppercase block mb-1">Choose what you want to edit</label>
                 <select value={activeOverrideSection} onChange={e => setActiveOverrideSection(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold outline-none focus:border-[#1B6B3A]">
                   <option value="">-- Choose a section --</option>
-                  {['Best Selling', "Freshly Arrived", 'Combo Kits & Deals', 'Shop By Crop', 'Seeds', 'Organic & Bio Inputs', 'Urban & Balcony Gardening', 'Animal Husbandry Essentials', 'Precision Tools & Equipments', 'Trending Products', 'Popular Agri Brands', 'Brands', 'AgriMart Farmer Updates'].map(sec => (
-                    <option key={sec} value={sec}>{sec} ({homeOverrides[sec]?.length || 0} items)</option>
-                  ))}
+                  <optgroup label="Text, Images & Banners">
+                    {['Site Notification Bar', 'Marquee Banner Text', 'Homepage Hero Banners', 'Category Manager', 'Shop By Crop', 'Advertisement Banners', 'Value Cards', 'Trust Section & Stats Bar', 'IGO Category Bands', 'Farm Infrastructure Services', 'B2B & WhatsApp Banners', 'Upcoming Agri Events', "Farmer's Knowledge Hub", 'Image Manager'].map(sec => (
+                       <option key={sec} value={sec}>{sec}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Products Shown in Each Row">
+                    {["Today's Offer", 'Best Selling', 'Freshly Arrived', 'Seeds', 'Organic & Bio Inputs', 'Precision Tools & Equipments', 'Urban & Balcony Gardening', 'Animal Husbandry Essentials', 'Trending Products'].map(sec => (
+                      <option key={sec} value={sec}>{sec} ({homeOverrides[sec]?.length || 0} items)</option>
+                    ))}
+                  </optgroup>
                 </select>
               </div>
+              {activeOverrideSection && (() => {
+                const help: Record<string, string> = {
+                  'Upcoming Agri Events': 'Home page → the "Upcoming Agri Events" section (trade-show / expo cards).',
+                  'IGO Category Bands': 'Home page → the 4 green IGO bands woven between the product rows (above Freshly Arrived, Seeds, Gardening, Trending).',
+                  'Value Cards': 'Home page → the two big cards near the top: "Why farmers shop at IGO Agri Mart" and "Why Farmers Trust IGO".',
+                  'Card Stats & Trust Points': 'Home page → the 6 number-stats inside the "Why farmers shop" card, and the 4 bullet points inside the "Why Farmers Trust" card.',
+                  'Trust Section & Stats Bar': 'Home page → the dark "Why India\'s Farmers Trust IGO" section (6 feature cards) and the photo stats bar below it.',
+                  'Shop By Crop': 'Home page → the round crop icons in the "Shop By Crop" row.',
+                  'Image Manager': 'Swaps fixed images across the site (e.g. the login-page background) — shows wherever those images appear.',
+                  'Category Manager': 'Home page → the category tiles row. Rename a category, change its tile image, hide it, or add a new one.',
+                  'Marquee Banner Text': 'Top of every page → the scrolling marquee text strip.',
+                  'Homepage Hero Banners': 'Home page → the big rotating hero slides at the very top (image, title, subtitle, button).',
+                  'Site Notification Bar': 'Top of every page → the yellow announcement bar.',
+                  "Today's Offer": 'Home page → the special "Today\'s Offer ⚡" section. If empty, it hides completely.',
+                  'Best Selling': 'Home page → which products show in the "Best Sellers" row.',
+                  'Freshly Arrived': 'Home page → which products show in the "Freshly Arrived" row.',
+                  'Seeds': 'Home page → which products show in the "Seeds" row.',
+                  'Organic & Bio Inputs': 'Home page → which products show in the "Organic & Bio Inputs" row.',
+                  'Urban & Balcony Gardening': 'Home page → which products show in the "Urban & Balcony Gardening" row.',
+                  'Animal Husbandry Essentials': 'Home page → which products show in the "Animal Husbandry" row.',
+                  'Precision Tools & Equipments': 'Home page → which products show in the "Precision Tools & Equipments" row.',
+                  'Trending Products': 'Home page → which products show in the "Trending Products" row.',
+                  'Farm Infrastructure Services': 'Home page → The "Build Your Farm With Us" services block.',
+                  "Farmer's Knowledge Hub": 'Home page → The "Farmer\'s Knowledge Hub" blog posts block.',
+                  'B2B & WhatsApp Banners': 'Home page → The green B2B/Wholesale section and the bottom WhatsApp Order strip.',
+                  'Advertisement Banners': 'Home page → The 3-column Ad banner section. Provide image or video MP4 URLs.',
+                };
+                const text = help[activeOverrideSection];
+                return text ? (
+                  <div className="flex items-start gap-2 bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2.5 mb-3">
+                    <span className="text-base leading-none">📍</span>
+                    <div>
+                      <div className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-wide">Where this shows on the website</div>
+                      <div className="text-[11px] text-slate-600 mt-0.5">{text}</div>
+                    </div>
+                  </div>
+                ) : null;
+              })()}
               {activeOverrideSection && (
                 <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
                   <div className="font-bold text-xs text-[#1B6B3A]">Override for {activeOverrideSection}</div>
@@ -1972,27 +2035,7 @@ export default function AdminComponent({ lang, products, setProducts, categories
                         ))}
                       </div>
                     </div>
-                  ) : activeOverrideSection === 'Brands' || activeOverrideSection === 'Popular Agri Brands' ? (
-                    <div className="space-y-3">
-                      <div className="grid grid-cols-2 gap-3">
-                        <div><label className="text-[10px] text-slate-500 font-bold block mb-1">Brand Name</label><input type="text" value={overrideForm.name || ''} onChange={e => setOverrideForm({...overrideForm, name: e.target.value})} className="w-full border rounded p-2 text-xs" /></div>
-                        <div><label className="text-[10px] text-slate-500 font-bold block mb-1">Category Slug</label><input type="text" value={overrideForm.slug || ''} onChange={e => setOverrideForm({...overrideForm, slug: e.target.value})} placeholder="e.g. brand:brandname" className="w-full border rounded p-2 text-xs" /></div>
-                      </div>
-                      <button onClick={() => {
-                        const newBrand = { id: 'brand-'+Date.now(), name: overrideForm.name||'', slug: overrideForm.slug||'' };
-                        const updated = {...complexOverrides, brands: [...complexOverrides.brands, newBrand]};
-                        setComplexOverrides(updated); saveComplexOverrides(updated); setOverrideForm({});
-                      }} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-2 rounded">Add Brand</button>
-                      <div className="space-y-2 mt-3">
-                        {complexOverrides.brands.map(b => (
-                          <div key={b.id} className="flex items-center justify-between bg-white border p-2 rounded">
-                            <div className="flex items-center gap-2"><div className="text-xs font-bold">{b.name}</div></div>
-                            <button onClick={() => { const u = {...complexOverrides, brands: complexOverrides.brands.filter(x => x.id !== b.id)}; setComplexOverrides(u); saveComplexOverrides(u); }} className="text-red-500"><Trash2 className="w-4 h-4"/></button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
+                  ) : ["Today's Offer", 'Best Selling', "Freshly Arrived", 'Seeds', 'Organic & Bio Inputs', 'Urban & Balcony Gardening', 'Animal Husbandry Essentials', 'Precision Tools & Equipments', 'Trending Products'].includes(activeOverrideSection) ? (
                     <>
                       <div className="flex gap-2">
                         <input type="text" id="override-product-id" placeholder="Type product NAME or SKU to add…"
@@ -2044,12 +2087,206 @@ export default function AdminComponent({ lang, products, setProducts, categories
                         )}
                       </div>
                     </>
-                  )}
+                  ) : null}
                 </div>
               )}
             </div>
           </div>
+{activeOverrideSection === 'Image Manager' && (<>
+{/* Image Manager — swap key site images by URL or /images/ path */}
           <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">🖼️ Image Manager</h4>
+              <button onClick={saveSiteImagesHandler} className="text-xs font-bold bg-[#1B6B3A] text-white px-4 py-1.5 rounded-lg hover:bg-emerald-950 transition">
+                Save Images
+              </button>
+            </div>
+            <p className="text-[11px] text-slate-400 mb-4">Paste an image URL, or a path to a file in your /public folder (e.g. <code>/images/hero.png</code>). Leave blank to keep the built-in image.</p>
+            <div className="space-y-4">
+              {SITE_IMAGE_SLOTS.map((slot) => (
+                <div key={slot.key} className="flex flex-col sm:flex-row gap-3 sm:items-center">
+                  <div className="sm:w-48 shrink-0">
+                    <div className="text-xs font-black text-slate-700">{slot.label}</div>
+                    <div className="text-[10px] text-slate-400">{slot.hint}</div>
+                  </div>
+                  <input
+                    type="text"
+                    value={siteImages[slot.key] || ''}
+                    onChange={(e) => setSiteImagesState({ ...siteImages, [slot.key]: e.target.value })}
+                    placeholder="https://…  or  /images/your-image.png"
+                    className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]"
+                  />
+                  <label className="shrink-0 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-lg">
+                    Upload
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageFile(e.target.files?.[0], (url) => setSiteImagesState({ ...siteImages, [slot.key]: url }))} />
+                  </label>
+                  {(siteImages[slot.key] || '').trim() && (
+                    <img src={siteImages[slot.key]} alt="" className="h-12 w-20 object-cover rounded-md border border-slate-200" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+</>)}
+
+{activeOverrideSection === 'Category Manager' && (<>
+{/* Category Manager — rename categories, change their tile image, or hide them */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">🗂️ Category Manager</h4>
+              <button onClick={saveCategoryMetaHandler} className="text-xs font-bold bg-[#1B6B3A] text-white px-4 py-1.5 rounded-lg hover:bg-emerald-950 transition">
+                Save Categories
+              </button>
+            </div>
+            <p className="text-[11px] text-slate-400 mb-4">Rename a category, replace its homepage tile image (URL or /images/ path), or hide it. Leave blank to keep the default.</p>
+
+            {/* Add a brand-new category */}
+            <div className="bg-emerald-50/60 border border-emerald-200 rounded-lg p-3 mb-4">
+              <div className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest mb-2">➕ Add New Category</div>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input type="text" value={newCatName} onChange={(e) => setNewCatName(e.target.value)}
+                  placeholder="Category name (e.g. Animal Husbandry)"
+                  className="sm:w-56 bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                <input type="text" value={newCatImage} onChange={(e) => setNewCatImage(e.target.value)}
+                  placeholder="Tile image URL or /images/cat.png (optional)"
+                  className="flex-1 bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                <label className="shrink-0 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-lg">
+                  Upload
+                  <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageFile(e.target.files?.[0], (url) => setNewCatImage(url))} />
+                </label>
+                <button onClick={addCustomCategory} className="bg-[#1B6B3A] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-emerald-950 transition shrink-0">Add Category</button>
+              </div>
+              {customCats.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {customCats.map((c) => (
+                    <span key={c.slug} className="inline-flex items-center gap-1.5 bg-white border border-emerald-200 text-[#1B6B3A] text-[11px] font-bold pl-2.5 pr-1.5 py-1 rounded-full">
+                      {c.name}
+                      <button onClick={() => removeCustomCategory(c.slug)} className="h-4 w-4 flex items-center justify-center rounded-full hover:bg-rose-100 text-rose-500" aria-label={`Remove ${c.name}`}>×</button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
+              {categories.map((c) => {
+                const m = categoryMeta[c.name] || {};
+                return (
+                  <div key={c.id} className="flex flex-col sm:flex-row gap-2 sm:items-center border-b border-slate-100 pb-3">
+                    <div className="sm:w-40 shrink-0 text-xs font-black text-slate-700 truncate">{c.name}</div>
+                    <input
+                      type="text"
+                      value={m.label || ''}
+                      onChange={(e) => setCatField(c.name, 'label', e.target.value)}
+                      placeholder="New label (optional)"
+                      className="sm:w-44 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-[#1B6B3A]"
+                    />
+                    <input
+                      type="text"
+                      value={m.image || ''}
+                      onChange={(e) => setCatField(c.name, 'image', e.target.value)}
+                      placeholder="Image URL or /images/cat.png"
+                      className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-[#1B6B3A]"
+                    />
+                    <label className="shrink-0 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-2.5 py-1.5 rounded-lg">
+                      Upload
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => readImageFile(e.target.files?.[0], (url) => setCatField(c.name, 'image', url))} />
+                    </label>
+                    {(m.image || '').trim() && <img src={m.image} alt="" className="h-9 w-9 object-cover rounded-full border border-slate-200" />}
+                    <label className="flex items-center gap-1 text-[10px] font-bold text-slate-500 shrink-0">
+                      <input type="checkbox" checked={!!m.hidden} onChange={(e) => setCatField(c.name, 'hidden', e.target.checked)} /> Hide
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+</>)}
+
+{activeOverrideSection === 'Marquee Banner Text' && (<>
+<div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Marquee Banner Text</h4>
+              {!editingMarquee ? (
+                <button onClick={() => { setEditingMarquee(true); setMarqueeInput(marqueeLines.join('\n')); }}
+                  className="text-xs font-bold text-[#1B6B3A] flex items-center gap-1 hover:underline">
+                  <Edit3 className="h-3.5 w-3.5" /> Edit
+                </button>
+              ) : (
+                <div className="flex gap-2">
+                  <button onClick={saveMarquee} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-1.5 rounded-lg">Save</button>
+                  <button onClick={() => setEditingMarquee(false)} className="bg-slate-200 text-slate-700 text-xs font-bold px-3 py-1.5 rounded-lg">Cancel</button>
+                </div>
+              )}
+            </div>
+            {editingMarquee ? (
+              <textarea value={marqueeInput} onChange={e => setMarqueeInput(e.target.value)} rows={6}
+                placeholder="One line per marquee item..."
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs font-mono outline-none resize-none" />
+            ) : (
+              <div className="space-y-2">
+                {marqueeLines.map((line, i) => (
+                  <div key={i} className="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-lg text-xs text-slate-700">
+                    <span className="text-slate-300 font-bold w-5">#{i+1}</span> {line}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+</>)}
+
+{activeOverrideSection === 'Homepage Hero Banners' && (<>
+<div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-1">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Homepage Hero Banners</h4>
+              <button onClick={handleSaveBanners} className="bg-[#1B6B3A] text-white text-xs font-bold px-4 py-1.5 rounded-lg">Save Banners</button>
+            </div>
+            <p className="text-[11px] text-slate-400 mb-4">Fill image URL + title to replace the default homepage slider. Leave all empty to keep defaults.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {banners.map((b, i) => (
+                <div key={i} className="border border-slate-200 rounded-xl p-4 space-y-2.5">
+                  <div className="flex items-center gap-2 text-xs font-black text-slate-600">
+                    <Image className="h-4 w-4 text-[#1B6B3A]" /> Banner Slot {i + 1}
+                  </div>
+                  {b.img ? (
+                    (/\.(mp4|webm|ogg)(\?|$)/i.test(b.img) || b.img.startsWith('data:video'))
+                      ? <video src={b.img} muted loop autoPlay playsInline className="w-full h-20 object-cover rounded-lg border" />
+                      : <img src={b.img} alt={'Banner ' + (i + 1) + ' preview'} className="w-full h-20 object-cover rounded-lg border" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                  ) : (
+                    <div className="w-full h-20 bg-slate-50 border-2 border-dashed border-slate-200 rounded-lg flex items-center justify-center text-[10px] text-slate-400 font-bold">No image / video yet</div>
+                  )}
+                  <input type="text" value={b.img} onChange={e => updateBanner(i, 'img', e.target.value)}
+                    placeholder="Image / video URL or /videos/clip.mp4" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
+                  <label className="block w-full cursor-pointer bg-emerald-50 hover:bg-emerald-100 text-[#1B6B3A] border border-emerald-200 text-[11px] font-bold px-2.5 py-2 rounded-lg text-center">
+                    ⬆ Upload Image or Video
+                    <input type="file" accept="image/*,video/*" className="hidden" onChange={e => readMediaInline(e.target.files?.[0], (url) => updateBanner(i, 'img', url))} />
+                  </label>
+                  <input type="text" value={b.badge} onChange={e => updateBanner(i, 'badge', e.target.value)}
+                    placeholder="Badge text (e.g. Mega Sale)" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
+                  <input type="text" value={b.title} onChange={e => updateBanner(i, 'title', e.target.value)}
+                    placeholder="Headline" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] font-bold outline-none focus:border-[#1B6B3A]" />
+                  <input type="text" value={b.sub} onChange={e => updateBanner(i, 'sub', e.target.value)}
+                    placeholder="Sub-text" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
+                  <div className="grid grid-cols-2 gap-2">
+                    <input type="text" value={b.btn} onChange={e => updateBanner(i, 'btn', e.target.value)}
+                      placeholder="Button text" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] outline-none focus:border-[#1B6B3A]" />
+                    <select value={b.btnAction} onChange={e => updateBanner(i, 'btnAction', e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-[11px] outline-none focus:border-[#1B6B3A]">
+                      {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </select>
+                  </div>
+                  {b.img && (
+                    <button onClick={() => setBanners(banners.map((x, idx) => idx === i ? { img: '', badge: '', title: '', sub: '', btn: 'Shop Now', btnAction: 'seeds-saplings' } : x))}
+                      className="text-[10px] text-red-500 font-bold hover:underline">Clear slot</button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+</>)}
+
+{activeOverrideSection === 'Site Notification Bar' && (<>
+<div className="bg-white border border-slate-200 rounded-xl p-5">
             <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-3 flex items-center gap-1.5">
               <Bell className="h-3.5 w-3.5 text-[#E8A020]" /> Site Notification Bar
             </h4>
@@ -2067,6 +2304,559 @@ export default function AdminComponent({ lang, products, setProducts, categories
             </div>
             <p className="text-[10px] text-slate-400 mt-2">Shows as a yellow bar at the top of the site for all visitors until removed.</p>
           </div>
+</>)}
+
+{activeOverrideSection === 'IGO Category Bands' && (<>
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-1">IGO Category Bands</h4>
+            <p className="text-[11px] text-slate-400 mb-4">The four IGO bands woven between the shopping rows. Each band has its own Save and Delete. Leave a field blank to keep the built-in text.</p>
+            <div className="space-y-4">
+              {[
+                { v: 'fresh', label: 'Band above Freshly Arrived', emoji: '🚚', dtag: 'Freshly Sourced', dtitle: 'Why freshness wins every season', dtext: 'Sourced directly from farms and brands and dispatched the same day.', dstat: 'Same-Day', dstatlabel: 'Dispatch' },
+                { v: 'seeds', label: 'Band above Seeds', emoji: '🌱', dtag: 'Why Seeds Matter', dtitle: 'The right seed decides your whole harvest', dtext: 'Every seed is trial-tested on our own farms for high germination.', dstat: '90%+', dstatlabel: 'Germination Tested' },
+                { v: 'garden', label: 'Band above Urban & Balcony Gardening', emoji: '🪴', dtag: 'Why Home Gardening', dtitle: 'Grow fresh, chemical-free food at home', dtext: 'Nursery-grade saplings, potting mixes and grow-kits by IGO Nursery.', dstat: '500+', dstatlabel: 'Garden-Ready Picks' },
+                { v: 'trending', label: 'Band above Trending Products', emoji: '🔥', dtag: "Why It's Trending", dtitle: 'The products Indian farmers reorder most', dtext: 'Ranked from real orders and reviews, vetted by IGO agronomists.', dstat: '28+', dstatlabel: 'States Trust These' },
+              ].map((b) => {
+                const keys = [`band_${b.v}_tag`, `band_${b.v}_title`, `band_${b.v}_text`, `band_${b.v}_stat`, `band_${b.v}_statlabel`, `band_${b.v}_img`];
+                return (
+                  <div key={b.v} className="border-b border-slate-100 pb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest">{b.label}</span>
+                        <span className={'text-[9px] font-black uppercase px-1.5 py-0.5 rounded ' + (hasCustom(keys) ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-400')}>{hasCustom(keys) ? 'Custom' : 'Default'}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button onClick={saveHomeText} className="text-[10px] font-bold text-white bg-[#1B6B3A] hover:bg-emerald-950 rounded px-2.5 py-1">Save</button>
+                        <button onClick={() => resetHomeFields(keys)} className="text-[10px] font-bold text-rose-500 hover:text-rose-700 border border-rose-200 rounded px-2.5 py-1">Delete</button>
+                      </div>
+                    </div>
+                    <div className="text-[9px] text-slate-400 mb-1">Click any text below to edit it — this looks exactly like your live website band:</div>
+                    <div className="rounded-2xl bg-gradient-to-r from-emerald-950 to-emerald-800 p-4 flex items-start gap-4">
+                      <div className="relative h-12 w-12 shrink-0 rounded-xl bg-white/10 border border-white/20 overflow-hidden flex items-center justify-center group">
+                        {(homeText[`band_${b.v}_img`] || '').trim() ? <img src={homeText[`band_${b.v}_img`]} alt="" className="h-full w-full object-cover" /> : <span className="text-lg">{b.emoji}</span>}
+                        <label className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 cursor-pointer text-[8px] text-white font-bold transition">Upload<input type="file" accept="image/*" className="hidden" onChange={(e) => readImageInline(e.target.files?.[0], (url) => setHomeField(`band_${b.v}_img`, url))} /></label>
+                      </div>
+                      <div className="flex-1 min-w-0 space-y-1">
+                        <input value={homeText[`band_${b.v}_tag`] || b.dtag} onChange={(e) => setHomeField(`band_${b.v}_tag`, e.target.value)} className="w-full bg-transparent text-[10px] font-black uppercase tracking-widest text-[#E8A020] outline-none border-b border-transparent focus:border-[#E8A020]/40" />
+                        <input value={homeText[`band_${b.v}_title`] || b.dtitle} onChange={(e) => setHomeField(`band_${b.v}_title`, e.target.value)} className="w-full bg-transparent text-base font-black text-white outline-none border-b border-transparent focus:border-white/30" />
+                        <textarea value={homeText[`band_${b.v}_text`] || b.dtext} onChange={(e) => setHomeField(`band_${b.v}_text`, e.target.value)} rows={2} className="w-full bg-transparent text-[11px] text-emerald-100/90 outline-none resize-none border-b border-transparent focus:border-white/20" />
+                      </div>
+                      <div className="shrink-0 w-24 text-right pl-3 border-l border-white/15 space-y-1">
+                        <input value={homeText[`band_${b.v}_stat`] || b.dstat} onChange={(e) => setHomeField(`band_${b.v}_stat`, e.target.value)} className="w-full bg-transparent text-right text-lg font-black text-[#E8A020] outline-none" />
+                        <input value={homeText[`band_${b.v}_statlabel`] || b.dstatlabel} onChange={(e) => setHomeField(`band_${b.v}_statlabel`, e.target.value)} className="w-full bg-transparent text-right text-[8px] uppercase tracking-wide text-emerald-200/80 outline-none" />
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-[9px] text-slate-400 shrink-0">Icon image:</span>
+                      <input value={homeText[`band_${b.v}_img`] || ''} onChange={(e) => setHomeField(`band_${b.v}_img`, e.target.value)} placeholder="paste image URL or /images/... (or hover the icon above to Upload)" className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] focus:outline-none focus:border-[#1B6B3A]" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+</>)}
+
+{activeOverrideSection === 'Value Cards' && (<>
+          <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-4">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Value Cards</h4>
+            <div className="border-b border-slate-100 pb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest">Card 1: Why farmers shop at IGO Agri Mart</span>
+                <div className="flex items-center gap-2">
+                  <button onClick={saveHomeText} className="text-[10px] font-bold text-white bg-[#1B6B3A] hover:bg-emerald-950 rounded px-2.5 py-1">Save</button>
+                  <button onClick={() => resetHomeFields(['card1_badge', 'card1_title1', 'card1_title2', 'card1_p1', 'card1_p2', 'card1_panel_title', ...[1, 2, 3, 4, 5, 6].flatMap((i) => [`adv${i}_n`, `adv${i}_l`])])} className="text-[10px] font-bold text-rose-500 hover:text-rose-700 border border-rose-200 rounded px-2.5 py-1">Delete</button>
+                </div>
+              </div>
+              <div className="text-[9px] text-slate-400 mb-1">Click any text to edit — looks like the live card:</div>
+              <div className="grid sm:grid-cols-2 rounded-2xl overflow-hidden border border-slate-200">
+                <div className="bg-white p-4 space-y-2">
+                  <input value={homeText['card1_badge'] || 'Genuine Inputs · Pan-India Delivery'} onChange={(e) => setHomeField('card1_badge', e.target.value)} className="w-full bg-emerald-50 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-full outline-none" />
+                  <input value={homeText['card1_title1'] || 'Why farmers shop at'} onChange={(e) => setHomeField('card1_title1', e.target.value)} className="w-full bg-transparent text-lg font-black text-slate-900 outline-none border-b border-transparent focus:border-slate-200" />
+                  <input value={homeText['card1_title2'] || 'IGO Agri Mart'} onChange={(e) => setHomeField('card1_title2', e.target.value)} className="w-full bg-transparent text-lg font-black text-[#1B6B3A] outline-none border-b border-transparent focus:border-emerald-200" />
+                  <textarea value={homeText['card1_p1'] || "Shop thousands of 100% genuine farm products in one place — seeds, fertilizers, crop protection, bio-inputs, tools, gardening and animal care — sourced directly from India's most trusted agri brands."} onChange={(e) => setHomeField('card1_p1', e.target.value)} rows={3} className="w-full bg-transparent text-[11px] text-slate-600 outline-none resize-none border-b border-transparent focus:border-slate-200" />
+                  <textarea value={homeText['card1_p2'] || 'Compare prices, read real farmer reviews and order in a tap, with fast doorstep delivery, fair transparent pricing and free expert crop advice on every purchase. No middlemen, no fakes, no hidden charges.'} onChange={(e) => setHomeField('card1_p2', e.target.value)} rows={3} className="w-full bg-transparent text-[11px] text-slate-600 outline-none resize-none border-b border-transparent focus:border-slate-200" />
+                </div>
+                <div className="bg-emerald-950 p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="h-0.5 w-5 bg-[#E8A020] rounded-full shrink-0"></span>
+                    <input value={homeText['card1_panel_title'] || 'The Agri Mart Advantage'} onChange={(e) => setHomeField('card1_panel_title', e.target.value)} className="flex-1 bg-transparent text-sm font-black text-white outline-none border-b border-transparent focus:border-white/30" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                    {[1, 2, 3, 4, 5, 6].map((i) => {
+                      const dn = ['5,000+', '100%', '28+', '24 hr', '7-Day', '4.8/5'][i - 1];
+                      const dl = ['Products Listed', 'Genuine Inputs', 'Crop Categories', 'Order Dispatch', 'Easy Returns', 'Farmer Rating'][i - 1];
+                      return (
+                        <div key={i}>
+                          <input value={homeText[`adv${i}_n`] || dn} onChange={(e) => setHomeField(`adv${i}_n`, e.target.value)} className="w-full bg-transparent text-xl font-black text-[#E8A020] outline-none border-b border-transparent focus:border-[#E8A020]/40" />
+                          <input value={homeText[`adv${i}_l`] || dl} onChange={(e) => setHomeField(`adv${i}_l`, e.target.value)} className="w-full bg-transparent text-[8px] font-bold uppercase tracking-widest text-emerald-200/80 outline-none border-b border-transparent focus:border-white/20" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest">Card 2: Why Farmers Trust IGO</span>
+                <div className="flex items-center gap-2">
+                  <button onClick={saveHomeText} className="text-[10px] font-bold text-white bg-[#1B6B3A] hover:bg-emerald-950 rounded px-2.5 py-1">Save</button>
+                  <button onClick={() => resetHomeFields(['card2_badge', 'card2_title1', 'card2_title2', 'card2_intro', 'card2_image', ...[1, 2, 3, 4].flatMap((i) => [`trust${i}_t`, `trust${i}_d`])])} className="text-[10px] font-bold text-rose-500 hover:text-rose-700 border border-rose-200 rounded px-2.5 py-1">Delete</button>
+                </div>
+              </div>
+              <div className="text-[9px] text-slate-400 mb-1">Click any text to edit — looks like the live card:</div>
+              <div className="grid sm:grid-cols-2 rounded-2xl overflow-hidden bg-gradient-to-br from-[#1B6B3A] to-emerald-900">
+                <div className="p-4 space-y-2">
+                  <input value={homeText['card2_badge'] || 'Your Trusted Farm Partner'} onChange={(e) => setHomeField('card2_badge', e.target.value)} className="w-full bg-[#E8A020] text-emerald-950 text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full outline-none" />
+                  <input value={homeText['card2_title1'] || 'Everything your farm needs.'} onChange={(e) => setHomeField('card2_title1', e.target.value)} className="w-full bg-transparent text-lg font-black text-white outline-none border-b border-transparent focus:border-white/30" />
+                  <input value={homeText['card2_title2'] || 'Delivered directly to you.'} onChange={(e) => setHomeField('card2_title2', e.target.value)} className="w-full bg-transparent text-lg font-black text-emerald-300 outline-none border-b border-transparent focus:border-emerald-300/40" />
+                  <textarea value={homeText['card2_intro'] || 'IGO AgriMart connects farmers directly with top brands. We eliminate middlemen to guarantee 100% genuine inputs, fair prices, and expert agronomy support right when you need it.'} onChange={(e) => setHomeField('card2_intro', e.target.value)} rows={3} className="w-full bg-transparent text-[11px] text-emerald-50 outline-none resize-none border-b border-transparent focus:border-white/20" />
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    {[1, 2, 3, 4].map((i) => {
+                      const dt = ['100% Certified Products', 'Free Agronomy Help', 'Transparent Pricing', 'Fast Farm Delivery'][i - 1];
+                      const dd = ['No fakes. Quality guaranteed.', 'Expert advice on WhatsApp.', 'Best prices, zero hidden fees.', 'Direct to your village.'][i - 1];
+                      return (
+                        <div key={i} className="bg-white/10 border border-white/20 rounded-xl p-2">
+                          <input value={homeText[`trust${i}_t`] || dt} onChange={(e) => setHomeField(`trust${i}_t`, e.target.value)} className="w-full bg-transparent text-[11px] font-bold text-white outline-none border-b border-transparent focus:border-white/30" />
+                          <input value={homeText[`trust${i}_d`] || dd} onChange={(e) => setHomeField(`trust${i}_d`, e.target.value)} className="w-full bg-transparent text-[9px] text-emerald-200 outline-none border-b border-transparent focus:border-white/20" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="relative min-h-[130px] bg-emerald-900/50 group">
+                  {(homeText['card2_image'] || '').trim() ? <img src={homeText['card2_image']} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center text-emerald-200/60 text-[10px]">Side photo</div>}
+                  <label className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 cursor-pointer text-[10px] text-white font-bold transition">Upload photo<input type="file" accept="image/*" className="hidden" onChange={(e) => readImageInline(e.target.files?.[0], (url) => setHomeField('card2_image', url))} /></label>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-[9px] text-slate-400 shrink-0">Side photo:</span>
+                <input value={homeText['card2_image'] || ''} onChange={(e) => setHomeField('card2_image', e.target.value)} placeholder="paste image URL or /images/... (or hover the photo above to Upload)" className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-[11px] focus:outline-none focus:border-[#1B6B3A]" />
+              </div>
+            </div>
+          </div>
+</>)}
+
+{activeOverrideSection === 'Farm Infrastructure Services' && (<>
+          <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-8">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+              <div>
+                <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Farm Infrastructure Services</h4>
+                <p className="text-[10px] text-slate-400 mt-1">Click on any text or image below to edit it. It looks exactly like your live website.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button onClick={saveHomeText} className="bg-[#1B6B3A] hover:bg-emerald-950 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition">Save Changes</button>
+                <button onClick={() => resetHomeFields(['farm_sub','farm_title','farm_desc', ...[1,2,3,4].flatMap(i=>[`farm_srv${i}_title`,`farm_srv${i}_desc`,`farm_srv${i}_img`])])} className="text-[10px] font-bold text-rose-500 hover:text-rose-700 border border-rose-200 rounded px-2.5 py-1.5">Delete Customizations</button>
+              </div>
+            </div>
+            
+            {/* 1. Build Your Farm With Us - Visual Editor */}
+            <div>
+              <div className="bg-slate-900 rounded-2xl p-6 relative overflow-hidden">
+                <div className="relative z-10 mb-8 text-center flex flex-col items-center">
+                  <input value={homeText['farm_sub'] || 'More Than a Store'} onChange={(e) => setHomeField('farm_sub', e.target.value)} className="inline-block bg-[#1B6B3A] text-emerald-100 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-4 text-center outline-none w-48" />
+                  <input value={homeText['farm_title'] || 'Shop Inputs Here, Build Your Farm With Us'} onChange={(e) => setHomeField('farm_title', e.target.value)} className="w-full bg-transparent font-display font-black text-2xl sm:text-3xl text-white tracking-tight mb-4 text-center outline-none border-b border-transparent focus:border-white/20" />
+                  <textarea value={homeText['farm_desc'] || "Alongside the marketplace, the IGO group's engineering arm, IGO Agritech Farms, designs and builds commercial farming projects end-to-end — so the same trusted team that supplies your inputs can set up your farm."} onChange={(e) => setHomeField('farm_desc', e.target.value)} rows={2} className="w-full bg-transparent text-slate-400 max-w-2xl mx-auto text-xs text-center outline-none resize-none border-b border-transparent focus:border-white/20" />
+                </div>
+                
+                <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {[1,2,3,4].map(i => {
+                    const dTitle = ['Polyhouse Construction', 'Smart Drip Irrigation', 'Precision Drone Spray', 'Commercial Orchard Setup'][i-1];
+                    const dDesc = ['Commercial climate-controlled structures.', 'Automated fertigation & drip pipelines.', 'UAV mapping & chemical application.', 'End-to-end plantation development.'][i-1];
+                    const dImg = ['/images/services/srv_06_polyhouse_1781771230939.png', '/images/services/srv_02_drip_irrigation_1781771172398.png', '/images/services/srv_03_drone_spray_1781771184491.png', '/images/services/srv_08_orchard_1781771257649.png'][i-1];
+                    const imgUrl = homeText[`farm_srv${i}_img`] || dImg;
+                    return (
+                      <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-xl overflow-hidden group">
+                        <div className="h-32 w-full relative group/img cursor-pointer bg-slate-950">
+                          <img src={imgUrl} alt="" className="w-full h-full object-cover opacity-80" />
+                          <label className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover/img:opacity-100 cursor-pointer text-[10px] text-white font-bold transition">Upload Image<input type="file" accept="image/*" className="hidden" onChange={(e) => readImageInline(e.target.files?.[0], (url) => setHomeField(`farm_srv${i}_img`, url))} /></label>
+                        </div>
+                        <div className="p-3 space-y-1">
+                          <input value={homeText[`farm_srv${i}_title`] || dTitle} onChange={(e) => setHomeField(`farm_srv${i}_title`, e.target.value)} className="w-full bg-transparent font-bold text-white text-sm outline-none border-b border-transparent focus:border-white/20" />
+                          <input value={homeText[`farm_srv${i}_desc`] || dDesc} onChange={(e) => setHomeField(`farm_srv${i}_desc`, e.target.value)} className="w-full bg-transparent text-[10px] text-slate-400 outline-none border-b border-transparent focus:border-white/20" />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+</>)}
+
+{activeOverrideSection === "Farmer's Knowledge Hub" && (<>
+          <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-8">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+              <div>
+                <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Farmer's Knowledge Hub</h4>
+                <p className="text-[10px] text-slate-400 mt-1">Click on any text or image below to edit it. It looks exactly like your live website.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button onClick={saveHomeText} className="bg-[#1B6B3A] hover:bg-emerald-950 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition">Save Changes</button>
+                <button onClick={() => resetHomeFields(['hub_title','hub_sub', ...[1,2,3].flatMap(i=>[`hub_post${i}_title`,`hub_post${i}_cat`,`hub_post${i}_desc`,`hub_post${i}_img`,`hub_post${i}_author`])])} className="text-[10px] font-bold text-rose-500 hover:text-rose-700 border border-rose-200 rounded px-2.5 py-1.5">Delete Customizations</button>
+              </div>
+            </div>
+
+            {/* 2. Farmer's Knowledge Hub - Visual Editor */}
+            <div>
+              <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm">
+                <div className="mb-6 flex justify-between items-end">
+                  <div className="flex-1">
+                    <input value={homeText['hub_title'] || "Farmer's Knowledge & Advisory Hub 📖"} onChange={(e) => setHomeField('hub_title', e.target.value)} className="w-full bg-transparent font-display font-black text-2xl text-slate-900 mb-1 outline-none border-b border-transparent focus:border-slate-300" />
+                    <input value={homeText['hub_sub'] || "Expert guides, disease alerts, and best practices."} onChange={(e) => setHomeField('hub_sub', e.target.value)} className="w-full bg-transparent text-slate-500 text-sm outline-none border-b border-transparent focus:border-slate-300" />
+                  </div>
+                  <div className="border border-[#1B6B3A] text-[#1B6B3A] text-xs font-bold px-4 py-1.5 rounded-full opacity-50 cursor-not-allowed">View All</div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  {SEED_POSTS.slice(0, 3).map((basePost, idx) => {
+                    const i = idx + 1;
+                    const imgUrl = homeText[`hub_post${i}_img`] || basePost.image;
+                    return (
+                      <div key={i} className="border border-slate-200 rounded-xl overflow-hidden flex flex-col">
+                        <div className="h-32 w-full relative group/img cursor-pointer bg-slate-100">
+                          <img src={imgUrl} alt="" className="w-full h-full object-cover" />
+                          <label className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover/img:opacity-100 cursor-pointer text-[10px] text-white font-bold transition">Upload Image<input type="file" accept="image/*" className="hidden" onChange={(e) => readImageInline(e.target.files?.[0], (url) => setHomeField(`hub_post${i}_img`, url))} /></label>
+                        </div>
+                        <div className="p-3 bg-slate-50 flex-1 flex flex-col space-y-2">
+                          <div className="flex items-center gap-2">
+                            <input value={homeText[`hub_post${i}_cat`] || basePost.category} onChange={(e) => setHomeField(`hub_post${i}_cat`, e.target.value)} className="bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase w-24 outline-none border-b border-transparent focus:border-emerald-300" />
+                          </div>
+                          <input value={homeText[`hub_post${i}_title`] || basePost.title} onChange={(e) => setHomeField(`hub_post${i}_title`, e.target.value)} className="w-full bg-transparent font-display font-black text-slate-800 text-sm leading-tight outline-none border-b border-transparent focus:border-slate-300" />
+                          <textarea value={homeText[`hub_post${i}_desc`] || basePost.excerpt} onChange={(e) => setHomeField(`hub_post${i}_desc`, e.target.value)} rows={2} className="w-full bg-transparent text-[10px] text-slate-500 outline-none resize-none border-b border-transparent focus:border-slate-300" />
+                          <div className="mt-auto pt-2 flex items-center">
+                            <span className="text-[9px] font-semibold text-slate-500">By </span>
+                            <input value={homeText[`hub_post${i}_author`] || basePost.author} onChange={(e) => setHomeField(`hub_post${i}_author`, e.target.value)} className="bg-transparent text-[9px] font-semibold text-slate-700 outline-none border-b border-transparent focus:border-slate-300 ml-1 flex-1" />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+</>)}
+
+{activeOverrideSection === 'Card Stats & Trust Points' && (<>
+          <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-4">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Card Stats & Trust Points</h4>
+            <div className="border-b border-slate-100 pb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest">Card 1: Agri Mart Advantage stats</span>
+                <div className="flex items-center gap-2">
+                  <button onClick={saveHomeText} className="text-[10px] font-bold text-white bg-[#1B6B3A] hover:bg-emerald-950 rounded px-2.5 py-1">Save</button>
+                  <button onClick={() => resetHomeFields([1, 2, 3, 4, 5, 6].flatMap((i) => [`adv${i}_n`, `adv${i}_l`]))} className="text-[10px] font-bold text-rose-500 hover:text-rose-700 border border-rose-200 rounded px-2.5 py-1">Delete</button>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="grid grid-cols-2 gap-2">
+                    <input value={homeText[`adv${i}_n`] || ''} onChange={(e) => setHomeField(`adv${i}_n`, e.target.value)} placeholder={`Stat ${i} value (e.g. 5,000+)`} className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                    <input value={homeText[`adv${i}_l`] || ''} onChange={(e) => setHomeField(`adv${i}_l`, e.target.value)} placeholder={`Stat ${i} label`} className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest">Card 2: Why Farmers Trust points</span>
+                <div className="flex items-center gap-2">
+                  <button onClick={saveHomeText} className="text-[10px] font-bold text-white bg-[#1B6B3A] hover:bg-emerald-950 rounded px-2.5 py-1">Save</button>
+                  <button onClick={() => resetHomeFields([1, 2, 3, 4].flatMap((i) => [`trust${i}_t`, `trust${i}_d`]))} className="text-[10px] font-bold text-rose-500 hover:text-rose-700 border border-rose-200 rounded px-2.5 py-1">Delete</button>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="grid grid-cols-2 gap-2">
+                    <input value={homeText[`trust${i}_t`] || ''} onChange={(e) => setHomeField(`trust${i}_t`, e.target.value)} placeholder={`Point ${i} title`} className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                    <input value={homeText[`trust${i}_d`] || ''} onChange={(e) => setHomeField(`trust${i}_d`, e.target.value)} placeholder={`Point ${i} description`} className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+</>)}
+
+{activeOverrideSection === 'Trust Section & Stats Bar' && (<>
+          <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-4">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">Trust Section & Stats Bar</h4>
+            <div className="border-b border-slate-100 pb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest">Section heading</span>
+                <div className="flex items-center gap-2">
+                  <button onClick={saveHomeText} className="text-[10px] font-bold text-white bg-[#1B6B3A] hover:bg-emerald-950 rounded px-2.5 py-1">Save</button>
+                  <button onClick={() => resetHomeFields(['trust_badge', 'trust_title1', 'trust_title2', 'trust_sub'])} className="text-[10px] font-bold text-rose-500 hover:text-rose-700 border border-rose-200 rounded px-2.5 py-1">Delete</button>
+                </div>
+              </div>
+              <div className="text-[9px] text-slate-400 mb-1">Click any text to edit — looks like the live dark section:</div>
+              <div className="rounded-2xl bg-slate-900 p-8 text-center space-y-2 relative overflow-hidden group">
+                <div className="absolute inset-0 w-full h-full">
+                  {(homeText['trust_bg'] || '/images/trust_bg_premium.png') && (
+                    <img src={homeText['trust_bg'] || '/images/trust_bg_premium.png'} alt="" className="w-full h-full object-cover opacity-30 mix-blend-luminosity" />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
+                </div>
+                <label className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 cursor-pointer text-xs text-white font-bold px-3 py-1.5 rounded-lg transition z-20 flex items-center gap-1.5 opacity-0 group-hover:opacity-100"><Upload className="w-3.5 h-3.5" /> Background Image<input type="file" accept="image/*" className="hidden" onChange={(e) => readImageInline(e.target.files?.[0], (url) => setHomeField('trust_bg', url))} /></label>
+                
+                <div className="relative z-10">
+                  <input value={homeText['trust_badge'] || 'The IGO Advantage'} onChange={(e) => setHomeField('trust_badge', e.target.value)} className="w-full bg-transparent text-center text-[10px] font-black uppercase tracking-widest text-[#E8A020] outline-none" />
+                  <input value={homeText['trust_title1'] || "Why India's Farmers"} onChange={(e) => setHomeField('trust_title1', e.target.value)} className="w-full bg-transparent text-center text-lg font-black text-white outline-none" />
+                  <input value={homeText['trust_title2'] || 'Trust IGO'} onChange={(e) => setHomeField('trust_title2', e.target.value)} className="w-full bg-transparent text-center text-lg font-black text-[#E8A020] outline-none" />
+                  <textarea value={homeText['trust_sub'] || 'From genuine seeds to expert agronomy, we provide everything you need for a profitable harvest under one roof.'} onChange={(e) => setHomeField('trust_sub', e.target.value)} rows={2} className="w-full bg-transparent text-center text-[11px] text-slate-400 outline-none resize-none" />
+                </div>
+              </div>
+            </div>
+            <div className="border-b border-slate-100 pb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest">6 feature cards</span>
+                <div className="flex items-center gap-2">
+                  <button onClick={saveHomeText} className="text-[10px] font-bold text-white bg-[#1B6B3A] hover:bg-emerald-950 rounded px-2.5 py-1">Save</button>
+                  <button onClick={() => resetHomeFields([1, 2, 3, 4, 5, 6].flatMap((i) => [`trustpt${i}_t`, `trustpt${i}_d`]))} className="text-[10px] font-bold text-rose-500 hover:text-rose-700 border border-rose-200 rounded px-2.5 py-1">Delete</button>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-slate-900 rounded-2xl p-3">
+                {[1, 2, 3, 4, 5, 6].map((i) => {
+                  const dt = ['Govt. Licensed Inputs', 'Express Farm Delivery', 'Easy Returns & Support', '100% Genuine Products', '5,000+ Farmer Trust', 'Agronomy Expert Help'][i - 1];
+                  const dd = ['All chemical inputs CIB&RC registered. Organic NPOP certified.', '90-min express delivery to select pin codes. Pan-India shipping.', '7-day hassle-free returns. WhatsApp support 7 days a week.', 'Direct brand partnerships. Verified batch numbers.', 'Serving farmers since 2019. 4.8 average rating.', 'Free crop advisory with every big purchase via WhatsApp.'][i - 1];
+                  return (
+                    <div key={i} className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-2.5">
+                      <input value={homeText[`trustpt${i}_t`] || dt} onChange={(e) => setHomeField(`trustpt${i}_t`, e.target.value)} className="w-full bg-transparent text-[11px] font-bold text-white outline-none border-b border-transparent focus:border-white/20" />
+                      <textarea value={homeText[`trustpt${i}_d`] || dd} onChange={(e) => setHomeField(`trustpt${i}_d`, e.target.value)} rows={2} className="w-full bg-transparent text-[9px] text-slate-400 outline-none resize-none mt-1" />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest">Stats bar</span>
+                <div className="flex items-center gap-2">
+                  <button onClick={saveHomeText} className="text-[10px] font-bold text-white bg-[#1B6B3A] hover:bg-emerald-950 rounded px-2.5 py-1">Save</button>
+                  <button onClick={() => resetHomeFields(['statbar_title', ...[1, 2, 3, 4].flatMap((i) => [`statbar${i}_n`, `statbar${i}_l`])])} className="text-[10px] font-bold text-rose-500 hover:text-rose-700 border border-rose-200 rounded px-2.5 py-1">Delete</button>
+                </div>
+              </div>
+              <div className="rounded-2xl bg-gradient-to-r from-emerald-900 to-[#0B3D22] p-4 text-center">
+                <input value={homeText['statbar_title'] || "INDIA'S COMPLETE AGRICULTURAL PLATFORM"} onChange={(e) => setHomeField('statbar_title', e.target.value)} className="w-full bg-transparent text-center text-[10px] font-black uppercase tracking-widest text-emerald-100 outline-none mb-3" />
+                <div className="grid grid-cols-4 gap-2">
+                  {[1, 2, 3, 4].map((i) => {
+                    const dn = ['27', '5,000+', '10,000+', '36 States'][i - 1];
+                    const dl = ['IGO Brands', 'Farmers Served', 'Products', 'Pan-India Delivery'][i - 1];
+                    return (
+                      <div key={i}>
+                        <input value={homeText[`statbar${i}_n`] || dn} onChange={(e) => setHomeField(`statbar${i}_n`, e.target.value)} className="w-full bg-transparent text-center text-base font-black text-[#E8A020] outline-none" />
+                        <input value={homeText[`statbar${i}_l`] || dl} onChange={(e) => setHomeField(`statbar${i}_l`, e.target.value)} className="w-full bg-transparent text-center text-[8px] uppercase tracking-widest text-emerald-100 outline-none" />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+</>)}
+
+{activeOverrideSection === 'B2B & WhatsApp Banners' && (<>
+          <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-6">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest flex justify-between items-center border-b border-slate-100 pb-3">
+              B2B & WhatsApp Banners
+              <div className="flex gap-2">
+                <button onClick={saveHomeText} className="bg-[#1B6B3A] text-white px-4 py-1.5 rounded-lg hover:bg-emerald-950 transition">Save Changes</button>
+                <button onClick={() => resetHomeFields(['b2b_badge', 'b2b_title', 'b2b_desc', 'b2b_tags', 'b2b_btn1', 'b2b_btn2', 'wa_title', 'wa_desc1', 'wa_desc2', 'wa_phone', 'wa_btn'])} className="bg-rose-50 text-rose-600 border border-rose-200 px-4 py-1.5 rounded-lg hover:bg-rose-100 transition">Reset All</button>
+              </div>
+            </h4>
+
+            {/* B2B Preview */}
+            <div className="space-y-2">
+              <span className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest">B2B / Wholesale Strip</span>
+              <div className="bg-gradient-to-br from-[#1B6B3A] to-emerald-800 rounded-2xl p-6 text-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-16 translate-x-16 pointer-events-none" />
+                <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                  <div className="flex-1 space-y-2">
+                    <input value={homeText['b2b_badge'] || 'B2B / Wholesale'} onChange={(e) => setHomeField('b2b_badge', e.target.value)} className="bg-transparent border border-white/30 hover:border-white/50 text-[#E8A020] text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full outline-none w-40" />
+                    <input value={homeText['b2b_title'] || 'Need to Buy in Bulk?'} onChange={(e) => setHomeField('b2b_title', e.target.value)} className="bg-transparent border border-white/20 hover:border-white/50 w-full font-display font-black text-2xl outline-none" />
+                    <textarea value={homeText['b2b_desc'] || 'We supply directly to FPOs, cooperatives, retailers, and institutions across Tamil Nadu & India. Get competitive wholesale pricing, credit terms & dedicated account manager.'} onChange={(e) => setHomeField('b2b_desc', e.target.value)} rows={2} className="bg-transparent border border-white/20 hover:border-white/50 w-full text-emerald-100 text-sm outline-none resize-none" />
+                    <input value={homeText['b2b_tags'] || 'FPOs & Co-ops, Retailers, Exporters, Institutions, Agri Startups'} onChange={(e) => setHomeField('b2b_tags', e.target.value)} placeholder="Tags comma-separated" className="bg-transparent border border-white/20 hover:border-white/50 w-full text-[10px] font-bold outline-none mt-2 px-2 py-1" />
+                  </div>
+                  <div className="flex flex-col gap-3 shrink-0 w-full md:w-auto">
+                    <input value={homeText['b2b_btn1'] || 'WhatsApp for Bulk Quote'} onChange={(e) => setHomeField('b2b_btn1', e.target.value)} className="bg-[#E8A020]/20 border border-[#E8A020] text-[#E8A020] font-black text-sm px-6 py-2 rounded-xl outline-none text-center" />
+                    <input value={homeText['b2b_btn2'] || 'Submit Inquiry Form'} onChange={(e) => setHomeField('b2b_btn2', e.target.value)} className="bg-white/10 border border-white/30 text-white font-bold text-sm px-6 py-2 rounded-xl outline-none text-center" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* WhatsApp Strip Preview */}
+            <div className="space-y-2 mt-6">
+              <span className="text-[11px] font-black text-[#1B6B3A] uppercase tracking-widest">WhatsApp Contact Strip</span>
+              <div className="bg-emerald-900 text-white py-5 px-4 rounded-xl">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-3 w-full">
+                    <div className="h-11 w-11 bg-green-500 rounded-full flex items-center justify-center text-xl font-black shrink-0">💬</div>
+                    <div className="flex-1 space-y-1">
+                      <input value={homeText['wa_title'] || 'Order directly via WhatsApp!'} onChange={(e) => setHomeField('wa_title', e.target.value)} className="bg-transparent border border-white/20 hover:border-white/50 w-full font-bold text-sm outline-none" />
+                      <div className="flex items-center gap-2 text-xs flex-wrap">
+                        <input value={homeText['wa_desc1'] || 'Send requirements to'} onChange={(e) => setHomeField('wa_desc1', e.target.value)} className="bg-transparent border border-white/20 hover:border-white/50 w-32 text-emerald-200 outline-none" />
+                        <span className="text-white font-bold">+<input value={homeText['wa_phone'] || '917397785803'} onChange={(e) => setHomeField('wa_phone', e.target.value)} className="bg-transparent border border-white/20 hover:border-white/50 w-24 font-bold text-white outline-none" /></span>
+                        <input value={homeText['wa_desc2'] || '— instant reply'} onChange={(e) => setHomeField('wa_desc2', e.target.value)} className="bg-transparent border border-white/20 hover:border-white/50 w-32 text-emerald-200 outline-none" />
+                      </div>
+                    </div>
+                  </div>
+                  <input value={homeText['wa_btn'] || 'Order via WhatsApp'} onChange={(e) => setHomeField('wa_btn', e.target.value)} className="bg-[#E8A020]/20 border border-[#E8A020] text-[#E8A020] text-xs font-black px-6 py-2 rounded-xl uppercase outline-none text-center shrink-0 w-48" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+</>)}
+
+{activeOverrideSection === 'Advertisement Banners' && (<>
+          <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-6">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest flex justify-between items-center border-b border-slate-100 pb-3">
+              Advertisement Banners (3 Slots)
+              <div className="flex gap-2">
+                <button onClick={saveHomeText} className="bg-[#1B6B3A] text-white px-4 py-1.5 rounded-lg hover:bg-emerald-950 transition">Save Changes</button>
+                <button onClick={() => resetHomeFields(['ad1_type', 'ad1_url', 'ad1_link', 'ad2_type', 'ad2_url', 'ad2_link', 'ad3_type', 'ad3_url', 'ad3_link'])} className="bg-rose-50 text-rose-600 border border-rose-200 px-4 py-1.5 rounded-lg hover:bg-rose-100 transition">Reset All</button>
+              </div>
+            </h4>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[1, 2, 3].map(slot => {
+                const handleAdUpload = async (file: File) => {
+                  try {
+                    const ext = file.name.split('.').pop();
+                    const fileName = `ad_${slot}_${Date.now()}.${ext}`;
+                    const { data, error } = await supabase.storage.from('assets').upload(`banners/${fileName}`, file);
+                    if (error) {
+                      // Attempt to create bucket and retry if not exists
+                      alert('Upload failed: ' + error.message + ' (Make sure "assets" bucket is created and public)');
+                      return;
+                    }
+                    const { data: publicUrlData } = supabase.storage.from('assets').getPublicUrl(`banners/${fileName}`);
+                    setHomeField(`ad${slot}_url`, publicUrlData.publicUrl);
+                  } catch (e: any) {
+                    alert('Error uploading file: ' + e.message);
+                  }
+                };
+
+                return (
+                <div key={slot} className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                  <h5 className="font-bold text-xs text-slate-600 mb-3">Banner Slot {slot}</h5>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-[10px] uppercase font-bold text-slate-500 mb-1 block">Media Type</label>
+                      <select value={homeText[`ad${slot}_type`] || 'image'} onChange={(e) => setHomeField(`ad${slot}_type`, e.target.value)} className="w-full text-xs p-2 border border-slate-200 rounded outline-none">
+                        <option value="image">Image</option>
+                        <option value="video">Video (MP4/WebM)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-[10px] uppercase font-bold text-slate-500 mb-1 block">Media URL (Image/Video link)</label>
+                      <input value={homeText[`ad${slot}_url`] || ''} onChange={(e) => setHomeField(`ad${slot}_url`, e.target.value)} placeholder="https://... (.jpg, .png, .mp4)" className="w-full text-xs p-2 border border-slate-200 rounded outline-none mb-2" />
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] text-slate-400 font-bold uppercase shrink-0">OR UPLOAD</span>
+                        <input type="file" accept="image/*,video/mp4,video/webm" onChange={(e) => e.target.files && handleAdUpload(e.target.files[0])} className="w-full text-[10px] file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-[#1B6B3A]/10 file:text-[#1B6B3A] hover:file:bg-[#1B6B3A]/20 cursor-pointer" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-[10px] uppercase font-bold text-slate-500 mb-1 block">Click Destination Link</label>
+                      <input value={homeText[`ad${slot}_link`] || '#'} onChange={(e) => setHomeField(`ad${slot}_link`, e.target.value)} placeholder="/category/seeds" className="w-full text-xs p-2 border border-slate-200 rounded outline-none" />
+                    </div>
+                  </div>
+                  
+                  {/* Preview Box */}
+                  <div className="mt-4 aspect-[4/3] bg-slate-200 rounded-lg overflow-hidden relative flex items-center justify-center">
+                    {!homeText[`ad${slot}_url`] ? (
+                      <span className="text-xs text-slate-400">No media URL provided</span>
+                    ) : (homeText[`ad${slot}_type`] || 'image') === 'video' ? (
+                      <video src={homeText[`ad${slot}_url`]} className="w-full h-full object-cover" autoPlay muted loop playsInline />
+                    ) : (
+                      <img src={homeText[`ad${slot}_url`]} className="w-full h-full object-cover" alt={`Ad ${slot}`} />
+                    )}
+                    <div className="absolute top-2 right-2 bg-slate-800/80 text-white text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded shadow-sm">Ad</div>
+                  </div>
+                </div>
+                );
+              })}
+            </div>
+          </div>
+</>)}
+
+          <h3 className="font-extrabold text-sm text-slate-800">Content Management</h3>
+
+          {/* Product Specifications editor */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest">🧾 Product Specifications</h4>
+              <button onClick={saveProductSpecsHandler} className="text-xs font-bold bg-[#1B6B3A] text-white px-4 py-1.5 rounded-lg hover:bg-emerald-950 transition">Save Specifications</button>
+            </div>
+            <p className="text-[11px] text-slate-400 mb-3">Pick a product, then add Attribute → Detail rows (e.g. Plant Type → Grafted Fruit Plant, Fruit Color → Golden Yellow). They appear in that product's Specifications table on the live site.</p>
+            <select value={specProduct} onChange={(e) => {
+              const name = e.target.value;
+              setSpecProduct(name);
+              if (name && (!productSpecs[name] || productSpecs[name].length === 0)) {
+                const p = products.find(x => x.name === name);
+                let defaultKeys = ['Brand', 'Country of Origin', 'Net Weight', 'Recommended For'];
+                if (p?.category === 'Seeds') defaultKeys = ['Seed Type', 'Germination Rate', 'Sowing Season', 'Harvest Time', 'Brand'];
+                else if (p?.category?.includes('Fertilizers') || p?.category === 'Organic & Bio Inputs') defaultKeys = ['Composition', 'Application Rate', 'Usage Method', 'Target Crops', 'Brand'];
+                else if (p?.category === 'Equipments' || p?.category?.includes('Tools')) defaultKeys = ['Material', 'Power / Operation', 'Warranty', 'Dimensions', 'Brand'];
+                else if (p?.category === 'Plants') defaultKeys = ['Plant Type', 'Height', 'Sunlight Needed', 'Watering Schedule', 'Pot Size'];
+                
+                setProductSpecs(prev => ({...prev, [name]: defaultKeys.map(k => ({ k, v: '' }))}));
+              }
+            }} className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs font-bold outline-none focus:border-[#1B6B3A]">
+              <option value="">-- Choose a product --</option>
+              {products.map((p) => <option key={p.id} value={p.name}>{p.name}</option>)}
+            </select>
+            {specProduct && (
+              <div className="mt-3 space-y-2">
+                <div className="text-[10px] text-slate-400 italic mb-2">Leave details blank if you do not know them. Empty specifications will not be shown on the website.</div>
+                {specRowsFor(specProduct).map((row, idx) => (
+                  <div key={idx} className="flex gap-2">
+                    <input value={row.k} onChange={(e) => setSpecRowField(idx, 'k', e.target.value)} placeholder="Attribute (e.g. Plant Type)" className="w-1/3 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                    <input value={row.v} onChange={(e) => setSpecRowField(idx, 'v', e.target.value)} placeholder="Detail (e.g. Grafted Fruit Plant)" className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-[#1B6B3A]" />
+                    <button onClick={() => removeSpecRow(idx)} className="shrink-0 text-rose-500 hover:text-rose-700 font-bold px-2" aria-label="Remove row">×</button>
+                  </div>
+                ))}
+                <button onClick={addSpecRow} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-4 py-2 rounded-lg transition">+ Add Row</button>
+              </div>
+            )}
+          </div>
+
+          {/* Upcoming Agri Events editor */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h4 className="font-extrabold text-xs text-slate-700 uppercase tracking-widest mb-1">🗓 Upcoming Agri Events</h4>
+            <p className="text-[11px] text-slate-400 mb-4">Add the trade shows, expos and farmer meets shown on the home page. While this list is empty, a built-in default set is shown.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-6 gap-2 mb-3">
+              <input value={newEvent.name} onChange={e => setNewEvent({ ...newEvent, name: e.target.value })} placeholder="Event name" className="sm:col-span-2 bg-slate-50 border rounded-lg p-2 text-xs font-bold" />
+              <input value={newEvent.city} onChange={e => setNewEvent({ ...newEvent, city: e.target.value })} placeholder="City" className="bg-slate-50 border rounded-lg p-2 text-xs font-bold" />
+              <input value={newEvent.date} onChange={e => setNewEvent({ ...newEvent, date: e.target.value })} placeholder="Date e.g. Jul 9-11, 2026" className="bg-slate-50 border rounded-lg p-2 text-xs font-bold" />
+              <select value={newEvent.type} onChange={e => setNewEvent({ ...newEvent, type: e.target.value })} className="bg-slate-50 border rounded-lg p-2 text-xs font-bold">
+                {['Trade Expo', 'Horticulture', 'AgriTech', 'National', 'Farmer Meet', 'International'].map(o => <option key={o}>{o}</option>)}
+              </select>
+              <input value={newEvent.emoji} onChange={e => setNewEvent({ ...newEvent, emoji: e.target.value })} placeholder="Emoji 🏭" maxLength={2} className="bg-slate-50 border rounded-lg p-2 text-xs font-bold text-center" />
+            </div>
+            <button onClick={handleAddEvent} className="bg-[#1B6B3A] hover:bg-emerald-900 text-white text-xs font-bold px-4 py-2 rounded-lg transition">+ Add Event</button>
+            {events.length > 0 && (
+              <div className="mt-4 space-y-1.5">
+                {events.map((ev, idx) => (
+                  <div key={idx} className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs">
+                    <span className="font-bold text-slate-700 truncate">{ev.emoji} {ev.name} <span className="text-slate-400 font-medium">· {ev.city} · {ev.date} · {ev.type}</span></span>
+                    <button onClick={() => handleRemoveEvent(idx)} className="text-rose-500 hover:text-rose-700 font-bold shrink-0 ml-2">Remove</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          
+
+          
+
+          
+          
+          
+          
         </div>
       )}
 

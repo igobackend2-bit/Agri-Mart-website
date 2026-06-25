@@ -57,6 +57,7 @@ export default function CategoryComponent({
   const [minDiscount, setMinDiscount] = useState<number>(0);
   const [selectedProblem, setSelectedProblem] = useState<string | null>(null);
   const [selectedCrop, setSelectedCrop] = useState<string | null>(null);
+  const [openCatGroup, setOpenCatGroup] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<string>('relevance');
 
   // Product Comparison State
@@ -169,6 +170,11 @@ export default function CategoryComponent({
         'livestock': ['cattle feed', 'poultry feed', 'goat shelter', 'fish farming', 'poultry supplements', 'mineral mixture', 'fodder', 'cattle', 'poultry', 'animal husbandry', 'livestock'],
         'plants-saplings': ['vegetable seeds', 'herb seeds', 'microgreen seeds', 'leafy green seeds', 'tree seeds', 'fruit plants', 'flower seeds', 'flowering plants', 'seeds', 'plants & saplings', 'seeds & saplings', 'plant', 'sapling'],
         'organic': ['organic & bio inputs', 'organic bio-boosters', 'bio-stimulants', 'cocopeat', 'coco peat', 'organic manures', 'organic natural farming', 'organic'],
+        'seeds': ['seed', 'seeds', 'vegetable seeds', 'fruit seeds', 'field seeds', 'flower seeds'],
+        'plants': ['plant', 'indoor plants', 'outdoor plants & trees', 'outdoor plants', 'sapling', 'flowering plants'],
+        'equipment': ['precision tools & equipments', 'nursery tools', 'farm tools & implements', 'tool', 'tools', 'equipment', 'sprayer', 'implement', 'pump'],
+        'valluvam-products': ['native foods & millets', 'valluvam native foods', 'valluvam products', 'valluvam'],
+        'all-fertilizers': ['fertilizer', 'fertilizers', 'liquid fertilizers', 'powder fertilizers', 'chemical fertilizers', 'organic fertilizers'],
       };
 
       const rollupSubs = ROLLUP[slugNorm] || [];
@@ -369,36 +375,60 @@ export default function CategoryComponent({
             <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2.5">
               Shop by Category:
             </label>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="space-y-1">
+              <button onClick={() => setSelectedCategory(null)}
+                className={'w-full text-left px-3 py-2 rounded-lg text-[12px] font-bold transition ' + (selectedCategory === null ? 'bg-[#1B6B3A] text-white' : 'text-slate-700 hover:bg-slate-100')}>
+                🛒 All Products
+              </button>
               {([
-                { label: 'All', slug: null },
-                { label: '🥬 Vegetables', slug: 'vegetables' },
-                { label: '🍎 Fruits', slug: 'fruits' },
-                { label: '🍯 Valluvam', slug: 'valluvam-products' },
-                { label: '🌱 Veg Seeds', slug: 'vegetable-seeds' },
-                { label: '🍉 Fruit Seeds', slug: 'fruit-seeds' },
-                { label: '🌾 Field Seeds', slug: 'field-seeds' },
-                { label: '🌸 Flower Seeds', slug: 'flower-seeds' },
-                { label: '💧 Liquid Fert.', slug: 'liquid-fertilizers' },
-                { label: '🧂 Powder Fert.', slug: 'powder-fertilizers' },
-                { label: '⚗️ Chemical Fert.', slug: 'chemical-fertilizers' },
-                { label: '♻️ Organic Fert.', slug: 'organic-fertilizers' },
-                { label: '🪴 Indoor Plants', slug: 'indoor-plants' },
-                { label: '🌳 Outdoor Plants', slug: 'outdoor-plants-trees' },
-                { label: '🔧 Tools & Equipments', slug: 'precision-tools-equipments' },
-                { label: '🪴 Nursery Tools', slug: 'nursery-tools' },
-              ] as const).map((c) => (
-                <button
-                  key={c.label}
-                  onClick={() => setSelectedCategory(c.slug)}
-                  className={`px-2.5 py-1 rounded-full text-[11px] font-bold border transition ${selectedCategory === c.slug
-                    ? 'bg-[#1B6B3A] text-white border-[#1B6B3A]'
-                    : 'bg-[#F7F9F4] text-slate-700 border-slate-200 hover:bg-slate-100'
-                    }`}
-                >
-                  {c.label}
-                </button>
-              ))}
+                { label: 'Fruits', icon: '🍎', slug: 'fruits', subs: [] as { label: string; slug: string }[] },
+                { label: 'Vegetables', icon: '🥬', slug: 'vegetables', subs: [] as { label: string; slug: string }[] },
+                { label: 'Seeds', icon: '🌱', slug: '', subs: [
+                  { label: 'Vegetable Seeds', slug: 'vegetable-seeds' },
+                  { label: 'Fruit Seeds', slug: 'fruit-seeds' },
+                  { label: 'Field Seeds', slug: 'field-seeds' },
+                  { label: 'Flower Seeds', slug: 'flower-seeds' },
+                ] },
+                { label: 'Fertilizers', icon: '🧪', slug: '', subs: [
+                  { label: 'Liquid Fertilizers', slug: 'liquid-fertilizers' },
+                  { label: 'Powder Fertilizers', slug: 'powder-fertilizers' },
+                  { label: 'Chemical Fertilizers', slug: 'chemical-fertilizers' },
+                  { label: 'Organic Fertilizers', slug: 'organic-fertilizers' },
+                ] },
+                { label: 'Plants', icon: '🪴', slug: '', subs: [
+                  { label: 'Indoor Plants', slug: 'indoor-plants' },
+                  { label: 'Outdoor Plants & Trees', slug: 'outdoor-plants-trees' },
+                ] },
+                { label: 'Equipment', icon: '🔧', slug: '', subs: [
+                  { label: 'Tools & Equipments', slug: 'precision-tools-equipments' },
+                  { label: 'Nursery Tools', slug: 'nursery-tools' },
+                ] },
+                { label: 'Native Foods & Millets', icon: '🍯', slug: 'valluvam-products', subs: [] as { label: string; slug: string }[] },
+              ]).map((g) => {
+                const hasSubs = g.subs.length > 0;
+                const isOpen = openCatGroup === g.label || (hasSubs && g.subs.some((s) => s.slug === selectedCategory));
+                const isActive = !hasSubs && selectedCategory === g.slug;
+                return (
+                  <div key={g.label}>
+                    <button
+                      onClick={() => { if (hasSubs) { setOpenCatGroup(isOpen ? null : g.label); } else { setSelectedCategory(g.slug); } }}
+                      className={'w-full flex items-center justify-between px-3 py-2 rounded-lg text-[12px] font-bold transition ' + (isActive ? 'bg-[#1B6B3A] text-white' : 'text-slate-700 hover:bg-slate-100')}>
+                      <span>{g.icon} {g.label}</span>
+                      {hasSubs && <span className={'text-slate-400 transition-transform inline-block ' + (isOpen ? 'rotate-90' : '')}>›</span>}
+                    </button>
+                    {hasSubs && isOpen && (
+                      <div className="ml-3 mt-1 mb-1 border-l-2 border-slate-100 pl-2 space-y-0.5">
+                        {g.subs.map((s) => (
+                          <button key={s.slug} onClick={() => setSelectedCategory(s.slug)}
+                            className={'w-full text-left px-3 py-1.5 rounded-lg text-[11px] font-semibold transition ' + (selectedCategory === s.slug ? 'bg-emerald-50 text-[#1B6B3A]' : 'text-slate-600 hover:bg-slate-50')}>
+                            {s.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
 

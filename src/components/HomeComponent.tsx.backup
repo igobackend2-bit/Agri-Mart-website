@@ -45,12 +45,10 @@ import {
 import { Product, Category, Brand } from '../types';
 import { SEED_CATEGORIES, SEED_BRANDS, CROP_KITS, SUBSIDY_INFO, SEED_POSTS } from '../seedData';
 import { translations, LanguageDict } from '../translation';
-import { getBanners, getHomeOverrides, getComplexOverrides, getCategoryMeta, getCustomCategories, getAgriEvents, pageText } from '../siteConfig';
+import { getBanners, getHomeOverrides, getComplexOverrides, getCategoryMeta, getCustomCategories, getAgriEvents } from '../siteConfig';
 import { detectLocation, getSavedLocation } from '../storeData';
 import { FarmStories, LiveTrialFields, IgoEcosystemCarousel } from './HomeAdaptedFeatures';
-import { CorporateTrustStrip, FarmingWeatherAdvisory, ShopByCropGrid, FarmInfrastructureServices, CropDoctorConsultation, TopAgriBrandsCarousel } from './HomeExtensions';
-import IgoGroupBand from './IgoGroupBands';
-import IgoVerticalsSlider from './IgoVerticalsSlider';
+
 // Extended items for categories
 // Maps the real product catalog's categories (sourced from Crop Care, Farmer Factory
 // and Nursery image libraries — see realCatalogData.generated.ts) to nav/hero styling.
@@ -343,24 +341,27 @@ export default function HomeComponent({
 
 
 
-  // Category rail — customized groupings as requested
-  const RAIL_GROUPS = [
-    { label: 'Vegetables', slug: 'vegetables', matchCats: ['Vegetables'], customImg: '/images/categories/Vegetables.png' },
-    { label: 'Fruits', slug: 'fruits', matchCats: ['Fruits'], customImg: '/images/categories/Fruits.png' },
-    { label: 'Seeds', slug: 'seeds', matchCats: ['Vegetable Seeds', 'Fruit Seeds', 'Field Seeds', 'Flower Seeds'], customImg: '/images/categories/Seeds.png' },
-    { label: 'Fertilizers', slug: 'all-fertilizers', matchCats: ['Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers'], customImg: '/images/categories/Fertilizers.jpeg' },
-    { label: 'Plants', slug: 'plants', matchCats: ['Indoor Plants', 'Outdoor Plants & Trees'], customImg: '/images/categories/Plants.jpeg' },
-    { label: 'Valluvam Products', slug: 'valluvam-products', matchCats: ['Native Foods & Millets', 'Valluvam'], customImg: '/images/categories/Valluvam.jpeg' },
-    { label: 'Equipments', slug: 'equipment', matchCats: ['Precision Tools & Equipments', 'Nursery Tools', 'Farm Tools & Implements'], customImg: '/images/categories/Equipments.jpeg' }
+  // Category rail — built from the REAL catalog so every tile has a real image
+  // and only categories that actually have products are shown (no empty circles).
+  const CAT_ORDER = [
+    'Vegetables', 'Fruits', 'Native Foods & Millets',
+    'Vegetable Seeds', 'Fruit Seeds', 'Field Seeds', 'Flower Seeds',
+    'Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers',
+    'Indoor Plants', 'Outdoor Plants & Trees',
   ];
-
   const catMeta = getCategoryMeta();
-  const baseCats: [string, { text: string; images: string[] }][] = RAIL_GROUPS.map((group) => {
-    return [group.slug, { text: group.label, images: [group.customImg] }];
-  });
+  const baseCats: [string, { text: string; images: string[] }][] = CAT_ORDER
+    .filter((name) => products.some((p) => p.category === name) && !catMeta[name]?.hidden)
+    .map((name) => {
+      const rep = products.find((p) => p.category === name && p.images && p.images[0]);
+      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const meta = catMeta[name] || {};
+      const img = (meta.image && meta.image.trim()) ? meta.image : (rep ? rep.images[0] : '');
+      return [slug, { text: meta.label?.trim() || name, images: img ? [img] : [] }];
+    });
   // Admin-created custom categories show on the rail even before they have products.
   const customCats: [string, { text: string; images: string[] }][] = getCustomCategories()
-    .filter((c) => !RAIL_GROUPS.some(g => g.label === c.name || g.matchCats.includes(c.name)) && !catMeta[c.name]?.hidden)
+    .filter((c) => !CAT_ORDER.includes(c.name) && !catMeta[c.name]?.hidden)
     .map((c) => {
       const rep = products.find((p) => p.category === c.name && p.images && p.images[0]);
       const img = (c.image && c.image.trim()) ? c.image : (rep ? rep.images[0] : 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=240&q=75&fit=crop');
@@ -370,28 +371,28 @@ export default function HomeComponent({
 
   const DEFAULT_HERO_SLIDES = [
     {
-      img: '', // background video used for all default slides
+      img: 'https://images.unsplash.com/photo-1595844730298-b864a93a0279?w=1600&q=80&fit=crop', // Professional polyhouse image
       badge: 'IGO AGRITECH FARMS',
       title: lang === 'en' ? 'India\'s Premier Agri Engineering Brand' : 'இந்தியாவின் முன்னணி வேளாண் பொறியியல் நிறுவனம்',
       sub: lang === 'en' ? 'Pioneering sustainable agriculture with turnkey Polyhouse construction, precision Hydroponics, and full-scale farm infrastructure.' : 'பாலிகவுஸ் அமைப்பு மற்றும் ஹைட்ரோபோனிக்ஸ் விவசாயத்தில் நிபுணத்துவம்',
       btn: 'Explore Engineering', btnAction: 'greenhouse-polyhouse', color: 'from-emerald-950/85 via-emerald-900/50 to-transparent'
     },
     {
-      img: '',
+      img: '/images/banners/irrigation_banner.png',
       badge: 'GOVT SUBSIDY UPTO 90%',
       title: lang === 'en' ? 'Smart Irrigation for Indian Soils' : 'சொட்டு நீர்ப்பாசன கருவிகள்',
       sub: lang === 'en' ? 'Up to 90% govt subsidy support · customized kits for every farm size · free expert installation guidance' : 'அரசு மானியம் · அனைத்து பண்ணை அளவுகளும் · இலவச நிறுவல் வழிகாட்டுதல்',
       btn: 'Explore Irrigation', btnAction: 'irrigation-systems', color: 'from-cyan-950/85 via-cyan-900/50 to-transparent'
     },
     {
-      img: '',
+      img: '/images/banners/organic_farming_banner.png',
       badge: 'ORGANIC FARMING',
       title: lang === 'en' ? 'Grow Naturally. Harvest Better.' : 'இயற்கையாக வளர்க்கவும். உயர்ந்த விலை பெறவும்.',
       sub: lang === 'en' ? 'Vermicompost, neem oil, Trichoderma & bio-stimulants — your complete organic toolkit for maximum yields' : 'மண்புழு உரம் · வேப்ப எண்ணெய் · உயிரியல் உரங்கள் · முழுமையான இயற்கை தொகுப்பு',
       btn: 'Shop Organic Range', btnAction: 'organic-natural-farming', color: 'from-green-950/85 via-green-900/50 to-transparent'
     },
     {
-      img: '',
+      img: '/images/banners/farm_machinery_banner.png',
       badge: 'MACHINERY & TOOLS',
       title: lang === 'en' ? 'Built for Indian Fields & Farmers' : 'விவசாய கருவிகள் & இயந்திரங்கள்',
       sub: lang === 'en' ? 'Heavy-duty power weeders, seed drills, and battery sprayers designed for diverse Indian agricultural conditions' : 'யந்திர களை கருவிகள் · விதை பயிர்கருவிகள் · பேட்டரி தெளிப்பான்கள்',
@@ -465,8 +466,6 @@ export default function HomeComponent({
     }
     return defaultProducts;
   };
-
-  const dailyOffers = getOverrideProducts("Today's Offer", []);
 
   const todaysOffers = getOverrideProducts("Freshly Arrived", [...products].sort((a, b) => {
     const da = a.mrp > 0 ? Math.round((1 - a.price / a.mrp) * 100) : 0;
@@ -597,23 +596,17 @@ export default function HomeComponent({
               activeSlide === idx ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
           >
-            {slide.img && (
-              (/\.(mp4|webm|ogg)(\?|$)/i.test(slide.img) || slide.img.startsWith('data:video'))
-                ? <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" src={slide.img} />
-                : <img src={slide.img} alt="" className="absolute inset-0 w-full h-full object-cover" />
-            )}
-            {slide.img && <div className="absolute inset-0 bg-gradient-to-r from-slate-900/85 via-slate-900/55 to-slate-900/30" />}
             <div className="relative max-w-7xl mx-auto px-6 sm:px-8 h-full flex flex-col justify-center">
               <div className="max-w-2xl mt-12">
-                {slide.badge && <span className="inline-block bg-white text-slate-900 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-4 shadow-lg">
+                <span className="inline-block bg-white text-slate-900 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-4 shadow-lg">
                   {slide.badge}
-                </span>}
-                {slide.title && <h1 className="font-display font-black text-white text-4xl sm:text-5xl lg:text-6xl leading-[1.1] tracking-tight mb-5 drop-shadow-md">
+                </span>
+                <h1 className="font-display font-black text-white text-4xl sm:text-5xl lg:text-6xl leading-[1.1] tracking-tight mb-5 drop-shadow-md">
                   {slide.title}
-                </h1>}
-                {slide.sub && <p className="text-white/90 text-sm sm:text-base font-medium mb-8 max-w-xl leading-relaxed">
+                </h1>
+                <p className="text-white/90 text-sm sm:text-base font-medium mb-8 max-w-xl leading-relaxed">
                   {slide.sub}
-                </p>}
+                </p>
                 <div className="flex flex-wrap items-center gap-4">
                   <button
                     onClick={() => handleCategoryClick(slide.btnAction)}
@@ -640,7 +633,7 @@ export default function HomeComponent({
 
         {/* Slider Controls */}
         <div className="absolute bottom-28 left-6 sm:left-8 z-20 flex gap-2">
-          {HERO_SLIDES.length > 1 && HERO_SLIDES.map((_, idx) => (
+          {HERO_SLIDES.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setHeroSlide(idx)}
@@ -650,29 +643,58 @@ export default function HomeComponent({
         </div>
       </div>
 
-      <CorporateTrustStrip />
-      <FarmingWeatherAdvisory />
+      {/* ── IGO SIGNATURE SERVICES ─────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-8 mb-6">
+        <div className="flex items-center gap-2 mb-6">
+          <span className="bg-[#1B6B3A]/10 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full">
+            Our Expertise
+          </span>
+          <h2 className="font-display font-black text-slate-900 text-2xl tracking-tight">IGO Signature Services</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { title: 'Polyhouse Construction', desc: 'Turnkey high-tech polyhouse and greenhouse setups for maximum yield.', icon: Home, bg: 'bg-emerald-50 text-[#1B6B3A]' },
+            { title: 'Hydroponics Setup', desc: 'Advanced soil-less farming systems with automated nutrient dosing.', icon: Zap, bg: 'bg-blue-50 text-blue-700' },
+            { title: 'AMC Services', desc: 'Comprehensive annual maintenance contracts for your farm infrastructure.', icon: Wrench, bg: 'bg-amber-50 text-amber-700' },
+            { title: 'Buyback Guarantee', desc: 'Assured market linkages and buyback services for your harvested crops.', icon: RefreshCw, bg: 'bg-purple-50 text-purple-700' }
+          ].map((srv, idx) => (
+            <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer">
+              <div className={`h-12 w-12 rounded-xl flex items-center justify-center mb-4 ${srv.bg} group-hover:scale-110 transition-transform`}>
+                <srv.icon className="h-6 w-6" />
+              </div>
+              <h3 className="font-display font-black text-slate-800 text-lg mb-2">{srv.title}</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">{srv.desc}</p>
+              <div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-[#1B6B3A] transition-colors">
+                Explore Service <ArrowRight className="h-3 w-3" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      {/* ── WHY IGO AGRI MART (marketplace intro, group-backed) ────────── */}
+
+      {/* ── CORPORATE IMPACT (B2B SCALE) ───────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-8 mb-6 mt-10">
         <div className="rounded-[2rem] overflow-hidden shadow-xl border border-slate-200">
           <div className="grid lg:grid-cols-12">
             <div className="lg:col-span-7 p-8 sm:p-12 md:p-16 flex flex-col justify-center relative z-10 bg-white">
               <span className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-[#1B6B3A]/10 text-[#1B6B3A] text-[11px] font-extrabold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-6 border border-emerald-100 w-fit">
-                <Sprout className="h-4 w-4" /> {pageText('home', 'card1_badge', 'Genuine Inputs · Pan-India Delivery')}
+                <Sprout className="h-4 w-4" /> Established 2013 · Pan-India
               </span>
-
+              
               <h2 className="font-display font-black text-slate-900 text-3xl sm:text-4xl md:text-5xl tracking-tight leading-[1.1]">
-                {pageText('home', 'card1_title1', 'Why farmers shop at')} <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1B6B3A] to-emerald-600">{pageText('home', 'card1_title2', 'IGO Agri Mart')}</span>
+                Transforming Indian <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1B6B3A] to-emerald-600">Agriculture</span>
               </h2>
-
+              
               <p className="text-base text-slate-600 leading-relaxed mt-6">
-                {pageText('home', 'card1_p1', "Shop thousands of 100% genuine farm products in one place — seeds, fertilizers, crop protection, bio-inputs, tools, gardening and animal care — sourced directly from India's most trusted agri brands.")}
+                <strong className="text-slate-900 font-black">IGO Agritech Farms</strong> stands at the forefront of India's agricultural revolution. 
+                With over <strong className="text-[#1B6B3A]">11 years of proven excellence</strong>, we deliver world-class turnkey solutions in advanced <strong className="text-slate-900">Polyhouse Construction, precision Hydroponics, and Vertical Farming</strong>.
               </p>
-
+              
               <p className="text-base text-slate-600 leading-relaxed mt-4">
-                {pageText('home', 'card1_p2', 'Compare prices, read real farmer reviews and order in a tap, with fast doorstep delivery, fair transparent pricing and free expert crop advice on every purchase. No middlemen, no fakes, no hidden charges.')}
+                Our integrated ecosystem spans <strong className="text-slate-900">16+ brands</strong> across agriculture, food processing, and fintech. We don't just supply inputs; we build sustainable, high-yield agricultural legacies.
               </p>
               
               <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -698,17 +720,17 @@ export default function HomeComponent({
               <div className="relative z-10">
                 <h3 className="font-display font-black text-white text-xl md:text-2xl mb-8 flex items-center gap-3">
                   <span className="h-1 w-8 bg-[#E8A020] rounded-full"></span>
-                  {pageText('home', 'card1_panel_title', 'The Agri Mart Advantage')}
+                  Corporate Impact
                 </h3>
-
+                
                 <div className="grid grid-cols-2 gap-x-6 gap-y-10">
                   {[
-                    { n: pageText('home', 'adv1_n', '5,000+'), l: pageText('home', 'adv1_l', 'Products Listed') },
-                    { n: pageText('home', 'adv2_n', '100%'), l: pageText('home', 'adv2_l', 'Genuine Inputs') },
-                    { n: pageText('home', 'adv3_n', '28+'), l: pageText('home', 'adv3_l', 'Crop Categories') },
-                    { n: pageText('home', 'adv4_n', '24 hr'), l: pageText('home', 'adv4_l', 'Order Dispatch') },
-                    { n: pageText('home', 'adv5_n', '7-Day'), l: pageText('home', 'adv5_l', 'Easy Returns') },
-                    { n: pageText('home', 'adv6_n', '4.8/5'), l: pageText('home', 'adv6_l', 'Farmer Rating') },
+                    { n: '2013', l: 'Established Year' },
+                    { n: '15,000+', l: 'Successful Projects' },
+                    { n: '2,000+', l: 'Employees Pan-India' },
+                    { n: '28+', l: 'States Served' },
+                    { n: '75+', l: 'Awards Won' },
+                    { n: '16+', l: 'Group Brands' },
                   ].map((s) => (
                     <div key={s.l} className="group/stat cursor-default">
                       <div className="font-display font-black text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-br from-[#E8A020] to-amber-200 group-hover/stat:scale-105 transition-transform origin-left">
@@ -728,8 +750,6 @@ export default function HomeComponent({
       </section>
 
 
-
-      {/* Live Trial Fields section removed per request */}
 
       {/* ── USP STRIP (assurance cards) ─────────────── */}
       <div className="max-w-7xl mx-auto px-4 mt-6">
@@ -752,8 +772,6 @@ export default function HomeComponent({
           ))}
         </div>
       </div>
-
-      {/* Shop by Crop grid removed per request */}
 
       {/* ── CATEGORIES (Swiggy "best options" style — floating images) ── */}
       <section className="max-w-7xl mx-auto px-4 py-10">
@@ -781,13 +799,13 @@ export default function HomeComponent({
 
         <div
           id="cat-rail"
-          className="flex flex-row overflow-x-auto scrollbar-none gap-4 sm:gap-6 lg:justify-between w-full pb-4 snap-x"
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-8 justify-items-center"
         >
           {ALL_CATS.map(([id, cat]) => (
             <button
               key={id}
               onClick={() => handleCategoryClick(id)}
-              className="snap-start flex flex-col items-center gap-2.5 group cursor-pointer shrink-0"
+              className="snap-start flex flex-col items-center gap-2.5 group cursor-pointer"
             >
               <div className="h-24 w-24 sm:h-32 sm:w-32 lg:h-36 lg:w-36 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
                 <img
@@ -813,22 +831,22 @@ export default function HomeComponent({
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div>
               <span className="inline-flex items-center gap-2 bg-[#E8A020] text-emerald-950 text-[11px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full mb-6">
-                {pageText('home', 'card2_badge', 'Your Trusted Farm Partner')}
+                Your Trusted Farm Partner
               </span>
               <h2 className="font-display font-black text-white text-3xl sm:text-4xl leading-tight mb-4">
-                {pageText('home', 'card2_title1', 'Everything your farm needs.')} <br/>
-                <span className="text-emerald-300">{pageText('home', 'card2_title2', 'Delivered directly to you.')}</span>
+                Everything your farm needs. <br/>
+                <span className="text-emerald-300">Delivered directly to you.</span>
               </h2>
               <p className="text-emerald-50 text-base leading-relaxed mb-8 max-w-lg">
-                {pageText('home', 'card2_intro', 'IGO AgriMart connects farmers directly with top brands. We eliminate middlemen to guarantee 100% genuine inputs, fair prices, and expert agronomy support right when you need it.')}
+                IGO AgriMart connects farmers directly with top brands. We eliminate middlemen to guarantee 100% genuine inputs, fair prices, and expert agronomy support right when you need it.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { title: pageText('home', 'trust1_t', '100% Certified Products'), desc: pageText('home', 'trust1_d', 'No fakes. Quality guaranteed.') },
-                  { title: pageText('home', 'trust2_t', 'Free Agronomy Help'), desc: pageText('home', 'trust2_d', 'Expert advice on WhatsApp.') },
-                  { title: pageText('home', 'trust3_t', 'Transparent Pricing'), desc: pageText('home', 'trust3_d', 'Best prices, zero hidden fees.') },
-                  { title: pageText('home', 'trust4_t', 'Fast Farm Delivery'), desc: pageText('home', 'trust4_d', 'Direct to your village.') }
+                  { title: "100% Certified Products", desc: "No fakes. Quality guaranteed." },
+                  { title: "Free Agronomy Help", desc: "Expert advice on WhatsApp." },
+                  { title: "Transparent Pricing", desc: "Best prices, zero hidden fees." },
+                  { title: "Fast Farm Delivery", desc: "Direct to your village." }
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-start gap-3 bg-white/10 p-4 rounded-2xl border border-white/20">
                     <div className="h-2 w-2 rounded-full bg-[#E8A020] mt-2 shrink-0"></div>
@@ -841,30 +859,16 @@ export default function HomeComponent({
               </div>
             </div>
             <div className="hidden lg:block relative h-full min-h-[300px] rounded-2xl overflow-hidden border border-white/20">
-              <img src={pageText('home', 'card2_image', '/images/happy_indian_farmer.png')} alt="Happy Indian Farmer" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+              <img src="https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=800&q=80&fit=crop" alt="Happy Indian Farmer" className="absolute inset-0 w-full h-full object-cover" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── TODAY'S OFFER ────────────────────────────────────────── */}
-      {dailyOffers.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-6 bg-[#f0fdf4] rounded-2xl shadow-sm mb-6 border border-emerald-100">
-          <SectionHeader
-            title="Today's Offer ⚡"
-            sub="Best prices available today."
-            onViewAll={() => { setSelectedCategory(null); setCurrentPage('category'); }}
-          />
-          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none h-scroll">
-            {dailyOffers.map((p) => (<div key={p.id} className="contents">{renderProductCard(p)}</div>))}
-          </div>
-        </section>
-      )}
-
       {/* ── BEST SELLING (BigHaat-style) ─────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 bg-white rounded-2xl shadow-sm mb-6">
         <SectionHeader
-          title="Best Sellings"
+          title="Best Sellers"
           sub="The inputs Indian farmers reorder most — proven quality, honest prices."
           onViewAll={() => { setSelectedCategory(null); setCurrentPage('category'); }}
         />
@@ -872,9 +876,6 @@ export default function HomeComponent({
           {bestSellers.map((p) => (<div key={p.id} className="contents">{renderProductCard(p)}</div>))}
         </div>
       </section>
-
-      {/* ── IGO BAND 1: GROUP ECOSYSTEM ──────────────────────────────── */}
-      <IgoGroupBand variant="fresh" />
 
       {/* ── FRESHLY ARRIVED (TODAY'S SELECTION) ──────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 bg-white rounded-2xl shadow-sm mb-6">
@@ -887,11 +888,6 @@ export default function HomeComponent({
           {todaysOffers.map((p) => (<div key={p.id} className="contents">{renderProductCard(p)}</div>))}
         </div>
       </section>
-
-      {/* ── PREMIUM ENGINEERING INFRASTRUCTURE (IGO group capability) ──── */}
-      <div className="mt-10 mb-12 relative z-20">
-        <FarmInfrastructureServices />
-      </div>
 
       {/* ── COMBO KITS & DEALS SECTION — removed per request ─────────── */}
       {false && (
@@ -978,9 +974,6 @@ export default function HomeComponent({
 
       {/* Popular Agri Brands section removed per request. */}
 
-      {/* ── IGO BAND 2: OUR OWN FARMS ────────────────────────────────── */}
-      <IgoGroupBand variant="seeds" />
-
       {/* ── SEEDS SECTION ────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 mb-6">
         <SectionHeader
@@ -1010,33 +1003,6 @@ export default function HomeComponent({
           }
         </div>
       </section>
-
-      {/* ── ADVERTISEMENT BANNERS ──────────────────────────────────── */}
-      {(pageText('home', 'ad1_url', '') || pageText('home', 'ad2_url', '') || pageText('home', 'ad3_url', '')) && (
-        <section className="max-w-7xl mx-auto px-4 py-4 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[1, 2, 3].map(slot => {
-              const url = pageText('home', `ad${slot}_url`, '');
-              if (!url) return null;
-              const type = pageText('home', `ad${slot}_type`, 'image');
-              const link = pageText('home', `ad${slot}_link`, '#');
-              return (
-                <div key={slot} className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition bg-slate-100 group cursor-pointer" onClick={() => { if(link !== '#') { window.open(link, '_blank'); } }}>
-                  {type === 'video' ? (
-                    <video src={url} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" autoPlay muted loop playsInline />
-                  ) : (
-                    <img src={url} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt={`Ad ${slot}`} loading="lazy" />
-                  )}
-                  <div className="absolute top-2 right-2 bg-slate-800/80 text-white text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded shadow-sm">Ad</div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      {/* ── IGO BAND 3: AWARDS / SINCE 2013 ──────────────────────────── */}
-      <IgoGroupBand variant="garden" />
 
       {/* ── URBAN & BALCONY GARDENING SECTION ───────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 mb-6 bg-slate-50 rounded-2xl shadow-sm border border-slate-100">
@@ -1089,9 +1055,6 @@ export default function HomeComponent({
         </div>
       </section>
 
-      {/* ── IGO BAND 4: FINTECH & FARM LOANS ─────────────────────────── */}
-      <IgoGroupBand variant="trending" />
-
       {/* ── TRENDING PRODUCTS (BigHaat-style) ───────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 bg-white rounded-2xl shadow-sm mb-6">
         <SectionHeader
@@ -1104,53 +1067,45 @@ export default function HomeComponent({
         </div>
       </section>
 
-      {/* Authorized Dealer / Top Brands carousel removed per request */}
 
-      <div className="max-w-7xl mx-auto px-4 py-6 mb-6">
-        <CropDoctorConsultation />
-      </div>
+
+
+      {/* (Farmer Updates removed per request) */}
+
+
+
+      
 
 
 
       {/* ── FARMER'S KNOWLEDGE & ADVISORY HUB ────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 py-6 bg-white rounded-2xl shadow-sm mb-6 border border-slate-100">
         <SectionHeader
-          title={pageText('home', 'hub_title', "Farmer's Knowledge & Advisory Hub 📖")}
-          sub={pageText('home', 'hub_sub', "Expert guides, disease alerts, and best practices.")}
+          title="Farmer's Knowledge & Advisory Hub 📖"
+          sub="Expert guides, disease alerts, and best practices."
           onViewAll={() => (setCurrentPage as (p: string) => void)('blog')}
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {SEED_POSTS.slice(0, 3).map((basePost, idx) => {
-            const i = idx + 1;
-            const post = {
-              ...basePost,
-              title: pageText('home', `hub_post${i}_title`, basePost.title),
-              excerpt: pageText('home', `hub_post${i}_desc`, basePost.excerpt),
-              image: pageText('home', `hub_post${i}_img`, basePost.image),
-              category: pageText('home', `hub_post${i}_cat`, basePost.category),
-              author: pageText('home', `hub_post${i}_author`, basePost.author),
-            };
-            return (
+          {SEED_POSTS.slice(0, 3).map((post) => (
             <div key={post.id} onClick={() => setReadingPost(post)}
-              className="border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition group cursor-pointer flex flex-col">
-              <div className="h-40 w-full overflow-hidden shrink-0">
+              className="border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition group cursor-pointer">
+              <div className="h-40 w-full overflow-hidden">
                 <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
               </div>
-              <div className="p-4 bg-slate-50 flex-1 flex flex-col">
+              <div className="p-4 bg-slate-50">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">{post.category}</span>
                   <span className="text-[10px] text-slate-500">{post.readTime}</span>
                 </div>
                 <h4 className="font-display font-black text-slate-800 text-base leading-tight mb-2 group-hover:text-[#1B6B3A] transition">{post.title}</h4>
                 <p className="text-[11px] text-slate-500 line-clamp-2">{post.excerpt}</p>
-                <div className="mt-auto pt-4 flex items-center justify-between">
+                <div className="mt-4 flex items-center justify-between">
                   <span className="text-[10px] font-semibold text-slate-700">By {post.author}</span>
                   <button onClick={(e) => { e.stopPropagation(); setReadingPost(post); }} className="text-[#1B6B3A] font-bold text-xs hover:underline flex items-center gap-1">Read <ArrowRight className="w-3 h-3" /></button>
                 </div>
               </div>
             </div>
-            );
-          })}
+          ))}
         </div>
 
         {/* Full article reader modal */}
@@ -1186,53 +1141,33 @@ export default function HomeComponent({
       
 
 
-      {/* ── WHY CHOOSE IGO AGRI MART? (Premium Dark Design) ───────────────────────────────── */}
-      <section className="relative bg-slate-900 py-20 overflow-hidden rounded-[2.5rem] mx-2 sm:mx-4 my-12 shadow-2xl">
-        {/* Cinematic AI Background */}
-        <div className="absolute inset-0 w-full h-full group">
-          {(pageText('home', 'trust_bg', '') || '/images/trust_bg_premium.png') && (
-            <img src={pageText('home', 'trust_bg', '/images/trust_bg_premium.png')} alt="IGO Farm View" className="w-full h-full object-cover opacity-30 mix-blend-luminosity" />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
+      {/* ── WHY CHOOSE IGO AGRI MART? ───────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-12">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <span className="inline-flex items-center gap-1.5 bg-[#1B6B3A]/10 text-[#1B6B3A] text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full mb-3">
+            <ShieldCheck className="h-3.5 w-3.5" /> The IGO Advantage
+          </span>
+          <h2 className="font-display font-black text-slate-900 text-3xl sm:text-4xl tracking-tight">
+            Why India's Farmers Trust IGO
+          </h2>
+          <p className="text-sm text-slate-500 mt-3">
+            From genuine seeds to expert agronomy, we provide everything you need for a profitable harvest under one roof.
+          </p>
         </div>
         
-        {/* Abstract glowing shapes */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#1B6B3A]/30 blur-[100px] rounded-full mix-blend-screen"></div>
-          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#E8A020]/20 blur-[120px] rounded-full mix-blend-screen"></div>
-        </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="inline-flex items-center gap-2 bg-[#1B6B3A] text-emerald-100 border border-emerald-800/50 text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full mb-5 shadow-lg">
-              <ShieldCheck className="h-4 w-4 text-[#E8A020]" /> {pageText('home', 'trust_badge', 'The IGO Advantage')}
-            </span>
-            <h2 className="font-display font-black text-white text-4xl sm:text-5xl tracking-tight leading-tight">
-              {pageText('home', 'trust_title1', "Why India's Farmers")} <br /> <span className="text-[#E8A020]">{pageText('home', 'trust_title2', 'Trust IGO')}</span>
-            </h2>
-            <p className="text-slate-400 text-sm sm:text-base mt-5 max-w-lg mx-auto leading-relaxed">
-              {pageText('home', 'trust_sub', 'From genuine seeds to expert agronomy, we provide everything you need for a profitable harvest under one roof.')}
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {TRUST_POINTS.map((point, i) => {
-              const Icon = point.icon;
-              return (
-                <div key={i} className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-3xl p-8 hover:bg-slate-800/80 hover:border-[#E8A020]/30 transition-all duration-500 group relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-all duration-700 group-hover:scale-150 group-hover:rotate-12 group-hover:-translate-y-2 group-hover:translate-x-2 pointer-events-none">
-                    <Icon className="h-40 w-40 text-white" />
-                  </div>
-                  
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center mb-6 group-hover:-translate-y-2 group-hover:shadow-[0_10px_20px_-10px_rgba(232,160,32,0.4)] transition-all duration-500 border border-slate-600/50 relative z-10`}>
-                    <Icon className={`h-6 w-6 text-[#E8A020]`} />
-                  </div>
-                  <h3 className="font-bold text-white text-xl mb-3 relative z-10">{pageText('home', `trustpt${i + 1}_t`, point.title)}</h3>
-                  <p className="text-sm text-slate-400 leading-relaxed relative z-10">{pageText('home', `trustpt${i + 1}_d`, point.desc)}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {TRUST_POINTS.map((point, i) => {
+            const Icon = point.icon;
+            return (
+              <div key={i} className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-[#1B6B3A]/30 transition group">
+                <div className={`w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform ${point.color}`}>
+                  <Icon className="h-6 w-6" />
                 </div>
-              );
-            })}
-          </div>
+                <h3 className="font-bold text-slate-800 text-lg mb-2">{point.title}</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">{point.desc}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -1243,14 +1178,14 @@ export default function HomeComponent({
         <div className="absolute inset-0 bg-[#0B3D22]/85" />
         <div className="relative max-w-7xl mx-auto px-4">
           <h3 className="text-center font-display font-black text-lg mb-6 tracking-wider uppercase text-emerald-100">
-            {pageText('home', 'statbar_title', "INDIA'S COMPLETE AGRICULTURAL PLATFORM")}
+            INDIA'S COMPLETE AGRICULTURAL PLATFORM
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
-              { num: pageText('home', 'statbar1_n', '27'), label: pageText('home', 'statbar1_l', 'IGO Brands') },
-              { num: pageText('home', 'statbar2_n', '5,000+'), label: pageText('home', 'statbar2_l', 'Farmers Served') },
-              { num: pageText('home', 'statbar3_n', '10,000+'), label: pageText('home', 'statbar3_l', 'Products') },
-              { num: pageText('home', 'statbar4_n', '36 States'), label: pageText('home', 'statbar4_l', 'Pan-India Delivery') },
+              { num: '27', label: 'IGO Brands' },
+              { num: '5,000+', label: 'Farmers Served' },
+              { num: '10,000+', label: 'Products' },
+              { num: '36 States', label: 'Pan-India Delivery' },
             ].map((s, i) => (
               <div key={i}>
                 <div className="font-display font-black text-3xl sm:text-4xl text-[#E8A020]">{s.num}</div>
@@ -1270,31 +1205,31 @@ export default function HomeComponent({
           <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-16 translate-x-16" />
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex-1">
-              <span className="inline-block bg-[#E8A020] text-emerald-950 text-[9px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full mb-3">{pageText('home', 'b2b_badge', 'B2B / Wholesale')}</span>
+              <span className="inline-block bg-[#E8A020] text-emerald-950 text-[9px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full mb-3">B2B / Wholesale</span>
               <h2 className="font-display font-black text-2xl sm:text-3xl leading-tight mb-2">
-                {pageText('home', 'b2b_title', 'Need to Buy in Bulk?')}
+                Need to Buy in Bulk?
               </h2>
               <p className="text-emerald-100 text-sm max-w-md">
-                {pageText('home', 'b2b_desc', 'We supply directly to FPOs, cooperatives, retailers, and institutions across Tamil Nadu & India. Get competitive wholesale pricing, credit terms & dedicated account manager.')}
+                We supply directly to FPOs, cooperatives, retailers, and institutions across Tamil Nadu &amp; India. Get competitive wholesale pricing, credit terms &amp; dedicated account manager.
               </p>
               <div className="flex flex-wrap gap-2 mt-4">
-                {(pageText('home', 'b2b_tags', 'FPOs & Co-ops, Retailers, Exporters, Institutions, Agri Startups')).split(',').map(tag => (
-                  <span key={tag.trim()} className="text-[10px] font-bold bg-white/10 border border-white/20 px-2.5 py-1 rounded-full">{tag.trim()}</span>
+                {['FPOs & Co-ops', 'Retailers', 'Exporters', 'Institutions', 'Agri Startups'].map(tag => (
+                  <span key={tag} className="text-[10px] font-bold bg-white/10 border border-white/20 px-2.5 py-1 rounded-full">{tag}</span>
                 ))}
               </div>
             </div>
             <div className="flex flex-col gap-3 shrink-0 w-full md:w-auto">
               <button
-                onClick={() => window.open(`https://wa.me/${pageText('home', 'wa_phone', '917397785803')}?text=Hello%20IGO,%20I%20want%20bulk%20wholesale%20pricing`)}
+                onClick={() => window.open('https://wa.me/917397785803?text=Hello%20IGO,%20I%20want%20bulk%20wholesale%20pricing')}
                 className="bg-[#E8A020] hover:bg-amber-400 text-emerald-950 font-black text-sm px-6 py-3.5 rounded-xl shadow-lg transition hover:-translate-y-0.5 min-h-[48px] text-center"
               >
-                💬 {pageText('home', 'b2b_btn1', 'WhatsApp for Bulk Quote')}
+                💬 WhatsApp for Bulk Quote
               </button>
               <button
                 onClick={() => (setCurrentPage as (p: string) => void)('contact')}
                 className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold text-sm px-6 py-3.5 rounded-xl transition min-h-[48px] text-center"
               >
-                📋 {pageText('home', 'b2b_btn2', 'Submit Inquiry Form')}
+                📋 Submit Inquiry Form
               </button>
             </div>
           </div>
@@ -1309,23 +1244,20 @@ export default function HomeComponent({
               💬
             </div>
             <div>
-              <div className="font-bold text-sm">{pageText('home', 'wa_title', 'Order directly via WhatsApp!')}</div>
+              <div className="font-bold text-sm">Order directly via WhatsApp!</div>
               <div className="text-xs text-emerald-200">
-                {pageText('home', 'wa_desc1', 'Send requirements to')} <strong className="text-white">+{pageText('home', 'wa_phone', '917397785803')}</strong> {pageText('home', 'wa_desc2', '— instant reply')}
+                Send requirements to <strong className="text-white">+91 7397785803</strong> — instant reply
               </div>
             </div>
           </div>
           <button
-            onClick={() => window.open(`https://wa.me/${pageText('home', 'wa_phone', '917397785803')}?text=Hello%20IGO%20Agri%20Market,%20I%20want%20to%20order`)}
-            className="bg-[#E8A020] hover:bg-amber-400 text-emerald-950 text-xs font-black px-6 py-3 rounded-xl shadow transition shrink-0 uppercase"
+            onClick={() => window.open('https://wa.me/917397785803?text=Hello%20IGO%20Agri%20Market,%20I%20want%20to%20order')}
+            className="bg-[#E8A020] hover:bg-amber-400 text-emerald-950 text-xs font-black px-6 py-3 rounded-xl shadow transition shrink-0"
           >
-            {pageText('home', 'wa_btn', 'Order via WhatsApp')}
+            ORDER VIA WHATSAPP
           </button>
         </div>
       </section>
-
-      {/* ── THE 26 VERTICALS OF IGO (Ecosystem Slider) ───────────────── */}
-      <IgoVerticalsSlider />
 
       {/* ── OUR BRANDS CAROUSEL (Farmers Factory Style) ─── */}
       <section className="bg-slate-50 py-16">
@@ -1413,7 +1345,6 @@ export default function HomeComponent({
           `}</style>
         </div>
       </section>
-
 
     </div>
   );

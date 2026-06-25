@@ -158,24 +158,28 @@ export default function Footer({ setCurrentPage, setSelectedCategory }: FooterPr
             </ul>
           </div>
 
-          {/* IGO Group Ecosystem */}
+
+          {/* Join Us / Newsletter */}
           <div>
-            <h4 className="font-extrabold text-white text-xs uppercase tracking-widest mb-4 pb-2 border-b border-white/10">IGO Group Ecosystem</h4>
-            <div className="space-y-2">
-              {IGO_BRANDS.map((brand, i) => (
-                <a key={i} href={brand.url} target={brand.url !== '#' ? '_blank' : undefined} rel="noreferrer"
-                  className="flex items-center justify-between group">
-                  <div>
-                    <div className="text-xs font-bold text-slate-300 group-hover:text-white transition">{brand.name}</div>
-                    <div className="text-[10px] text-slate-500">{brand.tag}</div>
-                  </div>
-                  <span className={`text-[9px] font-black px-1.5 py-0.5 rounded ${brand.active ? 'bg-emerald-900 text-emerald-400' : 'bg-slate-800 text-slate-500'}`}>
-                    {brand.active ? 'ACTIVE' : 'SOON'}
-                  </span>
-                </a>
-              ))}
+            <h4 className="font-extrabold text-white text-xs uppercase tracking-widest mb-4 pb-2 border-b border-white/10">Stay Updated</h4>
+            <p className="text-slate-400 text-xs leading-relaxed mb-4">
+              Get the latest crop advisories, market rates, and exclusive offers delivered directly to you.
+            </p>
+            <div className="flex flex-col gap-2">
+              <input type="email" placeholder="Your Email or Phone" className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition" />
+              <button className="bg-[#1B6B3A] hover:bg-emerald-700 text-white font-bold text-xs py-2 rounded-lg transition">Subscribe Now</button>
+            </div>
+            
+            <div className="mt-6">
+              <h4 className="font-extrabold text-[#E8A020] text-[10px] uppercase tracking-widest mb-3">100% Secure Payments</h4>
+              <div className="flex gap-2 items-center opacity-70">
+                <div className="h-6 w-10 bg-white/10 rounded flex items-center justify-center text-[8px] font-black border border-white/5">UPI</div>
+                <div className="h-6 w-10 bg-white/10 rounded flex items-center justify-center text-[8px] font-black border border-white/5">CARD</div>
+                <div className="h-6 w-10 bg-white/10 rounded flex items-center justify-center text-[8px] font-black border border-white/5">CASH</div>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
 

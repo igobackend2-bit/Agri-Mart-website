@@ -29,7 +29,7 @@ import ContactComponent from './components/ContactComponent';
 import CropDoctorComponent from './components/CropDoctorComponent';
 import PartnerPortalComponent from './components/PartnerPortalComponent';
 import KnowledgeHubComponent from './components/KnowledgeHubComponent';
-import AIAssistantWidget from './components/AIAssistantWidget';
+
 import Footer from './components/Footer';
 import OrderTrackingComponent from './components/OrderTrackingComponent';
 import AgriEventsComponent from './components/AgriEventsComponent';
@@ -745,7 +745,6 @@ export default function App() {
       </div>
 
       {currentPage !== 'admin' && currentPage !== 'auth' && <Footer setCurrentPage={navigateTo} setSelectedCategory={setSelectedCategory} />}
-      {currentPage !== 'admin' && <AIAssistantWidget lang={lang} />}
 
       {/* First-visit login prompt */}
       {showWelcome && currentPage !== 'admin' && (

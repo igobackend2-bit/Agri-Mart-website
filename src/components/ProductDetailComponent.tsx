@@ -21,7 +21,7 @@ import { Product, Review } from '../types';
 import { translations, LanguageDict } from '../translation';
 import { fetchReviews, addReview } from '../dbHelper';
 import { sendInboxMessage } from '../storeData';
-import { getComboConfig } from '../siteConfig';
+import { getComboConfig, productSpecsFor, packsFor } from '../siteConfig';
 
 interface ProductDetailProps {
   lang: 'en' | 'ta';
@@ -60,6 +60,12 @@ export default function ProductDetailComponent({
   // Tools → pieces, everything else → packs. Derived from product.unit
   // (with a category/name fallback) so every product shows the right option.
   const { variants: PACK_VARIANTS, selectLabel: SELECT_LABEL } = (() => {
+    // Admin-defined packs (admin "Pack & Unit Sizes" editor) take priority over
+    // the auto-generated options so the shop owner can set exact 5kg/10kg/etc.
+    const adminPacks = packsFor(product.name);
+    if (adminPacks.length > 0) {
+      return { selectLabel: 'Select Quantity', variants: adminPacks };
+    }
     const raw = (product.unit || '').trim();
     const u = raw.toLowerCase();
     const ctx = `${product.category} ${product.subcategory} ${product.name}`.toLowerCase();
@@ -180,6 +186,14 @@ export default function ProductDetailComponent({
 
     // Fetch review docs
     fetchReviews(product.id).then(setReviewsList).catch(console.error);
+
+    // Track recently-viewed products (most recent first, capped at 12).
+    try {
+      const raw = localStorage.getItem('igo_recently_viewed');
+      const ids: string[] = raw ? JSON.parse(raw) : [];
+      const next = [product.id, ...ids.filter((id) => id !== product.id)].slice(0, 12);
+      localStorage.setItem('igo_recently_viewed', JSON.stringify(next));
+    } catch { /* ignore */ }
   }, [product]);
 
   const handlePincodeCheck = (e: React.FormEvent) => {
@@ -235,6 +249,54 @@ export default function ProductDetailComponent({
   const relatedList = allProducts
     .filter(x => x.category === product.category && x.id !== product.id)
     .slice(0, 6);
+
+  // Structured spec rows for the Overview "Specifications" table — only fields
+  // that actually exist on this product are shown.
+  const specRows = ([
+    ['Brand', product.brand],
+    ['Category', product.category],
+    ['Pack / Unit', product.unit],
+    ['Dosage', product.dosage],
+    ['Best for Crops', product.crops && product.crops.length ? product.crops.join(', ') : ''],
+    ['Organic', product.isOrganic ? 'Certified Organic' : ''],
+    ['Origin', product.origin],
+    ['Batch No.', product.batchNumber],
+    ['Shelf Life / Expiry', product.expiryDate],
+    ['Min. Order Qty', product.moq ? String(product.moq) : ''],
+  ] as [string, string | undefined][]).filter((r) => !!r[1] && String(r[1]).trim() !== '') as [string, string][];
+
+  // Admin-entered custom spec rows (Attribute -> Detail) take priority, then the
+  // auto-derived rows, so each product shows a full specifications table.
+  // Empty values are filtered out so the admin can safely ignore unknown specs.
+  const allSpecRows: [string, string][] = [
+    ...productSpecsFor(product.name).filter(s => s.k.trim() !== '' && s.v.trim() !== '').map((s) => [s.k, s.v] as [string, string]),
+    ...specRows,
+  ];
+
+  // Estimated delivery date (today + 2 days) for the pincode checker.
+  const deliveryBy = new Date(Date.now() + 2 * 86400000).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+
+  // Stable social-proof number derived from the product's review count.
+  const boughtThisWeek = 18 + ((product.reviewCount || 0) % 82);
+
+  // Key-feature bullets: use the product's own tags if present, else sensible
+  // defaults from its attributes, so every product page has a full feature list.
+  const keyFeatures = (product.tags && product.tags.length > 0 ? product.tags : [
+    '100% genuine, quality-checked product',
+    product.isOrganic ? 'Certified organic — safe for soil and crops' : 'Sourced directly from trusted brands',
+    product.crops && product.crops.length > 0 ? `Best suited for ${product.crops.slice(0, 3).join(', ')}` : 'Suitable for a wide range of crops',
+    'Simple application with reliable, proven results',
+    'Backed by free IGO agronomy support',
+  ]).filter(Boolean) as string[];
+
+  // Recently-viewed products (excluding the current one), newest first.
+  const recentlyViewed = (() => {
+    try {
+      const raw = localStorage.getItem('igo_recently_viewed');
+      const ids: string[] = raw ? JSON.parse(raw) : [];
+      return ids.filter((id) => id !== product.id).map((id) => allProducts.find((p) => p.id === id)).filter(Boolean).slice(0, 6) as Product[];
+    } catch { return []; }
+  })();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -310,20 +372,22 @@ export default function ProductDetailComponent({
               <span className="text-xs text-slate-400 font-medium">|</span>
               <span className="text-xs text-slate-600 font-bold">{product.reviewCount} customer reviews</span>
             </div>
+            <p className="text-xs font-black text-emerald-700 flex items-center gap-1.5">🔥 {boughtThisWeek} bought this week</p>
 
             {/* Price section with discount strikethrough */}
             <div className="space-y-1">
               <span className="text-xs text-slate-400 tracking-wide block uppercase font-bold">Price Details:</span>
-              <div className="flex items-baseline gap-3">
-                <span className="font-display font-black text-2xl text-slate-900">₹{product.price}</span>
-                {product.mrp > product.price && (
+              <div className="flex items-baseline gap-3 flex-wrap">
+                <span className="font-display font-black text-2xl text-slate-900">₹{packPrice.toLocaleString('en-IN')}</span>
+                {packMrp > packPrice && (
                   <>
-                    <span className="text-sm text-slate-400 line-through">₹{product.mrp}</span>
+                    <span className="text-sm text-slate-400 line-through">₹{packMrp.toLocaleString('en-IN')}</span>
                     <span className="bg-red-100 text-[#D94F3D] text-[10px] sm:text-xs font-extrabold px-2 py-0.5 rounded">
-                      {product.discount}% OFF
+                      {Math.round((1 - packPrice / packMrp) * 100)}% OFF
                     </span>
                   </>
                 )}
+                <span className="text-[11px] font-bold text-slate-500">for {pack.label}</span>
               </div>
               <p className="text-[11px] text-[#1B6B3A] font-semibold">
                 Include GST & local agricultural subvention tax refunds
@@ -352,7 +416,7 @@ export default function ProductDetailComponent({
 
               {pincodeStatus === 'available' && (
                 <p className="text-[11px] text-emerald-700 font-semibold mt-2.5">
-                  {t.pincodeDeliveryAvailable} (Delivery within 2 days to Chennai and suburbs)
+                  {t.pincodeDeliveryAvailable} — Get it by <strong>{deliveryBy}</strong>
                 </p>
               )}
               {pincodeStatus === 'offline' && (
@@ -363,23 +427,52 @@ export default function ProductDetailComponent({
             </div>
 
             {/* Pack size selector */}
-            <div className="pt-4">
-              <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">{SELECT_LABEL}</p>
-              <div className="flex gap-2 flex-wrap">
-                {PACK_VARIANTS.map((v, i) => {
-                  const vPrice = Math.round(product.price * v.mult * (1 - (v.save || 0) / 100));
-                  return (
-                    <button key={i} onClick={() => setPackIdx(i)}
-                      className={'relative px-4 py-2.5 rounded-xl border-2 text-left transition ' + (packIdx === i ? 'border-[#1B6B3A] bg-emerald-50 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300')}>
-                      <span className={'block text-xs font-black ' + (packIdx === i ? 'text-[#1B6B3A]' : 'text-slate-700')}>{v.label}</span>
-                      <span className="block text-[11px] font-bold text-slate-500 mt-0.5">₹{vPrice.toLocaleString('en-IN')}</span>
-                      {v.save ? (
-                        <span className="absolute -top-2 -right-2 bg-[#E8A020] text-emerald-950 text-[8px] font-black px-1.5 py-0.5 rounded-full">SAVE {v.save}%</span>
-                      ) : null}
-                    </button>
-                  );
-                })}
+            <div className="pt-4 space-y-4">
+              {/* Single Pack */}
+              <div>
+                <p className="text-[11px] font-black text-slate-700 uppercase tracking-wide mb-2">Single Pack</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {PACK_VARIANTS.map((v, i) => ({ v, i })).filter(({ i }) => i === 0).map(({ v, i }) => {
+                    const base = product.mrp > product.price ? product.mrp : product.price;
+                    const vPrice = Math.round(product.price * v.mult * (1 - (v.save || 0) / 100));
+                    const vMrp = Math.round(base * v.mult);
+                    const off = vMrp > vPrice ? Math.round((1 - vPrice / vMrp) * 100) : 0;
+                    return (
+                      <button key={i} onClick={() => setPackIdx(i)}
+                        className={'relative rounded-xl border-2 p-2.5 pt-3.5 text-left transition ' + (packIdx === i ? 'border-[#1B6B3A] bg-emerald-50 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300')}>
+                        {off > 0 && <span className="absolute -top-2 left-2 bg-[#E8A020] text-emerald-950 text-[8px] font-black px-1.5 py-0.5 rounded">{off}% OFF</span>}
+                        <span className={'block text-xs font-black ' + (packIdx === i ? 'text-[#1B6B3A]' : 'text-slate-800')}>{v.label}</span>
+                        <span className="block text-sm font-black text-slate-900 mt-0.5">₹{vPrice.toLocaleString('en-IN')}{off > 0 && <span className="text-[10px] text-slate-400 line-through font-bold ml-1">₹{vMrp.toLocaleString('en-IN')}</span>}</span>
+                        <span className="block text-[9px] font-bold text-[#1B6B3A] mt-0.5 uppercase tracking-wide">Best Seller</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
+
+              {/* Big Savings on Multipack */}
+              {PACK_VARIANTS.length > 1 && (
+                <div>
+                  <p className="text-[11px] font-black text-slate-700 uppercase tracking-wide mb-2">Big Savings on Multipack</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {PACK_VARIANTS.map((v, i) => ({ v, i })).filter(({ i }) => i > 0).map(({ v, i }) => {
+                      const base = product.mrp > product.price ? product.mrp : product.price;
+                      const vPrice = Math.round(product.price * v.mult * (1 - (v.save || 0) / 100));
+                      const vSum = Math.round(base * v.mult);
+                      const off = vSum > vPrice ? Math.round((1 - vPrice / vSum) * 100) : (v.save || 0);
+                      return (
+                        <button key={i} onClick={() => setPackIdx(i)}
+                          className={'relative rounded-xl border-2 p-2.5 pt-3.5 text-left transition ' + (packIdx === i ? 'border-[#1B6B3A] bg-emerald-50 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300')}>
+                          {off > 0 && <span className="absolute -top-2 left-2 bg-[#E8A020] text-emerald-950 text-[8px] font-black px-1.5 py-0.5 rounded">{off}% OFF</span>}
+                          <span className={'block text-xs font-black ' + (packIdx === i ? 'text-[#1B6B3A]' : 'text-slate-800')}>{v.label}</span>
+                          <span className="block text-sm font-black text-slate-900 mt-0.5">₹{vPrice.toLocaleString('en-IN')}<span className="text-[10px] text-slate-400 line-through font-bold ml-1">₹{vSum.toLocaleString('en-IN')}</span></span>
+                          <span className="block text-[9px] font-bold text-[#E8A020] mt-0.5 uppercase tracking-wide">Value Pack</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Stock urgency */}
@@ -470,6 +563,19 @@ export default function ProductDetailComponent({
                 <span>{stock === 0 ? 'Out of Stock' : t.addToCart}</span>
               </button>
 
+              {/* Buy Now — add to cart and jump straight to checkout */}
+              <button
+                onClick={() => { if (stock !== 0) { addToCart(cartProduct, quantity); setCurrentPage('checkout'); } }}
+                disabled={stock === 0}
+                className={'font-black text-sm px-6 py-0 h-12 rounded-xl flex items-center justify-center gap-2 flex-1 min-w-[120px] shadow-lg transition transform select-none ' +
+                  (stock === 0
+                    ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+                    : 'bg-[#E8A020] hover:bg-amber-400 text-emerald-950 active:scale-95 hover:translate-y-[-2px] cursor-pointer')}
+              >
+                <Sparkles className="h-5 w-5" />
+                <span>Buy Now</span>
+              </button>
+
               {/* Wishlist Heart toggle */}
               <button
                 onClick={() => toggleWishlist(product.id)}
@@ -485,6 +591,24 @@ export default function ProductDetailComponent({
             
             {/* Spacer for mobile sticky bar */}
             <div className="h-20 sm:hidden"></div>
+
+            {/* Assurance / trust strip */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-5">
+              {[
+                { Icon: Truck, t: 'Free Delivery', d: 'On orders ₹1,300+' },
+                { Icon: BadgeCheck, t: '100% Genuine', d: 'Brand-direct' },
+                { Icon: ShieldCheck, t: 'Secure Checkout', d: 'Safe payment' },
+                { Icon: Award, t: 'Quality Assured', d: 'Expert-vetted' },
+              ].map((a, i) => (
+                <div key={i} className="flex items-center gap-2 bg-[#F7F9F4] border border-slate-100 rounded-xl px-3 py-2.5">
+                  <a.Icon className="h-5 w-5 text-[#1B6B3A] shrink-0" />
+                  <div>
+                    <div className="text-[11px] font-black text-slate-800 leading-tight">{a.t}</div>
+                    <div className="text-[9px] text-slate-400 leading-tight">{a.d}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Green WhatsApp direct messaging CTA block */}
@@ -495,7 +619,7 @@ export default function ProductDetailComponent({
             </div>
             <button
               onClick={() => {
-                const textMsg = encodeURIComponent(`Hello IGO Agri Market! I want to order ${quantity} units of ${product.name} (Brand: ${product.brand}) for ₹${product.price * quantity}`);
+                const textMsg = encodeURIComponent(`Hello IGO Agri Market! I want to order ${quantity} x ${pack.label} of ${product.name} (Brand: ${product.brand}) for ₹${packPrice * quantity}`);
                 window.open(`https://wa.me/917397785803?text=${textMsg}`);
               }}
               className="bg-green-600 hover:bg-green-700 text-white font-black text-xs px-4 py-2.5 rounded-lg flex items-center gap-1.5 shadow sm:ml-auto select-none cursor-pointer"
@@ -592,6 +716,39 @@ export default function ProductDetailComponent({
           {activeTab === 'Overview' && (
             <div className="space-y-4">
               <p>{product.description}</p>
+
+              {allSpecRows.length > 0 && (
+                <div className="max-w-2xl">
+                  <h5 className="font-display font-black text-slate-800 text-sm mb-3 flex items-center gap-1.5">
+                    <Info className="h-4 w-4 text-[#1B6B3A]" /> Specifications
+                  </h5>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-slate-100 border border-slate-100 rounded-xl overflow-hidden">
+                    {allSpecRows.map(([k, v]) => (
+                      <div key={k} className="bg-white px-4 py-2.5 flex items-center justify-between gap-3">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wide shrink-0">{k}</span>
+                        <span className="text-xs font-bold text-slate-800 text-right">{v}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {keyFeatures.length > 0 && (
+                <div className="max-w-2xl">
+                  <h5 className="font-display font-black text-slate-800 text-sm mb-3 flex items-center gap-1.5">
+                    <CheckCircle className="h-4 w-4 text-[#1B6B3A]" /> Key Features
+                  </h5>
+                  <ul className="space-y-2">
+                    {keyFeatures.map((f, i) => (
+                      <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
+                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1B6B3A] shrink-0"></span>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <div className="bg-[#F7F9F4] p-4 rounded-lg border border-slate-100 max-w-xl">
                 <h5 className="font-display font-bold text-[#1B6B3A] text-xs flex items-center gap-1.5 mb-2">
                   <Info className="h-4 w-4" />
@@ -624,7 +781,40 @@ export default function ProductDetailComponent({
 
           {activeTab === 'Reviews' && (
             <div className="space-y-8">
-              
+
+              {/* Rating summary breakdown */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 max-w-xl">
+                {(() => {
+                  const total = reviewsList.length;
+                  const avg = total ? (reviewsList.reduce((s, r) => s + (r.rating || 0), 0) / total) : (product.rating || 0);
+                  const counts = [5, 4, 3, 2, 1].map((star) => reviewsList.filter((r) => Math.round(r.rating) === star).length);
+                  return (
+                    <>
+                      <div className="flex items-end gap-3 mb-4">
+                        <div className="font-display font-black text-4xl text-slate-900">{avg.toFixed(1)}</div>
+                        <div className="pb-1">
+                          <div className="text-yellow-400 text-sm">{'★★★★★'.slice(0, Math.round(avg))}<span className="text-slate-200">{'★★★★★'.slice(Math.round(avg))}</span></div>
+                          <div className="text-[11px] text-slate-400 font-bold">{total} rating{total === 1 ? '' : 's'}</div>
+                        </div>
+                      </div>
+                      <div className="space-y-1.5">
+                        {[5, 4, 3, 2, 1].map((star, idx) => {
+                          const c = counts[idx];
+                          const pct = total ? Math.round((c / total) * 100) : 0;
+                          return (
+                            <div key={star} className="flex items-center gap-2">
+                              <span className="text-[11px] font-bold text-slate-600 w-7 flex items-center gap-0.5">{star}<span className="text-yellow-400">★</span></span>
+                              <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-[#1B6B3A] rounded-full" style={{ width: pct + '%' }}></div></div>
+                              <span className="text-[10px] text-slate-400 font-bold w-8 text-right">{pct}%</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+
               {/* Review Input form */}
               <div className="bg-[#F7F9F4] p-5 rounded-lg border border-slate-100 max-w-xl">
                 <h5 className="font-display font-bold text-[#1B6B3A] text-xs uppercase tracking-wider mb-4">
@@ -762,6 +952,41 @@ export default function ProductDetailComponent({
                   </div>
                 </div>
 
+                <div className="p-3.5 pt-0 mt-auto border-t border-slate-50 flex items-center justify-between">
+                  <div className="text-xs font-black text-slate-900">₹{p.price}</div>
+                  <span className="text-[10px] font-bold text-[#1B6B3A] hover:underline">View details →</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Recently Viewed */}
+      {recentlyViewed.length > 0 && (
+        <section className="mt-14 space-y-6">
+          <div className="flex justify-between items-end border-b border-slate-100 pb-3">
+            <h3 className="font-display font-extrabold text-[#1B6B3A] text-xl tracking-tight">
+              Recently Viewed
+            </h3>
+          </div>
+          <div className="flex gap-6 overflow-x-auto pb-4 custom-scroll snap-x select-none">
+            {recentlyViewed.map((p) => (
+              <div
+                key={p.id}
+                onClick={() => setSelectedProduct(p)}
+                className="bg-white border border-slate-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-[#1B6B3A] transition shrink-0 w-60 snap-start cursor-pointer flex flex-col justify-between"
+              >
+                <div>
+                  <div className="h-36 bg-slate-50 relative">
+                    <img src={p.images?.[0] || '/catalog/nursery-essentials/Pots.png'} onError={(e) => { (e.target as HTMLImageElement).src = '/catalog/nursery-essentials/Pots.png'; }} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
+                  </div>
+                  <div className="p-3.5">
+                    <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">{p.brand}</span>
+                    <h5 className="font-display font-bold text-slate-800 text-xs lines-2 mt-1 truncate">{p.name}</h5>
+                    <div className="text-xs text-yellow-500 font-bold mt-2">★ {p.rating}</div>
+                  </div>
+                </div>
                 <div className="p-3.5 pt-0 mt-auto border-t border-slate-50 flex items-center justify-between">
                   <div className="text-xs font-black text-slate-900">₹{p.price}</div>
                   <span className="text-[10px] font-bold text-[#1B6B3A] hover:underline">View details →</span>

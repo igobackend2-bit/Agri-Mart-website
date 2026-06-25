@@ -355,6 +355,9 @@ export default function Header({
                 <option value="ta">{'தமிழ் (Tamil)'}</option>
                 <option value="hi">{'हिन्दी (Hindi)'}</option>
                 <option value="te">{'తెలుగు (Telugu)'}</option>
+                <option value="kn">{'ಕನ್ನಡ (Kannada)'}</option>
+                <option value="ml">{'മലയാളം (Malayalam)'}</option>
+                <option value="mr">{'मराठी (Marathi)'}</option>
               </select>
             </div>
 
@@ -448,7 +451,7 @@ export default function Header({
             { name: 'Shop', action: () => { setSelectedCategory(null); setCurrentPage('category'); } },
             { name: 'Sellers', action: () => setCurrentPage('partners') },
             { name: 'Services', action: () => setCurrentPage('services') },
-            { name: 'Farm Loans', action: () => window.open('https://igofarmloans.com', '_blank', 'noopener,noreferrer') },
+            { name: 'Farm Loans', action: () => setCurrentPage('farm-loans') },
             { name: 'Contact Us', action: () => setCurrentPage('contact') },
             { name: 'FAQs', action: () => setCurrentPage('knowledge-hub') },
             { name: 'Blogs', action: () => setCurrentPage('blog') },
@@ -550,29 +553,27 @@ export default function Header({
               </button>
             )}
 
-            {/* Mobile Language Switcher Segmented Row */}
+            {/* Mobile Language Switcher */}
             <div className="flex items-center justify-between border-t border-slate-100 pt-3 mt-1.5 bg-slate-50/50 -mx-4 -mb-4 p-4 rounded-b-lg">
               <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
                 <span>🌐</span>
                 <span>Language / மொழி</span>
               </span>
-              <div className="flex bg-slate-100 rounded-full p-0.5 border border-slate-200 shadow-inner">
-                <button
-                  onClick={() => setLang('en')}
-                  className={`px-3 py-1 text-[10px] font-black rounded-full transition cursor-pointer ${
-                    lang === 'en' ? 'bg-[#1B6B3A] text-white shadow' : 'text-slate-500 hover:text-slate-800'
-                  }`}
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-[#1B6B3A] border border-slate-200 rounded-full shadow-sm">
+                <Globe className="h-3.5 w-3.5 shrink-0" />
+                <select
+                  value={lang}
+                  onChange={(e) => setLang(e.target.value as any)}
+                  className="bg-transparent text-[11px] font-bold text-[#1B6B3A] outline-none cursor-pointer pr-1 w-24"
                 >
-                  English
-                </button>
-                <button
-                  onClick={() => setLang('ta')}
-                  className={`px-3 py-1 text-[10px] font-black rounded-full transition cursor-pointer ${
-                    lang === 'ta' ? 'bg-[#1B6B3A] text-white shadow' : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  தமிழ்
-                </button>
+                  <option value="en">English</option>
+                  <option value="ta">{'தமிழ் (Tamil)'}</option>
+                  <option value="hi">{'हिन्दी (Hindi)'}</option>
+                  <option value="te">{'తెలుగు (Telugu)'}</option>
+                  <option value="kn">{'ಕನ್ನಡ (Kannada)'}</option>
+                  <option value="ml">{'മലയാളം (Malayalam)'}</option>
+                  <option value="mr">{'मराठी (Marathi)'}</option>
+                </select>
               </div>
             </div>
           </div>

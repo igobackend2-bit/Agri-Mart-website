@@ -73,6 +73,8 @@ const KEYS = {
   homeOverrides: 'igo_home_overrides',
   siteImages: 'igo_site_images',
   pageContent: 'igo_page_content',
+  productSpecs: 'igo_product_specs',
+  productPacks: 'igo_product_packs',
   categoryMeta: 'igo_category_meta',
   customCategories: 'igo_custom_categories',
   combos: 'igo_combo_offers',
@@ -214,7 +216,7 @@ export function validateCoupon(code: string, subtotal: number): CouponResult {
 // ── Hero banners ─────────────────────────────────────────────────────────────
 export function getBanners(): HeroBanner[] {
   const banners = readJSON<HeroBanner[]>(KEYS.banners, []);
-  return Array.isArray(banners) ? banners.filter(b => b && b.img && b.title) : [];
+  return Array.isArray(banners) ? banners.filter(b => b && (b.img || b.title)) : [];
 }
 export function saveBanners(banners: HeroBanner[]): void {
   writeWithSync(KEYS.banners, banners);
@@ -314,6 +316,43 @@ export function savePageContent(content: PageContent): void {
 export function pageText(page: string, field: string, fallback: string): string {
   const v = getPageContent()?.[page]?.[field];
   return v && v.trim() ? v : fallback;
+}
+
+// ── Per-product custom specifications (admin "Product Specifications" editor) ──
+// Stored by product NAME so they survive catalog rebuilds. Each product maps to
+// an ordered list of { k: attribute, v: detail } rows shown in its spec table.
+export type ProductSpecs = Record<string, { k: string; v: string }[]>;
+export function getProductSpecs(): ProductSpecs {
+  return readJSON<ProductSpecs>(KEYS.productSpecs, {});
+}
+export function saveProductSpecs(specs: ProductSpecs): void {
+  writeWithSync(KEYS.productSpecs, specs);
+}
+export function productSpecsFor(name: string): { k: string; v: string }[] {
+  const rows = getProductSpecs()[name];
+  return Array.isArray(rows) ? rows.filter((r) => r && r.k && r.v) : [];
+}
+
+// ── Per-product pack / unit variants (admin "Pack & Unit Sizes" editor) ──────
+// Stored by product NAME. Each pack = a label (e.g. "5 kg"), a quantity
+// multiplier (mult, relative to the base unit price) and an optional bulk
+// discount % (save). The product detail page shows these instead of the
+// auto-generated 1/3/5 packs when an admin has defined them.
+export type ProductPack = { label: string; mult: number; save: number };
+export type ProductPacks = Record<string, ProductPack[]>;
+export function getProductPacks(): ProductPacks {
+  return readJSON<ProductPacks>(KEYS.productPacks, {});
+}
+export function saveProductPacks(packs: ProductPacks): void {
+  writeWithSync(KEYS.productPacks, packs);
+}
+export function packsFor(name: string): ProductPack[] {
+  const rows = getProductPacks()[name];
+  return Array.isArray(rows)
+    ? rows.filter((r) => r && r.label && Number(r.mult) > 0).map((r) => ({
+        label: String(r.label), mult: Number(r.mult) || 1, save: Number(r.save) || 0,
+      }))
+    : [];
 }
 
 // ── Homepage Overrides ───────────────────────────────────────────────────────
