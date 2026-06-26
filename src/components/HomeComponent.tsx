@@ -788,9 +788,9 @@ export default function HomeComponent({
             <button
               key={id}
               onClick={() => handleCategoryClick(id)}
-              className="snap-start flex flex-col items-center gap-2.5 group cursor-pointer shrink-0"
+              className="snap-start flex flex-col items-center gap-2.5 group cursor-pointer shrink-0 w-24 sm:w-28 lg:w-32"
             >
-              <div className="h-24 w-24 sm:h-32 sm:w-32 lg:h-36 lg:w-36 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+              <div className="h-24 w-24 sm:h-28 sm:w-28 lg:h-32 lg:w-32 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
                 <img
                   src={cat.images?.[0] || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=240&q=75&fit=crop'}
                   alt={cat.text}
