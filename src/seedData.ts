@@ -40,8 +40,9 @@ export const SEED_BRANDS: Brand[] = [
 // (farmer-factory-vegetables/-fruits/-valluvam, crop-care/*, nursery-indoor/outdoor).
 // One product per image, correct name, real category. No demo/placeholder data.
 import { CATALOG_PRODUCTS } from './catalogProducts';
+import { POLYHOUSE_PRODUCTS } from './polyhouseProducts';
 
-export const SEED_PRODUCTS: Product[] = CATALOG_PRODUCTS;
+export const SEED_PRODUCTS: Product[] = [...CATALOG_PRODUCTS, ...POLYHOUSE_PRODUCTS];
 
 const CATEGORY_ICONS: Record<string, string> = {
   'Vegetables': 'Carrot',
@@ -59,6 +60,7 @@ const CATEGORY_ICONS: Record<string, string> = {
   'Outdoor Plants & Trees': 'TreePine',
   'Precision Tools & Equipments': 'Wrench',
   'Nursery Tools': 'Sprout',
+  'Greenhouse & Polyhouse': 'Home',
 };
 
 // Display order for the storefront
@@ -68,16 +70,17 @@ const CATEGORY_ORDER = [
   'Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers',
   'Indoor Plants', 'Outdoor Plants & Trees', 'Precision Tools & Equipments',
   'Nursery Tools',
+  'Greenhouse & Polyhouse'
 ];
 
 export const SEED_CATEGORIES: Category[] = CATEGORY_ORDER
-  .filter((name) => CATALOG_PRODUCTS.some((p) => p.category === name))
+  .filter((name) => SEED_PRODUCTS.some((p) => p.category === name))
   .map((name) => ({
     id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
     name,
     slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
     icon: CATEGORY_ICONS[name] || 'Leaf',
-    productCount: CATALOG_PRODUCTS.filter((p) => p.category === name).length,
+    productCount: SEED_PRODUCTS.filter((p) => p.category === name).length,
   }));
 
 

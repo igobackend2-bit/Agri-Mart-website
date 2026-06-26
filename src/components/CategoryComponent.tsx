@@ -552,8 +552,21 @@ export default function CategoryComponent({
 
           {/* Top Sort and details toolbar bar */}
           <div className="bg-white border border-slate-200 p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-xs font-bold text-slate-500 text-center sm:text-left">
-              Showing <span className="text-[#1B6B3A]">{filteredItems.length}</span> matching products of {products.length} cataloged
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="text-xs font-bold text-slate-500 text-center sm:text-left">
+                Showing <span className="text-[#1B6B3A]">{filteredItems.length}</span> matching products of {products.length} cataloged
+              </div>
+              {filteredItems.length > 0 && selectedCategory && (
+                <button 
+                  onClick={() => {
+                    filteredItems.forEach(p => addToCart(p));
+                    alert(`Successfully added all ${filteredItems.length} items to your cart!`);
+                  }}
+                  className="bg-[#1B6B3A] hover:bg-[#15532d] text-white text-xs font-bold py-1.5 px-4 rounded-lg shadow-sm flex items-center gap-2 transition"
+                >
+                  <span className="text-sm">🛒</span> Add All {filteredItems.length} Items to Cart
+                </button>
+              )}
             </div>
 
             {/* Sort Dropdown */}

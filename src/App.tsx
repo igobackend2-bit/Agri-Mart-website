@@ -360,6 +360,7 @@ export default function App() {
       '/catalog/nursery-outdoor',
       '/catalog/tools',
       '/catalog/nursery tools',
+      '/catalog/Images',
     ];
     const built = applyCatalogOverlay(SEED_PRODUCTS)
       // Keep products whose image is a hosted URL (Supabase/web) OR a real local
@@ -673,6 +674,8 @@ export default function App() {
                 selectedService={selectedService}
                 setCurrentPage={setCurrentPage}
                 userProfile={userProfile}
+                addToCart={addToCart}
+                setSelectedProduct={setSelectedProduct}
               />
             )}
 

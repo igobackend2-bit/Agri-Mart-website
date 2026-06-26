@@ -12,7 +12,9 @@ import {
   Info, 
   IndianRupee 
 } from 'lucide-react';
-import { Service, ServiceLead } from '../types';
+import { Service, ServiceLead, Product } from '../types';
+import { SEED_PRODUCTS } from '../seedData';
+import { ShoppingCart } from 'lucide-react';
 import { placeServiceLead } from '../dbHelper';
 
 interface ServicesDetailComponentProps {
@@ -20,6 +22,8 @@ interface ServicesDetailComponentProps {
   selectedService: Service | null;
   setCurrentPage: (p: any) => void;
   userProfile: any;
+  addToCart?: (prod: Product, qty?: number) => void;
+  setSelectedProduct?: (p: Product) => void;
 }
 
 const TN_DISTRICTS = [
@@ -43,7 +47,9 @@ export default function ServicesDetailComponent({
   lang,
   selectedService,
   setCurrentPage,
-  userProfile
+  userProfile,
+  addToCart,
+  setSelectedProduct
 }: ServicesDetailComponentProps) {
   
   if (!selectedService) {
@@ -141,6 +147,28 @@ export default function ServicesDetailComponent({
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+
+  const getRelatedProducts = () => {
+    if (!selectedService) return [];
+    if (selectedService.id === 'srv-06') return SEED_PRODUCTS.filter(p => p.subcategory === 'Polyhouse Components');
+    if (selectedService.id === 'srv-02') return SEED_PRODUCTS.filter(p => p.subcategory === 'Pumps & Irrigation');
+    if (selectedService.id === 'srv-08') return SEED_PRODUCTS.filter(p => p.subcategory === 'Grow Media' || p.subcategory === 'Germination Media');
+    
+    const words = selectedService.name.toLowerCase().split(' ').filter(w => w.length > 3);
+    return SEED_PRODUCTS.filter(p => words.some(w => p.category.toLowerCase().includes(w) || p.name.toLowerCase().includes(w))).slice(0, 12);
+  };
+
+  const relatedProducts = getRelatedProducts();
+
+  const handleAddAllToCart = () => {
+    if (!addToCart) {
+      alert("Cart syncing error, please contact admin.");
+      return;
+    }
+    relatedProducts.forEach(p => addToCart(p, 1));
+    alert('Added ' + relatedProducts.length + ' products to cart for this service!');
   };
 
   return (
@@ -433,6 +461,46 @@ export default function ServicesDetailComponent({
           </div>
 
         </div>
+
+
+        {relatedProducts.length > 0 && (
+          <div className="mt-12 mb-8 bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">
+              <div>
+                <h3 className="text-xl font-bold text-slate-900">Required Materials & Products</h3>
+                <p className="text-sm text-slate-500">Purchase all necessary products for the {selectedService?.name} setup.</p>
+              </div>
+              <button 
+                onClick={handleAddAllToCart}
+                className="mt-4 sm:mt-0 bg-[#1B6B3A] hover:bg-[#15532d] text-white text-sm font-bold py-2.5 px-5 rounded-xl shadow-md border border-[#248F4E] transition flex items-center gap-2 shrink-0"
+              >
+                <ShoppingCart className="h-4 w-4" />
+                Add All {relatedProducts.length} to Cart
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 max-h-[400px] overflow-y-auto pr-2 pb-2">
+              {relatedProducts.map(p => (
+                <div 
+                  key={p.id} 
+                  onClick={() => {
+                    if (setSelectedProduct) {
+                      setSelectedProduct(p);
+                      setCurrentPage('product');
+                    }
+                  }}
+                  className="border border-slate-100 rounded-xl p-3 flex flex-col items-center text-center bg-[#F7F9F4]/50 hover:bg-white transition cursor-pointer"
+                >
+                  <div className="h-16 w-16 bg-white rounded-lg p-1 mb-2 border border-slate-100 overflow-hidden shrink-0">
+                    <img src={p.images?.[0] || '/images/default-product.png'} className="w-full h-full object-cover" alt={p.name} />
+                  </div>
+                  <h4 className="text-[11px] font-bold text-slate-800 line-clamp-2 leading-snug">{p.name}</h4>
+                  <div className="text-[10px] text-slate-500 mt-auto pt-1 font-medium">₹{p.price.toLocaleString('en-IN')}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

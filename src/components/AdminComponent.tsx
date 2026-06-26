@@ -417,6 +417,25 @@ export default function AdminComponent({ lang, products, setProducts, categories
     try { await removeLead(id); } catch { }
   };
 
+  // Reply to an enquiry (service / loan / contact). Delivers the message to that
+  // customer's account Inbox when an email is on file; otherwise it is posted to
+  // all customer inboxes on this account.
+  const handleReplyLead = (l: VisitorLead) => {
+    const body = window.prompt(
+      l.email
+        ? `Reply to ${l.name} (${l.email}). This goes straight to their account Inbox:`
+        : `Reply to ${l.name}. No email is on file for this enquiry, so the reply will appear in every customer Inbox on this account.\n\nMessage:`
+    );
+    if (!body || !body.trim()) return;
+    sendInboxMessage({
+      toEmail: l.email || 'all',
+      title: 'IGO Agri Mart' + (l.subject ? ' — ' + l.subject : ' — reply to your enquiry'),
+      body: body.trim(),
+    });
+    if (l.status === 'New') handleLeadStatus(l.id, 'Contacted');
+    alert(l.email ? `Reply sent to ${l.email}'s inbox.` : 'Reply posted to customer inboxes.');
+  };
+
   useEffect(() => { loadOrders(); loadLeads(); loadCustomers(); }, []);
 
   // Audible stock alert when the admin opens the Dashboard or Inventory tab.
@@ -1091,9 +1110,16 @@ export default function AdminComponent({ lang, products, setProducts, categories
                         </select>
                       </td>
                       <td className="p-3">
-                        <button onClick={() => handleDeleteLead(l.id)} className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">
-                          <Trash2 className="h-4 w-4" />
-                        </button>
+                        <div className="flex items-center gap-1.5">
+                          <button onClick={() => handleReplyLead(l)}
+                            title={l.email ? 'Reply to ' + l.email + '’s inbox' : 'Reply (no email on file — posts to all customer inboxes)'}
+                            className="text-[10px] font-bold text-[#1B6B3A] border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg transition whitespace-nowrap">
+                            Reply
+                          </button>
+                          <button onClick={() => handleDeleteLead(l.id)} className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

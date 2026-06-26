@@ -351,7 +351,8 @@ export default function HomeComponent({
     { label: 'Fertilizers', slug: 'all-fertilizers', matchCats: ['Liquid Fertilizers', 'Powder Fertilizers', 'Chemical Fertilizers', 'Organic Fertilizers'], customImg: '/images/categories/Fertilizers.jpeg' },
     { label: 'Plants', slug: 'plants', matchCats: ['Indoor Plants', 'Outdoor Plants & Trees'], customImg: '/images/categories/Plants.jpeg' },
     { label: 'Valluvam Products', slug: 'valluvam-products', matchCats: ['Native Foods & Millets', 'Valluvam'], customImg: '/images/categories/Valluvam.jpeg' },
-    { label: 'Equipments', slug: 'equipment', matchCats: ['Precision Tools & Equipments', 'Nursery Tools', 'Farm Tools & Implements'], customImg: '/images/categories/Equipments.jpeg' }
+    { label: 'Equipments', slug: 'equipment', matchCats: ['Precision Tools & Equipments', 'Nursery Tools', 'Farm Tools & Implements'], customImg: '/images/categories/Equipments.jpeg' },
+    { label: 'Greenhouse & Polyhouse', slug: 'greenhouse-polyhouse', matchCats: ['Greenhouse & Polyhouse'], customImg: '/catalog/Images/polyhouse/Poly Film.jpg' }
   ];
 
   const catMeta = getCategoryMeta();
